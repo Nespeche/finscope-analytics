@@ -1,0 +1,190 @@
+{
+  "$defs": {
+    "ActivePointerRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "generation": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "issuerCik": {
+          "$ref": "common.schema.json#/$defs/Cik"
+        },
+        "pointerKind": {
+          "enum": [
+            "fundamental_snapshot",
+            "price_overlay"
+          ]
+        },
+        "recordType": {
+          "const": "active_pointer"
+        },
+        "targetFingerprint": {
+          "$ref": "common.schema.json#/$defs/Sha256Fingerprint"
+        },
+        "targetId": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "recordType",
+        "issuerCik",
+        "pointerKind",
+        "targetId",
+        "targetFingerprint",
+        "generation"
+      ],
+      "type": "object"
+    },
+    "CommitRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "committedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "issuerCik": {
+          "$ref": "common.schema.json#/$defs/Cik"
+        },
+        "pointerUpdates": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "recordType": {
+          "const": "commit"
+        },
+        "status": {
+          "const": "committed"
+        },
+        "transactionId": {
+          "type": "string"
+        },
+        "writtenRecordIds": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "recordType",
+        "transactionId",
+        "issuerCik",
+        "writtenRecordIds",
+        "pointerUpdates",
+        "status"
+      ],
+      "type": "object"
+    },
+    "FundamentalSnapshotRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "analysisId": {
+          "type": "string"
+        },
+        "bundleId": {
+          "type": "string"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "fundamentalAnalysisFingerprint": {
+          "$ref": "common.schema.json#/$defs/Sha256Fingerprint"
+        },
+        "fundamentalInputFingerprint": {
+          "$ref": "common.schema.json#/$defs/Sha256Fingerprint"
+        },
+        "issuerCik": {
+          "$ref": "common.schema.json#/$defs/Cik"
+        },
+        "recordType": {
+          "const": "fundamental_snapshot"
+        },
+        "snapshotId": {
+          "type": "string"
+        },
+        "state": {
+          "const": "committed"
+        }
+      },
+      "required": [
+        "recordType",
+        "snapshotId",
+        "issuerCik",
+        "bundleId",
+        "analysisId",
+        "fundamentalInputFingerprint",
+        "fundamentalAnalysisFingerprint",
+        "state"
+      ],
+      "type": "object"
+    },
+    "PriceOverlayRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "historicalPriceOverlayFingerprint": {
+          "$ref": "common.schema.json#/$defs/Sha256Fingerprint"
+        },
+        "issuerCik": {
+          "$ref": "common.schema.json#/$defs/Cik"
+        },
+        "overlayId": {
+          "type": "string"
+        },
+        "overlayVersion": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "priceAnalysisFingerprint": {
+          "$ref": "common.schema.json#/$defs/Sha256Fingerprint"
+        },
+        "recordType": {
+          "const": "price_overlay"
+        },
+        "state": {
+          "const": "committed"
+        }
+      },
+      "required": [
+        "recordType",
+        "overlayId",
+        "overlayVersion",
+        "issuerCik",
+        "historicalPriceOverlayFingerprint",
+        "state"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://finscope.local/schemas/storage-records.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/FundamentalSnapshotRecord"
+    },
+    {
+      "$ref": "#/$defs/PriceOverlayRecord"
+    },
+    {
+      "$ref": "#/$defs/ActivePointerRecord"
+    },
+    {
+      "$ref": "#/$defs/CommitRecord"
+    }
+  ],
+  "title": "Atomic IndexedDB records v5.0.0"
+}

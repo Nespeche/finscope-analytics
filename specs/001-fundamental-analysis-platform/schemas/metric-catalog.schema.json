@@ -1,0 +1,191 @@
+{
+  "$id": "https://finscope.local/schemas/metric-catalog.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "catalogId": {
+      "const": "metric-catalog"
+    },
+    "deferredMetricIds": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "invariants": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "metrics": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "allowedStates": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "class": {
+            "enum": [
+              "fundamental",
+              "market_descriptive"
+            ]
+          },
+          "consumers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "definitionVersion": {
+            "const": "5.0.1"
+          },
+          "fingerprintDomain": {
+            "enum": [
+              "fundamental_analysis",
+              "price_analysis"
+            ]
+          },
+          "formulaId": {
+            "enum": [
+              "identity",
+              "add",
+              "subtract",
+              "divide",
+              "ratio_change",
+              "divide_average_balance",
+              "debt_bucket_sum",
+              "last",
+              "min",
+              "max",
+              "mean",
+              "median",
+              "simple_return",
+              "max_drawdown",
+              "normalized_ols_ordinal"
+            ]
+          },
+          "inputCompletenessPolicy": {
+            "type": "string"
+          },
+          "inputIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "metricId": {
+            "pattern": "^(?:FND|MKT)_[A-Z0-9_]+$",
+            "type": "string"
+          },
+          "metricPriority": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "minimumQuality": {
+            "$ref": "common.schema.json#/$defs/QualityClassification"
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "optionalInputIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "periodPolicy": {
+            "type": "string"
+          },
+          "profileAllowlist": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "qualityModel": {
+            "enum": [
+              "fundamental",
+              "historical_price"
+            ]
+          },
+          "requiredInputIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "roundingPolicy": {
+            "type": "string"
+          },
+          "scopePolicy": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "metricId",
+          "metricPriority",
+          "class",
+          "formulaId",
+          "inputIds",
+          "unit",
+          "roundingPolicy",
+          "periodPolicy",
+          "scopePolicy",
+          "profileAllowlist",
+          "qualityModel",
+          "minimumQuality",
+          "consumers",
+          "allowedStates",
+          "definitionVersion",
+          "fingerprintDomain",
+          "notes"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "roundingDefault": {
+      "type": "object"
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "version": {
+      "const": "5.0.1"
+    },
+    "formulaCatalogRef": {
+      "const": "definitions/formula-catalog.json#/formulas"
+    }
+  },
+  "required": [
+    "catalogId",
+    "version",
+    "status",
+    "roundingDefault",
+    "invariants",
+    "deferredMetricIds",
+    "metrics",
+    "formulaCatalogRef"
+  ],
+  "title": "Metric catalog v5.0.1",
+  "type": "object"
+}

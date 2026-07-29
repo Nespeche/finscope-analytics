@@ -1,0 +1,510 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B12",
+  "ordinal": 12,
+  "title": "Interfaz y E2E del análisis fundamental",
+  "domain": "fundamental-ui",
+  "status": "PENDING",
+  "taskCount": 5,
+  "executionOrder": [
+    "T049",
+    "T050",
+    "T051",
+    "T052",
+    "T053"
+  ],
+  "externalDependencies": [
+    "T022",
+    "T030",
+    "T034",
+    "T037",
+    "T041",
+    "T042",
+    "T043",
+    "T044",
+    "T045",
+    "T046",
+    "T047",
+    "T048"
+  ],
+  "requirements": [
+    "FR-001",
+    "FR-003",
+    "FR-008",
+    "FR-009",
+    "FR-010",
+    "FR-013",
+    "FR-014",
+    "FR-016",
+    "FR-017",
+    "FR-018",
+    "FR-019",
+    "FR-025",
+    "FR-041",
+    "FR-042",
+    "NFR-001"
+  ],
+  "acceptanceCriteria": [
+    "AC-001",
+    "AC-005",
+    "AC-006",
+    "AC-011",
+    "AC-012",
+    "AC-013",
+    "AC-014",
+    "AC-015",
+    "AC-016",
+    "AC-017",
+    "AC-019",
+    "AC-020",
+    "AC-025",
+    "AC-028",
+    "AC-029",
+    "AC-030",
+    "AC-031",
+    "AC-032",
+    "AC-033",
+    "AC-034",
+    "AC-035",
+    "AC-036",
+    "AC-037",
+    "AC-039",
+    "AC-074"
+  ],
+  "authorityIds": [
+    "AUTH-003",
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-006",
+    "AUTH-007",
+    "AUTH-008",
+    "AUTH-009",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-013",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-026",
+    "AUTH-027"
+  ],
+  "primaryAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/decisions/ui-framework.md",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+    "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-test-vectors.json",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+    "specs/001-fundamental-analysis-platform/fixtures/rules/rule-test-vectors.json",
+    "specs/001-fundamental-analysis-platform/quickstart.md",
+    "specs/001-fundamental-analysis-platform/schemas/common.schema.json#/$defs/DecimalString",
+    "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-001",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-005",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-006",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-011",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-012",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-013",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-014",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-015",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-016",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-017",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-019",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-020",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-025",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-028",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-029",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-030",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-031",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-032",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-033",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-034",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-035",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-036",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-037",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-039",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-074"
+  ],
+  "targetFiles": [
+    "src/app/components/FactProvenance.svelte",
+    "src/app/components/FilingTable.svelte",
+    "src/app/components/InsightRuleResult.svelte",
+    "src/app/components/MetricCard.svelte",
+    "src/app/views/FactsView.svelte",
+    "src/app/views/FundamentalMetricsView.svelte",
+    "src/app/views/InsightsView.svelte",
+    "src/app/views/IssuerEvidenceView.svelte",
+    "tests/e2e/evidence-view.spec.ts",
+    "tests/e2e/facts-view.spec.ts",
+    "tests/e2e/first-analysis.spec.ts",
+    "tests/e2e/fundamental-metrics.spec.ts",
+    "tests/e2e/insights.spec.ts"
+  ],
+  "testFiles": [
+    "tests/e2e/evidence-view.spec.ts",
+    "tests/e2e/facts-view.spec.ts",
+    "tests/e2e/first-analysis.spec.ts",
+    "tests/e2e/fundamental-metrics.spec.ts",
+    "tests/e2e/insights.spec.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T049",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": true,
+      "dependencies": [
+        "T022",
+        "T030"
+      ],
+      "requirementRefs": [
+        "FR-001",
+        "FR-008",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptanceRefs": [
+        "AC-001",
+        "AC-006",
+        "AC-011",
+        "AC-074"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-026",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/views/IssuerEvidenceView.svelte",
+        "src/app/components/FilingTable.svelte",
+        "tests/e2e/evidence-view.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/evidence-view.spec.ts"
+      ],
+      "doneWhen": "the view exports an AUTH-027 routeDefinition and identity and filing context remain visible and accessible",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "1beb4f54a29f928ef07a5dd21ed43bb01b99ed1d61dcd6e1bd9d6339eee6ba9f"
+    },
+    {
+      "id": "T050",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": true,
+      "dependencies": [
+        "T022",
+        "T037",
+        "T046"
+      ],
+      "requirementRefs": [
+        "FR-008",
+        "FR-009",
+        "FR-010",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptanceRefs": [
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-019",
+        "AC-020",
+        "AC-074"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-008",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-026",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/views/FactsView.svelte",
+        "src/app/components/FactProvenance.svelte",
+        "tests/e2e/facts-view.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/facts-view.spec.ts"
+      ],
+      "doneWhen": "the view exports an AUTH-027 routeDefinition and raw, normalized and unavailable states are visually and semantically distinct",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "6c86710a78a7c083f1f28c1deec10590f2df609a51de1187e900054aadf1c625"
+    },
+    {
+      "id": "T051",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": false,
+      "dependencies": [
+        "T022",
+        "T041",
+        "T042",
+        "T046"
+      ],
+      "requirementRefs": [
+        "FR-013",
+        "FR-014",
+        "FR-016",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptanceRefs": [
+        "AC-015",
+        "AC-016",
+        "AC-017",
+        "AC-025",
+        "AC-028",
+        "AC-029",
+        "AC-030",
+        "AC-031",
+        "AC-032",
+        "AC-074"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-015",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/views/FundamentalMetricsView.svelte",
+        "src/app/components/MetricCard.svelte",
+        "tests/e2e/fundamental-metrics.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/fundamental-metrics.spec.ts"
+      ],
+      "doneWhen": "the view exports an AUTH-027 routeDefinition and all 24 metrics render state/reason without invented values",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "c170d396e2f1e038291337d10a97c32262580d7a221570d01edc169be6e69b3a"
+    },
+    {
+      "id": "T052",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": false,
+      "dependencies": [
+        "T022",
+        "T043",
+        "T044",
+        "T045",
+        "T046"
+      ],
+      "requirementRefs": [
+        "FR-017",
+        "FR-018",
+        "FR-019",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptanceRefs": [
+        "AC-033",
+        "AC-034",
+        "AC-035",
+        "AC-036",
+        "AC-037",
+        "AC-074"
+      ],
+      "authorityIds": [
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-015",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/views/InsightsView.svelte",
+        "src/app/components/InsightRuleResult.svelte",
+        "tests/e2e/insights.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/insights.spec.ts"
+      ],
+      "doneWhen": "the view exports an AUTH-027 routeDefinition, visible rule outcomes and synthesis match the same analysis fingerprint and are never framed as personalized investment advice",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "6787fc2537aac60b26413425757ef2285cc2b1d8d3e6ff67148299a0af233594"
+    },
+    {
+      "id": "T053",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": false,
+      "dependencies": [
+        "T034",
+        "T047",
+        "T048",
+        "T049",
+        "T050",
+        "T051",
+        "T052"
+      ],
+      "requirementRefs": [
+        "FR-001",
+        "FR-003",
+        "FR-008",
+        "FR-013",
+        "FR-017",
+        "FR-025",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-001",
+        "AC-005",
+        "AC-011",
+        "AC-028",
+        "AC-035",
+        "AC-039"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-026"
+      ],
+      "files": [
+        "tests/e2e/first-analysis.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/first-analysis.spec.ts"
+      ],
+      "doneWhen": "complete and partial scenarios expose all cited outputs and are independently reproducible without price",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "470e98a6d114ed737241d630424e7fa563d6ddec5e17fd7f03b92a41ed139e81"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": true,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-e2e",
+        "category": "e2e",
+        "command": "npm run test:e2e -- tests/e2e/evidence-view.spec.ts tests/e2e/facts-view.spec.ts tests/e2e/first-analysis.spec.ts tests/e2e/fundamental-metrics.spec.ts tests/e2e/insights.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B12_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

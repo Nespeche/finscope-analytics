@@ -1,0 +1,1423 @@
+{
+  "count": 84,
+  "fixtureSetId": "acceptance-core-scenarios",
+  "scenarios": {
+    "AC-001": {
+      "action": "open issuer",
+      "authorityRef": "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+      "criterionId": "AC-001",
+      "expectedOracle": "issuer stored/displayed by zero-padded CIK",
+      "expectedState": "ready",
+      "input": "ticker alias maps to one CIK",
+      "preconditions": "issuer selected",
+      "prohibitedResult": "ticker used as primary key",
+      "recovery": "select candidate by CIK",
+      "requirementIds": [
+        "FR-001",
+        "NFR-006"
+      ],
+      "authorityId": "AUTH-003"
+    },
+    "AC-002": {
+      "action": "select ticker",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/0",
+      "criterionId": "AC-002",
+      "expectedOracle": "local issue identity_ambiguous; no HTTP request and no Problem Details",
+      "expectedState": "failed",
+      "input": "two issuer candidates",
+      "preconditions": "multiple CIK candidates",
+      "prohibitedResult": "first candidate auto-selected",
+      "recovery": "select issuer by CIK",
+      "requirementIds": [
+        "FR-002",
+        "FR-039",
+        "FR-041",
+        "NFR-004"
+      ],
+      "authorityId": "AUTH-020"
+    },
+    "AC-003": {
+      "action": "start acquisition",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "criterionId": "AC-003",
+      "expectedOracle": "invalid_request; zero SEC calls",
+      "expectedState": "failed",
+      "input": "CIK with letters",
+      "preconditions": "manual CIK entry",
+      "prohibitedResult": "network call attempted",
+      "recovery": "correct input",
+      "requirementIds": [
+        "FR-001",
+        "FR-003",
+        "NFR-003"
+      ],
+      "authorityId": "AUTH-005"
+    },
+    "AC-004": {
+      "action": "refresh issuer",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "criterionId": "AC-004",
+      "expectedOracle": "cache hit recorded before endpoint",
+      "expectedState": "checking",
+      "input": "fresh cache fixture",
+      "preconditions": "valid cached payload",
+      "prohibitedResult": "unconditional SEC call",
+      "recovery": "invalidate/retry",
+      "requirementIds": [
+        "FR-031",
+        "NFR-003"
+      ],
+      "authorityId": "AUTH-005"
+    },
+    "AC-005": {
+      "action": "acquire",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "criterionId": "AC-005",
+      "expectedOracle": "Company Facts precedes any Company Concept",
+      "expectedState": "acquiring",
+      "input": "complete Company Facts fixture",
+      "preconditions": "no valid cache",
+      "prohibitedResult": "Company Concept fan-out first",
+      "recovery": "retry",
+      "requirementIds": [
+        "FR-004",
+        "NFR-003"
+      ],
+      "authorityId": "AUTH-005"
+    },
+    "AC-006": {
+      "action": "select filings",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "criterionId": "AC-006",
+      "expectedOracle": "only admitted annual/quarter forms proceed",
+      "expectedState": "acquiring",
+      "input": "10-K,10-Q,8-K mix",
+      "preconditions": "submissions received",
+      "prohibitedResult": "8-K treated as primary statement",
+      "recovery": "review evidence",
+      "requirementIds": [
+        "FR-004",
+        "FR-008",
+        "NFR-003"
+      ],
+      "authorityId": "AUTH-005"
+    },
+    "AC-007": {
+      "action": "evaluate fallback",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "criterionId": "AC-007",
+      "expectedOracle": "Company Concept call satisfies normative condition",
+      "expectedState": "acquiring",
+      "input": "known missing standard concept",
+      "preconditions": "Company Facts invalid/truncated/partial evidence",
+      "prohibitedResult": "call per every missing concept",
+      "recovery": "use local absent state",
+      "requirementIds": [
+        "FR-005",
+        "FR-007",
+        "NFR-003"
+      ],
+      "authorityId": "AUTH-005"
+    },
+    "AC-008": {
+      "action": "execute fallback",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "criterionId": "AC-008",
+      "expectedOracle": "profilePriority→metricPriority→concept→taxonomy→tag",
+      "expectedState": "acquiring",
+      "input": "priority fixture",
+      "preconditions": "multiple eligible concepts",
+      "prohibitedResult": "different call order across runs",
+      "recovery": "restart",
+      "requirementIds": [
+        "FR-006",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-005"
+    },
+    "AC-009": {
+      "action": "execute acquisition",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "criterionId": "AC-009",
+      "expectedOracle": "cost never exceeds 14",
+      "expectedState": "partial",
+      "input": "2 submissions+2 facts+10 concepts",
+      "preconditions": "worst-case fixture",
+      "prohibitedResult": "15th call issued",
+      "recovery": "publish partial result",
+      "requirementIds": [
+        "FR-003",
+        "FR-007",
+        "NFR-003"
+      ],
+      "authorityId": "AUTH-005"
+    },
+    "AC-010": {
+      "action": "normalize",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "criterionId": "AC-010",
+      "expectedOracle": "concept absent/metric insufficient; no global error",
+      "expectedState": "partial",
+      "input": "absent capex",
+      "preconditions": "valid payload lacks concept",
+      "prohibitedResult": "invalid_payload global error",
+      "recovery": "show compatible metrics",
+      "requirementIds": [
+        "FR-007",
+        "FR-009",
+        "FR-010",
+        "NFR-004"
+      ],
+      "authorityId": "AUTH-005"
+    },
+    "AC-011": {
+      "action": "build bundle",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+      "criterionId": "AC-011",
+      "expectedOracle": "issuer,filings,periods,facts,mappings,units,scopes,versions,warnings,limitations present",
+      "expectedState": "ready",
+      "input": "complete US-GAAP fixture",
+      "preconditions": "normalization succeeds",
+      "prohibitedResult": "market series embedded as authority",
+      "recovery": "retry normalization",
+      "requirementIds": [
+        "FR-008",
+        "FR-010",
+        "FR-020",
+        "NFR-006"
+      ],
+      "authorityId": "AUTH-007"
+    },
+    "AC-012": {
+      "action": "resolve concept",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "criterionId": "AC-012",
+      "expectedOracle": "primary exact selected",
+      "expectedState": "available",
+      "input": "revenue primary+alias",
+      "preconditions": "primary tag present",
+      "prohibitedResult": "alias preferred",
+      "recovery": "inspect evidence",
+      "requirementIds": [
+        "FR-008",
+        "FR-011",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-006"
+    },
+    "AC-013": {
+      "action": "resolve concept",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "criterionId": "AC-013",
+      "expectedOracle": "lowest precedence approved alias selected",
+      "expectedState": "available",
+      "input": "two aliases ranked",
+      "preconditions": "primary absent",
+      "prohibitedResult": "source order determines winner",
+      "recovery": "review mapping",
+      "requirementIds": [
+        "FR-006",
+        "FR-011",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-006"
+    },
+    "AC-014": {
+      "action": "resolve concept",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+      "criterionId": "AC-014",
+      "expectedOracle": "mappingQuality ambiguous; classification insufficient",
+      "expectedState": "insufficient",
+      "input": "same period values conflict",
+      "preconditions": "two unresolved candidates",
+      "prohibitedResult": "candidate guessed or averaged",
+      "recovery": "review mapping version",
+      "requirementIds": [
+        "FR-009",
+        "FR-011",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-008"
+    },
+    "AC-015": {
+      "action": "derive metric",
+      "authorityRef": "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+      "criterionId": "AC-015",
+      "expectedOracle": "metric insufficient",
+      "expectedState": "insufficient",
+      "input": "mixed-duration fixture",
+      "preconditions": "annual and quarter facts",
+      "prohibitedResult": "annual+quarter summed",
+      "recovery": "choose compatible periods",
+      "requirementIds": [
+        "FR-008",
+        "FR-014",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-003"
+    },
+    "AC-016": {
+      "action": "analyze",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "criterionId": "AC-016",
+      "expectedOracle": "all compatible active fundamental metrics attempted",
+      "expectedState": "ready",
+      "input": "complete operating fixture",
+      "preconditions": "profile resolved",
+      "prohibitedResult": "valuation attempted",
+      "recovery": "review missing facts",
+      "requirementIds": [
+        "FR-011",
+        "FR-013",
+        "NFR-006"
+      ],
+      "authorityId": "AUTH-006"
+    },
+    "AC-017": {
+      "action": "analyze",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "criterionId": "AC-017",
+      "expectedOracle": "incompatible metrics not_applicable",
+      "expectedState": "partial",
+      "input": "bank fixture",
+      "preconditions": "financial institution profile",
+      "prohibitedResult": "general ratios forced",
+      "recovery": "show supported subset",
+      "requirementIds": [
+        "FR-011",
+        "FR-012",
+        "FR-013"
+      ],
+      "authorityId": "AUTH-006"
+    },
+    "AC-018": {
+      "action": "analyze",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles/5",
+      "criterionId": "AC-018",
+      "expectedOracle": "normal unsupported_profile outcome: identity and evidence available; all fundamental metrics not_applicable; no HTTP 422",
+      "expectedState": "partial",
+      "input": "unsupported taxonomy fixture",
+      "preconditions": "unknown profile",
+      "prohibitedResult": "fabricated mappings",
+      "recovery": "show evidence",
+      "requirementIds": [
+        "FR-011",
+        "FR-012",
+        "FR-039"
+      ],
+      "authorityId": "AUTH-004"
+    },
+    "AC-019": {
+      "action": "sanitize",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+      "criterionId": "AC-019",
+      "expectedOracle": "1.23 and 0 strings",
+      "expectedState": "ready",
+      "input": "1.2300 and -0 fixtures",
+      "preconditions": "numeric fact parsed",
+      "prohibitedResult": "binary float serialization",
+      "recovery": "reject invalid decimal",
+      "requirementIds": [
+        "FR-008",
+        "FR-025",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-014"
+    },
+    "AC-020": {
+      "action": "sanitize",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/common.schema.json#/$defs/DecimalString",
+      "criterionId": "AC-020",
+      "expectedOracle": "local issue invalid_fact_value; invalid token excluded; no fingerprint calculated for candidate",
+      "expectedState": "partial",
+      "input": "NaN,+Infinity,-Infinity",
+      "preconditions": "invalid numeric token",
+      "prohibitedResult": "token hashed",
+      "recovery": "correct source",
+      "requirementIds": [
+        "FR-008",
+        "FR-009",
+        "FR-039",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-026"
+    },
+    "AC-021": {
+      "action": "derive debt",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "criterionId": "AC-021",
+      "expectedOracle": "only debt buckets allowlisted by debtPolicy are eligible; accounts payable and leases are excluded; known-absent residual bucket never creates a value",
+      "expectedState": "available",
+      "input": "approved and AP facts",
+      "preconditions": "debt facts present",
+      "prohibitedResult": "accounts payable included",
+      "recovery": "review mapping",
+      "requirementIds": [
+        "FR-015",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-006"
+    },
+    "AC-022": {
+      "action": "derive debt",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "criterionId": "AC-022",
+      "expectedOracle": "lease values remain separate",
+      "expectedState": "available",
+      "input": "debt+lease fixture",
+      "preconditions": "lease facts present",
+      "prohibitedResult": "leases summed into debt",
+      "recovery": "show lease fields separately",
+      "requirementIds": [
+        "FR-015",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-006"
+    },
+    "AC-023": {
+      "action": "derive debt",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/debtPolicy",
+      "criterionId": "AC-023",
+      "expectedOracle": "sum each resolved approved debt bucket once; generic or lease-inclusive total is ignored unless an explicit ACTIVE exact mapping authorizes it",
+      "expectedState": "available",
+      "input": "nonoverlap components fixture",
+      "preconditions": "exact total and components",
+      "prohibitedResult": "generic-total inference or double counting",
+      "recovery": "inspect evidence",
+      "requirementIds": [
+        "FR-015",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-006"
+    },
+    "AC-024": {
+      "action": "derive debt",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "criterionId": "AC-024",
+      "expectedOracle": "borrowingsDebt partial; no value",
+      "expectedState": "partial",
+      "input": "LongTermDebt plus current/noncurrent",
+      "preconditions": "overlap unresolved",
+      "prohibitedResult": "sum all tags",
+      "recovery": "review mapping",
+      "requirementIds": [
+        "FR-015",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-006"
+    },
+    "AC-025": {
+      "action": "calculate ratios",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+      "criterionId": "AC-025",
+      "expectedOracle": "net debt and debt/equity insufficient",
+      "expectedState": "insufficient",
+      "input": "complete equity/cash",
+      "preconditions": "debt partial",
+      "prohibitedResult": "ratio calculated",
+      "recovery": "resolve overlap",
+      "requirementIds": [
+        "FR-015",
+        "FR-019",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-011"
+    },
+    "AC-026": {
+      "action": "calculate",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "criterionId": "AC-026",
+      "expectedOracle": "derivedEBITDA=120",
+      "expectedState": "available",
+      "input": "OI=100,D&A=20",
+      "preconditions": "compatible OI and D&A",
+      "prohibitedResult": "adjusted EBITDA substituted",
+      "recovery": "review inputs",
+      "requirementIds": [
+        "FR-014",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-006"
+    },
+    "AC-027": {
+      "action": "calculate",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "criterionId": "AC-027",
+      "expectedOracle": "derivedEBITDA insufficient",
+      "expectedState": "insufficient",
+      "input": "lineage mismatch",
+      "preconditions": "restated OI and current D&A",
+      "prohibitedResult": "mixed-lineage result",
+      "recovery": "select matching facts",
+      "requirementIds": [
+        "FR-014",
+        "FR-019",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-006"
+    },
+    "AC-028": {
+      "action": "enumerate active",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+      "criterionId": "AC-028",
+      "expectedOracle": "32 active metrics resolve to one closed FormulaDefinition each; count is 24 fundamental + 8 price and no formulaId is orphaned",
+      "expectedState": "ready",
+      "input": "v0.14 catalog",
+      "preconditions": "catalog loaded",
+      "prohibitedResult": "36 retained or valuation active",
+      "recovery": "reload definitions",
+      "requirementIds": [
+        "FR-013",
+        "FR-014",
+        "NFR-005"
+      ],
+      "authorityId": "AUTH-011"
+    },
+    "AC-029": {
+      "action": "classify",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+      "criterionId": "AC-029",
+      "expectedOracle": "each of 144 combinations maps once",
+      "expectedState": "verified",
+      "input": "4×3×3×4 fixture",
+      "preconditions": "all enum combinations",
+      "prohibitedResult": "gap or overlap",
+      "recovery": "fix definition",
+      "requirementIds": [
+        "FR-016",
+        "NFR-001",
+        "NFR-005"
+      ],
+      "authorityId": "AUTH-008"
+    },
+    "AC-030": {
+      "action": "classify",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+      "criterionId": "AC-030",
+      "expectedOracle": "qualityClassification insufficient",
+      "expectedState": "insufficient",
+      "input": "ambiguous mapping",
+      "preconditions": "one blocking dimension",
+      "prohibitedResult": "usable classification",
+      "recovery": "review mapping",
+      "requirementIds": [
+        "FR-016",
+        "FR-019",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-008"
+    },
+    "AC-031": {
+      "action": "classify",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+      "criterionId": "AC-031",
+      "expectedOracle": "verified iff all four fundamental axes satisfy the catalog verified predicate",
+      "expectedState": "verified",
+      "input": "verified fixture",
+      "preconditions": "complete/exact/comparable/current",
+      "prohibitedResult": "verified on partial",
+      "recovery": "inspect source",
+      "requirementIds": [
+        "FR-016",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-008"
+    },
+    "AC-032": {
+      "action": "classify",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+      "criterionId": "AC-032",
+      "expectedOracle": "usable_with_caveats iff neither insufficient nor verified predicate matches",
+      "expectedState": "usable_with_caveats",
+      "input": "derived fixture",
+      "preconditions": "derived+complete+comparable",
+      "prohibitedResult": "verified",
+      "recovery": "review derivation",
+      "requirementIds": [
+        "FR-016",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-008"
+    },
+    "AC-033": {
+      "action": "validate rule",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json",
+      "criterionId": "AC-033",
+      "expectedOracle": "schema accepts only all, any, comparison, count_at_least, metric_state_is, quality_is_at_least",
+      "expectedState": "failed",
+      "input": "unknown op script",
+      "preconditions": "rule definition loaded",
+      "prohibitedResult": "unknown op executed",
+      "recovery": "restore prior version",
+      "requirementIds": [
+        "FR-017",
+        "NFR-005"
+      ],
+      "authorityId": "AUTH-013"
+    },
+    "AC-034": {
+      "action": "inspect fixtures",
+      "authorityRef": "specs/001-fundamental-analysis-platform/fixtures/rules/rule-test-vectors.json",
+      "criterionId": "AC-034",
+      "expectedOracle": "exactly 3 fixtures for each of 9 ACTIVE rules: triggered, not_triggered, not_evaluable",
+      "expectedState": "ready",
+      "input": "9 rules",
+      "preconditions": "catalog loaded",
+      "prohibitedResult": "missing not-evaluable case",
+      "recovery": "block activation",
+      "requirementIds": [
+        "FR-017",
+        "FR-018",
+        "NFR-005"
+      ],
+      "authorityId": "AUTH-012"
+    },
+    "AC-035": {
+      "action": "evaluate",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json",
+      "criterionId": "AC-035",
+      "expectedOracle": "triggered/not_triggered/not_evaluable only",
+      "expectedState": "ready",
+      "input": "positive/negative/missing fixtures",
+      "preconditions": "metric inputs available",
+      "prohibitedResult": "confidence score emitted",
+      "recovery": "repair rule",
+      "requirementIds": [
+        "FR-017",
+        "FR-019",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-012"
+    },
+    "AC-036": {
+      "action": "synthesize",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json",
+      "criterionId": "AC-036",
+      "expectedOracle": "one of five exact synthesis enums",
+      "expectedState": "ready",
+      "input": "five synthesis fixtures",
+      "preconditions": "rule outcomes set",
+      "prohibitedResult": "overlapping result",
+      "recovery": "repair synthesis",
+      "requirementIds": [
+        "FR-017",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-012"
+    },
+    "AC-037": {
+      "action": "evaluate twice",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json",
+      "criterionId": "AC-037",
+      "expectedOracle": "identical insight result/fingerprint",
+      "expectedState": "ready",
+      "input": "overlay present vs absent",
+      "preconditions": "same fundamentals",
+      "prohibitedResult": "rule changes with price",
+      "recovery": "remove overlay dependency",
+      "requirementIds": [
+        "FR-020",
+        "FR-023",
+        "FR-028",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-012"
+    },
+    "AC-038": {
+      "action": "analyze twice",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections/1",
+      "criterionId": "AC-038",
+      "expectedOracle": "fundamentalAnalysisFingerprint is identical; evidence and all price artifacts are outside projection",
+      "expectedState": "ready",
+      "input": "extra source note",
+      "preconditions": "same normative inputs",
+      "prohibitedResult": "output hash changes",
+      "recovery": "use evidence fingerprint",
+      "requirementIds": [
+        "FR-027",
+        "FR-028",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-014"
+    },
+    "AC-039": {
+      "action": "hash",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/fingerprint-test-vectors.json",
+      "criterionId": "AC-039",
+      "expectedOracle": "RFC 8785 JCS bytes + SHA-256 match expected sha256-prefixed digest",
+      "expectedState": "ready",
+      "input": "positive fundamental vector",
+      "preconditions": "test vector loaded",
+      "prohibitedResult": "implementation-specific JSON order",
+      "recovery": "reject activation",
+      "requirementIds": [
+        "FR-025",
+        "FR-029",
+        "NFR-001",
+        "NFR-005"
+      ],
+      "authorityId": "AUTH-014"
+    },
+    "AC-040": {
+      "action": "canonicalize",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+      "criterionId": "AC-040",
+      "expectedOracle": "normative sort yields same digest",
+      "expectedState": "ready",
+      "input": "same facts different input order",
+      "preconditions": "unsorted facts",
+      "prohibitedResult": "different digest",
+      "recovery": "sort by allowlist key",
+      "requirementIds": [
+        "FR-025",
+        "FR-029",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-014"
+    },
+    "AC-041": {
+      "action": "canonicalize",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+      "criterionId": "AC-041",
+      "expectedOracle": "negative vector rejects null/digest differs by policy",
+      "expectedState": "failed",
+      "input": "absent vs null",
+      "preconditions": "optional field case",
+      "prohibitedResult": "treated equivalent",
+      "recovery": "remove null or validate",
+      "requirementIds": [
+        "FR-025",
+        "FR-027",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-014"
+    },
+    "AC-042": {
+      "action": "inspect",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+      "criterionId": "AC-042",
+      "expectedOracle": "one allowlist per fingerprint",
+      "expectedState": "ready",
+      "input": "all fingerprint projections",
+      "preconditions": "contracts loaded",
+      "prohibitedResult": "parallel projection authority",
+      "recovery": "repair registry",
+      "requirementIds": [
+        "FR-026",
+        "NFR-001",
+        "NFR-005"
+      ],
+      "authorityId": "AUTH-014"
+    },
+    "AC-043": {
+      "action": "parse",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+      "criterionId": "AC-043",
+      "expectedOracle": "openapi exactly 3.1.1",
+      "expectedState": "ready",
+      "input": "OpenAPI parser",
+      "preconditions": "contract loaded",
+      "prohibitedResult": "3.0.x or invalid YAML",
+      "recovery": "repair contract",
+      "requirementIds": [
+        "FR-040",
+        "NFR-005"
+      ],
+      "authorityId": "AUTH-018"
+    },
+    "AC-044": {
+      "action": "resolve",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+      "criterionId": "AC-044",
+      "expectedOracle": "zero unresolved refs",
+      "expectedState": "ready",
+      "input": "all internal refs",
+      "preconditions": "contract loaded",
+      "prohibitedResult": "dangling ref",
+      "recovery": "repair contract",
+      "requirementIds": [
+        "FR-040",
+        "NFR-005"
+      ],
+      "authorityId": "AUTH-018"
+    },
+    "AC-045": {
+      "action": "inspect",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+      "criterionId": "AC-045",
+      "expectedOracle": "normative objects additionalProperties=false",
+      "expectedState": "ready",
+      "input": "component objects",
+      "preconditions": "schemas loaded",
+      "prohibitedResult": "silent extra fields",
+      "recovery": "reject payload",
+      "requirementIds": [
+        "FR-040",
+        "NFR-005"
+      ],
+      "authorityId": "AUTH-018"
+    },
+    "AC-046": {
+      "action": "validate response",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+      "criterionId": "AC-046",
+      "expectedOracle": "status references only allowed code variants",
+      "expectedState": "failed",
+      "input": "404/502 fixtures",
+      "preconditions": "endpoint error",
+      "prohibitedResult": "404 carries invalid_request",
+      "recovery": "repair response",
+      "requirementIds": [
+        "FR-039",
+        "FR-040",
+        "NFR-005"
+      ],
+      "authorityId": "AUTH-018"
+    },
+    "AC-047": {
+      "action": "respond",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/resourceNotFoundVariants",
+      "criterionId": "AC-047",
+      "expectedOracle": "operation-specific resource_not_found variant with const resourceType and nonempty resourceId",
+      "expectedState": "failed",
+      "input": "issuer,filing,snapshot,definition,mapping fixtures",
+      "preconditions": "missing resource",
+      "prohibitedResult": "generic untyped 404",
+      "recovery": "choose valid resource",
+      "requirementIds": [
+        "FR-040",
+        "FR-041"
+      ],
+      "authorityId": "AUTH-019"
+    },
+    "AC-048": {
+      "action": "validate",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json",
+      "criterionId": "AC-048",
+      "expectedOracle": "intersection empty for every variant",
+      "expectedState": "ready",
+      "input": "12 fixtures",
+      "preconditions": "each problem variant",
+      "prohibitedResult": "same capability preserved and blocked",
+      "recovery": "repair schema/example",
+      "requirementIds": [
+        "FR-037",
+        "FR-038",
+        "FR-041",
+        "NFR-005"
+      ],
+      "authorityId": "AUTH-015"
+    },
+    "AC-049": {
+      "action": "analyze",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+      "criterionId": "AC-049",
+      "expectedOracle": "fundamentals reach ready without price; any overlay is a separate immutable version and never enters the fundamental bundle",
+      "expectedState": "ready",
+      "input": "complete fundamental bundle",
+      "preconditions": "no overlay imported",
+      "prohibitedResult": "price consent blocks analysis",
+      "recovery": "none",
+      "requirementIds": [
+        "FR-020",
+        "FR-021",
+        "FR-023"
+      ],
+      "authorityId": "AUTH-009"
+    },
+    "AC-050": {
+      "action": "normalize",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+      "criterionId": "AC-050",
+      "expectedOracle": "frequency irregular accepted",
+      "expectedState": "ready",
+      "input": "irregular dates",
+      "preconditions": "CSV imported",
+      "prohibitedResult": "session calendar inferred",
+      "recovery": "edit frequency",
+      "requirementIds": [
+        "FR-021",
+        "FR-023"
+      ],
+      "authorityId": "AUTH-009"
+    },
+    "AC-051": {
+      "action": "display",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+      "criterionId": "AC-051",
+      "expectedOracle": "asOf/range/frequency/count/age/use shown",
+      "expectedState": "ready",
+      "input": "monthly observations",
+      "preconditions": "overlay valid",
+      "prohibitedResult": "fresh/stale session status",
+      "recovery": "remove overlay",
+      "requirementIds": [
+        "FR-023",
+        "FR-024"
+      ],
+      "authorityId": "AUTH-009"
+    },
+    "AC-052": {
+      "action": "analyze",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+      "criterionId": "AC-052",
+      "expectedOracle": "priceUse never valuation_eligible",
+      "expectedState": "ready",
+      "input": "latest price",
+      "preconditions": "overlay valid",
+      "prohibitedResult": "P/E or EV/EBITDA produced",
+      "recovery": "remove overlay",
+      "requirementIds": [
+        "FR-023"
+      ],
+      "authorityId": "AUTH-009"
+    },
+    "AC-053": {
+      "action": "inspect",
+      "authorityRef": "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md",
+      "criterionId": "AC-053",
+      "expectedOracle": "no credentialHandle/API key/provider adapter fields",
+      "expectedState": "ready",
+      "input": "policy fixture",
+      "preconditions": "MVP config loaded",
+      "prohibitedResult": "credential field rendered/stored",
+      "recovery": "remove field",
+      "requirementIds": [
+        "NFR-002",
+        "NFR-003"
+      ],
+      "authorityId": "AUTH-022"
+    },
+    "AC-054": {
+      "action": "import",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md#normative-flow",
+      "criterionId": "AC-054",
+      "expectedOracle": "detect→preview→validate→confirm before persist",
+      "expectedState": "ready",
+      "input": "valid CSV",
+      "preconditions": "file selected",
+      "prohibitedResult": "auto-persist on file selection",
+      "recovery": "cancel/delete",
+      "requirementIds": [
+        "FR-021",
+        "FR-022",
+        "NFR-002"
+      ],
+      "authorityId": "AUTH-009"
+    },
+    "AC-055": {
+      "action": "submit",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md#normative-flow",
+      "criterionId": "AC-055",
+      "expectedOracle": "field errors; no overlay published",
+      "expectedState": "failed",
+      "input": "invalid date/negative price",
+      "preconditions": "manual form open",
+      "prohibitedResult": "invalid observation stored",
+      "recovery": "correct fields",
+      "requirementIds": [
+        "FR-021",
+        "FR-022",
+        "FR-039",
+        "NFR-002"
+      ],
+      "authorityId": "AUTH-009"
+    },
+    "AC-056": {
+      "action": "persist",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+      "criterionId": "AC-056",
+      "expectedOracle": "storage_consent_required; analysis remains usable in memory",
+      "expectedState": "failed",
+      "input": "attempt save",
+      "preconditions": "consent undecided",
+      "prohibitedResult": "silent storage",
+      "recovery": "authorize or continue transient",
+      "requirementIds": [
+        "FR-034",
+        "NFR-002"
+      ],
+      "authorityId": "AUTH-017"
+    },
+    "AC-057": {
+      "action": "publish",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+      "criterionId": "AC-057",
+      "expectedOracle": "candidate+evidence+pointer commit together",
+      "expectedState": "ready",
+      "input": "candidate transaction fixture",
+      "preconditions": "active snapshot exists",
+      "prohibitedResult": "pointer updated before evidence",
+      "recovery": "retry",
+      "requirementIds": [
+        "FR-034",
+        "NFR-004"
+      ],
+      "authorityId": "AUTH-017"
+    },
+    "AC-058": {
+      "action": "publish",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+      "criterionId": "AC-058",
+      "expectedOracle": "activeSnapshotId remains A",
+      "expectedState": "partial",
+      "input": "failure before commit B",
+      "preconditions": "active snapshot A",
+      "prohibitedResult": "pointer references B",
+      "recovery": "retry/use A",
+      "requirementIds": [
+        "FR-035",
+        "NFR-004"
+      ],
+      "authorityId": "AUTH-017"
+    },
+    "AC-059": {
+      "action": "process event",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "criterionId": "AC-059",
+      "expectedOracle": "facts,mappings-dependent metrics and insights reprocessed",
+      "expectedState": "ready",
+      "input": "new_filing_detected",
+      "preconditions": "snapshot ready",
+      "prohibitedResult": "only insights rerun",
+      "recovery": "retry",
+      "requirementIds": [
+        "FR-033",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-016"
+    },
+    "AC-060": {
+      "action": "process event",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "criterionId": "AC-060",
+      "expectedOracle": "affected concepts→metrics→insights only",
+      "expectedState": "ready",
+      "input": "mapping_version_changed",
+      "preconditions": "snapshot ready",
+      "prohibitedResult": "unrelated overlay rerun",
+      "recovery": "retry",
+      "requirementIds": [
+        "FR-033",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-016"
+    },
+    "AC-061": {
+      "action": "process event",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "criterionId": "AC-061",
+      "expectedOracle": "dependent metrics and insights rerun",
+      "expectedState": "ready",
+      "input": "metric_definition_changed",
+      "preconditions": "snapshot ready",
+      "prohibitedResult": "SEC reacquired without need",
+      "recovery": "retry",
+      "requirementIds": [
+        "FR-033",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-016"
+    },
+    "AC-062": {
+      "action": "process event",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "criterionId": "AC-062",
+      "expectedOracle": "only insights and synthesis rerun",
+      "expectedState": "ready",
+      "input": "insight_rule_changed",
+      "preconditions": "snapshot ready",
+      "prohibitedResult": "facts re-normalized",
+      "recovery": "retry",
+      "requirementIds": [
+        "FR-033",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-016"
+    },
+    "AC-063": {
+      "action": "process event",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "criterionId": "AC-063",
+      "expectedOracle": "a confirmed import creates a new immutable overlayVersion and reruns only price metrics; fundamental fingerprints and pointer remain unchanged",
+      "expectedState": "ready",
+      "input": "historical_price_imported",
+      "preconditions": "fundamental snapshot ready",
+      "prohibitedResult": "fundamentals rerun",
+      "recovery": "remove overlay",
+      "requirementIds": [
+        "FR-021",
+        "FR-022",
+        "FR-033",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-016"
+    },
+    "AC-064": {
+      "action": "render",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "criterionId": "AC-064",
+      "expectedOracle": "visual_preference_changed affects render only and starts zero acquisition/normalization/analysis/persistence work",
+      "expectedState": "ready",
+      "input": "theme/layout change",
+      "preconditions": "snapshot ready",
+      "prohibitedResult": "pipeline starts",
+      "recovery": "restore view",
+      "requirementIds": [
+        "FR-024",
+        "FR-033",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-016"
+    },
+    "AC-065": {
+      "action": "open app",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "criterionId": "AC-065",
+      "expectedOracle": "app open/resume performs network check only when refreshConsent=true; otherwise renders active local snapshot",
+      "expectedState": "ready",
+      "input": "app open/resume",
+      "preconditions": "consent disabled",
+      "prohibitedResult": "silent refresh",
+      "recovery": "enable consent/manual refresh",
+      "requirementIds": [
+        "FR-030",
+        "FR-031",
+        "NFR-002",
+        "NFR-003"
+      ],
+      "authorityId": "AUTH-016"
+    },
+    "AC-066": {
+      "action": "refresh",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "criterionId": "AC-066",
+      "expectedOracle": "checking starts once",
+      "expectedState": "checking",
+      "input": "button activation",
+      "preconditions": "issuer selected",
+      "prohibitedResult": "terminal command required",
+      "recovery": "cancel/retry",
+      "requirementIds": [
+        "FR-032",
+        "NFR-003"
+      ],
+      "authorityId": "AUTH-016"
+    },
+    "AC-067": {
+      "action": "tab/activate",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+      "criterionId": "AC-067",
+      "expectedOracle": "all actions operable without pointer",
+      "expectedState": "ready",
+      "input": "issuer,refresh,import,delete controls",
+      "preconditions": "app UI rendered",
+      "prohibitedResult": "keyboard trap/unreachable control",
+      "recovery": "move focus/retry",
+      "requirementIds": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "authorityId": "AUTH-021"
+    },
+    "AC-068": {
+      "action": "close dialog",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+      "criterionId": "AC-068",
+      "expectedOracle": "focus returns to invoking control or next logical target",
+      "expectedState": "ready",
+      "input": "confirm/cancel fixture",
+      "preconditions": "import dialog open",
+      "prohibitedResult": "focus lost to body",
+      "recovery": "restore focus",
+      "requirementIds": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "authorityId": "AUTH-021"
+    },
+    "AC-069": {
+      "action": "inspect accessible names",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+      "criterionId": "AC-069",
+      "expectedOracle": "unique meaningful labels",
+      "expectedState": "ready",
+      "input": "CIK,CSV columns,delete buttons",
+      "preconditions": "forms/tables rendered",
+      "prohibitedResult": "placeholder-only label",
+      "recovery": "add label",
+      "requirementIds": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "authorityId": "AUTH-021"
+    },
+    "AC-070": {
+      "action": "run",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+      "criterionId": "AC-070",
+      "expectedOracle": "concise polite/error announcements",
+      "expectedState": "ready",
+      "input": "checking→ready and error fixtures",
+      "preconditions": "pipeline operation",
+      "prohibitedResult": "silent completion/error",
+      "recovery": "retry",
+      "requirementIds": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "authorityId": "AUTH-021"
+    },
+    "AC-071": {
+      "action": "activate refresh",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria/70",
+      "criterionId": "AC-071",
+      "expectedOracle": "aria-busy=true on the refresh control while pipeline is in checking|acquiring|normalizing|analyzing; aria-disabled=true when pipeline is in failed|cancelled state; both attributes absent when pipeline is in idle|ready|partial",
+      "expectedState": "checking",
+      "input": "slow response",
+      "preconditions": "refresh in flight",
+      "prohibitedResult": "second indistinguishable action",
+      "recovery": "cancel/wait",
+      "requirementIds": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "authorityId": "AUTH-021"
+    },
+    "AC-072": {
+      "action": "activate twice",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+      "criterionId": "AC-072",
+      "expectedOracle": "single operation and single candidate",
+      "expectedState": "checking",
+      "input": "double click/Enter",
+      "preconditions": "operation in flight",
+      "prohibitedResult": "duplicate calls/snapshots",
+      "recovery": "cancel/retry",
+      "requirementIds": [
+        "FR-037",
+        "FR-041",
+        "FR-042",
+        "NFR-004",
+        "NFR-007"
+      ],
+      "authorityId": "AUTH-021"
+    },
+    "AC-073": {
+      "action": "cancel",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/1",
+      "criterionId": "AC-073",
+      "expectedOracle": "local cancelled issue; candidate is not published; previous pointers remain unchanged",
+      "expectedState": "cancelled",
+      "input": "cancel control",
+      "preconditions": "operation in progress",
+      "prohibitedResult": "partial candidate activated",
+      "recovery": "restart/use prior",
+      "requirementIds": [
+        "FR-035",
+        "FR-037",
+        "FR-039",
+        "FR-041",
+        "NFR-004",
+        "NFR-007"
+      ],
+      "authorityId": "AUTH-020"
+    },
+    "AC-074": {
+      "action": "inspect",
+      "authorityRef": "specs/001-fundamental-analysis-platform/quickstart.md",
+      "criterionId": "AC-074",
+      "expectedOracle": "issuer CIK,period,profile and snapshot context remain visible",
+      "expectedState": "ready",
+      "input": "navigate limitations/evidence",
+      "preconditions": "issuer selected",
+      "prohibitedResult": "context silently switches",
+      "recovery": "return/reselect",
+      "requirementIds": [
+        "FR-041",
+        "FR-042",
+        "NFR-007"
+      ],
+      "authorityId": "AUTH-021"
+    },
+    "AC-075": {
+      "action": "render",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json",
+      "criterionId": "AC-075",
+      "expectedOracle": "every listed recovery action maps to one active UI operation and preserves exactly the catalog capabilities",
+      "expectedState": "ready",
+      "input": "problem fixtures",
+      "preconditions": "each active gateway problem and each local issue",
+      "prohibitedResult": "terminal-only recovery",
+      "recovery": "choose UI action",
+      "requirementIds": [
+        "FR-039",
+        "FR-041",
+        "FR-042",
+        "NFR-004",
+        "NFR-007"
+      ],
+      "authorityId": "AUTH-019"
+    },
+    "AC-076": {
+      "action": "confirm delete",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions/3",
+      "criterionId": "AC-076",
+      "expectedOracle": "export/import is available before deletion; delete_all_personal_data atomically removes all personal records and pointers or rolls back completely",
+      "expectedState": "idle",
+      "input": "delete data control",
+      "preconditions": "local data exists",
+      "prohibitedResult": "orphan personal data remains",
+      "recovery": "retry deletion",
+      "requirementIds": [
+        "FR-036",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "authorityId": "AUTH-017"
+    },
+    "AC-077": {
+      "action": "inspect",
+      "authorityRef": "V0.21_PHASE_STATUS.md#gate",
+      "criterionId": "AC-077",
+      "expectedOracle": "packaged v0.21 baseline contains remediated tasks, zero blocking task-analysis findings, valid Cloudflare Free evidence, and authorizes implementation while convergence remains closed",
+      "expectedState": "ready",
+      "input": "final v0.21 package tree plus active phase gate, remediated task QA and post-tasks analysis",
+      "preconditions": "post-tasks remediation and analysis completed before implementation",
+      "prohibitedResult": "missing task authority, failed QA/analysis, implementation authorized with a blocking finding, or convergence opened before implementation evidence",
+      "recovery": "repair task traceability or gate consistency, rerun QA and analysis, then repackage",
+      "requirementIds": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "authorityId": "AUTH-025",
+      "oracle": "packaged v0.21 baseline contains remediated tasks, zero blocking task-analysis findings, valid Cloudflare Free evidence, and authorizes implementation while convergence remains closed"
+    },
+    "AC-078": {
+      "action": "calculate both domains",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+      "criterionId": "AC-078",
+      "expectedOracle": "fundamentalInputFingerprint and fundamentalAnalysisFingerprint remain identical; price fingerprints differ",
+      "expectedState": "ready",
+      "input": "two different price overlays",
+      "preconditions": "same fundamental inputs and analysis",
+      "prohibitedResult": "price included in fundamental projection",
+      "recovery": "reject contract version",
+      "requirementIds": [
+        "FR-020",
+        "FR-022",
+        "FR-026",
+        "FR-028",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-014"
+    },
+    "AC-079": {
+      "action": "validate and fingerprint",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+      "criterionId": "AC-079",
+      "expectedOracle": "persisted overlay rejects displayAgeDays/evaluationDate; fingerprint is independent of UI evaluation date",
+      "expectedState": "ready",
+      "input": "displayAgeDays/evaluationDate mutations",
+      "preconditions": "valid overlay",
+      "prohibitedResult": "clock-derived field persisted or hashed",
+      "recovery": "derive age at render using explicit evaluationDate argument",
+      "requirementIds": [
+        "FR-024",
+        "FR-027",
+        "NFR-001"
+      ],
+      "authorityId": "AUTH-009"
+    },
+    "AC-080": {
+      "action": "resolve mappings and metrics",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json",
+      "criterionId": "AC-080",
+      "expectedOracle": "only explicit allowlisted concepts/mappings/metrics are attempted; no inferred concept is used",
+      "expectedState": "partial",
+      "input": "allowlisted and nonallowlisted concepts",
+      "preconditions": "issuer profile selected",
+      "prohibitedResult": "taxonomy-wide or fuzzy inference",
+      "recovery": "publish not_applicable/absent with evidence",
+      "requirementIds": [
+        "FR-011",
+        "NFR-001",
+        "NFR-006"
+      ],
+      "authorityId": "AUTH-004"
+    },
+    "AC-081": {
+      "action": "execute acquisition plan",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "criterionId": "AC-081",
+      "expectedOracle": "submissions once, Company Facts once, then at most 12 ordered Company Concept fallbacks; total external calls=14",
+      "expectedState": "partial",
+      "input": "20 unresolved eligible concepts",
+      "preconditions": "network acquisition",
+      "prohibitedResult": "15th call or Company Concept before Company Facts",
+      "recovery": "publish unresolved concepts and permit later manual refresh",
+      "requirementIds": [
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-006",
+        "FR-007",
+        "NFR-001",
+        "NFR-003"
+      ],
+      "authorityId": "AUTH-005"
+    },
+    "AC-082": {
+      "action": "cross-validate",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+      "criterionId": "AC-082",
+      "expectedOracle": "OpenAPI exposes exactly matrix-listed HTTP variants; 409 and 422 are absent; local issues are absent",
+      "expectedState": "ready",
+      "input": "all operation/status/variant combinations",
+      "preconditions": "OpenAPI loaded",
+      "prohibitedResult": "unreachable or missing HTTP variant",
+      "recovery": "block package",
+      "requirementIds": [
+        "FR-039",
+        "FR-040",
+        "NFR-005"
+      ],
+      "authorityId": "AUTH-019"
+    },
+    "AC-083": {
+      "action": "validate paths and domains",
+      "authorityRef": "specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json",
+      "criterionId": "AC-083",
+      "expectedOracle": "each domain has one primary authority, at least one consumer, exact anchor, and every consumer reverse-links to every declared domain",
+      "expectedState": "ready",
+      "input": "all crosswalk domains and reverse index",
+      "preconditions": "active document set",
+      "prohibitedResult": "orphan authority or consumer",
+      "recovery": "block package",
+      "requirementIds": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "authorityId": "AUTH-034"
+    },
+    "AC-084": {
+      "action": "interpret historical report",
+      "authorityRef": "specs/001-fundamental-analysis-platform/reports/v0.16/09_V0.16_HISTORICAL_VALIDATION_ADDENDUM.md",
+      "criterionId": "AC-084",
+      "expectedOracle": "historical statements are parse/structure evidence only, never active semantic authority; v0.21 active authorities control implementation readiness and v0.20 is the immediately preceding historical baseline",
+      "expectedState": "ready",
+      "input": "v0.14 51/51 and 40/40 statements",
+      "preconditions": "v0.14 evidence reviewed",
+      "prohibitedResult": "v0.19.2 or earlier presented as active semantic proof",
+      "recovery": "use v0.19 validation report and active authorities",
+      "requirementIds": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "authorityId": "AUTH-024",
+      "oracle": "historical statements are parse/structure evidence only, never active semantic authority; v0.21 active authorities control implementation readiness and v0.20 is the immediately preceding historical baseline"
+    }
+  },
+  "version": "5.0.2",
+  "authorityResolutionBase": "packageRoot"
+}

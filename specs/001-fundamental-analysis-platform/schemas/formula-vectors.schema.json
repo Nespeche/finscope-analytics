@@ -1,0 +1,1498 @@
+{
+  "$id": "https://finscope.local/schemas/formula-vectors.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Formula test vectors v1.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "fixtureSetId",
+    "version",
+    "formulaCount",
+    "vectorCount",
+    "vectors"
+  ],
+  "properties": {
+    "fixtureSetId": {
+      "const": "formula-test-vectors"
+    },
+    "version": {
+      "const": "1.1.0"
+    },
+    "formulaCount": {
+      "const": 15
+    },
+    "vectorCount": {
+      "const": 36
+    },
+    "vectors": {
+      "type": "array",
+      "minItems": 36,
+      "maxItems": 36,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/vector"
+      },
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "identity-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "identity-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "add-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "add-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "subtract-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "subtract-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "divide-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "divide-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "ratio_change-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "ratio_change-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "divide_average_balance-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "divide_average_balance-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "debt_bucket_sum-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "debt_bucket_sum-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "last-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "last-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "min-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "min-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "max-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "max-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "mean-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "mean-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "median-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "median-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "simple_return-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "simple_return-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "max_drawdown-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "max_drawdown-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "normalized_ols_ordinal-normal"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "normalized_ols_ordinal-missing"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "divide-zero-denominator"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "ratio_change-zero-denominator"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "divide_average_balance-zero-denominator"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "debt-overlap"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "price-nonpositive"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "vectorId"
+            ],
+            "properties": {
+              "vectorId": {
+                "const": "ols-insufficient"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "decimalString": {
+      "$ref": "https://finscope.local/schemas/common.schema.json#/$defs/DecimalString"
+    },
+    "availableExpected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "value"
+      ],
+      "properties": {
+        "state": {
+          "const": "available"
+        },
+        "value": {
+          "$ref": "#/$defs/decimalString"
+        }
+      }
+    },
+    "unavailableExpected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "reasonCode",
+        "valueAbsent"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "insufficient",
+            "not_meaningful",
+            "partial"
+          ]
+        },
+        "reasonCode": {
+          "enum": [
+            "invalid_arity",
+            "required_input_missing",
+            "invalid_input",
+            "non_canonical_decimal",
+            "insufficient_observations",
+            "zero_denominator",
+            "non_finite_result",
+            "invalid_price_observation",
+            "incomplete_debt_buckets",
+            "overlapping_debt_buckets"
+          ]
+        },
+        "valueAbsent": {
+          "const": true
+        }
+      }
+    },
+    "vector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "vectorId",
+        "formulaId",
+        "inputs",
+        "expected"
+      ],
+      "properties": {
+        "vectorId": {
+          "type": "string",
+          "enum": [
+            "identity-normal",
+            "identity-missing",
+            "add-normal",
+            "add-missing",
+            "subtract-normal",
+            "subtract-missing",
+            "divide-normal",
+            "divide-missing",
+            "ratio_change-normal",
+            "ratio_change-missing",
+            "divide_average_balance-normal",
+            "divide_average_balance-missing",
+            "debt_bucket_sum-normal",
+            "debt_bucket_sum-missing",
+            "last-normal",
+            "last-missing",
+            "min-normal",
+            "min-missing",
+            "max-normal",
+            "max-missing",
+            "mean-normal",
+            "mean-missing",
+            "median-normal",
+            "median-missing",
+            "simple_return-normal",
+            "simple_return-missing",
+            "max_drawdown-normal",
+            "max_drawdown-missing",
+            "normalized_ols_ordinal-normal",
+            "normalized_ols_ordinal-missing",
+            "divide-zero-denominator",
+            "ratio_change-zero-denominator",
+            "divide_average_balance-zero-denominator",
+            "debt-overlap",
+            "price-nonpositive",
+            "ols-insufficient"
+          ]
+        },
+        "formulaId": {
+          "type": "string",
+          "enum": [
+            "identity",
+            "add",
+            "subtract",
+            "divide",
+            "ratio_change",
+            "divide_average_balance",
+            "debt_bucket_sum",
+            "last",
+            "min",
+            "max",
+            "mean",
+            "median",
+            "simple_return",
+            "max_drawdown",
+            "normalized_ols_ordinal"
+          ]
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/decimalString"
+          }
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "overlap": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "overlap"
+          ]
+        },
+        "expected": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/availableExpected"
+            },
+            {
+              "$ref": "#/$defs/unavailableExpected"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "identity"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 1,
+                    "maxItems": 1
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "add"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 2
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 2
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "subtract"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "divide"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "ratio_change"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 2,
+                    "maxItems": 2
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 2,
+                  "maxItems": 2
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "divide_average_balance"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 3,
+                    "maxItems": 3
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 3,
+                  "maxItems": 3
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "debt_bucket_sum"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 1
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "last"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 1
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "min"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 1
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "max"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 1
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "mean"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 1
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "median"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 1
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "simple_return"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 2
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 2
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "max_drawdown"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 2
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 2
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "formulaId": {
+                "const": "normalized_ols_ordinal"
+              }
+            },
+            "required": [
+              "formulaId"
+            ]
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "expected": {
+                  "type": "object",
+                  "properties": {
+                    "reasonCode": {
+                      "const": "invalid_arity"
+                    }
+                  },
+                  "required": [
+                    "reasonCode"
+                  ]
+                }
+              },
+              "required": [
+                "expected"
+              ]
+            },
+            "then": {
+              "properties": {
+                "inputs": {
+                  "not": {
+                    "type": "array",
+                    "minItems": 2
+                  }
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "inputs": {
+                  "type": "array",
+                  "minItems": 2
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

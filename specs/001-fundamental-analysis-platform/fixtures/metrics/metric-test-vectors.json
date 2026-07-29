@@ -1,0 +1,1705 @@
+{
+  "expectedCount": 96,
+  "fixtureSetId": "metric-test-vectors",
+  "fixtures": [
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "100"
+      },
+      "fixtureId": "FND_REVENUE-NOMINAL",
+      "inputs": {
+        "revenue": "100"
+      },
+      "metricId": "FND_REVENUE",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_REVENUE-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_REVENUE",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_REVENUE-NOT-APPLICABLE",
+      "inputs": {
+        "revenue": "100"
+      },
+      "metricId": "FND_REVENUE",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.2"
+      },
+      "fixtureId": "FND_REVENUE_GROWTH_YOY-NOMINAL",
+      "inputs": {
+        "revenue.current": "120",
+        "revenue.prior_year": "100"
+      },
+      "metricId": "FND_REVENUE_GROWTH_YOY",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_REVENUE_GROWTH_YOY-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_REVENUE_GROWTH_YOY",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_REVENUE_GROWTH_YOY-NOT-APPLICABLE",
+      "inputs": {
+        "revenue.current": "120",
+        "revenue.prior_year": "100"
+      },
+      "metricId": "FND_REVENUE_GROWTH_YOY",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.2"
+      },
+      "fixtureId": "FND_REVENUE_GROWTH_QOQ_COMPATIBLE-NOMINAL",
+      "inputs": {
+        "revenue.current_quarter": "120",
+        "revenue.previous_quarter": "100"
+      },
+      "metricId": "FND_REVENUE_GROWTH_QOQ_COMPATIBLE",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_REVENUE_GROWTH_QOQ_COMPATIBLE-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_REVENUE_GROWTH_QOQ_COMPATIBLE",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_REVENUE_GROWTH_QOQ_COMPATIBLE-NOT-APPLICABLE",
+      "inputs": {
+        "revenue.current_quarter": "120",
+        "revenue.previous_quarter": "100"
+      },
+      "metricId": "FND_REVENUE_GROWTH_QOQ_COMPATIBLE",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.25"
+      },
+      "fixtureId": "FND_GROSS_MARGIN-NOMINAL",
+      "inputs": {
+        "grossProfit": "25",
+        "revenue": "100"
+      },
+      "metricId": "FND_GROSS_MARGIN",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_GROSS_MARGIN-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_GROSS_MARGIN",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_GROSS_MARGIN-NOT-APPLICABLE",
+      "inputs": {
+        "grossProfit": "25",
+        "revenue": "100"
+      },
+      "metricId": "FND_GROSS_MARGIN",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.25"
+      },
+      "fixtureId": "FND_OPERATING_MARGIN-NOMINAL",
+      "inputs": {
+        "operatingIncome": "25",
+        "revenue": "100"
+      },
+      "metricId": "FND_OPERATING_MARGIN",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_OPERATING_MARGIN-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_OPERATING_MARGIN",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_OPERATING_MARGIN-NOT-APPLICABLE",
+      "inputs": {
+        "operatingIncome": "25",
+        "revenue": "100"
+      },
+      "metricId": "FND_OPERATING_MARGIN",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.25"
+      },
+      "fixtureId": "FND_NET_MARGIN-NOMINAL",
+      "inputs": {
+        "netIncome": "25",
+        "revenue": "100"
+      },
+      "metricId": "FND_NET_MARGIN",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_NET_MARGIN-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_NET_MARGIN",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_NET_MARGIN-NOT-APPLICABLE",
+      "inputs": {
+        "netIncome": "25",
+        "revenue": "100"
+      },
+      "metricId": "FND_NET_MARGIN",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "100"
+      },
+      "fixtureId": "FND_CFO-NOMINAL",
+      "inputs": {
+        "cashFlowFromOperations": "100"
+      },
+      "metricId": "FND_CFO",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_CFO-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_CFO",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_CFO-NOT-APPLICABLE",
+      "inputs": {
+        "cashFlowFromOperations": "100"
+      },
+      "metricId": "FND_CFO",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "100"
+      },
+      "fixtureId": "FND_CAPEX-NOMINAL",
+      "inputs": {
+        "capitalExpenditures": "100"
+      },
+      "metricId": "FND_CAPEX",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_CAPEX-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_CAPEX",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_CAPEX-NOT-APPLICABLE",
+      "inputs": {
+        "capitalExpenditures": "100"
+      },
+      "metricId": "FND_CAPEX",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "70"
+      },
+      "fixtureId": "FND_FCF-NOMINAL",
+      "inputs": {
+        "capitalExpenditures": "30",
+        "cashFlowFromOperations": "100"
+      },
+      "metricId": "FND_FCF",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_FCF-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_FCF",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_FCF-NOT-APPLICABLE",
+      "inputs": {
+        "capitalExpenditures": "30",
+        "cashFlowFromOperations": "100"
+      },
+      "metricId": "FND_FCF",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "100"
+      },
+      "fixtureId": "FND_CASH-NOMINAL",
+      "inputs": {
+        "cashAndEquivalents": "100"
+      },
+      "metricId": "FND_CASH",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_CASH-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_CASH",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_CASH-NOT-APPLICABLE",
+      "inputs": {
+        "cashAndEquivalents": "100"
+      },
+      "metricId": "FND_CASH",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "65"
+      },
+      "fixtureId": "FND_BORROWINGS_DEBT-NOMINAL",
+      "inputs": {
+        "commercialPaper": "5",
+        "currentPortionLongTermDebt": "20",
+        "longTermDebtNoncurrent": "30",
+        "otherApprovedInterestBearingBorrowings": "0",
+        "shortTermBorrowings": "10"
+      },
+      "metricId": "FND_BORROWINGS_DEBT",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_BORROWINGS_DEBT-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_BORROWINGS_DEBT",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_BORROWINGS_DEBT-NOT-APPLICABLE",
+      "inputs": {
+        "commercialPaper": "5",
+        "currentPortionLongTermDebt": "20",
+        "longTermDebtNoncurrent": "30",
+        "otherApprovedInterestBearingBorrowings": "0",
+        "shortTermBorrowings": "10"
+      },
+      "metricId": "FND_BORROWINGS_DEBT",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "70"
+      },
+      "fixtureId": "FND_NET_DEBT-NOMINAL",
+      "inputs": {
+        "FND_BORROWINGS_DEBT": "100",
+        "cashAndEquivalents": "30"
+      },
+      "metricId": "FND_NET_DEBT",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_NET_DEBT-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_NET_DEBT",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_NET_DEBT-NOT-APPLICABLE",
+      "inputs": {
+        "FND_BORROWINGS_DEBT": "100",
+        "cashAndEquivalents": "30"
+      },
+      "metricId": "FND_NET_DEBT",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.25"
+      },
+      "fixtureId": "FND_CURRENT_RATIO-NOMINAL",
+      "inputs": {
+        "currentAssets": "25",
+        "currentLiabilities": "100"
+      },
+      "metricId": "FND_CURRENT_RATIO",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_CURRENT_RATIO-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_CURRENT_RATIO",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_CURRENT_RATIO-NOT-APPLICABLE",
+      "inputs": {
+        "currentAssets": "25",
+        "currentLiabilities": "100"
+      },
+      "metricId": "FND_CURRENT_RATIO",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "70"
+      },
+      "fixtureId": "FND_WORKING_CAPITAL-NOMINAL",
+      "inputs": {
+        "currentAssets": "100",
+        "currentLiabilities": "30"
+      },
+      "metricId": "FND_WORKING_CAPITAL",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_WORKING_CAPITAL-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_WORKING_CAPITAL",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_WORKING_CAPITAL-NOT-APPLICABLE",
+      "inputs": {
+        "currentAssets": "100",
+        "currentLiabilities": "30"
+      },
+      "metricId": "FND_WORKING_CAPITAL",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.25"
+      },
+      "fixtureId": "FND_EARNINGS_QUALITY-NOMINAL",
+      "inputs": {
+        "cashFlowFromOperations": "25",
+        "netIncome": "100"
+      },
+      "metricId": "FND_EARNINGS_QUALITY",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_EARNINGS_QUALITY-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_EARNINGS_QUALITY",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_EARNINGS_QUALITY-NOT-APPLICABLE",
+      "inputs": {
+        "cashFlowFromOperations": "25",
+        "netIncome": "100"
+      },
+      "metricId": "FND_EARNINGS_QUALITY",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "100"
+      },
+      "fixtureId": "FND_DERIVED_EBITDA-NOMINAL",
+      "inputs": {
+        "depreciationAndAmortization": "20",
+        "operatingIncome": "80"
+      },
+      "metricId": "FND_DERIVED_EBITDA",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_DERIVED_EBITDA-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_DERIVED_EBITDA",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_DERIVED_EBITDA-NOT-APPLICABLE",
+      "inputs": {
+        "depreciationAndAmortization": "20",
+        "operatingIncome": "80"
+      },
+      "metricId": "FND_DERIVED_EBITDA",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.25"
+      },
+      "fixtureId": "FND_EBITDA_MARGIN-NOMINAL",
+      "inputs": {
+        "FND_DERIVED_EBITDA": "25",
+        "revenue": "100"
+      },
+      "metricId": "FND_EBITDA_MARGIN",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_EBITDA_MARGIN-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_EBITDA_MARGIN",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_EBITDA_MARGIN-NOT-APPLICABLE",
+      "inputs": {
+        "FND_DERIVED_EBITDA": "25",
+        "revenue": "100"
+      },
+      "metricId": "FND_EBITDA_MARGIN",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.25"
+      },
+      "fixtureId": "FND_DEBT_EQUITY-NOMINAL",
+      "inputs": {
+        "FND_BORROWINGS_DEBT": "25",
+        "equity": "100"
+      },
+      "metricId": "FND_DEBT_EQUITY",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_DEBT_EQUITY-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_DEBT_EQUITY",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_DEBT_EQUITY-NOT-APPLICABLE",
+      "inputs": {
+        "FND_BORROWINGS_DEBT": "25",
+        "equity": "100"
+      },
+      "metricId": "FND_DEBT_EQUITY",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.25"
+      },
+      "fixtureId": "FND_INTEREST_COVERAGE-NOMINAL",
+      "inputs": {
+        "interestExpense": "100",
+        "operatingIncome": "25"
+      },
+      "metricId": "FND_INTEREST_COVERAGE",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_INTEREST_COVERAGE-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_INTEREST_COVERAGE",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_INTEREST_COVERAGE-NOT-APPLICABLE",
+      "inputs": {
+        "interestExpense": "100",
+        "operatingIncome": "25"
+      },
+      "metricId": "FND_INTEREST_COVERAGE",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.2"
+      },
+      "fixtureId": "FND_ROA-NOMINAL",
+      "inputs": {
+        "assets.closing": "120",
+        "assets.opening": "80",
+        "netIncome": "20"
+      },
+      "metricId": "FND_ROA",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_ROA-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_ROA",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_ROA-NOT-APPLICABLE",
+      "inputs": {
+        "assets.closing": "120",
+        "assets.opening": "80",
+        "netIncome": "20"
+      },
+      "metricId": "FND_ROA",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.2"
+      },
+      "fixtureId": "FND_ROE-NOMINAL",
+      "inputs": {
+        "equity.closing": "120",
+        "equity.opening": "80",
+        "netIncome": "20"
+      },
+      "metricId": "FND_ROE",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_ROE-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_ROE",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_ROE-NOT-APPLICABLE",
+      "inputs": {
+        "equity.closing": "120",
+        "equity.opening": "80",
+        "netIncome": "20"
+      },
+      "metricId": "FND_ROE",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.25"
+      },
+      "fixtureId": "FND_CASH_CONVERSION-NOMINAL",
+      "inputs": {
+        "FND_DERIVED_EBITDA": "100",
+        "cashFlowFromOperations": "25"
+      },
+      "metricId": "FND_CASH_CONVERSION",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_CASH_CONVERSION-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_CASH_CONVERSION",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_CASH_CONVERSION-NOT-APPLICABLE",
+      "inputs": {
+        "FND_DERIVED_EBITDA": "100",
+        "cashFlowFromOperations": "25"
+      },
+      "metricId": "FND_CASH_CONVERSION",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.25"
+      },
+      "fixtureId": "FND_CAPEX_REVENUE-NOMINAL",
+      "inputs": {
+        "capitalExpenditures": "25",
+        "revenue": "100"
+      },
+      "metricId": "FND_CAPEX_REVENUE",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_CAPEX_REVENUE-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_CAPEX_REVENUE",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_CAPEX_REVENUE-NOT-APPLICABLE",
+      "inputs": {
+        "capitalExpenditures": "25",
+        "revenue": "100"
+      },
+      "metricId": "FND_CAPEX_REVENUE",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.2"
+      },
+      "fixtureId": "FND_DILUTED_SHARES_EVOLUTION-NOMINAL",
+      "inputs": {
+        "dilutedShares.current": "120",
+        "dilutedShares.prior_year": "100"
+      },
+      "metricId": "FND_DILUTED_SHARES_EVOLUTION",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "FND_DILUTED_SHARES_EVOLUTION-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "FND_DILUTED_SHARES_EVOLUTION",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "general_operating_us_gaap",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "metric_not_allowlisted",
+        "state": "not_applicable"
+      },
+      "fixtureId": "FND_DILUTED_SHARES_EVOLUTION-NOT-APPLICABLE",
+      "inputs": {
+        "dilutedShares.current": "120",
+        "dilutedShares.prior_year": "100"
+      },
+      "metricId": "FND_DILUTED_SHARES_EVOLUTION",
+      "oracle": "explicit profile allowlist",
+      "profileId": "unsupported_profile",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "15"
+      },
+      "fixtureId": "MKT_LAST_OBSERVATION-NOMINAL",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_LAST_OBSERVATION",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_LAST_OBSERVATION-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "MKT_LAST_OBSERVATION",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "source_profile_not_active",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_LAST_OBSERVATION-NOT-APPLICABLE",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_LAST_OBSERVATION",
+      "oracle": "explicit profile allowlist",
+      "profileId": "provider_profile_disabled",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "10"
+      },
+      "fixtureId": "MKT_MIN-NOMINAL",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_MIN",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_MIN-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "MKT_MIN",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "source_profile_not_active",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_MIN-NOT-APPLICABLE",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_MIN",
+      "oracle": "explicit profile allowlist",
+      "profileId": "provider_profile_disabled",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "15"
+      },
+      "fixtureId": "MKT_MAX-NOMINAL",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_MAX",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_MAX-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "MKT_MAX",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "source_profile_not_active",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_MAX-NOT-APPLICABLE",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_MAX",
+      "oracle": "explicit profile allowlist",
+      "profileId": "provider_profile_disabled",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "12"
+      },
+      "fixtureId": "MKT_MEAN-NOMINAL",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_MEAN",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_MEAN-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "MKT_MEAN",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "source_profile_not_active",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_MEAN-NOT-APPLICABLE",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_MEAN",
+      "oracle": "explicit profile allowlist",
+      "profileId": "provider_profile_disabled",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "11.5"
+      },
+      "fixtureId": "MKT_MEDIAN-NOMINAL",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_MEDIAN",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_MEDIAN-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "MKT_MEDIAN",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "source_profile_not_active",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_MEDIAN-NOT-APPLICABLE",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_MEDIAN",
+      "oracle": "explicit profile allowlist",
+      "profileId": "provider_profile_disabled",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "0.5"
+      },
+      "fixtureId": "MKT_SIMPLE_RETURN-NOMINAL",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_SIMPLE_RETURN",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_SIMPLE_RETURN-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "MKT_SIMPLE_RETURN",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "source_profile_not_active",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_SIMPLE_RETURN-NOT-APPLICABLE",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_SIMPLE_RETURN",
+      "oracle": "explicit profile allowlist",
+      "profileId": "provider_profile_disabled",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueDecimal": "-0.083333333333"
+      },
+      "fixtureId": "MKT_MAX_DRAWDOWN-NOMINAL",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_MAX_DRAWDOWN",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_MAX_DRAWDOWN-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "MKT_MAX_DRAWDOWN",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "source_profile_not_active",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_MAX_DRAWDOWN-NOT-APPLICABLE",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_MAX_DRAWDOWN",
+      "oracle": "explicit profile allowlist",
+      "profileId": "provider_profile_disabled",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "nominal",
+      "expected": {
+        "state": "available",
+        "valueEnum": "up"
+      },
+      "fixtureId": "MKT_TREND_DIRECTION-NOMINAL",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_TREND_DIRECTION",
+      "oracle": "catalog formula + decimal arithmetic scale 12 half-even",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "usable_with_caveats"
+    },
+    {
+      "case": "insufficient_input",
+      "expected": {
+        "reasonCode": "required_input_missing",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_TREND_DIRECTION-INSUFFICIENT",
+      "inputs": {},
+      "metricId": "MKT_TREND_DIRECTION",
+      "oracle": "missing required input always blocks calculation",
+      "profileId": "local_csv_manual_v1",
+      "qualityClassification": "insufficient"
+    },
+    {
+      "case": "profile_not_allowlisted",
+      "expected": {
+        "reasonCode": "source_profile_not_active",
+        "state": "insufficient"
+      },
+      "fixtureId": "MKT_TREND_DIRECTION-NOT-APPLICABLE",
+      "inputs": {
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ]
+      },
+      "metricId": "MKT_TREND_DIRECTION",
+      "oracle": "explicit profile allowlist",
+      "profileId": "provider_profile_disabled",
+      "qualityClassification": "usable_with_caveats"
+    }
+  ],
+  "version": "5.0.1"
+}

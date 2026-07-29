@@ -1,0 +1,171 @@
+{
+  "algorithm": "JCS RFC 8785 then SHA-256",
+  "arrayOrdering": {
+    "evidence": [
+      "sourceKind",
+      "sourceId",
+      "payloadSha256"
+    ],
+    "facts": [
+      "canonicalConceptId",
+      "periodId",
+      "scopeId",
+      "factId"
+    ],
+    "filings": [
+      "filedDate",
+      "accessionNumber"
+    ],
+    "limitations": [
+      "lexicographic"
+    ],
+    "mappings": [
+      "mappingId",
+      "mappingVersion"
+    ],
+    "metrics": [
+      "metricId",
+      "periodKey"
+    ],
+    "observations": [
+      "date"
+    ],
+    "reportingPeriods": [
+      "endDate",
+      "startDate absent first",
+      "periodId"
+    ],
+    "rules": [
+      "ruleId"
+    ],
+    "warnings": [
+      "lexicographic"
+    ]
+  },
+  "catalogId": "fingerprint-projections",
+  "globalExclusions": [
+    "Date.now/new Date/local timezone/locale",
+    "random IDs",
+    "UI order",
+    "telemetry",
+    "accessibility text",
+    "cache hit/miss",
+    "network retry timing",
+    "evidence display expansion state",
+    "NaN",
+    "Infinity",
+    "-Infinity",
+    "negative zero",
+    "noncanonical decimal strings"
+  ],
+  "outputFormat": "sha256:<64 lowercase hex>",
+  "projections": [
+    {
+      "exclude": [
+        "warnings",
+        "limitations",
+        "sourceEvidenceFingerprint",
+        "historicalPriceOverlay",
+        "priceAnalysis",
+        "createdAt",
+        "updatedAt",
+        "retrievedAt",
+        "displayAgeDays",
+        "all fingerprint fields"
+      ],
+      "fingerprintId": "fundamentalInputFingerprint",
+      "include": [
+        "contractVersion",
+        "issuer.cik",
+        "issuer.accountingStandard",
+        "issuer.entityType",
+        "issuer.analysisProfile",
+        "filings",
+        "reportingPeriods",
+        "facts",
+        "conceptResolutions",
+        "mappings",
+        "coverage",
+        "currencies",
+        "units",
+        "scopes",
+        "versions"
+      ]
+    },
+    {
+      "exclude": [
+        "historicalPriceOverlayFingerprint",
+        "priceAnalysisFingerprint",
+        "price metric results",
+        "evidence",
+        "createdAt",
+        "display fields",
+        "all nested fingerprint fields except fundamentalInputFingerprint"
+      ],
+      "fingerprintId": "fundamentalAnalysisFingerprint",
+      "include": [
+        "fundamentalInputFingerprint",
+        "metricResults without fingerprint fields",
+        "ruleEvaluations without fingerprint fields",
+        "synthesis",
+        "versions"
+      ]
+    },
+    {
+      "exclude": [
+        "rangeStart",
+        "rangeEnd",
+        "asOfDate",
+        "observationCount",
+        "displayAgeDays",
+        "evaluationDate",
+        "sourceEvidenceFingerprint",
+        "createdAt",
+        "all fingerprint fields"
+      ],
+      "fingerprintId": "historicalPriceOverlayFingerprint",
+      "include": [
+        "contractVersion",
+        "instrument",
+        "currency",
+        "frequency",
+        "observations",
+        "adjustmentStatus",
+        "origin",
+        "warnings",
+        "priceUse"
+      ]
+    },
+    {
+      "exclude": [
+        "fundamentalInputFingerprint",
+        "fundamentalAnalysisFingerprint",
+        "fundamental metrics/rules/synthesis",
+        "evidence",
+        "display fields",
+        "all nested fingerprint fields except historicalPriceOverlayFingerprint"
+      ],
+      "fingerprintId": "priceAnalysisFingerprint",
+      "include": [
+        "historicalPriceOverlayFingerprint",
+        "priceQuality",
+        "priceMetricResults without fingerprint fields",
+        "versions"
+      ]
+    },
+    {
+      "exclude": [
+        "payload bodies",
+        "display labels",
+        "local clock",
+        "all other fingerprints"
+      ],
+      "fingerprintId": "sourceEvidenceFingerprint",
+      "include": [
+        "ordered evidence references: sourceKind, canonical URL or accession, payloadSha256, retrieved version"
+      ]
+    }
+  ],
+  "status": "ACTIVE_AUTHORITY",
+  "version": "5.0.0"
+}

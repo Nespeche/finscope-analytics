@@ -1,0 +1,387 @@
+{
+  "catalogId": "gateway-problem-details-catalog",
+  "invariants": [
+    "every field except detail, instance and traceId is const-bound by variant",
+    "preservedCapabilities and blockedCapabilities are disjoint",
+    "OpenAPI operations expose only matrix-listed variants",
+    "local issues are never exposed as HTTP Problem Details"
+  ],
+  "operationMatrix": {
+    "getCompanyConcept": {
+      "400": [
+        "invalid_request"
+      ],
+      "403": [
+        "blocked_by_policy"
+      ],
+      "404": [
+        "resource_not_found:issuer"
+      ],
+      "413": [
+        "payload_too_large"
+      ],
+      "502": [
+        "provider_unavailable",
+        "invalid_payload"
+      ],
+      "504": [
+        "upstream_timeout"
+      ]
+    },
+    "getCompanyFacts": {
+      "400": [
+        "invalid_request"
+      ],
+      "403": [
+        "blocked_by_policy"
+      ],
+      "404": [
+        "resource_not_found:issuer"
+      ],
+      "413": [
+        "payload_too_large"
+      ],
+      "502": [
+        "provider_unavailable",
+        "invalid_payload"
+      ],
+      "504": [
+        "upstream_timeout"
+      ]
+    },
+    "getDefinition": {
+      "400": [
+        "invalid_request"
+      ],
+      "404": [
+        "resource_not_found:definition"
+      ]
+    },
+    "getHealth": {},
+    "getIssuer": {
+      "400": [
+        "invalid_request"
+      ],
+      "403": [
+        "blocked_by_policy"
+      ],
+      "404": [
+        "resource_not_found:issuer"
+      ],
+      "502": [
+        "provider_unavailable",
+        "invalid_payload"
+      ],
+      "504": [
+        "upstream_timeout"
+      ]
+    },
+    "getIssuerFiling": {
+      "400": [
+        "invalid_request"
+      ],
+      "403": [
+        "blocked_by_policy"
+      ],
+      "404": [
+        "resource_not_found:filing"
+      ],
+      "413": [
+        "payload_too_large"
+      ],
+      "502": [
+        "provider_unavailable",
+        "invalid_payload"
+      ],
+      "504": [
+        "upstream_timeout"
+      ]
+    },
+    "getIssuerSubmissions": {
+      "400": [
+        "invalid_request"
+      ],
+      "403": [
+        "blocked_by_policy"
+      ],
+      "404": [
+        "resource_not_found:issuer"
+      ],
+      "413": [
+        "payload_too_large"
+      ],
+      "502": [
+        "provider_unavailable",
+        "invalid_payload"
+      ],
+      "504": [
+        "upstream_timeout"
+      ]
+    },
+    "getMapping": {
+      "400": [
+        "invalid_request"
+      ],
+      "404": [
+        "resource_not_found:mapping"
+      ]
+    },
+    "getPolicies": {},
+    "listDefinitions": {
+      "400": [
+        "invalid_request"
+      ]
+    },
+    "listMappings": {
+      "400": [
+        "invalid_request"
+      ]
+    }
+  },
+  "resourceNotFoundVariants": [
+    {
+      "accessibilityKey": "a11y.error.resource_not_found",
+      "blockedCapabilities": [],
+      "blockedOperations": [
+        "requested_resource"
+      ],
+      "code": "resource_not_found",
+      "httpStatus": 404,
+      "messageKey": "error.resource_not_found",
+      "name": "IssuerNotFoundProblem",
+      "operationState": "failed",
+      "preservedCapabilities": [
+        "definitions",
+        "evidence"
+      ],
+      "recoveryActions": [
+        "choose_existing_resource"
+      ],
+      "resourceType": "issuer",
+      "retryability": "after_input_change"
+    },
+    {
+      "accessibilityKey": "a11y.error.resource_not_found",
+      "blockedCapabilities": [],
+      "blockedOperations": [
+        "requested_resource"
+      ],
+      "code": "resource_not_found",
+      "httpStatus": 404,
+      "messageKey": "error.resource_not_found",
+      "name": "FilingNotFoundProblem",
+      "operationState": "failed",
+      "preservedCapabilities": [
+        "definitions",
+        "evidence"
+      ],
+      "recoveryActions": [
+        "choose_existing_resource"
+      ],
+      "resourceType": "filing",
+      "retryability": "after_input_change"
+    },
+    {
+      "accessibilityKey": "a11y.error.resource_not_found",
+      "blockedCapabilities": [],
+      "blockedOperations": [
+        "requested_resource"
+      ],
+      "code": "resource_not_found",
+      "httpStatus": 404,
+      "messageKey": "error.resource_not_found",
+      "name": "DefinitionNotFoundProblem",
+      "operationState": "failed",
+      "preservedCapabilities": [
+        "definitions",
+        "evidence"
+      ],
+      "recoveryActions": [
+        "choose_existing_resource"
+      ],
+      "resourceType": "definition",
+      "retryability": "after_input_change"
+    },
+    {
+      "accessibilityKey": "a11y.error.resource_not_found",
+      "blockedCapabilities": [],
+      "blockedOperations": [
+        "requested_resource"
+      ],
+      "code": "resource_not_found",
+      "httpStatus": 404,
+      "messageKey": "error.resource_not_found",
+      "name": "MappingNotFoundProblem",
+      "operationState": "failed",
+      "preservedCapabilities": [
+        "definitions",
+        "evidence"
+      ],
+      "recoveryActions": [
+        "choose_existing_resource"
+      ],
+      "resourceType": "mapping",
+      "retryability": "after_input_change"
+    }
+  ],
+  "rfc": "RFC 9457",
+  "status": "ACTIVE_AUTHORITY",
+  "variants": [
+    {
+      "accessibilityKey": "a11y.error.invalid_request",
+      "blockedCapabilities": [],
+      "blockedOperations": [
+        "requested_operation"
+      ],
+      "code": "invalid_request",
+      "httpStatus": 400,
+      "messageKey": "error.invalid_request",
+      "name": "InvalidRequestProblem",
+      "operationState": "failed",
+      "preservedCapabilities": [
+        "definitions"
+      ],
+      "recoveryActions": [
+        "correct_input"
+      ],
+      "retryability": "after_input_change"
+    },
+    {
+      "accessibilityKey": "a11y.error.blocked_by_policy",
+      "blockedCapabilities": [],
+      "blockedOperations": [
+        "requested_operation"
+      ],
+      "code": "blocked_by_policy",
+      "httpStatus": 403,
+      "messageKey": "error.blocked_by_policy",
+      "name": "BlockedByPolicyProblem",
+      "operationState": "failed",
+      "preservedCapabilities": [
+        "issuer_identity",
+        "definitions",
+        "mappings",
+        "evidence"
+      ],
+      "recoveryActions": [
+        "review_policy"
+      ],
+      "retryability": "after_policy_change"
+    },
+    {
+      "accessibilityKey": "a11y.error.payload_too_large",
+      "blockedCapabilities": [
+        "filings",
+        "fundamentals",
+        "insights"
+      ],
+      "blockedOperations": [
+        "acquisition"
+      ],
+      "code": "payload_too_large",
+      "httpStatus": 413,
+      "messageKey": "error.payload_too_large",
+      "name": "PayloadTooLargeProblem",
+      "operationState": "failed",
+      "preservedCapabilities": [
+        "issuer_identity",
+        "local_snapshot",
+        "definitions",
+        "mappings",
+        "evidence"
+      ],
+      "recoveryActions": [
+        "narrow_request",
+        "retry"
+      ],
+      "retryability": "after_request_change"
+    },
+    {
+      "accessibilityKey": "a11y.error.provider_unavailable",
+      "blockedCapabilities": [
+        "filings",
+        "fundamentals",
+        "insights"
+      ],
+      "blockedOperations": [
+        "acquisition"
+      ],
+      "code": "provider_unavailable",
+      "httpStatus": 502,
+      "messageKey": "error.provider_unavailable",
+      "name": "ProviderUnavailableProblem",
+      "operationState": "partial",
+      "preservedCapabilities": [
+        "issuer_identity",
+        "local_snapshot",
+        "definitions",
+        "mappings",
+        "evidence"
+      ],
+      "recoveryActions": [
+        "retry",
+        "use_cached_sec_payload",
+        "use_last_snapshot"
+      ],
+      "retryability": "backoff"
+    },
+    {
+      "accessibilityKey": "a11y.error.invalid_payload",
+      "blockedCapabilities": [
+        "fundamentals",
+        "insights"
+      ],
+      "blockedOperations": [
+        "normalization"
+      ],
+      "code": "invalid_payload",
+      "httpStatus": 502,
+      "messageKey": "error.invalid_payload",
+      "name": "InvalidPayloadProblem",
+      "operationState": "partial",
+      "preservedCapabilities": [
+        "issuer_identity",
+        "local_snapshot",
+        "definitions",
+        "mappings",
+        "evidence"
+      ],
+      "recoveryActions": [
+        "retry",
+        "use_cached_sec_payload",
+        "use_last_snapshot"
+      ],
+      "retryability": "after_source_change"
+    },
+    {
+      "accessibilityKey": "a11y.error.upstream_timeout",
+      "blockedCapabilities": [
+        "filings",
+        "fundamentals",
+        "insights"
+      ],
+      "blockedOperations": [
+        "acquisition"
+      ],
+      "code": "upstream_timeout",
+      "httpStatus": 504,
+      "messageKey": "error.upstream_timeout",
+      "name": "UpstreamTimeoutProblem",
+      "operationState": "partial",
+      "preservedCapabilities": [
+        "issuer_identity",
+        "local_snapshot",
+        "definitions",
+        "mappings",
+        "evidence"
+      ],
+      "recoveryActions": [
+        "retry",
+        "use_cached_sec_payload",
+        "use_last_snapshot"
+      ],
+      "retryability": "backoff"
+    }
+  ],
+  "version": "5.0.0"
+}

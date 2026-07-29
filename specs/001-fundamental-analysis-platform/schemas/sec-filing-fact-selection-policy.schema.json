@@ -1,0 +1,120 @@
+{
+  "$id": "https://finscope.local/schemas/sec-filing-fact-selection-policy.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SEC filing/fact selection policy 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "policyId",
+    "version",
+    "status",
+    "primarySource",
+    "exactFallbackSource",
+    "admittedForms",
+    "evidenceOnlyForms",
+    "framesPolicy",
+    "selectionGroup",
+    "orderedPrecedence",
+    "duplicatePolicy",
+    "amendmentPolicy",
+    "restatementPolicy",
+    "conflictPolicy",
+    "unitPolicy",
+    "partialHistoryPolicy",
+    "reasonCodes"
+  ],
+  "properties": {
+    "policyId": {
+      "const": "sec-filing-fact-selection-policy"
+    },
+    "version": {
+      "const": "1.0.0"
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "primarySource": {
+      "const": "company_facts"
+    },
+    "exactFallbackSource": {
+      "const": "company_concept"
+    },
+    "admittedForms": {
+      "type": "array",
+      "minItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "10-K",
+          "10-K/A",
+          "10-Q",
+          "10-Q/A",
+          "20-F",
+          "20-F/A",
+          "6-K",
+          "6-K/A",
+          "40-F",
+          "40-F/A"
+        ]
+      }
+    },
+    "evidenceOnlyForms": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "8-K",
+          "8-K/A"
+        ]
+      }
+    },
+    "framesPolicy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selectionGroup": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "orderedPrecedence": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "string"
+      }
+    },
+    "duplicatePolicy": {
+      "type": "string"
+    },
+    "amendmentPolicy": {
+      "type": "string"
+    },
+    "restatementPolicy": {
+      "type": "string"
+    },
+    "conflictPolicy": {
+      "type": "string"
+    },
+    "unitPolicy": {
+      "type": "string"
+    },
+    "partialHistoryPolicy": {
+      "type": "string"
+    },
+    "reasonCodes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

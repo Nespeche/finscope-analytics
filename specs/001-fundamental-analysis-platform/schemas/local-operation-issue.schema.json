@@ -1,0 +1,327 @@
+{
+  "$defs": {
+    "CancelledIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.cancelled"
+        },
+        "blockedOperations": {
+          "const": [
+            "active_operation"
+          ]
+        },
+        "code": {
+          "const": "cancelled"
+        },
+        "kind": {
+          "const": "local_operation_issue"
+        },
+        "message": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.cancelled"
+        },
+        "pipelineState": {
+          "const": "cancelled"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "issuer_identity",
+            "local_snapshot",
+            "definitions",
+            "mappings",
+            "evidence"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "restart",
+            "use_last_snapshot"
+          ]
+        },
+        "retryability": {
+          "const": "after_user_action"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "message",
+        "pipelineState",
+        "retryability",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey"
+      ],
+      "type": "object"
+    },
+    "IdentityAmbiguousIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.identity_ambiguous"
+        },
+        "blockedOperations": {
+          "const": [
+            "requested_operation"
+          ]
+        },
+        "code": {
+          "const": "identity_ambiguous"
+        },
+        "kind": {
+          "const": "local_operation_issue"
+        },
+        "message": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.identity_ambiguous"
+        },
+        "pipelineState": {
+          "const": "failed"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "definitions",
+            "evidence"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "select_issuer_by_cik"
+          ]
+        },
+        "retryability": {
+          "const": "after_user_action"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "message",
+        "pipelineState",
+        "retryability",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey"
+      ],
+      "type": "object"
+    },
+    "InvalidFactValueIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.invalid_fact_value"
+        },
+        "blockedOperations": {
+          "const": [
+            "normalization"
+          ]
+        },
+        "code": {
+          "const": "invalid_fact_value"
+        },
+        "kind": {
+          "const": "local_operation_issue"
+        },
+        "message": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.invalid_fact_value"
+        },
+        "pipelineState": {
+          "const": "partial"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "issuer_identity",
+            "filings",
+            "definitions",
+            "mappings",
+            "evidence",
+            "local_snapshot"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "review_source_fact",
+            "continue_with_compatible_metrics"
+          ]
+        },
+        "retryability": {
+          "const": "after_source_change"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "message",
+        "pipelineState",
+        "retryability",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey"
+      ],
+      "type": "object"
+    },
+    "QualityGateFailedIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.quality_gate_failed"
+        },
+        "blockedOperations": {
+          "const": [
+            "normalization"
+          ]
+        },
+        "code": {
+          "const": "quality_gate_failed"
+        },
+        "kind": {
+          "const": "local_operation_issue"
+        },
+        "message": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.quality_gate_failed"
+        },
+        "pipelineState": {
+          "const": "partial"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "issuer_identity",
+            "filings",
+            "definitions",
+            "mappings",
+            "evidence",
+            "local_snapshot"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "review_limitations",
+            "retry",
+            "use_last_snapshot"
+          ]
+        },
+        "retryability": {
+          "const": "after_data_or_mapping_change"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "message",
+        "pipelineState",
+        "retryability",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey"
+      ],
+      "type": "object"
+    },
+    "StorageConsentRequiredIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.storage_consent_required"
+        },
+        "blockedOperations": {
+          "const": [
+            "persistence"
+          ]
+        },
+        "code": {
+          "const": "storage_consent_required"
+        },
+        "kind": {
+          "const": "local_operation_issue"
+        },
+        "message": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.storage_consent_required"
+        },
+        "pipelineState": {
+          "const": "failed"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "issuer_identity",
+            "filings",
+            "fundamentals",
+            "insights",
+            "price_import",
+            "price_descriptive",
+            "evidence",
+            "definitions",
+            "mappings"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "request_storage_consent",
+            "continue_without_persistence"
+          ]
+        },
+        "retryability": {
+          "const": "after_user_action"
+        }
+      },
+      "required": [
+        "kind",
+        "code",
+        "message",
+        "pipelineState",
+        "retryability",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://finscope.local/schemas/local-operation-issue.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/IdentityAmbiguousIssue"
+    },
+    {
+      "$ref": "#/$defs/CancelledIssue"
+    },
+    {
+      "$ref": "#/$defs/QualityGateFailedIssue"
+    },
+    {
+      "$ref": "#/$defs/StorageConsentRequiredIssue"
+    },
+    {
+      "$ref": "#/$defs/InvalidFactValueIssue"
+    }
+  ],
+  "title": "Local non-HTTP operation issues v5.0.0"
+}

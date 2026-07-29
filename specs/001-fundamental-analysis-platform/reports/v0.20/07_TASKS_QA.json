@@ -1,0 +1,112 @@
+{
+  "reportId": "FinScope-v0.20-tasks-qa",
+  "date": "2026-07-21",
+  "iterations": 3,
+  "taskCount": 109,
+  "countsByPhase": {
+    "Phase 1 — Setup": 10,
+    "Phase 2 — Foundational": 13,
+    "Phase 3 — User Story 1: Resolve issuer and acquire SEC data": 12,
+    "Phase 4 — User Story 2: Analyze fundamentals with evidence": 18,
+    "Phase 5 — User Story 3: Refresh and reanalyze safely": 9,
+    "Phase 6 — User Story 4: Manage optional historical price": 9,
+    "Phase 7 — User Story 5: Persist, export, restore and delete local data": 9,
+    "Phase 8 — User Story 6: Operate accessibly and recover from failures": 9,
+    "Phase 9 — Cloudflare Free, security and observability": 10,
+    "Phase 10 — Validation and documentation": 10
+  },
+  "countsByStory": {
+    "cross-cutting": 43,
+    "US1": 12,
+    "US2": 18,
+    "US3": 9,
+    "US4": 9,
+    "US5": 9,
+    "US6": 9
+  },
+  "checks": {
+    "uniqueIds": true,
+    "sequentialIds": true,
+    "strictChecklistFormat": true,
+    "validDependencies": true,
+    "dependenciesReferencePriorTasks": true,
+    "acyclic": true,
+    "validPaths": true,
+    "requirementsCoverage": {
+      "expected": 49,
+      "covered": 49,
+      "missing": []
+    },
+    "acceptanceCoverage": {
+      "expected": 84,
+      "covered": 84,
+      "missing": []
+    },
+    "allTasksHaveRequirementAndAC": true,
+    "allImplementationAndConfigTasksHaveAssociatedTest": true,
+    "schemasCompiled": 26,
+    "directNormativeInstancesValidated": 16,
+    "secSchemaFixtures": {
+      "positive": "2/2",
+      "negative": "2/2"
+    },
+    "formulaDefinitions": 15,
+    "formulaPositiveVectors": 36,
+    "availableFormulaOraclesRecomputed": "15/15",
+    "metricCatalog": {
+      "fundamental": 24,
+      "price": 8
+    },
+    "insightRules": 9,
+    "wcagCriteria": 55,
+    "securityTasks": 6,
+    "wcagTasks": 13,
+    "secXbrlTasks": 21,
+    "cloudflareTasks": 10,
+    "cacheIdempotencyCovered": true,
+    "importExportRestoreCovered": true,
+    "observabilityAndDegradationCovered": true,
+    "noProductCodeInPackage": true,
+    "specifyByteIdentical": true,
+    "noPrematureImplementationAuthorization": true,
+    "noOrphanTasks": true,
+    "noResidualActiveContradictions": true
+  },
+  "qaIterations": [
+    {
+      "iteration": 1,
+      "focus": "transition consistency",
+      "findings": [
+        "active index/spec/clarification retained pre-task status",
+        "AC-077 fixture and authority schema retained old gate semantics"
+      ],
+      "corrected": true
+    },
+    {
+      "iteration": 2,
+      "focus": "task structure and testability",
+      "findings": [
+        "definition of completion said 104 instead of 109",
+        "generated QA flags incorrectly reported format/tests false",
+        "eight setup/foundation tasks lacked direct test paths"
+      ],
+      "corrected": true
+    },
+    {
+      "iteration": 3,
+      "focus": "independent full rerun",
+      "findings": [],
+      "corrected": false,
+      "result": "CONFORME"
+    }
+  ],
+  "result": "CONFORME",
+  "blockers": [],
+  "fails": [],
+  "gates": {
+    "tasksAuthorized": true,
+    "analysisAuthorized": true,
+    "implementationAuthorized": false,
+    "convergenceAuthorized": false
+  }
+}

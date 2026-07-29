@@ -1,0 +1,322 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B16",
+  "ordinal": 16,
+  "title": "Interfaz y ciclo E2E de precio",
+  "domain": "price-ui",
+  "status": "PENDING",
+  "taskCount": 3,
+  "executionOrder": [
+    "T069",
+    "T070",
+    "T071"
+  ],
+  "externalDependencies": [
+    "T022",
+    "T063",
+    "T064",
+    "T065",
+    "T066",
+    "T067",
+    "T068"
+  ],
+  "requirements": [
+    "FR-020",
+    "FR-021",
+    "FR-022",
+    "FR-023",
+    "FR-024",
+    "FR-041",
+    "FR-042"
+  ],
+  "acceptanceCriteria": [
+    "AC-049",
+    "AC-050",
+    "AC-051",
+    "AC-052",
+    "AC-054",
+    "AC-055",
+    "AC-063",
+    "AC-067",
+    "AC-068",
+    "AC-069",
+    "AC-070",
+    "AC-074",
+    "AC-078",
+    "AC-079"
+  ],
+  "authorityIds": [
+    "AUTH-007",
+    "AUTH-009",
+    "AUTH-012",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-027"
+  ],
+  "primaryAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/decisions/ui-framework.md",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+    "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md#normative-flow",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/quickstart.md",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-049",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-050",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-051",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-052",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-054",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-055",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-063",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-067",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-068",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-069",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-070",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-074",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-078",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-079"
+  ],
+  "targetFiles": [
+    "src/app/components/AccessiblePriceChart.svelte",
+    "src/app/components/PriceImportPreview.svelte",
+    "src/app/views/PriceAnalysisView.svelte",
+    "src/app/views/PriceImportView.svelte",
+    "tests/e2e/price-analysis.spec.ts",
+    "tests/e2e/price-import.spec.ts",
+    "tests/e2e/price-overlay-lifecycle.spec.ts"
+  ],
+  "testFiles": [
+    "tests/e2e/price-analysis.spec.ts",
+    "tests/e2e/price-import.spec.ts",
+    "tests/e2e/price-overlay-lifecycle.spec.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T069",
+      "phaseNo": 6,
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "story": "US4",
+      "parallel": false,
+      "dependencies": [
+        "T022",
+        "T065",
+        "T068"
+      ],
+      "requirementRefs": [
+        "FR-021",
+        "FR-022",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptanceRefs": [
+        "AC-054",
+        "AC-055",
+        "AC-067",
+        "AC-068",
+        "AC-069",
+        "AC-070"
+      ],
+      "authorityIds": [
+        "AUTH-009",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/views/PriceImportView.svelte",
+        "src/app/components/PriceImportPreview.svelte",
+        "tests/e2e/price-import.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/price-import.spec.ts"
+      ],
+      "doneWhen": "the view exports an AUTH-027 routeDefinition, errors bind to fields, confirmation gates every mutation and focus returns predictably",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "f6cc774b8eb25c935220a07b57637eaa9ff14b34d1626a70b7279929f30be54d"
+    },
+    {
+      "id": "T070",
+      "phaseNo": 6,
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "story": "US4",
+      "parallel": false,
+      "dependencies": [
+        "T022",
+        "T067",
+        "T068"
+      ],
+      "requirementRefs": [
+        "FR-023",
+        "FR-024",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptanceRefs": [
+        "AC-049",
+        "AC-050",
+        "AC-051",
+        "AC-052",
+        "AC-067",
+        "AC-069",
+        "AC-074"
+      ],
+      "authorityIds": [
+        "AUTH-009",
+        "AUTH-012",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/views/PriceAnalysisView.svelte",
+        "src/app/components/AccessiblePriceChart.svelte",
+        "tests/e2e/price-analysis.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/price-analysis.spec.ts"
+      ],
+      "doneWhen": "the view exports an AUTH-027 routeDefinition and as-of/range/frequency/count/age/use and all eight metrics are visible without chart-only meaning",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "ff824926cd5e084c0fb60be9d696dd39821811fa73a119e2a57f42396d922409"
+    },
+    {
+      "id": "T071",
+      "phaseNo": 6,
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "story": "US4",
+      "parallel": false,
+      "dependencies": [
+        "T063",
+        "T064",
+        "T065",
+        "T066",
+        "T067",
+        "T068",
+        "T069",
+        "T070"
+      ],
+      "requirementRefs": [
+        "FR-020",
+        "FR-021",
+        "FR-022",
+        "FR-023",
+        "FR-024"
+      ],
+      "acceptanceRefs": [
+        "AC-049",
+        "AC-050",
+        "AC-051",
+        "AC-052",
+        "AC-063",
+        "AC-078",
+        "AC-079"
+      ],
+      "authorityIds": [
+        "AUTH-007",
+        "AUTH-009",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016"
+      ],
+      "files": [
+        "tests/e2e/price-overlay-lifecycle.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/price-overlay-lifecycle.spec.ts"
+      ],
+      "doneWhen": "fundamental-only operation remains complete, price mutations never alter fundamental artifacts and no valuation is produced",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "d6ec35741a818d8f5d043a5d38adba410820beaaeb38c407c7fcecb7ebb9f964"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": true,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-e2e",
+        "category": "e2e",
+        "command": "npm run test:e2e -- tests/e2e/price-analysis.spec.ts tests/e2e/price-import.spec.ts tests/e2e/price-overlay-lifecycle.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B16_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

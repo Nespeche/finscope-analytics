@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "1.0.0",
+  "batchId": "B11",
+  "candidateRevision": "r2",
+  "status": "REMEDIATED_PENDING_VALIDATION",
+  "sourceEvidence": {
+    "logicalName": "FinScope_local_evidence_B11_20260728-120326874_FAILED.zip",
+    "sha256": "4798e0984269a56c5f7b4ec25962d15ec6f3bee8f004cef8cd48aa9b3ea81b2",
+    "status": "FAIL",
+    "authenticated": true,
+    "manifestValid": true,
+    "inventoryValid": true,
+    "sidecarMatch": true
+  },
+  "sourceCandidate": {
+    "logicalName": "FS_B11_r1.zip",
+    "sha256": "b088457da0d8538ce89346efc21c21a7afc2b1eb1cb25c7f34d2fc94cf7e90ca"
+  },
+  "sourceRunner": {
+    "logicalName": "Run-FinScope-BatchValidation_B11_r1_v1.ps1",
+    "sha256": "ebbee32a878e9c0e1c3015231f108c3a41ae6ce6d4e9af67e381ffcd399144ac",
+    "selfTest": "PASS",
+    "preflight": "PASS"
+  },
+  "commandOutcome": {
+    "pass": [
+      "npm-ci",
+      "typecheck"
+    ],
+    "fail": [
+      "test-unit"
+    ],
+    "notRun": [
+      "test-integration",
+      "regression-vitest",
+      "build"
+    ]
+  },
+  "focusedFailure": {
+    "file": "tests/unit/fundamental/bundle-vectors.test.ts",
+    "testFilesDiscovered": 1,
+    "testsDiscovered": 4,
+    "testsPassed": 3,
+    "testsFailed": 1,
+    "line": 207,
+    "expectedMatcher": "toThrow('DecimalString')",
+    "receivedErrorName": "DecimalStringError",
+    "receivedErrorCode": "NON_CANONICAL_DECIMAL",
+    "receivedMessage": "Decimal string is not canonical: \"1000.00\""
+  },
+  "rootCause": {
+    "type": "TEST_ORACLE_COUPLED_TO_INCORRECT_ERROR_MESSAGE_TOKEN",
+    "description": "The builder delegated to the completed canonical DecimalString service and rejected 1000.00 correctly. The test asserted a message substring that the service contract does not promise.",
+    "productRuntimeAffected": false,
+    "fundamentalBuilderDefect": false,
+    "decimalValidationDefect": false,
+    "runnerDefect": false
+  },
+  "authority": {
+    "service": "src/core/decimal.ts -> DecimalStringError",
+    "errorCode": "NON_CANONICAL_DECIMAL",
+    "existingOraclePattern": "tests/unit/core/decimal.test.ts validates non-canonical rejection rather than the token DecimalString"
+  },
+  "alternatives": [
+    {
+      "id": "MATCH_TYPED_ERROR_NAME_AND_CODE",
+      "recommendation": "APPLIED",
+      "functionalRisk": "NONE",
+      "reason": "Checks the stable semantic contract without altering runtime behavior."
+    },
+    {
+      "id": "CHANGE_PRODUCTION_ERROR_MESSAGE",
+      "recommendation": "REJECTED",
+      "functionalRisk": "MEDIUM",
+      "reason": "Would change a completed shared decimal service solely to satisfy a brittle test."
+    },
+    {
+      "id": "REMOVE_NON_CANONICAL_DECIMAL_CASE",
+      "recommendation": "REJECTED",
+      "functionalRisk": "HIGH",
+      "reason": "Would weaken mandatory negative coverage for DecimalString canonicalization."
+    }
+  ],
+  "r2Change": {
+    "changedExecutableFile": "tests/unit/fundamental/bundle-vectors.test.ts",
+    "oldSha256": "6d983faf24129399070c17657fe96eaf3024c18d59a1e552b04c1a0f25909425",
+    "newSha256": "ac64d706d07a0a9c772eedc6012a8846fc05b8a686f562290b3488b702dba8fa",
+    "oldAssertion": "rejects.toThrow('DecimalString')",
+    "newAssertion": {
+      "matcher": "rejects.toMatchObject",
+      "name": "DecimalStringError",
+      "code": "NON_CANONICAL_DECIMAL"
+    },
+    "productRuntimeChanged": false,
+    "schemaChanged": false,
+    "fixtureChanged": false,
+    "batchMirrorChanged": false,
+    "tasksChanged": false,
+    "specifyChanged": false,
+    "candidateLogicalName": "FS_B11_r2.zip",
+    "runnerLogicalName": "Run-FinScope-BatchValidation_B11_r2_v1.ps1",
+    "runnerSha256": "1cfd764eeb2c1ccc4f80994223ea63f091da51510a4fb003187a24e97d5f5e22"
+  },
+  "integrity": {
+    "tasksSha256": "57e9167d5cd0e22265a4fcfd1d8697cc0233aaf8fb9fc4a79442da962db855a8",
+    "b11Sha256": "d242f32cd9acfc59433e79ad14ad52a09e2f2166ecbb24d538d10be727ae2ca2",
+    "specifyFileCount": 19,
+    "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+    "specifyModified": false
+  },
+  "state": {
+    "B11": "LOCAL_VALIDATION_REQUIRED",
+    "tasks": [
+      "T047",
+      "T048"
+    ],
+    "taskStatus": "IMPLEMENTED_PENDING_VALIDATION",
+    "B12": "PENDING",
+    "convergenceAuthorized": false
+  },
+  "closureRule": "Fresh full six-command PASS evidence bound to the exact r2 candidate and r2 runner is required."
+}

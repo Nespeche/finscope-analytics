@@ -1,0 +1,135 @@
+schema_version: "1.0"
+workflow:
+  id: "speckit"
+  name: "FinScope gated SDD cycle"
+  version: "1.1.0"
+  author: "FinScope Analytics"
+  description: "Runs the constitutional SDD sequence with an explicit active phase-gate check before every phase"
+
+requires:
+  speckit_version: ">=0.8.5"
+  integrations:
+    any:
+      - "generic"
+
+inputs:
+  spec:
+    type: string
+    required: true
+    prompt: "Describe the requested documentary phase"
+  integration:
+    type: string
+    default: "generic"
+    enum: ["generic"]
+    prompt: "Installed integration"
+  scope:
+    type: string
+    default: "full"
+    enum: ["full", "backend-only", "frontend-only"]
+
+invariants:
+  phase_status_source: "DOCUMENTATION_INDEX.md"
+  active_gate_must_authorize_each_command: true
+  subordinate_documents_cannot_open_gates: true
+  tasks_require_independent_checklist_approved_for_tasks: true
+  implementation_requires_post_tasks_analysis_without_blockers: true
+
+steps:
+  - id: gate-constitution
+    type: gate
+    message: "Confirm the active phase-status authority permits constitution work."
+    options: [approve, reject]
+    on_reject: abort
+  - id: constitution
+    command: speckit.constitution
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: gate-specification
+    type: gate
+    message: "Confirm specificationAuthorized=true in the active phase-status file."
+    options: [approve, reject]
+    on_reject: abort
+  - id: specify
+    command: speckit.specify
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: gate-clarification
+    type: gate
+    message: "Confirm clarificationAuthorized=true in the active phase-status file."
+    options: [approve, reject]
+    on_reject: abort
+  - id: clarify
+    command: speckit.clarify
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: gate-plan
+    type: gate
+    message: "Confirm planAuthorized=true in the active phase-status file."
+    options: [approve, reject]
+    on_reject: abort
+  - id: plan
+    command: speckit.plan
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: gate-checklist
+    type: gate
+    message: "Confirm checklistAuthorized=true in the active phase-status file."
+    options: [approve, reject]
+    on_reject: abort
+  - id: checklist
+    command: speckit.checklist
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: gate-tasks
+    type: gate
+    message: "Confirm tasksAuthorized=true and an independent checklist verdict APPROVED_FOR_TASKS."
+    options: [approve, reject]
+    on_reject: abort
+  - id: tasks
+    command: speckit.tasks
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: gate-analysis
+    type: gate
+    message: "Confirm analysisAuthorized=true and spec.md, plan.md and tasks.md are mutually consistent."
+    options: [approve, reject]
+    on_reject: abort
+  - id: analyze
+    command: speckit.analyze
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: gate-implementation
+    type: gate
+    message: "Confirm implementationAuthorized=true after post-tasks analysis without blockers."
+    options: [approve, reject]
+    on_reject: abort
+  - id: implement
+    command: speckit.implement
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"
+
+  - id: gate-convergence
+    type: gate
+    message: "Confirm convergenceAuthorized=true after implementation validation."
+    options: [approve, reject]
+    on_reject: abort
+  - id: converge
+    command: speckit.converge
+    integration: "{{ inputs.integration }}"
+    input:
+      args: "{{ inputs.spec }}"

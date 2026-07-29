@@ -1,0 +1,469 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B02",
+  "ordinal": 2,
+  "title": "Shell accesible, Cloudflare base y registro de schemas",
+  "domain": "setup-cloudflare",
+  "status": "COMPLETED",
+  "taskCount": 5,
+  "executionOrder": [
+    "T004",
+    "T007",
+    "T008",
+    "T009",
+    "T012"
+  ],
+  "externalDependencies": [
+    "T001",
+    "T002",
+    "T003",
+    "T005",
+    "T006"
+  ],
+  "requirements": [
+    "FR-003",
+    "FR-039",
+    "FR-040",
+    "FR-041",
+    "FR-042",
+    "NFR-003",
+    "NFR-005",
+    "NFR-006",
+    "NFR-007"
+  ],
+  "acceptanceCriteria": [
+    "AC-028",
+    "AC-033",
+    "AC-043",
+    "AC-045",
+    "AC-046",
+    "AC-047",
+    "AC-067",
+    "AC-069",
+    "AC-070",
+    "AC-077",
+    "AC-081",
+    "AC-082",
+    "AC-083"
+  ],
+  "authorityIds": [
+    "AUTH-003",
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-006",
+    "AUTH-007",
+    "AUTH-008",
+    "AUTH-009",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-013",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-022",
+    "AUTH-024",
+    "AUTH-025",
+    "AUTH-026",
+    "AUTH-027",
+    "AUTH-034",
+    "AUTH-036"
+  ],
+  "primaryAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/contracts/schema-validation-runtime.md",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/decisions/ui-framework.md",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+    "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json#/entries",
+    "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md#active-source-policy",
+    "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/resourceNotFoundVariants",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+    "specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-028",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-033",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-043",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-045",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-046",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-047",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-067",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-069",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-070",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-077",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-081",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-082",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-083"
+  ],
+  "targetFiles": [
+    "public/_headers",
+    "public/_redirects",
+    "specs/001-fundamental-analysis-platform/contracts/schema-validation-runtime.md",
+    "src/app/App.svelte",
+    "src/app/components/AppStatus.svelte",
+    "src/app/composition.ts",
+    "src/app/views/HomeView.svelte",
+    "src/core/schema-registry.ts",
+    "src/core/schema-validator.ts",
+    "src/main.ts",
+    "tests/contract/app-composition.test.ts",
+    "tests/contract/cloudflare/wrangler-bindings.test.ts",
+    "tests/contract/schema-registry.test.ts",
+    "tests/contract/security/static-headers.test.ts",
+    "tests/contract/svelte-components.test.ts",
+    "tests/e2e/app-shell.spec.ts",
+    "tests/integration/cloudflare/d1-migration.test.ts",
+    "workers/sec-gateway/migrations/0001_catalog_metadata.sql",
+    "workers/sec-gateway/src/index.ts",
+    "workers/sec-gateway/wrangler.jsonc"
+  ],
+  "testFiles": [
+    "tests/contract/app-composition.test.ts",
+    "tests/contract/cloudflare/wrangler-bindings.test.ts",
+    "tests/contract/schema-registry.test.ts",
+    "tests/contract/security/static-headers.test.ts",
+    "tests/contract/svelte-components.test.ts",
+    "tests/e2e/app-shell.spec.ts",
+    "tests/integration/cloudflare/d1-migration.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T004",
+      "phaseNo": 1,
+      "phase": "Phase 1 — Setup",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T003",
+        "T005",
+        "T006"
+      ],
+      "requirementRefs": [
+        "FR-041",
+        "FR-042",
+        "NFR-007"
+      ],
+      "acceptanceRefs": [
+        "AC-067",
+        "AC-069",
+        "AC-070"
+      ],
+      "authorityIds": [
+        "AUTH-015",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/main.ts",
+        "src/app/App.svelte",
+        "src/app/composition.ts",
+        "src/app/views/HomeView.svelte",
+        "src/app/components/AppStatus.svelte",
+        "tests/contract/app-composition.test.ts",
+        "tests/contract/svelte-components.test.ts",
+        "tests/e2e/app-shell.spec.ts"
+      ],
+      "tests": [
+        "tests/contract/app-composition.test.ts",
+        "tests/contract/svelte-components.test.ts",
+        "tests/e2e/app-shell.spec.ts"
+      ],
+      "doneWhen": "src/main.ts mounts App.svelte, the deterministic composition registry exposes the home route, Svelte compiler diagnostics are clean, and main, navigation and status regions are keyboard reachable",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "74dfa35752d380563f2122222a802b9af21fead36148242b4d61ed73d328f9db"
+    },
+    {
+      "id": "T007",
+      "phaseNo": 1,
+      "phase": "Phase 1 — Setup",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T001",
+        "T002",
+        "T005"
+      ],
+      "requirementRefs": [
+        "FR-003",
+        "FR-040",
+        "NFR-003"
+      ],
+      "acceptanceRefs": [
+        "AC-043",
+        "AC-081",
+        "AC-082"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-016",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-022"
+      ],
+      "files": [
+        "workers/sec-gateway/wrangler.jsonc",
+        "workers/sec-gateway/src/index.ts",
+        "tests/contract/cloudflare/wrangler-bindings.test.ts"
+      ],
+      "tests": [
+        "tests/contract/cloudflare/wrangler-bindings.test.ts"
+      ],
+      "doneWhen": "required binding names exist, their values are absent from the package, and no KV, R2, Queues, Durable Objects, Cron or paid usage model is declared",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "e607162ac4b889780a9ec0d860d42a60652cae66c3974e93011270e2f9d8f8b5"
+    },
+    {
+      "id": "T008",
+      "phaseNo": 1,
+      "phase": "Phase 1 — Setup",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T007"
+      ],
+      "requirementRefs": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptanceRefs": [
+        "AC-077",
+        "AC-083"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "workers/sec-gateway/migrations/0001_catalog_metadata.sql",
+        "tests/integration/cloudflare/d1-migration.test.ts"
+      ],
+      "tests": [
+        "tests/integration/cloudflare/d1-migration.test.ts"
+      ],
+      "doneWhen": "schema stores no user or SEC payload data and indexes version lookups",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "41af30c82dee362590147bd5b4718b587fa885d5ffaab7418a2fc0c61ede15c3"
+    },
+    {
+      "id": "T009",
+      "phaseNo": 1,
+      "phase": "Phase 1 — Setup",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T003",
+        "T005"
+      ],
+      "requirementRefs": [
+        "FR-039",
+        "FR-041"
+      ],
+      "acceptanceRefs": [
+        "AC-046",
+        "AC-047"
+      ],
+      "authorityIds": [
+        "AUTH-004",
+        "AUTH-009",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-026"
+      ],
+      "files": [
+        "public/_headers",
+        "public/_redirects",
+        "tests/contract/security/static-headers.test.ts"
+      ],
+      "tests": [
+        "tests/contract/security/static-headers.test.ts"
+      ],
+      "doneWhen": "CSP, frame, MIME and referrer policies are explicit without Pages Functions",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "a683962890534618303a2fd4652dfdbf80b6baa336a1bbf1dc449dfb4090615a"
+    },
+    {
+      "id": "T012",
+      "phaseNo": 2,
+      "phase": "Phase 2 — Foundational",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T001",
+        "T002",
+        "T005"
+      ],
+      "requirementRefs": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptanceRefs": [
+        "AC-028",
+        "AC-033",
+        "AC-043",
+        "AC-045",
+        "AC-083"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034",
+        "AUTH-036"
+      ],
+      "files": [
+        "specs/001-fundamental-analysis-platform/contracts/schema-validation-runtime.md",
+        "src/core/schema-validator.ts",
+        "src/core/schema-registry.ts",
+        "tests/contract/schema-registry.test.ts"
+      ],
+      "tests": [
+        "tests/contract/schema-registry.test.ts"
+      ],
+      "doneWhen": "all 26 active schemas compile once with the authorized Ajv2020 policy and every invalid fixture is rejected without coercion, defaults or inferred formats",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "849291c1aefaff902c887b0b0e28decdb1f0fdd285c12915e9a942a8137024ce"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": true,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-control-plane",
+        "category": "contract",
+        "command": "npm run test:contract -- tests/contract/test-discovery.test.ts tests/contract/schema-registry.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-integration",
+        "category": "integration",
+        "command": "npm run test:integration -- tests/integration/cloudflare/d1-migration.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-contract",
+        "category": "contract",
+        "command": "npm run test:contract -- tests/contract/app-composition.test.ts tests/contract/cloudflare/wrangler-bindings.test.ts tests/contract/schema-registry.test.ts tests/contract/security/static-headers.test.ts tests/contract/svelte-components.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-e2e",
+        "category": "e2e",
+        "command": "npm run test:e2e -- tests/e2e/app-shell.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B02_<timestamp>.zip",
+    "closureRule": "Every required command must be recorded in normative order with status PASS and exitCode 0; the evidence must bind the exact candidate ZIP and sidecar, prove archive/extraction/manifest/inventory/metadata integrity, record the complete environment and logs, contain no required NOT_RUN or skipped/omitted B02 tests, and preserve .specify, tasks.md and target-file hashes before task or batch completion is recorded."
+  }
+}

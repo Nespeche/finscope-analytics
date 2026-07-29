@@ -1,0 +1,572 @@
+{
+  "expectedCount": 27,
+  "fixtureSetId": "rule-test-vectors",
+  "fixtures": [
+    {
+      "astEvaluationOverrides": {
+        "allComparisons": true
+      },
+      "case": "triggered",
+      "expected": {
+        "polarity": "unfavorable",
+        "state": "triggered"
+      },
+      "fixtureId": "INS_GROWTH_MARGIN_DETERIORATION-TRIGGERED",
+      "metricContext": {
+        "FND_OPERATING_MARGIN": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        },
+        "FND_REVENUE_GROWTH_YOY": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_GROWTH_MARGIN_DETERIORATION"
+    },
+    {
+      "astEvaluationOverrides": {
+        "atLeastOneRequiredComparison": false
+      },
+      "case": "not_triggered",
+      "expected": {
+        "state": "not_triggered"
+      },
+      "fixtureId": "INS_GROWTH_MARGIN_DETERIORATION-NOT-TRIGGERED",
+      "metricContext": {
+        "FND_OPERATING_MARGIN": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        },
+        "FND_REVENUE_GROWTH_YOY": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_GROWTH_MARGIN_DETERIORATION"
+    },
+    {
+      "case": "not_evaluable",
+      "expected": {
+        "reasonCode": "required_metric_unavailable_or_below_quality",
+        "state": "not_evaluable"
+      },
+      "fixtureId": "INS_GROWTH_MARGIN_DETERIORATION-NOT-EVALUABLE",
+      "metricContext": {
+        "FND_REVENUE_GROWTH_YOY": {
+          "qualityClassification": "insufficient",
+          "state": "insufficient"
+        }
+      },
+      "oracle": "minimum quality and input state gate precedes AST",
+      "ruleId": "INS_GROWTH_MARGIN_DETERIORATION"
+    },
+    {
+      "astEvaluationOverrides": {
+        "allComparisons": true
+      },
+      "case": "triggered",
+      "expected": {
+        "polarity": "unfavorable",
+        "state": "triggered"
+      },
+      "fixtureId": "INS_EARNINGS_WITHOUT_CASH_CONVERSION-TRIGGERED",
+      "metricContext": {
+        "FND_EARNINGS_QUALITY": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        },
+        "FND_NET_MARGIN": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_EARNINGS_WITHOUT_CASH_CONVERSION"
+    },
+    {
+      "astEvaluationOverrides": {
+        "atLeastOneRequiredComparison": false
+      },
+      "case": "not_triggered",
+      "expected": {
+        "state": "not_triggered"
+      },
+      "fixtureId": "INS_EARNINGS_WITHOUT_CASH_CONVERSION-NOT-TRIGGERED",
+      "metricContext": {
+        "FND_EARNINGS_QUALITY": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        },
+        "FND_NET_MARGIN": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_EARNINGS_WITHOUT_CASH_CONVERSION"
+    },
+    {
+      "case": "not_evaluable",
+      "expected": {
+        "reasonCode": "required_metric_unavailable_or_below_quality",
+        "state": "not_evaluable"
+      },
+      "fixtureId": "INS_EARNINGS_WITHOUT_CASH_CONVERSION-NOT-EVALUABLE",
+      "metricContext": {
+        "FND_NET_MARGIN": {
+          "qualityClassification": "insufficient",
+          "state": "insufficient"
+        }
+      },
+      "oracle": "minimum quality and input state gate precedes AST",
+      "ruleId": "INS_EARNINGS_WITHOUT_CASH_CONVERSION"
+    },
+    {
+      "astEvaluationOverrides": {
+        "allComparisons": true
+      },
+      "case": "triggered",
+      "expected": {
+        "polarity": "unfavorable",
+        "state": "triggered"
+      },
+      "fixtureId": "INS_DEBT_FUNDED_GROWTH-TRIGGERED",
+      "metricContext": {
+        "FND_BORROWINGS_DEBT": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        },
+        "FND_CFO": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        },
+        "FND_REVENUE_GROWTH_YOY": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_DEBT_FUNDED_GROWTH"
+    },
+    {
+      "astEvaluationOverrides": {
+        "atLeastOneRequiredComparison": false
+      },
+      "case": "not_triggered",
+      "expected": {
+        "state": "not_triggered"
+      },
+      "fixtureId": "INS_DEBT_FUNDED_GROWTH-NOT-TRIGGERED",
+      "metricContext": {
+        "FND_BORROWINGS_DEBT": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        },
+        "FND_CFO": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        },
+        "FND_REVENUE_GROWTH_YOY": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_DEBT_FUNDED_GROWTH"
+    },
+    {
+      "case": "not_evaluable",
+      "expected": {
+        "reasonCode": "required_metric_unavailable_or_below_quality",
+        "state": "not_evaluable"
+      },
+      "fixtureId": "INS_DEBT_FUNDED_GROWTH-NOT-EVALUABLE",
+      "metricContext": {
+        "FND_REVENUE_GROWTH_YOY": {
+          "qualityClassification": "insufficient",
+          "state": "insufficient"
+        }
+      },
+      "oracle": "minimum quality and input state gate precedes AST",
+      "ruleId": "INS_DEBT_FUNDED_GROWTH"
+    },
+    {
+      "astEvaluationOverrides": {
+        "allComparisons": true
+      },
+      "case": "triggered",
+      "expected": {
+        "polarity": "favorable",
+        "state": "triggered"
+      },
+      "fixtureId": "INS_LIQUIDITY_IMPROVEMENT-TRIGGERED",
+      "metricContext": {
+        "FND_CURRENT_RATIO": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        },
+        "FND_WORKING_CAPITAL": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_LIQUIDITY_IMPROVEMENT"
+    },
+    {
+      "astEvaluationOverrides": {
+        "atLeastOneRequiredComparison": false
+      },
+      "case": "not_triggered",
+      "expected": {
+        "state": "not_triggered"
+      },
+      "fixtureId": "INS_LIQUIDITY_IMPROVEMENT-NOT-TRIGGERED",
+      "metricContext": {
+        "FND_CURRENT_RATIO": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        },
+        "FND_WORKING_CAPITAL": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_LIQUIDITY_IMPROVEMENT"
+    },
+    {
+      "case": "not_evaluable",
+      "expected": {
+        "reasonCode": "required_metric_unavailable_or_below_quality",
+        "state": "not_evaluable"
+      },
+      "fixtureId": "INS_LIQUIDITY_IMPROVEMENT-NOT-EVALUABLE",
+      "metricContext": {
+        "FND_CURRENT_RATIO": {
+          "qualityClassification": "insufficient",
+          "state": "insufficient"
+        }
+      },
+      "oracle": "minimum quality and input state gate precedes AST",
+      "ruleId": "INS_LIQUIDITY_IMPROVEMENT"
+    },
+    {
+      "astEvaluationOverrides": {
+        "allComparisons": true
+      },
+      "case": "triggered",
+      "expected": {
+        "polarity": "favorable",
+        "state": "triggered"
+      },
+      "fixtureId": "INS_DELEVERAGING-TRIGGERED",
+      "metricContext": {
+        "FND_BORROWINGS_DEBT": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        },
+        "FND_DEBT_EQUITY": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_DELEVERAGING"
+    },
+    {
+      "astEvaluationOverrides": {
+        "atLeastOneRequiredComparison": false
+      },
+      "case": "not_triggered",
+      "expected": {
+        "state": "not_triggered"
+      },
+      "fixtureId": "INS_DELEVERAGING-NOT-TRIGGERED",
+      "metricContext": {
+        "FND_BORROWINGS_DEBT": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        },
+        "FND_DEBT_EQUITY": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_DELEVERAGING"
+    },
+    {
+      "case": "not_evaluable",
+      "expected": {
+        "reasonCode": "required_metric_unavailable_or_below_quality",
+        "state": "not_evaluable"
+      },
+      "fixtureId": "INS_DELEVERAGING-NOT-EVALUABLE",
+      "metricContext": {
+        "FND_BORROWINGS_DEBT": {
+          "qualityClassification": "insufficient",
+          "state": "insufficient"
+        }
+      },
+      "oracle": "minimum quality and input state gate precedes AST",
+      "ruleId": "INS_DELEVERAGING"
+    },
+    {
+      "astEvaluationOverrides": {
+        "allComparisons": true
+      },
+      "case": "triggered",
+      "expected": {
+        "polarity": "unfavorable",
+        "state": "triggered"
+      },
+      "fixtureId": "INS_PERSISTENT_NEGATIVE_FCF-TRIGGERED",
+      "metricContext": {
+        "FND_FCF": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_PERSISTENT_NEGATIVE_FCF"
+    },
+    {
+      "astEvaluationOverrides": {
+        "atLeastOneRequiredComparison": false
+      },
+      "case": "not_triggered",
+      "expected": {
+        "state": "not_triggered"
+      },
+      "fixtureId": "INS_PERSISTENT_NEGATIVE_FCF-NOT-TRIGGERED",
+      "metricContext": {
+        "FND_FCF": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_PERSISTENT_NEGATIVE_FCF"
+    },
+    {
+      "case": "not_evaluable",
+      "expected": {
+        "reasonCode": "required_metric_unavailable_or_below_quality",
+        "state": "not_evaluable"
+      },
+      "fixtureId": "INS_PERSISTENT_NEGATIVE_FCF-NOT-EVALUABLE",
+      "metricContext": {
+        "FND_FCF": {
+          "qualityClassification": "insufficient",
+          "state": "insufficient"
+        }
+      },
+      "oracle": "minimum quality and input state gate precedes AST",
+      "ruleId": "INS_PERSISTENT_NEGATIVE_FCF"
+    },
+    {
+      "astEvaluationOverrides": {
+        "allComparisons": true
+      },
+      "case": "triggered",
+      "expected": {
+        "polarity": "unfavorable",
+        "state": "triggered"
+      },
+      "fixtureId": "INS_DILUTION-TRIGGERED",
+      "metricContext": {
+        "FND_DILUTED_SHARES_EVOLUTION": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_DILUTION"
+    },
+    {
+      "astEvaluationOverrides": {
+        "atLeastOneRequiredComparison": false
+      },
+      "case": "not_triggered",
+      "expected": {
+        "state": "not_triggered"
+      },
+      "fixtureId": "INS_DILUTION-NOT-TRIGGERED",
+      "metricContext": {
+        "FND_DILUTED_SHARES_EVOLUTION": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_DILUTION"
+    },
+    {
+      "case": "not_evaluable",
+      "expected": {
+        "reasonCode": "required_metric_unavailable_or_below_quality",
+        "state": "not_evaluable"
+      },
+      "fixtureId": "INS_DILUTION-NOT-EVALUABLE",
+      "metricContext": {
+        "FND_DILUTED_SHARES_EVOLUTION": {
+          "qualityClassification": "insufficient",
+          "state": "insufficient"
+        }
+      },
+      "oracle": "minimum quality and input state gate precedes AST",
+      "ruleId": "INS_DILUTION"
+    },
+    {
+      "astEvaluationOverrides": {
+        "allComparisons": true
+      },
+      "case": "triggered",
+      "expected": {
+        "polarity": "unfavorable",
+        "state": "triggered"
+      },
+      "fixtureId": "INS_INTEREST_COVERAGE_DETERIORATION-TRIGGERED",
+      "metricContext": {
+        "FND_INTEREST_COVERAGE": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_INTEREST_COVERAGE_DETERIORATION"
+    },
+    {
+      "astEvaluationOverrides": {
+        "atLeastOneRequiredComparison": false
+      },
+      "case": "not_triggered",
+      "expected": {
+        "state": "not_triggered"
+      },
+      "fixtureId": "INS_INTEREST_COVERAGE_DETERIORATION-NOT-TRIGGERED",
+      "metricContext": {
+        "FND_INTEREST_COVERAGE": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_INTEREST_COVERAGE_DETERIORATION"
+    },
+    {
+      "case": "not_evaluable",
+      "expected": {
+        "reasonCode": "required_metric_unavailable_or_below_quality",
+        "state": "not_evaluable"
+      },
+      "fixtureId": "INS_INTEREST_COVERAGE_DETERIORATION-NOT-EVALUABLE",
+      "metricContext": {
+        "FND_INTEREST_COVERAGE": {
+          "qualityClassification": "insufficient",
+          "state": "insufficient"
+        }
+      },
+      "oracle": "minimum quality and input state gate precedes AST",
+      "ruleId": "INS_INTEREST_COVERAGE_DETERIORATION"
+    },
+    {
+      "astEvaluationOverrides": {
+        "allComparisons": true
+      },
+      "case": "triggered",
+      "expected": {
+        "polarity": "unfavorable",
+        "state": "triggered"
+      },
+      "fixtureId": "INS_EBITDA_CASH_DIVERGENCE-TRIGGERED",
+      "metricContext": {
+        "FND_CFO": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        },
+        "FND_DERIVED_EBITDA": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_EBITDA_CASH_DIVERGENCE"
+    },
+    {
+      "astEvaluationOverrides": {
+        "atLeastOneRequiredComparison": false
+      },
+      "case": "not_triggered",
+      "expected": {
+        "state": "not_triggered"
+      },
+      "fixtureId": "INS_EBITDA_CASH_DIVERGENCE-NOT-TRIGGERED",
+      "metricContext": {
+        "FND_CFO": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        },
+        "FND_DERIVED_EBITDA": {
+          "qualityClassification": "usable_with_caveats",
+          "state": "available",
+          "valueDecimal": "1"
+        }
+      },
+      "oracle": "evaluate exact catalog AST",
+      "ruleId": "INS_EBITDA_CASH_DIVERGENCE"
+    },
+    {
+      "case": "not_evaluable",
+      "expected": {
+        "reasonCode": "required_metric_unavailable_or_below_quality",
+        "state": "not_evaluable"
+      },
+      "fixtureId": "INS_EBITDA_CASH_DIVERGENCE-NOT-EVALUABLE",
+      "metricContext": {
+        "FND_DERIVED_EBITDA": {
+          "qualityClassification": "insufficient",
+          "state": "insufficient"
+        }
+      },
+      "oracle": "minimum quality and input state gate precedes AST",
+      "ruleId": "INS_EBITDA_CASH_DIVERGENCE"
+    }
+  ],
+  "version": "5.0.0"
+}

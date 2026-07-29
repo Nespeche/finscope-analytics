@@ -1,0 +1,128 @@
+{
+  "fixtureSetId": "sec-selection-test-vectors",
+  "version": "1.0.0",
+  "vectors": [
+    {
+      "vectorId": "company-facts-primary",
+      "candidates": [
+        {
+          "source": "company_facts",
+          "form": "10-Q",
+          "filed": "2026-01-30",
+          "value": "100.000000000000"
+        }
+      ],
+      "expected": "selected"
+    },
+    {
+      "vectorId": "company-concept-exact-fallback",
+      "companyFactsResolved": false,
+      "mappingStatus": "ACTIVE",
+      "candidate": {
+        "source": "company_concept",
+        "form": "10-K",
+        "value": "100.000000000000"
+      },
+      "expected": "selected_fallback"
+    },
+    {
+      "vectorId": "8k-evidence-only",
+      "candidate": {
+        "form": "8-K",
+        "value": "100.000000000000"
+      },
+      "expected": "evidence_only"
+    },
+    {
+      "vectorId": "exact-duplicate-collapse",
+      "candidates": [
+        {
+          "accn": "A",
+          "value": "10.000000000000"
+        },
+        {
+          "accn": "B",
+          "value": "10.000000000000"
+        }
+      ],
+      "expected": "one_value_two_sourceRefs"
+    },
+    {
+      "vectorId": "amendment-specific-replacement",
+      "original": {
+        "form": "10-Q",
+        "value": "10.000000000000"
+      },
+      "amendment": {
+        "form": "10-Q/A",
+        "containsConcept": true,
+        "value": "11.000000000000"
+      },
+      "expectedValue": "11.000000000000"
+    },
+    {
+      "vectorId": "amendment-absence-does-not-delete",
+      "original": {
+        "form": "10-Q",
+        "value": "10.000000000000"
+      },
+      "amendment": {
+        "form": "10-Q/A",
+        "containsConcept": false
+      },
+      "expectedValue": "10.000000000000"
+    },
+    {
+      "vectorId": "later-restatement",
+      "candidates": [
+        {
+          "filed": "2025-01-01",
+          "value": "10.000000000000"
+        },
+        {
+          "filed": "2026-01-01",
+          "value": "11.000000000000"
+        }
+      ],
+      "expectedValue": "11.000000000000"
+    },
+    {
+      "vectorId": "equal-precedence-conflict",
+      "candidates": [
+        {
+          "filed": "2026-01-01",
+          "value": "10.000000000000"
+        },
+        {
+          "filed": "2026-01-01",
+          "value": "11.000000000000"
+        }
+      ],
+      "expectedState": "ambiguous",
+      "expectedReasonCode": "conflicting_equal_precedence"
+    },
+    {
+      "vectorId": "frame-ignored-for-selection",
+      "candidate": {
+        "frame": "CY2025",
+        "value": "10.000000000000"
+      },
+      "expectedFrameRole": "evidence_only"
+    },
+    {
+      "vectorId": "unit-conflict",
+      "candidates": [
+        {
+          "unit": "USD",
+          "value": "10.000000000000"
+        },
+        {
+          "unit": "EUR",
+          "value": "9.000000000000"
+        }
+      ],
+      "expectedState": "incompatible",
+      "expectedReasonCode": "unit_incompatible"
+    }
+  ]
+}

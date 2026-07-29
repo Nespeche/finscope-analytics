@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "1.1.0",
+  "batchId": "B03",
+  "status": "COMPLETED",
+  "baseline": {
+    "logicalName": "FinScope_Analytics_SpecDev_ChatGPT_v0.21.3_B02_control_plane_hardening_completed.zip",
+    "sha256": "64e41940d238f74d296793aaeb13f556b5d0cc3613f15723dc1788bd7f7b11a1",
+    "sidecarMatch": true
+  },
+  "candidate": {
+    "logicalName": "FS_B03_r4.zip",
+    "sha256": "a70a2c77e854b18ff9d3d8e606467ec8a07c6206043052f89e1eba9168d82707",
+    "sidecarMatch": true,
+    "rootDirectory": "FinScope_v0.21.4",
+    "archiveFileCount": 513,
+    "extractedTreeSha256": "b33d1364b6908ce76b60a52f5d488085ac6b1b098478b2793cf7b78c786cbc99"
+  },
+  "localEvidence": {
+    "logicalName": "FinScope_local_evidence_B03_20260724-093953.zip",
+    "sha256": "9cd4acfc988be65a37ca035cf3aaaa32107c40ce7432251927a1f3bb128b212b",
+    "candidateSha256": "a70a2c77e854b18ff9d3d8e606467ec8a07c6206043052f89e1eba9168d82707",
+    "schemaVersion": "1.1.0",
+    "status": "PASS",
+    "entryCount": 13
+  },
+  "taskResults": [
+    {
+      "taskId": "T011",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T013",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T014",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T015",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T016",
+      "status": "COMPLETED"
+    }
+  ],
+  "testResults": [
+    {
+      "id": "npm-ci",
+      "command": "npm ci",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "typecheck",
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-unit",
+      "command": "npm run test:unit -- tests/unit/core/canonical-json.test.ts tests/unit/core/clock-boundary.test.ts tests/unit/core/decimal.test.ts tests/unit/types/messages.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "discovery": "4 files / 21 tests"
+    },
+    {
+      "id": "test-contract",
+      "command": "npm run test:contract -- tests/contract/authority-loading.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "discovery": "1 file / 6 tests"
+    },
+    {
+      "id": "regression-vitest",
+      "command": "npm run test",
+      "status": "PASS",
+      "exitCode": 0,
+      "discovery": "16 files / 66 tests"
+    },
+    {
+      "id": "build",
+      "command": "npm run build",
+      "status": "PASS",
+      "exitCode": 0,
+      "result": "115 modules; 3 assets; 500951 bytes"
+    }
+  ],
+  "physicalIntegrity": {
+    "baselineSha256": "64e41940d238f74d296793aaeb13f556b5d0cc3613f15723dc1788bd7f7b11a1",
+    "candidateSha256": "a70a2c77e854b18ff9d3d8e606467ec8a07c6206043052f89e1eba9168d82707",
+    "evidenceSha256": "9cd4acfc988be65a37ca035cf3aaaa32107c40ce7432251927a1f3bb128b212b",
+    "candidateCrcValid": true,
+    "candidateSafePaths": true,
+    "candidateMatchesExtraction": true,
+    "candidateMaxWindowsAbsolutePathLength": 164,
+    "manifestValid": true,
+    "inventoryValid": true,
+    "metadataValid": true
+  },
+  "specifyTreeSha256Before": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "specifyTreeSha256After": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "sourceTasksSha256Before": "94ab42f057924057388aee2f27add34c4a35cc7d1bc0a76cce292e6a0f78be1c",
+  "sourceTasksSha256After": "dc692b75e33fddd5a7bf839f60b2b13956eb8d235eb5868be9e294bd5772d95f",
+  "nextBatchId": "B04",
+  "convergenceAuthorized": false,
+  "filesCreated": [
+    "implementation-control/reports/B03_EVIDENCE_VERIFICATION_AND_CLOSURE.md",
+    "implementation-control/reports/B03_EVIDENCE_VERIFICATION_AND_CLOSURE.json"
+  ],
+  "filesDeleted": [],
+  "openFindings": [
+    "AUD-R6-004",
+    "CFG-R6-001",
+    "NPM-AUDIT-3-HIGH-DEFERRED-TO-T098"
+  ],
+  "controlPlaneFinal": {
+    "status": "PASS",
+    "checkCount": 993,
+    "passCount": 993,
+    "failCount": 0,
+    "taskCount": 109,
+    "batchCount": 25,
+    "tasksSha256": "dc692b75e33fddd5a7bf839f60b2b13956eb8d235eb5868be9e294bd5772d95f",
+    "b03BatchSha256": "a95bcbfe90be8c138dc3c9dea4ef4dcfecd4097cdf95f5ed1e2e501d8bc09d18",
+    "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
+  },
+  "filesModified": [
+    "DOCUMENTATION_INDEX.md",
+    "PACKAGE_METADATA.json",
+    "PROJECT_CONTEXT.md",
+    "README.md",
+    "START_HERE_CHATGPT.md",
+    "implementation-control/AUTHORITY_MATRIX.json",
+    "implementation-control/CHANGE_LEDGER.md",
+    "implementation-control/IMPLEMENTATION_BATCH_MAP.json",
+    "implementation-control/IMPLEMENTATION_BATCH_MAP.md",
+    "implementation-control/IMPLEMENTATION_STATE.json",
+    "implementation-control/TASK_SOURCE_LOCK.json",
+    "implementation-control/batches/B01.json through B25.json (derived source task hash; B03 status only)",
+    "specs/001-fundamental-analysis-platform/tasks.md (five B03 checkboxes only)",
+    "PACKAGE_INVENTORY.json",
+    "FILE_MANIFEST.sha256"
+  ]
+}

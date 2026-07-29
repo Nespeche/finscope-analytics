@@ -1,0 +1,190 @@
+{
+  "fixtureSetId": "analysis-result-test-vectors",
+  "negativeFixtures": [
+    {
+      "expectedValid": false,
+      "fixtureId": "ANALYSIS-FUNDAMENTAL-WITH-PRICE",
+      "input": {
+        "analysisId": "fund-analysis-001",
+        "analysisKind": "fundamental",
+        "createdAt": "2026-07-21T10:00:01Z",
+        "fundamentalAnalysisFingerprint": "sha256:5086da3578b5837d3f81667388e72ea68e6952fee386ed4beac2be65cfb188db",
+        "fundamentalInputFingerprint": "sha256:68b48408acee8d3442ed52327dca225e855ca8381a00c27eaecf70ce649c3ef7",
+        "issuerCik": "0000320193",
+        "metricResults": [
+          {
+            "evidenceRefs": [
+              "fact-revenue-fy2025"
+            ],
+            "metricId": "FND_REVENUE",
+            "periodKey": "FY2025",
+            "qualityClassification": "verified",
+            "reasonCodes": [],
+            "state": "available",
+            "unit": "USD",
+            "valueDecimal": "1000"
+          }
+        ],
+        "priceAnalysisFingerprint": "sha256:8acdcca99e9427516c8a8e24ec2cca895318e93229895cc16f6ff62fec31c66a",
+        "ruleEvaluations": [
+          {
+            "evidenceRefs": [],
+            "reasonCodes": [
+              "prior_period_missing"
+            ],
+            "ruleId": "INS_GROWTH_MARGIN_DETERIORATION",
+            "state": "not_evaluable"
+          }
+        ],
+        "synthesis": {
+          "limitations": [
+            "insufficient comparable metrics"
+          ],
+          "state": "insufficient_information",
+          "triggeredRuleIds": []
+        },
+        "versions": {
+          "analysisContract": "5.0.0",
+          "metricCatalog": "5.0.0",
+          "ruleCatalog": "5.0.0"
+        }
+      }
+    },
+    {
+      "expectedValid": false,
+      "fixtureId": "ANALYSIS-PRICE-WITH-RULES",
+      "input": {
+        "analysisId": "price-analysis-001",
+        "analysisKind": "historical_price_descriptive",
+        "createdAt": "2026-07-21T10:00:02Z",
+        "historicalPriceOverlayFingerprint": "sha256:70a4d0f87b26447e5801bc2eab97a8de650fcec6d9cd5ce007041b1cb35c51b6",
+        "issuerCik": "0000320193",
+        "priceAnalysisFingerprint": "sha256:8acdcca99e9427516c8a8e24ec2cca895318e93229895cc16f6ff62fec31c66a",
+        "priceMetricResults": [
+          {
+            "evidenceRefs": [
+              "price-overlay-001"
+            ],
+            "metricId": "MKT_SIMPLE_RETURN",
+            "periodKey": "2025-01-31/2025-02-28",
+            "qualityClassification": "usable_with_caveats",
+            "reasonCodes": [
+              "adjustment_status_unknown"
+            ],
+            "state": "available",
+            "unit": "ratio",
+            "valueDecimal": "0.2"
+          }
+        ],
+        "priceQuality": {
+          "axes": {
+            "adjustmentDisclosure": "unknown",
+            "currencyIntegrity": "single_declared",
+            "dateIntegrity": "unique_sorted",
+            "rowValidity": "all_valid"
+          },
+          "classification": "usable_with_caveats"
+        },
+        "ruleEvaluations": [],
+        "versions": {
+          "analysisContract": "5.0.0",
+          "metricCatalog": "5.0.0",
+          "priceQualityModel": "5.0.0"
+        }
+      }
+    }
+  ],
+  "validFixtures": [
+    {
+      "expectedValid": true,
+      "fixtureId": "ANALYSIS-FUNDAMENTAL-VALID",
+      "input": {
+        "analysisId": "fund-analysis-001",
+        "analysisKind": "fundamental",
+        "createdAt": "2026-07-21T10:00:01Z",
+        "fundamentalAnalysisFingerprint": "sha256:5086da3578b5837d3f81667388e72ea68e6952fee386ed4beac2be65cfb188db",
+        "fundamentalInputFingerprint": "sha256:68b48408acee8d3442ed52327dca225e855ca8381a00c27eaecf70ce649c3ef7",
+        "issuerCik": "0000320193",
+        "metricResults": [
+          {
+            "evidenceRefs": [
+              "fact-revenue-fy2025"
+            ],
+            "metricId": "FND_REVENUE",
+            "periodKey": "FY2025",
+            "qualityClassification": "verified",
+            "reasonCodes": [],
+            "state": "available",
+            "unit": "USD",
+            "valueDecimal": "1000"
+          }
+        ],
+        "ruleEvaluations": [
+          {
+            "evidenceRefs": [],
+            "reasonCodes": [
+              "prior_period_missing"
+            ],
+            "ruleId": "INS_GROWTH_MARGIN_DETERIORATION",
+            "state": "not_evaluable"
+          }
+        ],
+        "synthesis": {
+          "limitations": [
+            "insufficient comparable metrics"
+          ],
+          "state": "insufficient_information",
+          "triggeredRuleIds": []
+        },
+        "versions": {
+          "analysisContract": "5.0.0",
+          "metricCatalog": "5.0.0",
+          "ruleCatalog": "5.0.0"
+        }
+      }
+    },
+    {
+      "expectedValid": true,
+      "fixtureId": "ANALYSIS-PRICE-VALID",
+      "input": {
+        "analysisId": "price-analysis-001",
+        "analysisKind": "historical_price_descriptive",
+        "createdAt": "2026-07-21T10:00:02Z",
+        "historicalPriceOverlayFingerprint": "sha256:70a4d0f87b26447e5801bc2eab97a8de650fcec6d9cd5ce007041b1cb35c51b6",
+        "issuerCik": "0000320193",
+        "priceAnalysisFingerprint": "sha256:8acdcca99e9427516c8a8e24ec2cca895318e93229895cc16f6ff62fec31c66a",
+        "priceMetricResults": [
+          {
+            "evidenceRefs": [
+              "price-overlay-001"
+            ],
+            "metricId": "MKT_SIMPLE_RETURN",
+            "periodKey": "2025-01-31/2025-02-28",
+            "qualityClassification": "usable_with_caveats",
+            "reasonCodes": [
+              "adjustment_status_unknown"
+            ],
+            "state": "available",
+            "unit": "ratio",
+            "valueDecimal": "0.2"
+          }
+        ],
+        "priceQuality": {
+          "axes": {
+            "adjustmentDisclosure": "unknown",
+            "currencyIntegrity": "single_declared",
+            "dateIntegrity": "unique_sorted",
+            "rowValidity": "all_valid"
+          },
+          "classification": "usable_with_caveats"
+        },
+        "versions": {
+          "analysisContract": "5.0.0",
+          "metricCatalog": "5.0.0",
+          "priceQualityModel": "5.0.0"
+        }
+      }
+    }
+  ],
+  "version": "5.0.0"
+}

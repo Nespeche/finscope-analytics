@@ -1,0 +1,315 @@
+{
+  "fixtureSetId": "openapi-semantic-vectors",
+  "negativeFixtures": [
+    {
+      "expectedReachable": false,
+      "fixtureId": "OPENAPI-NEG-GETISSUER-409",
+      "operationId": "getIssuer",
+      "status": 409,
+      "variant": "identity_ambiguous"
+    },
+    {
+      "expectedReachable": false,
+      "fixtureId": "OPENAPI-NEG-UNSUPPORTED-422",
+      "operationId": "getCompanyFacts",
+      "status": 422,
+      "variant": "unsupported_profile"
+    },
+    {
+      "expectedReachable": false,
+      "fixtureId": "OPENAPI-NEG-CANCELLED-HTTP",
+      "operationId": "getCompanyFacts",
+      "status": 409,
+      "variant": "cancelled"
+    },
+    {
+      "expectedReachable": false,
+      "fixtureId": "OPENAPI-NEG-WRONG-404-RESOURCE",
+      "operationId": "getDefinition",
+      "status": 404,
+      "variant": "resource_not_found:issuer"
+    }
+  ],
+  "operationFixtures": [
+    {
+      "allowedProblems": [
+        {
+          "status": 400,
+          "variant": "invalid_request"
+        },
+        {
+          "status": 403,
+          "variant": "blocked_by_policy"
+        },
+        {
+          "status": 404,
+          "variant": "resource_not_found:issuer"
+        },
+        {
+          "status": 413,
+          "variant": "payload_too_large"
+        },
+        {
+          "status": 502,
+          "variant": "provider_unavailable"
+        },
+        {
+          "status": 502,
+          "variant": "invalid_payload"
+        },
+        {
+          "status": 504,
+          "variant": "upstream_timeout"
+        }
+      ],
+      "fixtureId": "OPENAPI-GETCOMPANYCONCEPT",
+      "forbiddenStatuses": [
+        409,
+        422
+      ],
+      "operationId": "getCompanyConcept",
+      "oracle": "gateway-problem-details-catalog.operationMatrix exact equality"
+    },
+    {
+      "allowedProblems": [
+        {
+          "status": 400,
+          "variant": "invalid_request"
+        },
+        {
+          "status": 403,
+          "variant": "blocked_by_policy"
+        },
+        {
+          "status": 404,
+          "variant": "resource_not_found:issuer"
+        },
+        {
+          "status": 413,
+          "variant": "payload_too_large"
+        },
+        {
+          "status": 502,
+          "variant": "provider_unavailable"
+        },
+        {
+          "status": 502,
+          "variant": "invalid_payload"
+        },
+        {
+          "status": 504,
+          "variant": "upstream_timeout"
+        }
+      ],
+      "fixtureId": "OPENAPI-GETCOMPANYFACTS",
+      "forbiddenStatuses": [
+        409,
+        422
+      ],
+      "operationId": "getCompanyFacts",
+      "oracle": "gateway-problem-details-catalog.operationMatrix exact equality"
+    },
+    {
+      "allowedProblems": [
+        {
+          "status": 400,
+          "variant": "invalid_request"
+        },
+        {
+          "status": 404,
+          "variant": "resource_not_found:definition"
+        }
+      ],
+      "fixtureId": "OPENAPI-GETDEFINITION",
+      "forbiddenStatuses": [
+        409,
+        422
+      ],
+      "operationId": "getDefinition",
+      "oracle": "gateway-problem-details-catalog.operationMatrix exact equality"
+    },
+    {
+      "allowedProblems": [],
+      "fixtureId": "OPENAPI-GETHEALTH",
+      "forbiddenStatuses": [
+        409,
+        422
+      ],
+      "operationId": "getHealth",
+      "oracle": "gateway-problem-details-catalog.operationMatrix exact equality"
+    },
+    {
+      "allowedProblems": [
+        {
+          "status": 400,
+          "variant": "invalid_request"
+        },
+        {
+          "status": 403,
+          "variant": "blocked_by_policy"
+        },
+        {
+          "status": 404,
+          "variant": "resource_not_found:issuer"
+        },
+        {
+          "status": 502,
+          "variant": "provider_unavailable"
+        },
+        {
+          "status": 502,
+          "variant": "invalid_payload"
+        },
+        {
+          "status": 504,
+          "variant": "upstream_timeout"
+        }
+      ],
+      "fixtureId": "OPENAPI-GETISSUER",
+      "forbiddenStatuses": [
+        409,
+        422
+      ],
+      "operationId": "getIssuer",
+      "oracle": "gateway-problem-details-catalog.operationMatrix exact equality"
+    },
+    {
+      "allowedProblems": [
+        {
+          "status": 400,
+          "variant": "invalid_request"
+        },
+        {
+          "status": 403,
+          "variant": "blocked_by_policy"
+        },
+        {
+          "status": 404,
+          "variant": "resource_not_found:filing"
+        },
+        {
+          "status": 413,
+          "variant": "payload_too_large"
+        },
+        {
+          "status": 502,
+          "variant": "provider_unavailable"
+        },
+        {
+          "status": 502,
+          "variant": "invalid_payload"
+        },
+        {
+          "status": 504,
+          "variant": "upstream_timeout"
+        }
+      ],
+      "fixtureId": "OPENAPI-GETISSUERFILING",
+      "forbiddenStatuses": [
+        409,
+        422
+      ],
+      "operationId": "getIssuerFiling",
+      "oracle": "gateway-problem-details-catalog.operationMatrix exact equality"
+    },
+    {
+      "allowedProblems": [
+        {
+          "status": 400,
+          "variant": "invalid_request"
+        },
+        {
+          "status": 403,
+          "variant": "blocked_by_policy"
+        },
+        {
+          "status": 404,
+          "variant": "resource_not_found:issuer"
+        },
+        {
+          "status": 413,
+          "variant": "payload_too_large"
+        },
+        {
+          "status": 502,
+          "variant": "provider_unavailable"
+        },
+        {
+          "status": 502,
+          "variant": "invalid_payload"
+        },
+        {
+          "status": 504,
+          "variant": "upstream_timeout"
+        }
+      ],
+      "fixtureId": "OPENAPI-GETISSUERSUBMISSIONS",
+      "forbiddenStatuses": [
+        409,
+        422
+      ],
+      "operationId": "getIssuerSubmissions",
+      "oracle": "gateway-problem-details-catalog.operationMatrix exact equality"
+    },
+    {
+      "allowedProblems": [
+        {
+          "status": 400,
+          "variant": "invalid_request"
+        },
+        {
+          "status": 404,
+          "variant": "resource_not_found:mapping"
+        }
+      ],
+      "fixtureId": "OPENAPI-GETMAPPING",
+      "forbiddenStatuses": [
+        409,
+        422
+      ],
+      "operationId": "getMapping",
+      "oracle": "gateway-problem-details-catalog.operationMatrix exact equality"
+    },
+    {
+      "allowedProblems": [],
+      "fixtureId": "OPENAPI-GETPOLICIES",
+      "forbiddenStatuses": [
+        409,
+        422
+      ],
+      "operationId": "getPolicies",
+      "oracle": "gateway-problem-details-catalog.operationMatrix exact equality"
+    },
+    {
+      "allowedProblems": [
+        {
+          "status": 400,
+          "variant": "invalid_request"
+        }
+      ],
+      "fixtureId": "OPENAPI-LISTDEFINITIONS",
+      "forbiddenStatuses": [
+        409,
+        422
+      ],
+      "operationId": "listDefinitions",
+      "oracle": "gateway-problem-details-catalog.operationMatrix exact equality"
+    },
+    {
+      "allowedProblems": [
+        {
+          "status": 400,
+          "variant": "invalid_request"
+        }
+      ],
+      "fixtureId": "OPENAPI-LISTMAPPINGS",
+      "forbiddenStatuses": [
+        409,
+        422
+      ],
+      "operationId": "listMappings",
+      "oracle": "gateway-problem-details-catalog.operationMatrix exact equality"
+    }
+  ],
+  "version": "5.0.0"
+}

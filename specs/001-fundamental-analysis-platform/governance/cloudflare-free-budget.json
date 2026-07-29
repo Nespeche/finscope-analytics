@@ -1,0 +1,191 @@
+{
+  "budgetId": "cloudflare-free-budget",
+  "version": "1.1.0",
+  "status": "ACTIVE_AUTHORITY",
+  "verifiedOn": "2026-07-21",
+  "officialSources": [
+    {
+      "service": "Workers",
+      "url": "https://developers.cloudflare.com/workers/platform/limits/",
+      "lastObservedUpdate": "2026-07-05"
+    },
+    {
+      "service": "Pages",
+      "url": "https://developers.cloudflare.com/pages/platform/limits/",
+      "lastObservedUpdate": "2026-07-16"
+    },
+    {
+      "service": "D1 pricing",
+      "url": "https://developers.cloudflare.com/d1/platform/pricing/",
+      "lastObservedUpdate": "2026-04-21"
+    },
+    {
+      "service": "D1 limits",
+      "url": "https://developers.cloudflare.com/d1/platform/limits/",
+      "lastObservedUpdate": "2026-04-21"
+    },
+    {
+      "service": "KV",
+      "url": "https://developers.cloudflare.com/kv/platform/limits/",
+      "lastObservedUpdate": "2026-04-21"
+    },
+    {
+      "service": "Queues pricing",
+      "url": "https://developers.cloudflare.com/queues/platform/pricing/",
+      "lastObservedUpdate": "2026-04-21"
+    },
+    {
+      "service": "Queues limits",
+      "url": "https://developers.cloudflare.com/queues/platform/limits/",
+      "lastObservedUpdate": "2026-04-21"
+    }
+  ],
+  "officialLimits": {
+    "d1_db_mb": 500,
+    "d1_queries_invocation": 50,
+    "d1_rows_read_day": 5000000,
+    "d1_rows_written_day": 100000,
+    "d1_storage_gb": 5,
+    "kv_reads_day": 100000,
+    "kv_storage_gb": 1,
+    "kv_writes_day": 1000,
+    "pages_asset_mib": 25,
+    "pages_builds_month": 500,
+    "pages_files": 20000,
+    "queues_operations_day": 10000,
+    "queues_retention_hours_free": 24,
+    "workers_bundle_mb": 3,
+    "workers_cpu_ms": 10,
+    "workers_cron_count": 5,
+    "workers_memory_mb": 128,
+    "workers_requests_day": 100000,
+    "workers_subrequests": 50
+  },
+  "notUsedServices": [
+    "Pages Functions",
+    "KV",
+    "R2",
+    "Queues",
+    "Durable Objects",
+    "Cron Triggers"
+  ],
+  "architectureInvariants": [
+    "financial computation and persistence execute in browser Web Workers and IndexedDB",
+    "one Worker invocation performs at most one SEC upstream fetch and streams the body without normalization",
+    "D1 stores only compact public catalog/version metadata and never user financial payloads",
+    "no paid fallback, automatic upgrade or hidden service substitution is permitted",
+    "quota exhaustion preserves the last valid local snapshot and returns explicit Problem Details"
+  ],
+  "serviceBudgets": [
+    {
+      "service": "Cloudflare Pages",
+      "reason": "serve the static Svelte/Vite application",
+      "expectedVolume": "<500 deployed assets, all target assets <5 MiB, <=20 builds/month, one project",
+      "resourceBudget": "500/20000 files, 5/25 MiB maximum asset and 20/500 builds per month",
+      "safetyMargin": "at least 80% asset-size, 97.5% file-count and 96% build headroom",
+      "limitBehavior": "deployment fails closed before upload when artifact scan exceeds budget",
+      "cacheStrategy": "immutable hashed assets with long browser/CDN cache; HTML no-cache revalidation",
+      "batching": "single versioned static deployment",
+      "rateLimiting": "not applicable to static asset delivery; deployment cadence <=20/month",
+      "controlledDegradation": "retain prior successful deployment",
+      "freeAlternative": "reduce/split assets and continue on Pages Free"
+    },
+    {
+      "service": "Cloudflare Workers",
+      "reason": "read-only same-origin SEC gateway with host allowlist and security headers",
+      "expectedVolume": "<=2000 requests/day; personal-use target p95 <=4 ms CPU and one upstream subrequest",
+      "resourceBudget": "2% daily request quota; 40% CPU; 2% subrequests; <=0.5 MiB compressed bundle",
+      "safetyMargin": "98% requests, 60% CPU, 98% subrequests, >83% bundle",
+      "limitBehavior": "429/503 Problem Details, Retry-After, no paid fallback, local stale snapshot retained",
+      "cacheStrategy": "browser/HTTP conditional requests; no server-side personal cache",
+      "batching": "client groups logical refresh but invokes one upstream resource per Worker request",
+      "rateLimiting": "per-client concurrency 1, SEC ceiling 10/s, FinScope backoff 1/2/4 s",
+      "controlledDegradation": "disable network refresh while preserving local analysis/export",
+      "freeAlternative": "manual domain button after quota reset and frozen/local evidence"
+    },
+    {
+      "service": "Cloudflare D1",
+      "reason": "compact public mapping/catalog version metadata only",
+      "expectedVolume": "<=50000 rows read/day, <=1000 rows written/day, <=50 MiB total, <=2 queries/invocation",
+      "resourceBudget": "1% read quota, 1% write quota, 10% account/per-db storage, 4% query count",
+      "safetyMargin": "at least 90% storage and 96% per-invocation query headroom",
+      "limitBehavior": "serve embedded signed catalog version and mark remote metadata stale; no user-data loss",
+      "cacheStrategy": "version metadata cached in browser and immutable deployment assets",
+      "batching": "prepared indexed queries and batched metadata writes during controlled publication",
+      "rateLimiting": "writes restricted to publication workflow; runtime is read-mostly",
+      "controlledDegradation": "fall back to embedded catalog metadata, not a paid datastore",
+      "freeAlternative": "static version manifest deployed with Pages"
+    }
+  ],
+  "flowBudgets": [
+    {
+      "flowId": "static_app_load",
+      "workerRequests": 0,
+      "workerCpuMsPerRequest": 0,
+      "workerSubrequestsPerRequest": 0,
+      "d1RowsRead": 0,
+      "d1RowsWritten": 0,
+      "payloadBytes": 5242880,
+      "failureMode": "retain prior cached static deployment"
+    },
+    {
+      "flowId": "sec_submissions_fetch",
+      "workerRequests": 1,
+      "workerCpuMsPerRequest": 4,
+      "workerSubrequestsPerRequest": 1,
+      "d1RowsRead": 0,
+      "d1RowsWritten": 0,
+      "payloadBytes": 8388608,
+      "failureMode": "return bounded Problem Details and retain local snapshot"
+    },
+    {
+      "flowId": "sec_company_facts_fetch",
+      "workerRequests": 1,
+      "workerCpuMsPerRequest": 4,
+      "workerSubrequestsPerRequest": 1,
+      "d1RowsRead": 0,
+      "d1RowsWritten": 0,
+      "payloadBytes": 67108864,
+      "failureMode": "stream abort at size limit; no partial persistence"
+    },
+    {
+      "flowId": "sec_company_concept_fallback_each",
+      "workerRequests": 1,
+      "workerCpuMsPerRequest": 4,
+      "workerSubrequestsPerRequest": 1,
+      "d1RowsRead": 0,
+      "d1RowsWritten": 0,
+      "payloadBytes": 8388608,
+      "failureMode": "skip fallback concept with explicit reason code"
+    },
+    {
+      "flowId": "catalog_version_read",
+      "workerRequests": 1,
+      "workerCpuMsPerRequest": 3,
+      "workerSubrequestsPerRequest": 1,
+      "d1RowsRead": 100,
+      "d1RowsWritten": 0,
+      "payloadBytes": 65536,
+      "failureMode": "use embedded version and mark stale"
+    },
+    {
+      "flowId": "catalog_publication_write",
+      "workerRequests": 1,
+      "workerCpuMsPerRequest": 4,
+      "workerSubrequestsPerRequest": 2,
+      "d1RowsRead": 500,
+      "d1RowsWritten": 500,
+      "payloadBytes": 1048576,
+      "failureMode": "atomic rollback and retain previous active catalog"
+    }
+  ],
+  "canaryThresholds": {
+    "workersRequestsDay": 70000,
+    "workerCpuP95Ms": 6,
+    "d1RowsReadDay": 3500000,
+    "d1RowsWrittenDay": 70000,
+    "d1StorageMb": 350,
+    "action": "stop nonessential refresh, preserve local state, surface quota warning and require next reset/manual retry"
+  },
+  "revalidationPolicy": "verify official documentation before each deployment and at least quarterly; any stricter limit blocks release until budgets are redesigned"
+}

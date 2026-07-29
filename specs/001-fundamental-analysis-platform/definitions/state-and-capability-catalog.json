@@ -1,0 +1,547 @@
+{
+  "catalogId": "state-and-capability-catalog",
+  "coverageStates": [
+    "complete",
+    "partial",
+    "missing",
+    "not_applicable"
+  ],
+  "defaultRule": "any from/event/to tuple not listed is prohibited",
+  "factResolutionStates": [
+    "resolved",
+    "absent",
+    "ambiguous",
+    "incompatible"
+  ],
+  "incrementalEvents": [
+    {
+      "affected": [
+        "SEC payload",
+        "facts",
+        "coverage",
+        "fundamental metrics",
+        "rules",
+        "synthesis",
+        "fundamental snapshot"
+      ],
+      "event": "new_filing_detected",
+      "unaffected": [
+        "price overlay",
+        "price metrics"
+      ]
+    },
+    {
+      "affected": [
+        "mapped concepts",
+        "dependent metrics",
+        "dependent rules",
+        "synthesis",
+        "fundamental snapshot"
+      ],
+      "event": "mapping_catalog_changed",
+      "unaffected": [
+        "unrelated concepts",
+        "price overlay",
+        "price metrics"
+      ]
+    },
+    {
+      "affected": [
+        "changed metrics and transitive rule consumers",
+        "synthesis",
+        "fundamental snapshot"
+      ],
+      "event": "metric_catalog_changed",
+      "unaffected": [
+        "SEC acquisition unless inputs are missing",
+        "price overlay unless a price metric changed"
+      ]
+    },
+    {
+      "affected": [
+        "rules",
+        "synthesis",
+        "fundamental snapshot"
+      ],
+      "event": "rule_catalog_changed",
+      "unaffected": [
+        "SEC payload",
+        "facts",
+        "fundamental metric values",
+        "price overlay"
+      ]
+    },
+    {
+      "affected": [
+        "price overlay",
+        "price quality",
+        "price metrics",
+        "price pointer"
+      ],
+      "event": "historical_price_imported",
+      "unaffected": [
+        "fundamental bundle",
+        "fundamental metrics",
+        "rules",
+        "synthesis",
+        "fundamental fingerprints",
+        "fundamental snapshot pointer"
+      ]
+    },
+    {
+      "affected": [
+        "price overlays for issuer",
+        "price analyses for issuer",
+        "price pointer"
+      ],
+      "event": "historical_price_deleted",
+      "unaffected": [
+        "all fundamental artifacts"
+      ]
+    },
+    {
+      "affected": [
+        "checking only when refreshConsent=true"
+      ],
+      "event": "app_opened_or_resumed",
+      "unaffected": [
+        "network when refreshConsent=false"
+      ]
+    },
+    {
+      "affected": [
+        "render only"
+      ],
+      "event": "visual_preference_changed",
+      "unaffected": [
+        "all acquisition, normalization, analysis and persistence artifacts"
+      ]
+    }
+  ],
+  "metricStates": [
+    "available",
+    "partial",
+    "insufficient",
+    "not_applicable",
+    "not_meaningful"
+  ],
+  "pipelineStates": [
+    "idle",
+    "checking",
+    "acquiring",
+    "normalizing",
+    "analyzing",
+    "ready",
+    "partial",
+    "failed",
+    "cancelled"
+  ],
+  "ruleStates": [
+    "triggered",
+    "not_triggered",
+    "not_evaluable"
+  ],
+  "status": "ACTIVE_AUTHORITY",
+  "synthesisStates": [
+    "insufficient_information",
+    "neutral",
+    "favorable",
+    "unfavorable",
+    "mixed"
+  ],
+  "transitions": [
+    {
+      "event": "issuer_selected",
+      "from": "idle",
+      "guard": "valid CIK and explicit user selection",
+      "operationId": "selectIssuer",
+      "to": "checking"
+    },
+    {
+      "event": "manual_refresh_requested",
+      "from": "idle",
+      "guard": "active issuer exists",
+      "operationId": "refreshFundamentals",
+      "to": "checking"
+    },
+    {
+      "event": "historical_price_import_confirmed",
+      "from": "idle",
+      "guard": "overlay flow is independent",
+      "operationId": "publishPriceOverlay",
+      "to": "idle"
+    },
+    {
+      "event": "cache_hit_no_refresh_needed",
+      "from": "checking",
+      "guard": "valid active snapshot exists",
+      "operationId": "useActiveSnapshot",
+      "to": "ready"
+    },
+    {
+      "event": "new_filing_available",
+      "from": "checking",
+      "guard": "consent or manual refresh active",
+      "operationId": "acquireSecData",
+      "to": "acquiring"
+    },
+    {
+      "event": "cache_miss",
+      "from": "checking",
+      "guard": "operation budget available",
+      "operationId": "acquireSecData",
+      "to": "acquiring"
+    },
+    {
+      "event": "cancel_requested",
+      "from": "checking",
+      "guard": "active operation",
+      "operationId": "cancelOperation",
+      "to": "cancelled"
+    },
+    {
+      "event": "operation_failed",
+      "from": "checking",
+      "guard": "no usable candidate",
+      "operationId": "showFailure",
+      "to": "failed"
+    },
+    {
+      "event": "operation_failed_with_snapshot",
+      "from": "checking",
+      "guard": "active snapshot preserved",
+      "operationId": "showPartial",
+      "to": "partial"
+    },
+    {
+      "event": "acquisition_completed",
+      "from": "acquiring",
+      "guard": "terminal stop object exists",
+      "operationId": "normalizeBundle",
+      "to": "normalizing"
+    },
+    {
+      "event": "budget_exhausted_with_usable_payload",
+      "from": "acquiring",
+      "guard": "partial payload valid",
+      "operationId": "normalizeBundle",
+      "to": "normalizing"
+    },
+    {
+      "event": "cancel_requested",
+      "from": "acquiring",
+      "guard": "active operation",
+      "operationId": "cancelOperation",
+      "to": "cancelled"
+    },
+    {
+      "event": "operation_failed",
+      "from": "acquiring",
+      "guard": "no usable payload",
+      "operationId": "showFailure",
+      "to": "failed"
+    },
+    {
+      "event": "operation_failed_with_snapshot",
+      "from": "acquiring",
+      "guard": "active snapshot preserved",
+      "operationId": "showPartial",
+      "to": "partial"
+    },
+    {
+      "event": "normalization_completed",
+      "from": "normalizing",
+      "guard": "candidate bundle schema-valid",
+      "operationId": "analyzeFundamentals",
+      "to": "analyzing"
+    },
+    {
+      "event": "cancel_requested",
+      "from": "normalizing",
+      "guard": "candidate not published",
+      "operationId": "cancelOperation",
+      "to": "cancelled"
+    },
+    {
+      "event": "operation_failed",
+      "from": "normalizing",
+      "guard": "no usable candidate",
+      "operationId": "showFailure",
+      "to": "failed"
+    },
+    {
+      "event": "operation_failed_with_snapshot",
+      "from": "normalizing",
+      "guard": "active snapshot preserved",
+      "operationId": "showPartial",
+      "to": "partial"
+    },
+    {
+      "event": "analysis_completed_full",
+      "from": "analyzing",
+      "guard": "quality gate passes and candidate published atomically",
+      "operationId": "activateFundamentalSnapshot",
+      "to": "ready"
+    },
+    {
+      "event": "analysis_completed_partial",
+      "from": "analyzing",
+      "guard": "compatible outputs exist and candidate published atomically",
+      "operationId": "activateFundamentalSnapshot",
+      "to": "partial"
+    },
+    {
+      "event": "cancel_requested",
+      "from": "analyzing",
+      "guard": "candidate not published",
+      "operationId": "cancelOperation",
+      "to": "cancelled"
+    },
+    {
+      "event": "operation_failed",
+      "from": "analyzing",
+      "guard": "candidate not published",
+      "operationId": "showFailure",
+      "to": "failed"
+    },
+    {
+      "event": "manual_refresh_requested",
+      "from": "ready",
+      "guard": "UI action",
+      "operationId": "refreshFundamentals",
+      "to": "checking"
+    },
+    {
+      "event": "app_opened",
+      "from": "ready",
+      "guard": "refreshConsent=true",
+      "operationId": "refreshFundamentals",
+      "to": "checking"
+    },
+    {
+      "event": "app_opened",
+      "from": "ready",
+      "guard": "refreshConsent=false",
+      "operationId": "useActiveSnapshot",
+      "to": "ready"
+    },
+    {
+      "event": "app_resumed",
+      "from": "ready",
+      "guard": "refreshConsent=true",
+      "operationId": "refreshFundamentals",
+      "to": "checking"
+    },
+    {
+      "event": "app_resumed",
+      "from": "ready",
+      "guard": "refreshConsent=false",
+      "operationId": "useActiveSnapshot",
+      "to": "ready"
+    },
+    {
+      "event": "mapping_catalog_changed",
+      "from": "ready",
+      "guard": "affected dependencies known",
+      "operationId": "reanalyzeAffectedMappings",
+      "to": "normalizing"
+    },
+    {
+      "event": "metric_catalog_changed",
+      "from": "ready",
+      "guard": "affected metric graph known",
+      "operationId": "reanalyzeAffectedMetrics",
+      "to": "analyzing"
+    },
+    {
+      "event": "rule_catalog_changed",
+      "from": "ready",
+      "guard": "rule-only invalidation",
+      "operationId": "reanalyzeRules",
+      "to": "analyzing"
+    },
+    {
+      "event": "historical_price_import_confirmed",
+      "from": "ready",
+      "guard": "fundamental snapshot untouched",
+      "operationId": "publishPriceOverlay",
+      "to": "ready"
+    },
+    {
+      "event": "historical_price_deleted",
+      "from": "ready",
+      "guard": "fundamental snapshot untouched",
+      "operationId": "deletePriceOverlay",
+      "to": "ready"
+    },
+    {
+      "event": "issuer_selected",
+      "from": "ready",
+      "guard": "different valid CIK",
+      "operationId": "selectIssuer",
+      "to": "checking"
+    },
+    {
+      "event": "issuer_cleared",
+      "from": "ready",
+      "guard": "explicit UI action",
+      "operationId": "clearIssuerContext",
+      "to": "idle"
+    },
+    {
+      "event": "local_data_deleted",
+      "from": "ready",
+      "guard": "explicit confirmed delete",
+      "operationId": "deleteLocalData",
+      "to": "idle"
+    },
+    {
+      "event": "manual_refresh_requested",
+      "from": "partial",
+      "guard": "UI action",
+      "operationId": "refreshFundamentals",
+      "to": "checking"
+    },
+    {
+      "event": "app_opened",
+      "from": "partial",
+      "guard": "refreshConsent=true",
+      "operationId": "refreshFundamentals",
+      "to": "checking"
+    },
+    {
+      "event": "app_opened",
+      "from": "partial",
+      "guard": "refreshConsent=false",
+      "operationId": "useActiveSnapshot",
+      "to": "partial"
+    },
+    {
+      "event": "mapping_catalog_changed",
+      "from": "partial",
+      "guard": "affected dependencies known",
+      "operationId": "reanalyzeAffectedMappings",
+      "to": "normalizing"
+    },
+    {
+      "event": "metric_catalog_changed",
+      "from": "partial",
+      "guard": "affected metric graph known",
+      "operationId": "reanalyzeAffectedMetrics",
+      "to": "analyzing"
+    },
+    {
+      "event": "rule_catalog_changed",
+      "from": "partial",
+      "guard": "rule-only invalidation",
+      "operationId": "reanalyzeRules",
+      "to": "analyzing"
+    },
+    {
+      "event": "historical_price_import_confirmed",
+      "from": "partial",
+      "guard": "fundamental snapshot untouched",
+      "operationId": "publishPriceOverlay",
+      "to": "partial"
+    },
+    {
+      "event": "historical_price_deleted",
+      "from": "partial",
+      "guard": "fundamental snapshot untouched",
+      "operationId": "deletePriceOverlay",
+      "to": "partial"
+    },
+    {
+      "event": "issuer_selected",
+      "from": "partial",
+      "guard": "different valid CIK",
+      "operationId": "selectIssuer",
+      "to": "checking"
+    },
+    {
+      "event": "issuer_cleared",
+      "from": "partial",
+      "guard": "explicit UI action",
+      "operationId": "clearIssuerContext",
+      "to": "idle"
+    },
+    {
+      "event": "local_data_deleted",
+      "from": "partial",
+      "guard": "explicit confirmed delete",
+      "operationId": "deleteLocalData",
+      "to": "idle"
+    },
+    {
+      "event": "manual_refresh_requested",
+      "from": "failed",
+      "guard": "active issuer exists",
+      "operationId": "refreshFundamentals",
+      "to": "checking"
+    },
+    {
+      "event": "issuer_selected",
+      "from": "failed",
+      "guard": "valid CIK",
+      "operationId": "selectIssuer",
+      "to": "checking"
+    },
+    {
+      "event": "issuer_cleared",
+      "from": "failed",
+      "guard": "explicit UI action",
+      "operationId": "clearIssuerContext",
+      "to": "idle"
+    },
+    {
+      "event": "use_last_snapshot",
+      "from": "failed",
+      "guard": "valid active snapshot exists",
+      "operationId": "useActiveSnapshot",
+      "to": "ready"
+    },
+    {
+      "event": "local_data_deleted",
+      "from": "failed",
+      "guard": "explicit confirmed delete",
+      "operationId": "deleteLocalData",
+      "to": "idle"
+    },
+    {
+      "event": "manual_refresh_requested",
+      "from": "cancelled",
+      "guard": "active issuer exists",
+      "operationId": "refreshFundamentals",
+      "to": "checking"
+    },
+    {
+      "event": "issuer_selected",
+      "from": "cancelled",
+      "guard": "valid CIK",
+      "operationId": "selectIssuer",
+      "to": "checking"
+    },
+    {
+      "event": "issuer_cleared",
+      "from": "cancelled",
+      "guard": "explicit UI action",
+      "operationId": "clearIssuerContext",
+      "to": "idle"
+    },
+    {
+      "event": "use_last_snapshot",
+      "from": "cancelled",
+      "guard": "valid active snapshot exists",
+      "operationId": "useActiveSnapshot",
+      "to": "ready"
+    },
+    {
+      "event": "local_data_deleted",
+      "from": "cancelled",
+      "guard": "explicit confirmed delete",
+      "operationId": "deleteLocalData",
+      "to": "idle"
+    }
+  ],
+  "version": "5.0.0"
+}

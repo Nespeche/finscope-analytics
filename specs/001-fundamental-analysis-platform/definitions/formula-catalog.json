@@ -1,0 +1,1036 @@
+{
+  "catalogId": "formula-catalog",
+  "version": "1.1.0",
+  "status": "ACTIVE_AUTHORITY",
+  "invariants": [
+    "every active metric resolves to exactly one FormulaDefinition",
+    "all inputs and available outputs are canonical DecimalString values",
+    "all arithmetic uses decimal.js v10+ with arbitrary precision and ROUND_HALF_EVEN",
+    "persisted computed decimals are rounded to scale 12 before canonical serialization; trailing zeros are removed",
+    "zero is serialized only as 0; -0 and exponential notation are forbidden",
+    "evaluation follows evaluationPrecedence exactly and returns the first applicable reasonCode",
+    "local clock, locale, timezone and binary floating point never influence formula output or fingerprints",
+    "unavailable states never persist a fabricated numeric value"
+  ],
+  "reasonCodes": [
+    "invalid_arity",
+    "required_input_missing",
+    "invalid_input",
+    "non_canonical_decimal",
+    "insufficient_observations",
+    "zero_denominator",
+    "non_finite_result",
+    "invalid_price_observation",
+    "incomplete_debt_buckets",
+    "overlapping_debt_buckets"
+  ],
+  "formulas": [
+    {
+      "formulaId": "identity",
+      "formulaVersion": "1.1.0",
+      "priority": 10,
+      "arity": {
+        "minimum": 1,
+        "maximum": 1
+      },
+      "inputKind": "scalar",
+      "expression": "x",
+      "semantics": "Devuelve el input decimal sin modificar su valor.",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    },
+    {
+      "formulaId": "add",
+      "formulaVersion": "1.1.0",
+      "priority": 20,
+      "arity": {
+        "minimum": 2,
+        "maximum": null
+      },
+      "inputKind": "ordered_scalars",
+      "expression": "Σ inputs",
+      "semantics": "Suma los inputs en el orden declarado.",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    },
+    {
+      "formulaId": "subtract",
+      "formulaVersion": "1.1.0",
+      "priority": 30,
+      "arity": {
+        "minimum": 2,
+        "maximum": 2
+      },
+      "inputKind": "ordered_scalars",
+      "expression": "input[0] - input[1]",
+      "semantics": "Resta el segundo input al primero.",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    },
+    {
+      "formulaId": "divide",
+      "formulaVersion": "1.1.0",
+      "priority": 40,
+      "arity": {
+        "minimum": 2,
+        "maximum": 2
+      },
+      "inputKind": "ordered_scalars",
+      "expression": "input[0] / input[1]",
+      "semantics": "Divide numerador por denominador.",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "effective denominator equals zero",
+          "state": "not_meaningful",
+          "reasonCode": "zero_denominator",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    },
+    {
+      "formulaId": "ratio_change",
+      "formulaVersion": "1.1.0",
+      "priority": 50,
+      "arity": {
+        "minimum": 2,
+        "maximum": 2
+      },
+      "inputKind": "ordered_scalars",
+      "expression": "(current / prior) - 1",
+      "semantics": "Calcula variación relativa respecto del valor anterior.",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "effective denominator equals zero",
+          "state": "not_meaningful",
+          "reasonCode": "zero_denominator",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    },
+    {
+      "formulaId": "divide_average_balance",
+      "formulaVersion": "1.1.0",
+      "priority": 60,
+      "arity": {
+        "minimum": 3,
+        "maximum": 3
+      },
+      "inputKind": "ordered_scalars",
+      "expression": "numerator / ((opening + closing) / 2)",
+      "semantics": "Divide por el saldo medio aritmético de apertura y cierre.",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "effective denominator equals zero",
+          "state": "not_meaningful",
+          "reasonCode": "zero_denominator",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    },
+    {
+      "formulaId": "debt_bucket_sum",
+      "formulaVersion": "1.1.0",
+      "priority": 70,
+      "arity": {
+        "minimum": 1,
+        "maximum": null
+      },
+      "inputKind": "named_buckets",
+      "expression": "Σ exact non-overlapping debt buckets",
+      "semantics": "Suma únicamente buckets de deuda exactos, completos y no solapados.",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "required bucket unresolved or coverage incomplete",
+          "state": "partial",
+          "reasonCode": "incomplete_debt_buckets",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "bucket intervals overlap",
+          "state": "partial",
+          "reasonCode": "overlapping_debt_buckets",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    },
+    {
+      "formulaId": "last",
+      "formulaVersion": "1.1.0",
+      "priority": 80,
+      "arity": {
+        "minimum": 1,
+        "maximum": null
+      },
+      "inputKind": "ordered_series",
+      "expression": "series[n-1]",
+      "semantics": "Devuelve la última observación según el orden temporal validado.",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    },
+    {
+      "formulaId": "min",
+      "formulaVersion": "1.1.0",
+      "priority": 90,
+      "arity": {
+        "minimum": 1,
+        "maximum": null
+      },
+      "inputKind": "ordered_series",
+      "expression": "min(series)",
+      "semantics": "Devuelve el mínimo decimal de la serie validada.",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    },
+    {
+      "formulaId": "max",
+      "formulaVersion": "1.1.0",
+      "priority": 100,
+      "arity": {
+        "minimum": 1,
+        "maximum": null
+      },
+      "inputKind": "ordered_series",
+      "expression": "max(series)",
+      "semantics": "Devuelve el máximo decimal de la serie validada.",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    },
+    {
+      "formulaId": "mean",
+      "formulaVersion": "1.1.0",
+      "priority": 110,
+      "arity": {
+        "minimum": 1,
+        "maximum": null
+      },
+      "inputKind": "ordered_series",
+      "expression": "Σ series / n",
+      "semantics": "Media aritmética de la serie validada.",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    },
+    {
+      "formulaId": "median",
+      "formulaVersion": "1.1.0",
+      "priority": 120,
+      "arity": {
+        "minimum": 1,
+        "maximum": null
+      },
+      "inputKind": "ordered_series",
+      "expression": "middle(sorted(series))",
+      "semantics": "Mediana; con cantidad par promedia los dos valores centrales.",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    },
+    {
+      "formulaId": "simple_return",
+      "formulaVersion": "1.1.0",
+      "priority": 130,
+      "arity": {
+        "minimum": 2,
+        "maximum": null
+      },
+      "inputKind": "price_series",
+      "expression": "(last / first) - 1",
+      "semantics": "Retorno simple entre primera y última observación positiva.",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "any required price is null, non-canonical or <= 0",
+          "state": "insufficient",
+          "reasonCode": "invalid_price_observation",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    },
+    {
+      "formulaId": "max_drawdown",
+      "formulaVersion": "1.1.0",
+      "priority": 140,
+      "arity": {
+        "minimum": 2,
+        "maximum": null
+      },
+      "inputKind": "price_series",
+      "expression": "min(price / runningMax - 1)",
+      "semantics": "Caída máxima desde un máximo acumulado; rango cerrado [-1,0].",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "any required price is null, non-canonical or <= 0",
+          "state": "insufficient",
+          "reasonCode": "invalid_price_observation",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    },
+    {
+      "formulaId": "normalized_ols_ordinal",
+      "formulaVersion": "1.1.0",
+      "priority": 150,
+      "arity": {
+        "minimum": 2,
+        "maximum": null
+      },
+      "inputKind": "price_series",
+      "expression": "OLS slope of y=price/firstPrice over x=0..n-1",
+      "semantics": "Pendiente OLS ordinal sobre precios normalizados por el primer precio. Una serie de una sola observación falla primero por aridad y devuelve invalid_arity.",
+      "decimalPolicy": {
+        "library": "decimal.js",
+        "input": "canonical DecimalString",
+        "precision": "arbitrary",
+        "persistedScale": 12,
+        "rounding": "ROUND_HALF_EVEN",
+        "serialization": "round to scale 12 with ROUND_HALF_EVEN, then decimal.js toString() canonical form",
+        "clockDependency": "PROHIBITED"
+      },
+      "orderingPolicy": "inputIds order is normative; series are sorted by validated observation date ascending before evaluation",
+      "negativeValuePolicy": "preserve valid accounting negatives; never apply absolute value silently",
+      "edgeCases": [
+        {
+          "condition": "input count violates the declared arity",
+          "state": "insufficient",
+          "reasonCode": "invalid_arity",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "a required input position is absent or null",
+          "state": "insufficient",
+          "reasonCode": "required_input_missing",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is not a finite base-10 decimal string or violates the input kind",
+          "state": "insufficient",
+          "reasonCode": "invalid_input",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "an input is numerically parseable but is not canonical DecimalString",
+          "state": "insufficient",
+          "reasonCode": "non_canonical_decimal",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "any required price is null, non-canonical or <= 0",
+          "state": "insufficient",
+          "reasonCode": "invalid_price_observation",
+          "valueMustBeAbsent": true
+        },
+        {
+          "condition": "arithmetic output is non-finite",
+          "state": "insufficient",
+          "reasonCode": "non_finite_result",
+          "valueMustBeAbsent": true
+        }
+      ],
+      "outputContract": {
+        "availableValue": "canonical DecimalString",
+        "unavailableValue": "omitted",
+        "stateRequired": true,
+        "reasonCodeRequiredWhenUnavailable": true
+      }
+    }
+  ],
+  "evaluationPrecedence": [
+    {
+      "order": 1,
+      "conditionClass": "arity",
+      "reasonCode": "invalid_arity",
+      "rule": "validate declared minimum and maximum before inspecting values"
+    },
+    {
+      "order": 2,
+      "conditionClass": "missing_input",
+      "reasonCode": "required_input_missing",
+      "rule": "a required position is absent or null"
+    },
+    {
+      "order": 3,
+      "conditionClass": "invalid_input",
+      "reasonCode": "invalid_input",
+      "rule": "input is not a finite base-10 decimal string or violates the input kind"
+    },
+    {
+      "order": 4,
+      "conditionClass": "non_canonical_input",
+      "reasonCode": "non_canonical_decimal",
+      "rule": "numeric text is parseable but violates DecimalString canonical form"
+    },
+    {
+      "order": 5,
+      "conditionClass": "insufficient_data",
+      "reasonCode": "insufficient_observations",
+      "rule": "valid canonical data still cannot satisfy a formula-specific minimum observation rule"
+    },
+    {
+      "order": 6,
+      "conditionClass": "zero_denominator",
+      "reasonCode": "zero_denominator",
+      "rule": "the effective denominator is exactly zero"
+    },
+    {
+      "order": 7,
+      "conditionClass": "result_unavailable",
+      "reasonCode": "non_finite_result",
+      "rule": "the computed result is unavailable or non-finite after all prior checks"
+    }
+  ]
+}

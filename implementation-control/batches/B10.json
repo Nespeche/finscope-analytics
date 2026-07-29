@@ -1,0 +1,344 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B10",
+  "ordinal": 10,
+  "title": "Reglas, síntesis y fingerprints",
+  "domain": "analytics-fingerprints",
+  "status": "COMPLETED",
+  "taskCount": 3,
+  "executionOrder": [
+    "T044",
+    "T045",
+    "T046"
+  ],
+  "externalDependencies": [
+    "T012",
+    "T013",
+    "T014",
+    "T015",
+    "T020",
+    "T041",
+    "T042",
+    "T043"
+  ],
+  "requirements": [
+    "FR-017",
+    "FR-018",
+    "FR-019",
+    "FR-025",
+    "FR-026",
+    "FR-027",
+    "FR-028",
+    "FR-029",
+    "NFR-001",
+    "NFR-005"
+  ],
+  "acceptanceCriteria": [
+    "AC-033",
+    "AC-034",
+    "AC-035",
+    "AC-036",
+    "AC-037",
+    "AC-038",
+    "AC-039",
+    "AC-040",
+    "AC-041",
+    "AC-042",
+    "AC-078",
+    "AC-079"
+  ],
+  "authorityIds": [
+    "AUTH-003",
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-006",
+    "AUTH-008",
+    "AUTH-009",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-013",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-024",
+    "AUTH-025",
+    "AUTH-026",
+    "AUTH-034"
+  ],
+  "primaryAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+    "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json#/entries",
+    "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections/1",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-test-vectors.json",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json",
+    "specs/001-fundamental-analysis-platform/fixtures/rules/rule-test-vectors.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-033",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-034",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-035",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-036",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-037",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-038",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-039",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-040",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-041",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-042",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-078",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-079"
+  ],
+  "targetFiles": [
+    "src/domain/analytics/rule-engine.ts",
+    "src/domain/analytics/synthesis.ts",
+    "src/domain/fingerprints/fingerprint-service.ts",
+    "src/domain/fingerprints/projections.ts",
+    "tests/unit/analytics/rule-vectors.test.ts",
+    "tests/unit/analytics/synthesis.test.ts",
+    "tests/unit/fingerprints/fingerprint-vectors.test.ts"
+  ],
+  "testFiles": [
+    "tests/unit/analytics/rule-vectors.test.ts",
+    "tests/unit/analytics/synthesis.test.ts",
+    "tests/unit/fingerprints/fingerprint-vectors.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T044",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": false,
+      "dependencies": [
+        "T012",
+        "T041",
+        "T042"
+      ],
+      "requirementRefs": [
+        "FR-017",
+        "FR-018",
+        "FR-019",
+        "NFR-001",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-033",
+        "AC-034",
+        "AC-035"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-026",
+        "AUTH-034"
+      ],
+      "files": [
+        "src/domain/analytics/rule-engine.ts",
+        "tests/unit/analytics/rule-vectors.test.ts"
+      ],
+      "tests": [
+        "tests/unit/analytics/rule-vectors.test.ts"
+      ],
+      "doneWhen": "27 rule vectors yield only three allowed states",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "7ada8930ec5f351f7a254f9615dbfa258b19b8bf2abca0d9160007ba6b5578fe"
+    },
+    {
+      "id": "T045",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": true,
+      "dependencies": [
+        "T043",
+        "T044"
+      ],
+      "requirementRefs": [
+        "FR-017",
+        "FR-019",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-035",
+        "AC-036"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/domain/analytics/synthesis.ts",
+        "tests/unit/analytics/synthesis.test.ts"
+      ],
+      "tests": [
+        "tests/unit/analytics/synthesis.test.ts"
+      ],
+      "doneWhen": "synthesis consumes rule results, preserves not-evaluable reasons, and emits no recommendation, target price or confidence score",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "26c52dd0a9b9edee67a57d099a0d98debdbe14fd86e8344751cedb758eb32668"
+    },
+    {
+      "id": "T046",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": false,
+      "dependencies": [
+        "T013",
+        "T014",
+        "T015",
+        "T020"
+      ],
+      "requirementRefs": [
+        "FR-025",
+        "FR-026",
+        "FR-027",
+        "FR-028",
+        "FR-029",
+        "NFR-001",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-037",
+        "AC-038",
+        "AC-039",
+        "AC-040",
+        "AC-041",
+        "AC-042",
+        "AC-078",
+        "AC-079"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-026",
+        "AUTH-034"
+      ],
+      "files": [
+        "src/domain/fingerprints/projections.ts",
+        "src/domain/fingerprints/fingerprint-service.ts",
+        "tests/unit/fingerprints/fingerprint-vectors.test.ts"
+      ],
+      "tests": [
+        "tests/unit/fingerprints/fingerprint-vectors.test.ts"
+      ],
+      "doneWhen": "all exact digest/invariance vectors pass and no self-reference exists",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "169cf86da1de220bfa41c9327803151071332be576f721559fb95c69d2534913"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": false,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-unit",
+        "category": "unit",
+        "command": "npm run test:unit -- tests/unit/analytics/rule-vectors.test.ts tests/unit/analytics/synthesis.test.ts tests/unit/fingerprints/fingerprint-vectors.test.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B10_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

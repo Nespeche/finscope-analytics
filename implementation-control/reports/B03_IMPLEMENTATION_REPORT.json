@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "1.1.0",
+  "batchId": "B03",
+  "status": "LOCAL_VALIDATION_REQUIRED",
+  "taskResults": [
+    {
+      "taskId": "T011",
+      "status": "IMPLEMENTED_PENDING_VALIDATION",
+      "files": [
+        "src/core/decimal.ts",
+        "tests/unit/core/decimal.test.ts"
+      ],
+      "doneWhen": "all formula decimal edge vectors pass without Number arithmetic",
+      "evidence": "Candidate r2 unit execution discovered decimal.test.ts and passed the 36 positive-vector check, then failed because the test misclassified NEG-EXTRA-PROPERTY as a DecimalString failure. Candidate r3/r4 filters by the fixture expectedFailure discriminator and asserts the exact three DecimalString-negative cases; complete normative unit execution remains pending."
+    },
+    {
+      "taskId": "T013",
+      "status": "IMPLEMENTED_PENDING_VALIDATION",
+      "files": [
+        "src/core/canonical-json.ts",
+        "src/core/sha256.ts",
+        "tests/unit/core/canonical-json.test.ts"
+      ],
+      "doneWhen": "official package vectors produce exact bytes and digests",
+      "evidence": "Candidate r2 exact npm run typecheck passed, closing TS2345. Vitest stopped at T011 before canonical-json.test.ts executed, so exact bytes/digests remain pending."
+    },
+    {
+      "taskId": "T014",
+      "status": "IMPLEMENTED_PENDING_VALIDATION",
+      "files": [
+        "src/core/clock.ts",
+        "src/core/presentation-time.ts",
+        "tests/unit/core/clock-boundary.test.ts"
+      ],
+      "doneWhen": "normative modules accept no ambient Date.now or locale dependency",
+      "evidence": "Candidate r2 typecheck passed, but clock-boundary.test.ts was not executed because Vitest bail stopped after the T011 failure."
+    },
+    {
+      "taskId": "T015",
+      "status": "IMPLEMENTED_PENDING_VALIDATION",
+      "files": [
+        "src/authority/loaders.ts",
+        "src/authority/types.ts",
+        "tests/contract/authority-loading.test.ts"
+      ],
+      "doneWhen": "unknown authority IDs, missing pointers and heuristic paths fail closed",
+      "evidence": "Candidate r2 typecheck passed; the contract command was NOT_RUN due fail-fast after the unit failure."
+    },
+    {
+      "taskId": "T016",
+      "status": "IMPLEMENTED_PENDING_VALIDATION",
+      "files": [
+        "src/types/messages.ts",
+        "tests/unit/types/messages.test.ts"
+      ],
+      "doneWhen": "switches are exhaustive and duplicate operation IDs are detectable",
+      "evidence": "Candidate r2 messages.test.ts was effectively discovered and all 5 tests passed. Task remains pending until the required aggregate, full regression and build also pass."
+    }
+  ],
+  "testResults": [
+    {
+      "id": "r2-npm-ci",
+      "command": "npm ci",
+      "status": "PASS",
+      "exitCode": 0,
+      "details": "Attached evidence records 107 packages installed from the exact r2 lockfile in 3.675 seconds. Warnings about allowScripts and three high vulnerabilities are non-blocking for this failure and do not indicate missing dependencies."
+    },
+    {
+      "id": "r2-typecheck",
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "exitCode": 0,
+      "details": "Browser/product and SEC gateway TypeScript projects passed. This closes B03-V001."
+    },
+    {
+      "id": "r2-test-unit",
+      "command": "npm run test:unit -- tests/unit/core/canonical-json.test.ts tests/unit/core/clock-boundary.test.ts tests/unit/core/decimal.test.ts tests/unit/types/messages.test.ts",
+      "status": "FAIL",
+      "exitCode": 1,
+      "details": "Vitest discovered the four requested files, executed messages.test.ts (5 PASS) and decimal.test.ts until NEG-EXTRA-PROPERTY failed. With bail=1, canonical-json.test.ts, clock-boundary.test.ts and the remaining decimal assertions did not execute."
+    },
+    {
+      "id": "r2-test-contract",
+      "command": "npm run test:contract -- tests/contract/authority-loading.test.ts",
+      "status": "NOT_RUN",
+      "exitCode": null,
+      "details": "Fail-fast after r2 test-unit."
+    },
+    {
+      "id": "r2-regression-vitest",
+      "command": "npm run test",
+      "status": "NOT_RUN",
+      "exitCode": null,
+      "details": "Fail-fast after r2 test-unit."
+    },
+    {
+      "id": "r2-build",
+      "command": "npm run build",
+      "status": "NOT_RUN",
+      "exitCode": null,
+      "details": "Fail-fast after r2 test-unit."
+    },
+    {
+      "id": "r3-control-plane",
+      "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .",
+      "status": "PASS",
+      "exitCode": 0,
+      "details": "991/991 checks PASS; 109 task hashes, 25 batch full-file hashes, gates, active B03 dependencies and 19-file .specify hash are coherent. B03.json was not modified in r3, so its locked full-file hash remains unchanged."
+    },
+    {
+      "id": "r3-static-fixture-classification",
+      "command": "independent fixture-discriminator inspection and T011 source review",
+      "status": "PASS_AUXILIARY",
+      "exitCode": 0,
+      "details": "Exactly three cases declare expectedFailure DecimalString; the other four retain canonical decimal inputs and fail at different semantic layers. No fixture/schema/authority was changed."
+    }
+  ],
+  "filesCreated": [
+    "src/core/decimal.ts",
+    "src/core/canonical-json.ts",
+    "src/core/sha256.ts",
+    "src/core/clock.ts",
+    "src/core/presentation-time.ts",
+    "src/authority/loaders.ts",
+    "src/authority/types.ts",
+    "src/types/messages.ts",
+    "tests/unit/core/decimal.test.ts",
+    "tests/unit/core/canonical-json.test.ts",
+    "tests/unit/core/clock-boundary.test.ts",
+    "tests/contract/authority-loading.test.ts",
+    "tests/unit/types/messages.test.ts",
+    "implementation-control/reports/B03_IMPLEMENTATION_REPORT.md",
+    "implementation-control/reports/B03_IMPLEMENTATION_REPORT.json",
+    "implementation-control/reports/B03_LOCAL_VALIDATION_INSTRUCTIONS.md"
+  ],
+  "filesModified": [
+    "DOCUMENTATION_INDEX.md",
+    "FILE_MANIFEST.sha256",
+    "PACKAGE_INVENTORY.json",
+    "PACKAGE_METADATA.json",
+    "PROJECT_CONTEXT.md",
+    "README.md",
+    "START_HERE_CHATGPT.md",
+    "implementation-control/AUTHORITY_MATRIX.json",
+    "implementation-control/CHANGE_LEDGER.md",
+    "implementation-control/IMPLEMENTATION_BATCH_MAP.json",
+    "implementation-control/IMPLEMENTATION_BATCH_MAP.md",
+    "implementation-control/IMPLEMENTATION_STATE.json",
+    "implementation-control/TASK_SOURCE_LOCK.json",
+    "implementation-control/batches/B03.json",
+    "implementation-control/reports/B03_IMPLEMENTATION_REPORT.json",
+    "implementation-control/reports/B03_IMPLEMENTATION_REPORT.md",
+    "implementation-control/reports/B03_LOCAL_VALIDATION_INSTRUCTIONS.md",
+    "src/core/sha256.ts",
+    "tests/unit/core/canonical-json.test.ts",
+    "tests/unit/core/decimal.test.ts"
+  ],
+  "filesDeleted": [],
+  "localEvidence": {
+    "logicalName": "FinScope_local_evidence_B03_20260724-083533.zip",
+    "sha256": "2f2acef16e8b1cfd6acacf02c654f9f05720a7cb1b5e3bb95595a722a3d01ae4",
+    "candidateLogicalName": "FinScope_Analytics_SpecDev_ChatGPT_v0.21.4_B03_local_validation_candidate_r2.zip",
+    "candidateSha256": "0efef1de32f4ebb0b79c1ff095947dabd9e60f364fb3c5716aa5a8e7532b5525",
+    "status": "FAIL",
+    "verified": true,
+    "blockingCommand": "test-unit",
+    "blockingFinding": "B03-V002"
+  },
+  "specifyTreeSha256Before": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "specifyTreeSha256After": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "openFindings": [
+    {
+      "id": "B03-V001",
+      "status": "CLOSED_BY_R2_TYPECHECK_EVIDENCE",
+      "closureEvidence": "FinScope_local_evidence_B03_20260724-083533.zip sha256:2f2acef16e8b1cfd6acacf02c654f9f05720a7cb1b5e3bb95595a722a3d01ae4"
+    },
+    {
+      "id": "B03-V002",
+      "status": "REMEDIATED_IN_CANDIDATE_R3_AWAITING_VALIDATION",
+      "closureCondition": "External clean validation of exact candidate r4 with all six commands PASS."
+    }
+  ],
+  "nextBatchId": "B04",
+  "checks": [
+    {
+      "id": "r4-windows-path-hardening",
+      "status": "PASS",
+      "details": "Product code and B03 tests are byte-identical to r3. The physical archive name is FS_B03_r4.zip and the prescribed work root is C:\\FS\\B03r4, eliminating the prior long outer directory and location mismatch. Full executable B03 validation remains pending."
+    }
+  ]
+}

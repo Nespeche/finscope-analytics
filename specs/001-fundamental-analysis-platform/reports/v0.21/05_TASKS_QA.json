@@ -1,0 +1,136 @@
+{
+  "reportId": "FinScope-v0.21-remediated-tasks-qa",
+  "date": "2026-07-21",
+  "iterations": 3,
+  "taskCount": 109,
+  "countsByPhase": {
+    "Phase 1 — Setup": 10,
+    "Phase 2 — Foundational": 13,
+    "Phase 3 — User Story 1: Resolve issuer and acquire SEC data": 12,
+    "Phase 4 — User Story 2: Analyze fundamentals with evidence": 18,
+    "Phase 5 — User Story 3: Refresh and reanalyze safely": 9,
+    "Phase 6 — User Story 4: Manage optional historical price": 9,
+    "Phase 7 — User Story 5: Persist, export, restore and delete local data": 9,
+    "Phase 8 — User Story 6: Operate accessibly and recover from failures": 9,
+    "Phase 9 — Cloudflare Free, security and observability": 10,
+    "Phase 10 — Validation and documentation": 10
+  },
+  "countsByStory": {
+    "cross-cutting": 43,
+    "US1": 12,
+    "US2": 18,
+    "US3": 9,
+    "US4": 9,
+    "US5": 9,
+    "US6": 9
+  },
+  "checks": {
+    "taskCount109": true,
+    "uniqueIds": true,
+    "sequentialIdSet": true,
+    "dependencyOrder": true,
+    "dependenciesExist": true,
+    "acyclic": true,
+    "phaseCount10": true,
+    "requirements49": true,
+    "acceptanceCriteria84": true,
+    "requirementsCovered": true,
+    "requirementsTested": true,
+    "acceptanceCovered": true,
+    "acceptanceTested": true,
+    "noInvalidRequirementRefs": true,
+    "noInvalidAcceptanceRefs": true,
+    "everyTaskRequirement": true,
+    "everyTaskAcceptance": true,
+    "everyTaskAuthority": true,
+    "everyTaskExactFiles": true,
+    "everyTaskDoneWhen": true,
+    "implementationTasksTested": true,
+    "noCycles": true,
+    "noParallelCollisions": true,
+    "finalClosureComplete": true,
+    "noUserTerminalDependency": true,
+    "allAnaClosed": true,
+    "utf8Valid": true,
+    "jsonValid": true,
+    "yamlValid": true,
+    "schemasCompile": true,
+    "noEmptyFiles": true,
+    "specifyByteIdentical": true,
+    "noProductCode": true,
+    "dependencyEdges": 433,
+    "roots": [
+      "T001",
+      "T002",
+      "T003",
+      "T005",
+      "T006",
+      "T007",
+      "T009",
+      "T010"
+    ],
+    "leaves": [
+      "T109"
+    ],
+    "longestPath": [
+      "T001",
+      "T012",
+      "T018",
+      "T026",
+      "T027",
+      "T028",
+      "T030",
+      "T036",
+      "T039",
+      "T042",
+      "T044",
+      "T045",
+      "T047",
+      "T048",
+      "T053",
+      "T060",
+      "T062",
+      "T087",
+      "T088",
+      "T104",
+      "T107",
+      "T108",
+      "T109"
+    ],
+    "finalClosure": "109/109",
+    "schemasCompiled": 26,
+    "formulaDefinitions": 15,
+    "metrics": {
+      "fundamental": 24,
+      "price": 8
+    },
+    "insightRules": 9,
+    "wcagCriteria": 55
+  },
+  "qaIterations": [
+    {
+      "iteration": 1,
+      "focus": "task structure and required ANA edges",
+      "result": "CONFORME"
+    },
+    {
+      "iteration": 2,
+      "focus": "reversible traceability, parallel collisions and final closure",
+      "result": "CONFORME"
+    },
+    {
+      "iteration": 3,
+      "focus": "fresh cross-domain reanalysis and package integrity",
+      "result": "CONFORME"
+    }
+  ],
+  "result": "CONFORME",
+  "blockers": [],
+  "fails": [],
+  "gates": {
+    "tasksAuthorized": true,
+    "analysisAuthorized": true,
+    "implementationAuthorized": true,
+    "convergenceAuthorized": false
+  }
+}

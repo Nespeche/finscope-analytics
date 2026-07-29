@@ -1,0 +1,135 @@
+{
+  "name": "finscope-analytics",
+  "version": "0.21.2",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic, local-first fundamental analysis workspace.",
+  "engines": {
+    "node": ">=22.12.0",
+    "npm": ">=10.9.0"
+  },
+  "packageManager": "npm@10.9.2",
+  "scripts": {
+    "bootstrap": "npm ci",
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "typecheck": "tsc -p ./tsconfig.json --noEmit && tsc -p ./workers/sec-gateway/tsconfig.json --noEmit",
+    "validate:control-plane": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .",
+    "test": "vitest run",
+    "test:contract": "vitest run --project contract",
+    "test:unit": "vitest run --project unit",
+    "test:integration": "vitest run --project integration",
+    "test:negative": "vitest run --project negative",
+    "test:e2e": "playwright test tests/e2e",
+    "test:accessibility": "playwright test tests/accessibility",
+    "wrangler:dev": "wrangler dev --config workers/sec-gateway/wrangler.jsonc --local",
+    "wrangler:deploy:dry-run": "wrangler deploy --config workers/sec-gateway/wrangler.jsonc --dry-run --outdir .wrangler/dry-run",
+    "test:performance:unit": "vitest run --project performance",
+    "test:performance:e2e": "playwright test tests/performance",
+    "test:performance": "npm run test:performance:unit && npm run test:performance:e2e",
+    "test:browser": "playwright test"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "decimal.js": "10.6.0",
+    "svelte": "5.56.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.12.1",
+    "@playwright/test": "1.61.1",
+    "@sveltejs/vite-plugin-svelte": "7.1.2",
+    "typescript": "7.0.2",
+    "vite": "8.1.5",
+    "vitest": "4.1.10",
+    "wrangler": "4.112.0"
+  },
+  "finscope": {
+    "dependencyPolicy": {
+      "exactVersions": true,
+      "paidDependencyAllowed": false,
+      "inventory": [
+        {
+          "name": "ajv",
+          "version": "8.20.0",
+          "scope": "runtime",
+          "license": "MIT",
+          "purpose": "Draft 2020-12 JSON Schema validation",
+          "paidRequirement": false
+        },
+        {
+          "name": "decimal.js",
+          "version": "10.6.0",
+          "scope": "runtime",
+          "license": "MIT",
+          "purpose": "Deterministic decimal arithmetic with ROUND_HALF_EVEN",
+          "paidRequirement": false
+        },
+        {
+          "name": "svelte",
+          "version": "5.56.7",
+          "scope": "runtime",
+          "license": "MIT",
+          "purpose": "Browser SPA user interface",
+          "paidRequirement": false
+        },
+        {
+          "name": "@axe-core/playwright",
+          "version": "4.12.1",
+          "scope": "development",
+          "license": "MPL-2.0",
+          "purpose": "Supplemental automated accessibility checks",
+          "paidRequirement": false
+        },
+        {
+          "name": "@playwright/test",
+          "version": "1.61.1",
+          "scope": "development",
+          "license": "Apache-2.0",
+          "purpose": "Deterministic browser and accessibility testing",
+          "paidRequirement": false
+        },
+        {
+          "name": "@sveltejs/vite-plugin-svelte",
+          "version": "7.1.2",
+          "scope": "development",
+          "license": "MIT",
+          "purpose": "Svelte 5 compilation in Vite",
+          "paidRequirement": false
+        },
+        {
+          "name": "typescript",
+          "version": "7.0.2",
+          "scope": "development",
+          "license": "Apache-2.0",
+          "purpose": "Strict static typing",
+          "paidRequirement": false
+        },
+        {
+          "name": "vite",
+          "version": "8.1.5",
+          "scope": "development",
+          "license": "MIT",
+          "purpose": "Local development and deterministic production build",
+          "paidRequirement": false
+        },
+        {
+          "name": "vitest",
+          "version": "4.1.10",
+          "scope": "development",
+          "license": "MIT",
+          "purpose": "Unit, integration, contract and negative test projects",
+          "paidRequirement": false
+        },
+        {
+          "name": "wrangler",
+          "version": "4.112.0",
+          "scope": "development",
+          "license": "MIT OR Apache-2.0",
+          "purpose": "Local Cloudflare Worker emulator and deployment dry-run",
+          "paidRequirement": false
+        }
+      ]
+    }
+  }
+}

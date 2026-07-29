@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "1.0.0",
+  "promotionStatus": "COMPLETED",
+  "promotedRevision": "v0.21.3_B02_control_plane_hardening_completed",
+  "completedPackage": {
+    "logicalName": "FinScope_Analytics_SpecDev_ChatGPT_v0.21.3_B02_control_plane_hardening_completed.zip",
+    "sha256": "RECORDED_IN_EXTERNAL_SIDECAR"
+  },
+  "sourceBaseline": {
+    "logicalName": "FinScope_Analytics_SpecDev_ChatGPT_v0.21.2_B02_completed.zip",
+    "sha256": "ac1078c9da0c5cd12d066683eb74d70ca6f2788cb0adc136e6bb13d0e236ab9a"
+  },
+  "candidate": {
+    "logicalName": "FinScope_Analytics_SpecDev_ChatGPT_v0.21.3_B02_control_plane_hardening_candidate_r1.zip",
+    "sha256": "4da4412b15630093bad16328cff5beb76d9c38868dfa6df06cc1a95dfb2c4006",
+    "sidecarMatch": true
+  },
+  "evidence": {
+    "logicalName": "FinScope_control_plane_evidence_20260723-222845.zip",
+    "sha256": "f346f87204842dff8cebb5ac51ae25b7ce07c81b4c5a0c82c822e91698914d0f",
+    "schemaVersion": "1.0.0",
+    "status": "PASS"
+  },
+  "requiredCommands": [
+    {
+      "id": "npm-ci",
+      "command": "npm ci",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "playwright-chromium",
+      "command": "npm exec playwright install chromium",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "control-plane-state",
+      "command": "npm run validate:control-plane",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "typecheck",
+      "command": "npm run typecheck",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "test-control-plane",
+      "command": "npm run test:contract -- tests/contract/control-plane-integrity.test.ts tests/contract/test-discovery.test.ts tests/contract/schema-registry.test.ts",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "regression-vitest",
+      "command": "npm run test",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "regression-browser",
+      "command": "npm run test:browser",
+      "exitCode": 0,
+      "status": "PASS"
+    },
+    {
+      "id": "build",
+      "command": "npm run build",
+      "exitCode": 0,
+      "status": "PASS"
+    }
+  ],
+  "verificationCounts": {
+    "tasks": 109,
+    "batches": 25,
+    "controlPlaneChecks": 991,
+    "independentChecks": 61,
+    "deliberateMutationCases": 4
+  },
+  "state": {
+    "B01": "COMPLETED",
+    "B02": "COMPLETED",
+    "B03": "PENDING",
+    "activeBatchId": "B03",
+    "nextAuthorizedBatchId": "B03",
+    "convergenceAuthorized": false
+  },
+  "immutability": {
+    "specifyFiles": "19/19 byte-identical",
+    "specMd": "UNCHANGED",
+    "tasksMd": "UNCHANGED",
+    "tasksSha256": "94ab42f057924057388aee2f27add34c4a35cc7d1bc0a76cce292e6a0f78be1c"
+  },
+  "postPassMutationPolicy": "CLOSURE_ALLOWLIST_ONLY",
+  "allowedChangedFiles": [
+    "DOCUMENTATION_INDEX.md",
+    "FILE_MANIFEST.sha256",
+    "PACKAGE_INVENTORY.json",
+    "PACKAGE_METADATA.json",
+    "PROJECT_CONTEXT.md",
+    "README.md",
+    "START_HERE_CHATGPT.md",
+    "V0.21_PHASE_STATUS.md",
+    "docs/development.md",
+    "implementation-control/AUTHORITY_MATRIX.json",
+    "implementation-control/CHANGE_LEDGER.md",
+    "implementation-control/IMPLEMENTATION_BATCH_MAP.json",
+    "implementation-control/IMPLEMENTATION_BATCH_MAP.md",
+    "implementation-control/IMPLEMENTATION_STATE.json",
+    "implementation-control/TASK_SOURCE_LOCK.json",
+    "implementation-control/reports/CONTROL_PLANE_HARDENING_R1.md"
+  ],
+  "allowedAddedFiles": [
+    "implementation-control/reports/CONTROL_PLANE_PROMOTION_FINAL.json",
+    "implementation-control/reports/CONTROL_PLANE_PROMOTION_FINAL.md"
+  ],
+  "deferredNonBlocking": [
+    "AUD-R6-004",
+    "CFG-R6-001",
+    "NPM-AUDIT-3-HIGH-DEFERRED-TO-T098"
+  ],
+  "generatedOn": "2026-07-23"
+}

@@ -1,0 +1,12 @@
+{
+  "cik": 320193,
+  "entityName": "Apple Inc.",
+  "facts": {
+    "us-gaap": {
+      "Revenues": {
+        "label": "Revenues"
+      }
+    }
+  },
+  "_fixturePurpose": "negative partial payload; required units omitted intentionally"
+}

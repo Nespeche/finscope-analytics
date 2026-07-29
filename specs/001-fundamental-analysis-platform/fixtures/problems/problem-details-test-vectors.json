@@ -1,0 +1,505 @@
+{
+  "fixtureSetId": "problem-details-test-vectors",
+  "negativeFixtures": [
+    {
+      "expectedValid": false,
+      "fixtureId": "PROBLEM-NEGATIVE-STATUS-MISMATCH",
+      "input": {
+        "accessibilityKey": "a11y.error.invalid_request",
+        "blockedCapabilities": [],
+        "blockedOperations": [
+          "requested_operation"
+        ],
+        "code": "invalid_request",
+        "detail": "Deterministic example for InvalidRequestProblem",
+        "messageKey": "error.invalid_request",
+        "operationState": "failed",
+        "preservedCapabilities": [
+          "definitions"
+        ],
+        "recoveryActions": [
+          "correct_input"
+        ],
+        "retryability": "after_input_change",
+        "status": 422,
+        "title": "InvalidRequestProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/invalid_request"
+      },
+      "reason": "status is const-bound",
+      "schemaDef": "InvalidRequestProblem"
+    },
+    {
+      "expectedValid": false,
+      "fixtureId": "PROBLEM-NEGATIVE-CODE-MISMATCH",
+      "input": {
+        "accessibilityKey": "a11y.error.invalid_request",
+        "blockedCapabilities": [],
+        "blockedOperations": [
+          "requested_operation"
+        ],
+        "code": "cancelled",
+        "detail": "Deterministic example for InvalidRequestProblem",
+        "messageKey": "error.invalid_request",
+        "operationState": "failed",
+        "preservedCapabilities": [
+          "definitions"
+        ],
+        "recoveryActions": [
+          "correct_input"
+        ],
+        "retryability": "after_input_change",
+        "status": 400,
+        "title": "InvalidRequestProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/invalid_request"
+      },
+      "reason": "code is const-bound and local issues are not HTTP",
+      "schemaDef": "InvalidRequestProblem"
+    },
+    {
+      "expectedValid": false,
+      "fixtureId": "PROBLEM-NEGATIVE-EXTRA-FIELD",
+      "input": {
+        "accessibilityKey": "a11y.error.invalid_request",
+        "blockedCapabilities": [],
+        "blockedOperations": [
+          "requested_operation"
+        ],
+        "code": "invalid_request",
+        "detail": "Deterministic example for InvalidRequestProblem",
+        "messageKey": "error.invalid_request",
+        "operationState": "failed",
+        "preservedCapabilities": [
+          "definitions"
+        ],
+        "recoveryActions": [
+          "correct_input"
+        ],
+        "retryability": "after_input_change",
+        "status": 400,
+        "title": "InvalidRequestProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/invalid_request",
+        "unexpected": true
+      },
+      "reason": "additionalProperties=false",
+      "schemaDef": "InvalidRequestProblem"
+    },
+    {
+      "expectedValid": false,
+      "fixtureId": "PROBLEM-NEGATIVE-RECOVERY-MISMATCH",
+      "input": {
+        "accessibilityKey": "a11y.error.invalid_request",
+        "blockedCapabilities": [],
+        "blockedOperations": [
+          "requested_operation"
+        ],
+        "code": "invalid_request",
+        "detail": "Deterministic example for InvalidRequestProblem",
+        "messageKey": "error.invalid_request",
+        "operationState": "failed",
+        "preservedCapabilities": [
+          "definitions"
+        ],
+        "recoveryActions": [
+          "retry"
+        ],
+        "retryability": "after_input_change",
+        "status": 400,
+        "title": "InvalidRequestProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/invalid_request"
+      },
+      "reason": "recoveryActions is variant-constant",
+      "schemaDef": "InvalidRequestProblem"
+    },
+    {
+      "expectedValid": false,
+      "fixtureId": "PROBLEM-NEGATIVE-CAPABILITY-OVERLAP",
+      "input": {
+        "accessibilityKey": "a11y.error.invalid_request",
+        "blockedCapabilities": [
+          "definitions"
+        ],
+        "blockedOperations": [
+          "requested_operation"
+        ],
+        "code": "invalid_request",
+        "detail": "Deterministic example for InvalidRequestProblem",
+        "messageKey": "error.invalid_request",
+        "operationState": "failed",
+        "preservedCapabilities": [
+          "definitions"
+        ],
+        "recoveryActions": [
+          "correct_input"
+        ],
+        "retryability": "after_input_change",
+        "status": 400,
+        "title": "InvalidRequestProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/invalid_request"
+      },
+      "reason": "capability arrays are variant-constant and disjoint",
+      "schemaDef": "InvalidRequestProblem"
+    },
+    {
+      "expectedValid": false,
+      "fixtureId": "PROBLEM-NEGATIVE-RESOURCE-TYPE",
+      "input": {
+        "accessibilityKey": "a11y.error.resource_not_found",
+        "blockedCapabilities": [],
+        "blockedOperations": [
+          "requested_resource"
+        ],
+        "code": "resource_not_found",
+        "detail": "Deterministic example for IssuerNotFoundProblem",
+        "messageKey": "error.resource_not_found",
+        "operationState": "failed",
+        "preservedCapabilities": [
+          "definitions",
+          "evidence"
+        ],
+        "recoveryActions": [
+          "choose_existing_resource"
+        ],
+        "resourceId": "fixture-resource-id",
+        "resourceType": "mapping",
+        "retryability": "after_input_change",
+        "status": 404,
+        "title": "IssuerNotFoundProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/resource_not_found-issuer"
+      },
+      "reason": "resourceType is const-bound",
+      "schemaDef": "IssuerNotFoundProblem"
+    }
+  ],
+  "validFixtures": [
+    {
+      "expectedValid": true,
+      "fixtureId": "PROBLEM-INVALIDREQUESTPROBLEM",
+      "input": {
+        "accessibilityKey": "a11y.error.invalid_request",
+        "blockedCapabilities": [],
+        "blockedOperations": [
+          "requested_operation"
+        ],
+        "code": "invalid_request",
+        "detail": "Deterministic example for InvalidRequestProblem",
+        "messageKey": "error.invalid_request",
+        "operationState": "failed",
+        "preservedCapabilities": [
+          "definitions"
+        ],
+        "recoveryActions": [
+          "correct_input"
+        ],
+        "retryability": "after_input_change",
+        "status": 400,
+        "title": "InvalidRequestProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/invalid_request"
+      },
+      "schemaDef": "InvalidRequestProblem"
+    },
+    {
+      "expectedValid": true,
+      "fixtureId": "PROBLEM-BLOCKEDBYPOLICYPROBLEM",
+      "input": {
+        "accessibilityKey": "a11y.error.blocked_by_policy",
+        "blockedCapabilities": [],
+        "blockedOperations": [
+          "requested_operation"
+        ],
+        "code": "blocked_by_policy",
+        "detail": "Deterministic example for BlockedByPolicyProblem",
+        "messageKey": "error.blocked_by_policy",
+        "operationState": "failed",
+        "preservedCapabilities": [
+          "issuer_identity",
+          "definitions",
+          "mappings",
+          "evidence"
+        ],
+        "recoveryActions": [
+          "review_policy"
+        ],
+        "retryability": "after_policy_change",
+        "status": 403,
+        "title": "BlockedByPolicyProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/blocked_by_policy"
+      },
+      "schemaDef": "BlockedByPolicyProblem"
+    },
+    {
+      "expectedValid": true,
+      "fixtureId": "PROBLEM-PAYLOADTOOLARGEPROBLEM",
+      "input": {
+        "accessibilityKey": "a11y.error.payload_too_large",
+        "blockedCapabilities": [
+          "filings",
+          "fundamentals",
+          "insights"
+        ],
+        "blockedOperations": [
+          "acquisition"
+        ],
+        "code": "payload_too_large",
+        "detail": "Deterministic example for PayloadTooLargeProblem",
+        "messageKey": "error.payload_too_large",
+        "operationState": "failed",
+        "preservedCapabilities": [
+          "issuer_identity",
+          "local_snapshot",
+          "definitions",
+          "mappings",
+          "evidence"
+        ],
+        "recoveryActions": [
+          "narrow_request",
+          "retry"
+        ],
+        "retryability": "after_request_change",
+        "status": 413,
+        "title": "PayloadTooLargeProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/payload_too_large"
+      },
+      "schemaDef": "PayloadTooLargeProblem"
+    },
+    {
+      "expectedValid": true,
+      "fixtureId": "PROBLEM-PROVIDERUNAVAILABLEPROBLEM",
+      "input": {
+        "accessibilityKey": "a11y.error.provider_unavailable",
+        "blockedCapabilities": [
+          "filings",
+          "fundamentals",
+          "insights"
+        ],
+        "blockedOperations": [
+          "acquisition"
+        ],
+        "code": "provider_unavailable",
+        "detail": "Deterministic example for ProviderUnavailableProblem",
+        "messageKey": "error.provider_unavailable",
+        "operationState": "partial",
+        "preservedCapabilities": [
+          "issuer_identity",
+          "local_snapshot",
+          "definitions",
+          "mappings",
+          "evidence"
+        ],
+        "recoveryActions": [
+          "retry",
+          "use_cached_sec_payload",
+          "use_last_snapshot"
+        ],
+        "retryability": "backoff",
+        "status": 502,
+        "title": "ProviderUnavailableProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/provider_unavailable"
+      },
+      "schemaDef": "ProviderUnavailableProblem"
+    },
+    {
+      "expectedValid": true,
+      "fixtureId": "PROBLEM-INVALIDPAYLOADPROBLEM",
+      "input": {
+        "accessibilityKey": "a11y.error.invalid_payload",
+        "blockedCapabilities": [
+          "fundamentals",
+          "insights"
+        ],
+        "blockedOperations": [
+          "normalization"
+        ],
+        "code": "invalid_payload",
+        "detail": "Deterministic example for InvalidPayloadProblem",
+        "messageKey": "error.invalid_payload",
+        "operationState": "partial",
+        "preservedCapabilities": [
+          "issuer_identity",
+          "local_snapshot",
+          "definitions",
+          "mappings",
+          "evidence"
+        ],
+        "recoveryActions": [
+          "retry",
+          "use_cached_sec_payload",
+          "use_last_snapshot"
+        ],
+        "retryability": "after_source_change",
+        "status": 502,
+        "title": "InvalidPayloadProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/invalid_payload"
+      },
+      "schemaDef": "InvalidPayloadProblem"
+    },
+    {
+      "expectedValid": true,
+      "fixtureId": "PROBLEM-UPSTREAMTIMEOUTPROBLEM",
+      "input": {
+        "accessibilityKey": "a11y.error.upstream_timeout",
+        "blockedCapabilities": [
+          "filings",
+          "fundamentals",
+          "insights"
+        ],
+        "blockedOperations": [
+          "acquisition"
+        ],
+        "code": "upstream_timeout",
+        "detail": "Deterministic example for UpstreamTimeoutProblem",
+        "messageKey": "error.upstream_timeout",
+        "operationState": "partial",
+        "preservedCapabilities": [
+          "issuer_identity",
+          "local_snapshot",
+          "definitions",
+          "mappings",
+          "evidence"
+        ],
+        "recoveryActions": [
+          "retry",
+          "use_cached_sec_payload",
+          "use_last_snapshot"
+        ],
+        "retryability": "backoff",
+        "status": 504,
+        "title": "UpstreamTimeoutProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/upstream_timeout"
+      },
+      "schemaDef": "UpstreamTimeoutProblem"
+    },
+    {
+      "expectedValid": true,
+      "fixtureId": "PROBLEM-ISSUERNOTFOUNDPROBLEM",
+      "input": {
+        "accessibilityKey": "a11y.error.resource_not_found",
+        "blockedCapabilities": [],
+        "blockedOperations": [
+          "requested_resource"
+        ],
+        "code": "resource_not_found",
+        "detail": "Deterministic example for IssuerNotFoundProblem",
+        "messageKey": "error.resource_not_found",
+        "operationState": "failed",
+        "preservedCapabilities": [
+          "definitions",
+          "evidence"
+        ],
+        "recoveryActions": [
+          "choose_existing_resource"
+        ],
+        "resourceId": "fixture-resource-id",
+        "resourceType": "issuer",
+        "retryability": "after_input_change",
+        "status": 404,
+        "title": "IssuerNotFoundProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/resource_not_found-issuer"
+      },
+      "schemaDef": "IssuerNotFoundProblem"
+    },
+    {
+      "expectedValid": true,
+      "fixtureId": "PROBLEM-FILINGNOTFOUNDPROBLEM",
+      "input": {
+        "accessibilityKey": "a11y.error.resource_not_found",
+        "blockedCapabilities": [],
+        "blockedOperations": [
+          "requested_resource"
+        ],
+        "code": "resource_not_found",
+        "detail": "Deterministic example for FilingNotFoundProblem",
+        "messageKey": "error.resource_not_found",
+        "operationState": "failed",
+        "preservedCapabilities": [
+          "definitions",
+          "evidence"
+        ],
+        "recoveryActions": [
+          "choose_existing_resource"
+        ],
+        "resourceId": "fixture-resource-id",
+        "resourceType": "filing",
+        "retryability": "after_input_change",
+        "status": 404,
+        "title": "FilingNotFoundProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/resource_not_found-filing"
+      },
+      "schemaDef": "FilingNotFoundProblem"
+    },
+    {
+      "expectedValid": true,
+      "fixtureId": "PROBLEM-DEFINITIONNOTFOUNDPROBLEM",
+      "input": {
+        "accessibilityKey": "a11y.error.resource_not_found",
+        "blockedCapabilities": [],
+        "blockedOperations": [
+          "requested_resource"
+        ],
+        "code": "resource_not_found",
+        "detail": "Deterministic example for DefinitionNotFoundProblem",
+        "messageKey": "error.resource_not_found",
+        "operationState": "failed",
+        "preservedCapabilities": [
+          "definitions",
+          "evidence"
+        ],
+        "recoveryActions": [
+          "choose_existing_resource"
+        ],
+        "resourceId": "fixture-resource-id",
+        "resourceType": "definition",
+        "retryability": "after_input_change",
+        "status": 404,
+        "title": "DefinitionNotFoundProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/resource_not_found-definition"
+      },
+      "schemaDef": "DefinitionNotFoundProblem"
+    },
+    {
+      "expectedValid": true,
+      "fixtureId": "PROBLEM-MAPPINGNOTFOUNDPROBLEM",
+      "input": {
+        "accessibilityKey": "a11y.error.resource_not_found",
+        "blockedCapabilities": [],
+        "blockedOperations": [
+          "requested_resource"
+        ],
+        "code": "resource_not_found",
+        "detail": "Deterministic example for MappingNotFoundProblem",
+        "messageKey": "error.resource_not_found",
+        "operationState": "failed",
+        "preservedCapabilities": [
+          "definitions",
+          "evidence"
+        ],
+        "recoveryActions": [
+          "choose_existing_resource"
+        ],
+        "resourceId": "fixture-resource-id",
+        "resourceType": "mapping",
+        "retryability": "after_input_change",
+        "status": 404,
+        "title": "MappingNotFoundProblem",
+        "traceId": "trace-v016-001",
+        "type": "https://finscope.local/problems/resource_not_found-mapping"
+      },
+      "schemaDef": "MappingNotFoundProblem"
+    }
+  ],
+  "version": "5.0.0"
+}

@@ -1,0 +1,144 @@
+{
+  "$id": "https://finscope.local/schemas/xbrl-mapping-catalog.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "catalogId": {
+      "const": "xbrl-mapping-catalog"
+    },
+    "debtPolicy": {
+      "type": "object"
+    },
+    "derivations": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "invariants": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "mappings": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "canonicalConceptId": {
+            "type": "string"
+          },
+          "evidenceRef": {
+            "type": "string"
+          },
+          "inferenceAllowed": {
+            "const": false
+          },
+          "mappingId": {
+            "pattern": "^map-[a-z0-9-]+$",
+            "type": "string"
+          },
+          "mappingQuality": {
+            "enum": [
+              "exact",
+              "approved_alias"
+            ]
+          },
+          "mappingVersion": {
+            "const": "5.0.0"
+          },
+          "periodKind": {
+            "enum": [
+              "instant",
+              "duration"
+            ]
+          },
+          "precedence": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "profileIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "scopePolicy": {
+            "type": "string"
+          },
+          "signPolicy": {
+            "type": "string"
+          },
+          "status": {
+            "const": "ACTIVE"
+          },
+          "tag": {
+            "pattern": "^[A-Za-z][A-Za-z0-9]+$",
+            "type": "string"
+          },
+          "taxonomy": {
+            "enum": [
+              "us-gaap",
+              "ifrs-full",
+              "dei"
+            ]
+          },
+          "unitKind": {
+            "enum": [
+              "currency",
+              "shares",
+              "pure"
+            ]
+          }
+        },
+        "required": [
+          "mappingId",
+          "mappingVersion",
+          "status",
+          "taxonomy",
+          "tag",
+          "canonicalConceptId",
+          "profileIds",
+          "periodKind",
+          "unitKind",
+          "scopePolicy",
+          "signPolicy",
+          "mappingQuality",
+          "precedence",
+          "inferenceAllowed",
+          "evidenceRef"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "selectionOrder": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "version": {
+      "const": "5.0.0"
+    }
+  },
+  "required": [
+    "catalogId",
+    "version",
+    "status",
+    "selectionOrder",
+    "invariants",
+    "debtPolicy",
+    "derivations",
+    "mappings"
+  ],
+  "title": "Exact XBRL mappings v5.0.0",
+  "type": "object"
+}

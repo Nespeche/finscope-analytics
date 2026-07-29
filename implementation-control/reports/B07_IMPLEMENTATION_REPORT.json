@@ -1,0 +1,231 @@
+{
+  "schemaVersion": "1.1.0",
+  "batchId": "B07",
+  "status": "COMPLETED",
+  "taskResults": [
+    {
+      "taskId": "T029",
+      "status": "IMPLEMENTED_PENDING_VALIDATION",
+      "files": [
+        "workers/sec-gateway/src/catalog/version-repository.ts",
+        "src/authority/catalog-version.ts",
+        "tests/integration/worker/catalog-version.test.ts"
+      ],
+      "doneWhen": "D1 failure marks metadata stale and never blocks embedded authorities",
+      "evidence": "Implementation and required test source authored; strict isolated TypeScript diagnostics passed where applicable. Runtime closure is withheld pending exact-candidate external evidence."
+    },
+    {
+      "taskId": "T031",
+      "status": "IMPLEMENTED_PENDING_VALIDATION",
+      "files": [
+        "src/domain/fundamental/filing-selection.ts",
+        "tests/unit/fundamental/filing-selection.test.ts"
+      ],
+      "doneWhen": "8-K remains evidence only and amendments/restatements retain lineage",
+      "evidence": "Implementation and required test source authored; strict isolated TypeScript diagnostics passed where applicable. Runtime closure is withheld pending exact-candidate external evidence."
+    },
+    {
+      "taskId": "T032",
+      "status": "IMPLEMENTED_PENDING_VALIDATION",
+      "files": [
+        "src/domain/acquisition/acquisition-plan.ts",
+        "src/domain/acquisition/fallback-order.ts",
+        "tests/unit/acquisition/acquisition-plan.test.ts"
+      ],
+      "doneWhen": "no 15th call and fallback order is stable",
+      "evidence": "Implementation and required test source authored; strict isolated TypeScript diagnostics passed where applicable. Runtime closure is withheld pending exact-candidate external evidence."
+    },
+    {
+      "taskId": "T033",
+      "status": "IMPLEMENTED_PENDING_VALIDATION",
+      "files": [
+        "src/worker/acquisition-runner.ts",
+        "src/worker/operation-registry.ts",
+        "tests/integration/worker/acquisition-cancel.test.ts"
+      ],
+      "doneWhen": "the acquisition operation is dispatchable through the registry, cancelled/partial candidates never replace active pointers",
+      "evidence": "Implementation and required test source authored; strict isolated TypeScript diagnostics passed where applicable. Runtime closure is withheld pending exact-candidate external evidence."
+    },
+    {
+      "taskId": "T034",
+      "status": "IMPLEMENTED_PENDING_VALIDATION",
+      "files": [
+        "src/app/views/AcquisitionView.svelte",
+        "src/app/components/NetworkConsent.svelte",
+        "tests/e2e/acquisition-flow.spec.ts"
+      ],
+      "doneWhen": "the view exports an AUTH-027 routeDefinition and all actions are UI-reachable and announced",
+      "evidence": "Implementation and required test source authored; strict isolated TypeScript diagnostics passed where applicable. Runtime closure is withheld pending exact-candidate external evidence."
+    },
+    {
+      "taskId": "T035",
+      "status": "IMPLEMENTED_PENDING_VALIDATION",
+      "files": [
+        "tests/contract/sec/sec-fixtures.test.ts",
+        "tests/negative/sec/sec-negative.test.ts"
+      ],
+      "doneWhen": "all frozen hashes, same-host redirects, cross-host rejections and fail-closed binding cases match exact oracles",
+      "evidence": "Implementation and required test source authored; strict isolated TypeScript diagnostics passed where applicable. Runtime closure is withheld pending exact-candidate external evidence."
+    }
+  ],
+  "testResults": [
+    {
+      "id": "npm-ci",
+      "command": "npm ci",
+      "required": true,
+      "status": "PASS_R1_EVIDENCE",
+      "exitCode": 0
+    },
+    {
+      "id": "playwright-chromium",
+      "command": "npm exec playwright install chromium",
+      "required": true,
+      "status": "PASS_R1_EVIDENCE",
+      "exitCode": 0
+    },
+    {
+      "id": "typecheck",
+      "command": "npm run typecheck",
+      "required": true,
+      "status": "PASS_R1_EVIDENCE",
+      "exitCode": 0
+    },
+    {
+      "id": "test-unit",
+      "command": "npm run test:unit -- tests/unit/acquisition/acquisition-plan.test.ts tests/unit/fundamental/filing-selection.test.ts",
+      "required": true,
+      "status": "FAIL_R1_REMEDIATED_IN_R2_REQUIRES_RERUN",
+      "exitCode": 1,
+      "reason": "R1 test oracle contradicted active Frames policy and frozen vector; r2 aligns expectation to evidence_only."
+    },
+    {
+      "id": "test-integration",
+      "command": "npm run test:integration -- tests/integration/worker/acquisition-cancel.test.ts tests/integration/worker/catalog-version.test.ts",
+      "required": true,
+      "status": "NOT_RUN_R1_FAIL_FAST_R2_REQUIRES_FRESH_RUN",
+      "exitCode": null,
+      "reason": "FAIL_FAST_AFTER:test-unit"
+    },
+    {
+      "id": "test-contract",
+      "command": "npm run test:contract -- tests/contract/sec/sec-fixtures.test.ts",
+      "required": true,
+      "status": "NOT_RUN_R1_FAIL_FAST_R2_REQUIRES_FRESH_RUN",
+      "exitCode": null,
+      "reason": "FAIL_FAST_AFTER:test-unit"
+    },
+    {
+      "id": "test-negative",
+      "command": "npm run test:negative -- tests/negative/sec/sec-negative.test.ts",
+      "required": true,
+      "status": "NOT_RUN_R1_FAIL_FAST_R2_REQUIRES_FRESH_RUN",
+      "exitCode": null,
+      "reason": "FAIL_FAST_AFTER:test-unit"
+    },
+    {
+      "id": "test-e2e",
+      "command": "npm run test:e2e -- tests/e2e/acquisition-flow.spec.ts",
+      "required": true,
+      "status": "NOT_RUN_R1_FAIL_FAST_R2_REQUIRES_FRESH_RUN",
+      "exitCode": null,
+      "reason": "FAIL_FAST_AFTER:test-unit"
+    },
+    {
+      "id": "regression-vitest",
+      "command": "npm run test",
+      "required": true,
+      "status": "NOT_RUN_R1_FAIL_FAST_R2_REQUIRES_FRESH_RUN",
+      "exitCode": null,
+      "reason": "FAIL_FAST_AFTER:test-unit"
+    },
+    {
+      "id": "regression-browser",
+      "command": "npm run test:browser",
+      "required": true,
+      "status": "NOT_RUN_R1_FAIL_FAST_R2_REQUIRES_FRESH_RUN",
+      "exitCode": null,
+      "reason": "FAIL_FAST_AFTER:test-unit"
+    },
+    {
+      "id": "build",
+      "command": "npm run build",
+      "required": true,
+      "status": "NOT_RUN_R1_FAIL_FAST_R2_REQUIRES_FRESH_RUN",
+      "exitCode": null,
+      "reason": "FAIL_FAST_AFTER:test-unit"
+    }
+  ],
+  "filesCreated": [
+    "src/app/components/NetworkConsent.svelte",
+    "src/app/views/AcquisitionView.svelte",
+    "src/authority/catalog-version.ts",
+    "src/domain/acquisition/acquisition-plan.ts",
+    "src/domain/acquisition/fallback-order.ts",
+    "src/domain/fundamental/filing-selection.ts",
+    "src/worker/acquisition-runner.ts",
+    "tests/contract/sec/sec-fixtures.test.ts",
+    "tests/e2e/acquisition-flow.spec.ts",
+    "tests/integration/worker/acquisition-cancel.test.ts",
+    "tests/integration/worker/catalog-version.test.ts",
+    "tests/unit/acquisition/acquisition-plan.test.ts",
+    "tests/unit/fundamental/filing-selection.test.ts",
+    "workers/sec-gateway/src/catalog/version-repository.ts",
+    "implementation-control/reports/B07_IMPLEMENTATION_REPORT.md",
+    "implementation-control/reports/B07_IMPLEMENTATION_REPORT.json",
+    "implementation-control/reports/B07_LOCAL_VALIDATION_INSTRUCTIONS.md",
+    "implementation-control/scripts/Run-FinScope-BatchValidation_B07_r2_v1.ps1",
+    "implementation-control/reports/B07_R1_VALIDATION_FAILURE_AND_R2_REMEDIATION.md",
+    "implementation-control/reports/B07_R1_VALIDATION_FAILURE_AND_R2_REMEDIATION.json"
+  ],
+  "filesModified": [
+    "src/worker/operation-registry.ts",
+    "tests/negative/sec/sec-negative.test.ts",
+    "DOCUMENTATION_INDEX.md",
+    "PACKAGE_METADATA.json",
+    "PROJECT_CONTEXT.md",
+    "README.md",
+    "START_HERE_CHATGPT.md",
+    "implementation-control/AUTHORITY_MATRIX.json",
+    "implementation-control/CHANGE_LEDGER.md",
+    "implementation-control/IMPLEMENTATION_BATCH_MAP.json",
+    "implementation-control/IMPLEMENTATION_BATCH_MAP.md",
+    "implementation-control/IMPLEMENTATION_STATE.json",
+    "implementation-control/TASK_SOURCE_LOCK.json",
+    "implementation-control/batches/B07.json",
+    "PACKAGE_INVENTORY.json",
+    "FILE_MANIFEST.sha256",
+    "tests/unit/fundamental/filing-selection.test.ts"
+  ],
+  "filesDeleted": [
+    "implementation-control/scripts/Run-FinScope-BatchValidation_B07_r1_v1.ps1"
+  ],
+  "localEvidence": {
+    "logicalName": "FinScope_local_evidence_B07_20260726-203511327.zip",
+    "sha256": "8f34fca7807b71f56d1879bada5fed1713a9f3eb3f3d042820a03351ce100059",
+    "status": "PASS"
+  },
+  "specifyTreeSha256Before": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "specifyTreeSha256After": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "openFindings": [
+    {
+      "id": "B07-VAL001",
+      "status": "OPEN",
+      "reason": "Exact FS_B07_r2.zip runtime/browser/build validation and runner qualification evidence are pending."
+    },
+    {
+      "id": "B07-R1-TEST-001",
+      "status": "REMEDIATED_PENDING_VALIDATION",
+      "reason": "r2 corrected the authority-inconsistent frame test oracle; complete r2 evidence is required."
+    }
+  ],
+  "nextBatchId": "B08",
+  "candidate": {
+    "logicalName": "FS_B07_r2.zip",
+    "sha256": "82ef0df6d4b935da6276926138ec00d8dd6f3a465a91d18701c2e375acf1c0f8"
+  },
+  "runner": {
+    "logicalName": "Run-FinScope-BatchValidation_B07_r2_v1.ps1",
+    "sha256": "c58960a5393a9f252c9fa9430542325b2402b5aaa4bf18bb467d453db8ffacaa"
+  },
+  "sourceTasksSha256AfterClosure": "d65b86ca4e1a642c3ee5b938ee2bae0a85ef941c7c42b027ee03ab0fca971a17"
+}

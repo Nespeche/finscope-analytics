@@ -1,0 +1,65 @@
+{
+  "fixtureSetId": "storage-record-schema-examples",
+  "validFixtures": [
+    {
+      "expectedValid": true,
+      "fixtureId": "STORAGE-01",
+      "input": {
+        "analysisId": "fund-analysis-001",
+        "bundleId": "fund-bundle-0000320193-fy2025-v1",
+        "createdAt": "2026-07-21T10:00:03Z",
+        "fundamentalAnalysisFingerprint": "sha256:5086da3578b5837d3f81667388e72ea68e6952fee386ed4beac2be65cfb188db",
+        "fundamentalInputFingerprint": "sha256:68b48408acee8d3442ed52327dca225e855ca8381a00c27eaecf70ce649c3ef7",
+        "issuerCik": "0000320193",
+        "recordType": "fundamental_snapshot",
+        "snapshotId": "snap-001",
+        "state": "committed"
+      }
+    },
+    {
+      "expectedValid": true,
+      "fixtureId": "STORAGE-02",
+      "input": {
+        "createdAt": "2026-07-21T10:00:04Z",
+        "historicalPriceOverlayFingerprint": "sha256:70a4d0f87b26447e5801bc2eab97a8de650fcec6d9cd5ce007041b1cb35c51b6",
+        "issuerCik": "0000320193",
+        "overlayId": "price-overlay-0000320193-aapl",
+        "overlayVersion": 1,
+        "priceAnalysisFingerprint": "sha256:8acdcca99e9427516c8a8e24ec2cca895318e93229895cc16f6ff62fec31c66a",
+        "recordType": "price_overlay",
+        "state": "committed"
+      }
+    },
+    {
+      "expectedValid": true,
+      "fixtureId": "STORAGE-03",
+      "input": {
+        "generation": 1,
+        "issuerCik": "0000320193",
+        "pointerKind": "fundamental_snapshot",
+        "recordType": "active_pointer",
+        "targetFingerprint": "sha256:5086da3578b5837d3f81667388e72ea68e6952fee386ed4beac2be65cfb188db",
+        "targetId": "snap-001",
+        "updatedAt": "2026-07-21T10:00:05Z"
+      }
+    },
+    {
+      "expectedValid": true,
+      "fixtureId": "STORAGE-04",
+      "input": {
+        "committedAt": "2026-07-21T10:00:05Z",
+        "issuerCik": "0000320193",
+        "pointerUpdates": [
+          "fundamental_snapshot"
+        ],
+        "recordType": "commit",
+        "status": "committed",
+        "transactionId": "tx-001",
+        "writtenRecordIds": [
+          "snap-001"
+        ]
+      }
+    }
+  ],
+  "version": "5.0.0"
+}

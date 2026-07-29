@@ -1,0 +1,267 @@
+{
+  "$id": "https://finscope.local/schemas/wcag-2.2-aa-matrix.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WCAG 2.2 A/AA applicability matrix v2.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "matrixId",
+    "version",
+    "status",
+    "target",
+    "normativeSource",
+    "conformancePolicy",
+    "criterionCount",
+    "applicableCount",
+    "notApplicableCount",
+    "criteria",
+    "productRequirements",
+    "verifiedOn"
+  ],
+  "properties": {
+    "matrixId": {
+      "const": "wcag-2.2-aa-matrix"
+    },
+    "version": {
+      "const": "2.1.0"
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "target": {
+      "type": "string",
+      "minLength": 1
+    },
+    "normativeSource": {
+      "const": "https://www.w3.org/TR/WCAG22/"
+    },
+    "conformancePolicy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "criterionCount": {
+      "const": 55
+    },
+    "applicableCount": {
+      "const": 43
+    },
+    "notApplicableCount": {
+      "const": 12
+    },
+    "criteria": {
+      "type": "array",
+      "minItems": 55,
+      "maxItems": 55,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/criterion"
+      }
+    },
+    "productRequirements": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "$ref": "#/$defs/productCriterion"
+      }
+    },
+    "verifiedOn": {
+      "const": "2026-07-21"
+    }
+  },
+  "$defs": {
+    "base": {
+      "type": "object",
+      "required": [
+        "successCriterion",
+        "level",
+        "name",
+        "applicability",
+        "components",
+        "risk",
+        "oracle",
+        "testMethod",
+        "automationPossible",
+        "manualTestRequired",
+        "fixtureRef",
+        "releaseBlocking",
+        "acceptanceCriterionIds"
+      ],
+      "properties": {
+        "successCriterion": {
+          "type": "string",
+          "pattern": "^[1-4]\\.[0-9]+\\.[0-9]+$"
+        },
+        "level": {
+          "enum": [
+            "A",
+            "AA"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "applicability": {
+          "enum": [
+            "APPLICABLE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "components": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "risk": {
+          "type": "string",
+          "minLength": 1
+        },
+        "oracle": {
+          "type": "string",
+          "minLength": 1
+        },
+        "testMethod": {
+          "type": "string",
+          "minLength": 1
+        },
+        "automationPossible": {
+          "type": "boolean"
+        },
+        "manualTestRequired": {
+          "type": "boolean"
+        },
+        "fixtureRef": {
+          "type": "string",
+          "pattern": "^specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory\\.json#/oracles/SC-[1-4]-[0-9]+-[0-9]+$"
+        },
+        "releaseBlocking": {
+          "const": true
+        },
+        "notApplicableJustification": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reclassificationTrigger": {
+          "type": "string",
+          "minLength": 1
+        },
+        "acceptanceCriterionIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^AC-[0-9]{3}$"
+          }
+        }
+      }
+    },
+    "criterion": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/base"
+        },
+        {
+          "if": {
+            "properties": {
+              "applicability": {
+                "const": "NOT_APPLICABLE"
+              }
+            },
+            "required": [
+              "applicability"
+            ]
+          },
+          "then": {
+            "required": [
+              "notApplicableJustification",
+              "reclassificationTrigger"
+            ]
+          },
+          "else": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "notApplicableJustification"
+                  ]
+                },
+                {
+                  "required": [
+                    "reclassificationTrigger"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "productCriterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "successCriterion",
+        "level",
+        "name",
+        "applicability",
+        "components",
+        "risk",
+        "oracle",
+        "testMethod",
+        "automationPossible",
+        "manualTestRequired",
+        "fixtureRef",
+        "releaseBlocking"
+      ],
+      "properties": {
+        "successCriterion": {
+          "const": "2.3.3"
+        },
+        "level": {
+          "const": "AAA-treated-as-product-requirement"
+        },
+        "name": {
+          "type": "string"
+        },
+        "applicability": {
+          "const": "APPLICABLE"
+        },
+        "components": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "risk": {
+          "type": "string"
+        },
+        "oracle": {
+          "type": "string"
+        },
+        "testMethod": {
+          "type": "string"
+        },
+        "automationPossible": {
+          "type": "boolean"
+        },
+        "manualTestRequired": {
+          "type": "boolean"
+        },
+        "fixtureRef": {
+          "const": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/productRequirements/SC-2-3-3"
+        },
+        "releaseBlocking": {
+          "const": true
+        }
+      }
+    }
+  }
+}

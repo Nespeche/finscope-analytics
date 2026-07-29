@@ -1,0 +1,102 @@
+# FinScope Analytics — Instrucciones del Proyecto
+
+Este Proyecto usa GitHub Spec Kit con integración `generic`. ChatGPT reproduce manualmente el flujo Spec-Driven Development desde el ZIP activo. No usa Codex, Claude, Copilot, Gemini, agentes secundarios ni comandos nativos de agentes o Spec Kit.
+
+## 1. Baseline exclusivo
+
+La versión ZIP `completed` más reciente expresamente indicada por el usuario y su sidecar SHA-256 son el único baseline normativo activo. En Fuentes del Proyecto debe permanecer un solo ZIP activo y su sidecar.
+
+Versiones anteriores son respaldo o evidencia y nunca completan silencios, amplían gates ni sustituyen autoridades. Un ZIP `candidate`, `partial` o `LOCAL_VALIDATION_REQUIRED` se adjunta al chat de trabajo y no reemplaza el baseline hasta que la evidencia ejecutable sea aprobada y se emita un ZIP `completed`.
+
+Antes de modificar, verificar SHA-256/sidecar, CRC, raíz única, extracción segura, rutas Windows, traversal, rutas absolutas, symlinks, duplicados/case-fold, UTF-8, JSON/YAML, schemas operativos, manifiesto, inventario, metadata, secretos, temporales, builds, caches, dependencias regenerables y ZIPs anidados. Comparar los 19 archivos `.specify` y su hash. Daño, hash inconsistente, extracción insegura o baseline ambiguo => `BASELINE_INVALID`, sin cambios.
+
+## 2. Orden y gates
+
+Orden obligatorio:
+
+`constitución → especificación → aclaración → plan → checklist → tareas → análisis → implementación → convergencia`.
+
+El phase status activo identificado por `DOCUMENTATION_INDEX.md` es la única autoridad de gates. Implementar solo con:
+
+* `tasksAuthorized=true`;
+* `analysisAuthorized=true`;
+* `implementationAuthorized=true`;
+* `convergenceAuthorized=false`.
+
+T109 produce entrada para convergencia; no abre el gate. Convergencia requiere otra conversación y autorización expresa.
+
+## 3. Autoridad por campo
+
+Leer `implementation-control/AUTHORITY_MATRIX.json`. No usar una precedencia plana:
+
+* reglas: Constitución;
+* gates: phase status activo;
+* FR/NFR: `spec.md`;
+* comportamiento: `authority-crosswalk.json` → `primaryAuthority`;
+* definición de tarea, dependencias, archivos, pruebas y Done when: `tasks.md`;
+* estado corriente y próximo lote: `IMPLEMENTATION_STATE.json`;
+* lote: mirror `batches/Bxx.json`, validado por `TASK_SOURCE_LOCK.json`;
+* método: protocolo, política y prompt activos;
+* reportes: evidencia, no autoridad normativa.
+
+Ante contradicción, identificar el campo y aplicar su autoridad. Bloquear solo el alcance afectado. No inventar ni completar con históricos.
+
+## 4. Modos de trabajo
+
+### A. Documentación, auditoría o remediación
+
+Inspeccionar todo el árbol y leer íntegramente entrada, contexto, Constitución, phase status, índice, matriz de autoridad, autoridades afectadas, tareas, estado, lotes y reportes activos. Los `V0.*` anteriores y reportes previos son históricos.
+
+### B. Implementación por lote
+
+Requiere protocolo, política de contexto, estado, mapa, lock de tareas, batch activo y prompt por lotes. Inspeccionar estructuralmente todo el ZIP, pero cargar semánticamente solo entrada, contexto, Constitución, gate, índice/matriz, protocolo, política, estado, lock, batch, reporte anterior, tareas del lote, dependencias inmediatas, FR/NFR/AC, primary authorities, fixtures, composition roots, código y pruebas afectados.
+
+Un chat trabaja un lote, máximo normal seis tareas. No iniciar el siguiente. Subdividir solo entre tareas y antes de escribir; nunca dividir una tarea. `[P]` exige dependencias completas y cero colisión.
+
+## 5. Preflight de ejecutabilidad
+
+Antes de escribir, confirmar hashes de tareas/batch, archivos reales, test discovery, scripts npm existentes, Node/npm, dependencias, acceso requerido, Chromium/Playwright y herramientas del lote. No inventar comandos, archivos, rutas, dependencias ni PASS.
+
+La composición se rige por `decisions/ui-framework.md`: `src/main.ts` monta `App.svelte`; vistas, componentes, plugins y estilos se registran por contrato tipado; gateway y Web Worker tienen composition roots explícitos. La compilación Ajv se rige por `contracts/schema-validation-runtime.md`.
+
+## 6. Ejecución, pruebas y plano de control
+
+Por tarea: validar dependencias/hash; abrir autoridad y fixtures; inspeccionar archivos; implementar solo el alcance declarado; crear o actualizar pruebas; verificar descubrimiento; ejecutar prueba específica, typecheck, regresión y build aplicables; demostrar Done when. `[X]` solo con pruebas obligatorias PASS.
+
+Fallo secuencial detiene dependientes. No debilitar requisitos, schemas, fixtures, contratos o checks. `.specify` es byte-inmutable salvo solicitud expresa de infraestructura.
+
+Toda mutación de `batches/Bxx.json` obliga a recalcular su SHA-256 en `TASK_SOURCE_LOCK.json` y a ejecutar el validador del plano de control antes de implementar o empaquetar. Un hash obsoleto produce `TASK_MIRROR_MISMATCH`; no se ignora ni se corrige por inferencia.
+
+Una ruta de prueba puede ser referenciada por varias tareas cuando todas resuelven al mismo runner. Existe conflicto únicamente si la misma ruta se asigna a categorías de ejecución incompatibles.
+
+Todo cambio que cree o modifique tests de control, configuración de runners, scripts de validación, schemas operativos, locks de definición de tareas o mirrors funcionales de lotes debe ejecutar y registrar la regresión completa afectada antes de promover un baseline activo o `completed`. La inspección estática por sí sola no permite cerrar esos cambios.
+
+Excepción de cierre: después de verificar evidencia PASS vinculada al candidato exacto, pueden aplicarse únicamente checkboxes, estados, hashes/mirrors derivados, ledger, reportes, contexto, metadata, inventario y manifiesto. Estas mutaciones deben compararse mediante allowlist y no requieren repetir la ejecución del candidato si no cambian código, tests, runners, scripts, schemas, dependencias, fixtures ni comportamiento.
+
+## 7. Validación local delegada
+
+Si ChatGPT no puede ejecutar npm, Chromium, Wrangler u otra prueba obligatoria:
+
+1. implementar y validar estáticamente;
+2. dejar tareas `IMPLEMENTED_PENDING_VALIDATION`, lote `LOCAL_VALIDATION_REQUIRED` y casillas abiertas;
+3. mantener el mismo `activeBatchId`; lote siguiente `PENDING`;
+4. emitir ZIP candidato, sidecar y reporte; adjuntarlos al chat, no a Fuentes;
+5. el usuario ejecuta `LOCAL_VALIDATION_PROTOCOL.md` o el script autorizado y devuelve evidencia;
+6. otro chat verifica candidato, sidecar y evidencia;
+7. solo tras PASS se marcan `[X]`, se cierra el lote y se emite ZIP `completed`.
+
+Un candidato fallido nunca reemplaza el último baseline completado.
+
+## 8. Continuidad
+
+`IMPLEMENTATION_STATE.json` es la autoridad entre chats. Tras cada candidato o cierre actualizar baseline inmediato, paquete, lote, tareas, pruebas, archivos, `.specify`, próximo lote y `convergenceAuthorized=false`; también mirrors de batch/mapa, ledger, reporte, metadata, inventario y manifiesto. Los chats continúan desde esos archivos, no desde memoria conversacional.
+
+## 9. Restricciones técnicas
+
+Mantener stack y límites del baseline. Sin servicios pagos, trials, créditos, upgrade automático ni fallback facturable. Verificar fuentes oficiales cuando cambien límites externos, sin modificar contratos silenciosamente. La terminal puede usarse para desarrollo y validación local, nunca como requisito del usuario final.
+
+## 10. Entrega
+
+Toda modificación devuelve ZIP completo y autocontenido más sidecar: raíz corta única, manifiesto, inventario y metadata recalculados, sin secretos, temporales, `node_modules`, builds, caches ni ZIPs anidados; `.specify` intacto. Nunca entregar solo un diff.
+
+Indicar exactamente dónde guardar cada archivo, qué reemplaza, si va a Fuentes o al chat, su función y qué retirar. La implementación termina con T001–T109 `[X]`, gates y pruebas satisfechos, estado `COMPLETED` y T109. Convergencia requiere otra conversación y autorización expresa.

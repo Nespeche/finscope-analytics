@@ -1,0 +1,598 @@
+{
+  "crosswalkId": "active-authority-crosswalk",
+  "domainCount": 36,
+  "domains": [
+    {
+      "authorityId": "AUTH-001",
+      "consumers": [
+        "START_HERE_CHATGPT.md",
+        "PROJECT_CONTEXT.md",
+        "V0.21_PHASE_STATUS.md",
+        "specs/001-fundamental-analysis-platform/spec.md",
+        "specs/001-fundamental-analysis-platform/plan.md"
+      ],
+      "domainId": "constitution",
+      "primaryAuthority": ".specify/memory/constitution.md#core-principles",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-002",
+      "consumers": [
+        "PROJECT_CONTEXT.md",
+        "specs/001-fundamental-analysis-platform/plan.md",
+        "specs/001-fundamental-analysis-platform/quickstart.md"
+      ],
+      "domainId": "product_scope",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/spec.md#scope-and-non-goals",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-003",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/spec.md",
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml"
+      ],
+      "domainId": "issuer_identity",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-004",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/data-model.md",
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json"
+      ],
+      "domainId": "accounting_profiles",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-005",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition.md",
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+        "specs/001-fundamental-analysis-platform/quickstart.md"
+      ],
+      "domainId": "sec_acquisition",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-006",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/fundamental-bundle.md",
+        "specs/001-fundamental-analysis-platform/data-model.md",
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json"
+      ],
+      "domainId": "xbrl_mapping",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-007",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/fundamental-bundle.md",
+        "specs/001-fundamental-analysis-platform/data-model.md",
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json"
+      ],
+      "domainId": "fundamental_bundle",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-008",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/definitions/data-quality-profile.md",
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json"
+      ],
+      "domainId": "fundamental_quality",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-009",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-overlay.md",
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md",
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json"
+      ],
+      "domainId": "price_overlay",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-010",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-overlay.md",
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json"
+      ],
+      "domainId": "price_quality",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/historicalPrice",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-011",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.md",
+        "specs/001-fundamental-analysis-platform/contracts/analysis-pipeline.md",
+        "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json"
+      ],
+      "domainId": "metrics",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-012",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.md",
+        "specs/001-fundamental-analysis-platform/contracts/analysis-pipeline.md"
+      ],
+      "domainId": "rules",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-013",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.md"
+      ],
+      "domainId": "rule_ast",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-014",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-and-sanitization.md",
+        "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json"
+      ],
+      "domainId": "fingerprints",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-015",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/analysis-pipeline.md",
+        "specs/001-fundamental-analysis-platform/contracts/update-orchestration.md",
+        "specs/001-fundamental-analysis-platform/quickstart.md"
+      ],
+      "domainId": "pipeline_states",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-016",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/update-orchestration.md",
+        "specs/001-fundamental-analysis-platform/quickstart.md"
+      ],
+      "domainId": "incremental_updates",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-017",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage.md",
+        "specs/001-fundamental-analysis-platform/data-model.md",
+        "specs/001-fundamental-analysis-platform/quickstart.md"
+      ],
+      "domainId": "local_storage",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-018",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/spec.md",
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition.md"
+      ],
+      "domainId": "gateway_api",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-019",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+        "specs/001-fundamental-analysis-platform/definitions/state-and-capability-matrix.md"
+      ],
+      "domainId": "gateway_problems",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-020",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/analysis-pipeline.md",
+        "specs/001-fundamental-analysis-platform/definitions/state-and-capability-matrix.md",
+        "specs/001-fundamental-analysis-platform/quickstart.md"
+      ],
+      "domainId": "local_issues",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-021",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/spec.md",
+        "specs/001-fundamental-analysis-platform/quickstart.md",
+        "specs/001-fundamental-analysis-platform/plan.md"
+      ],
+      "domainId": "acceptance",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-022",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/research.md",
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition.md"
+      ],
+      "domainId": "source_policy",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md#active-source-policy",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-023",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md",
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-overlay.md"
+      ],
+      "domainId": "market_profiles",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/governance/market-source-profile-register.md#profile-register",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-024",
+      "consumers": [
+        "DOCUMENTATION_INDEX.md",
+        "specs/001-fundamental-analysis-platform/plan.md"
+      ],
+      "domainId": "replacement_deferral",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json#/entries",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-025",
+      "consumers": [
+        "START_HERE_CHATGPT.md",
+        "PROJECT_CONTEXT.md",
+        "DOCUMENTATION_INDEX.md",
+        "PACKAGE_METADATA.json",
+        "specs/001-fundamental-analysis-platform/spec.md",
+        "specs/001-fundamental-analysis-platform/plan.md",
+        "V0.21_PHASE_STATUS.md"
+      ],
+      "domainId": "phase_gate",
+      "primaryAuthority": "V0.21_PHASE_STATUS.md#gate",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-026",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/spec.md",
+        "specs/001-fundamental-analysis-platform/research.md",
+        "specs/001-fundamental-analysis-platform/plan.md",
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+        "specs/001-fundamental-analysis-platform/fixtures/metrics/metric-test-vectors.json"
+      ],
+      "domainId": "decimal_arithmetic",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-027",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/spec.md",
+        "specs/001-fundamental-analysis-platform/research.md",
+        "specs/001-fundamental-analysis-platform/plan.md"
+      ],
+      "domainId": "ui_framework",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/decisions/ui-framework.md",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-028",
+      "domainId": "formula_definitions",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/definitions/formula-catalog.json#/formulas",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.md",
+        "specs/001-fundamental-analysis-platform/plan.md"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-029",
+      "domainId": "cache_refresh",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/contracts/cache-and-refresh-policy.json",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/update-orchestration.md",
+        "specs/001-fundamental-analysis-platform/quickstart.md"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-030",
+      "domainId": "sec_fact_selection",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/contracts/sec-filing-fact-selection-policy.json",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition.md",
+        "specs/001-fundamental-analysis-platform/plan.md"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-031",
+      "domainId": "security_input_limits",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/contracts/security-and-input-limits.json",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md",
+        "specs/001-fundamental-analysis-platform/plan.md"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-032",
+      "domainId": "accessibility",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/definitions/wcag-2.2-aa-matrix.json#/criteria",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/spec.md",
+        "specs/001-fundamental-analysis-platform/plan.md",
+        "specs/001-fundamental-analysis-platform/quickstart.md"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-033",
+      "domainId": "local_export_restore",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/contracts/local-export-restore-contract.json",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage.md",
+        "specs/001-fundamental-analysis-platform/quickstart.md"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-034",
+      "domainId": "requirements_traceability",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json",
+        "specs/001-fundamental-analysis-platform/spec.md",
+        "specs/001-fundamental-analysis-platform/plan.md"
+      ],
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-035",
+      "consumers": [
+        "PROJECT_CONTEXT.md",
+        "DOCUMENTATION_INDEX.md",
+        "specs/001-fundamental-analysis-platform/plan.md",
+        "specs/001-fundamental-analysis-platform/research.md",
+        "PACKAGE_METADATA.json"
+      ],
+      "domainId": "cloudflare_free_budget",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/governance/cloudflare-free-budget.json",
+      "status": "ACTIVE"
+    },
+    {
+      "authorityId": "AUTH-036",
+      "consumers": [
+        "specs/001-fundamental-analysis-platform/plan.md",
+        "specs/001-fundamental-analysis-platform/tasks.md",
+        "src/core/schema-validator.ts",
+        "src/core/schema-registry.ts",
+        "tests/contract/schema-registry.test.ts"
+      ],
+      "domainId": "runtime_schema_validation",
+      "primaryAuthority": "specs/001-fundamental-analysis-platform/contracts/schema-validation-runtime.md",
+      "status": "ACTIVE"
+    }
+  ],
+  "invariants": [
+    "each domain has exactly one canonical authorityId and one primaryAuthority",
+    "all paths resolve from packageRoot with exact case and optional exact Markdown anchor or RFC 6901 JSON Pointer",
+    "sibling, basename, fallback, heuristic and multiple-base resolution are prohibited",
+    "each domain has at least one consumer",
+    "reverseConsumers is regenerated from domains and is not edited independently",
+    "subordinate documents cannot broaden the active phase gate"
+  ],
+  "reverseConsumers": {
+    "DOCUMENTATION_INDEX.md": [
+      "cloudflare_free_budget",
+      "phase_gate",
+      "replacement_deferral"
+    ],
+    "PACKAGE_METADATA.json": [
+      "cloudflare_free_budget",
+      "phase_gate"
+    ],
+    "PROJECT_CONTEXT.md": [
+      "cloudflare_free_budget",
+      "constitution",
+      "phase_gate",
+      "product_scope"
+    ],
+    "START_HERE_CHATGPT.md": [
+      "constitution",
+      "phase_gate"
+    ],
+    "V0.21_PHASE_STATUS.md": [
+      "constitution",
+      "phase_gate"
+    ],
+    "specs/001-fundamental-analysis-platform/contracts/analysis-pipeline.md": [
+      "local_issues",
+      "metrics",
+      "pipeline_states",
+      "rules"
+    ],
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json": [
+      "fingerprints",
+      "fundamental_bundle",
+      "local_export_restore",
+      "price_overlay"
+    ],
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage.md": [
+      "local_export_restore",
+      "local_storage"
+    ],
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-and-sanitization.md": [
+      "fingerprints"
+    ],
+    "specs/001-fundamental-analysis-platform/contracts/fundamental-bundle.md": [
+      "fundamental_bundle",
+      "xbrl_mapping"
+    ],
+    "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md": [
+      "market_profiles",
+      "price_overlay",
+      "security_input_limits"
+    ],
+    "specs/001-fundamental-analysis-platform/contracts/historical-price-overlay.md": [
+      "market_profiles",
+      "price_overlay",
+      "price_quality"
+    ],
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml": [
+      "gateway_problems",
+      "issuer_identity",
+      "sec_acquisition",
+      "security_input_limits"
+    ],
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json": [
+      "cache_refresh",
+      "sec_fact_selection"
+    ],
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition.md": [
+      "gateway_api",
+      "sec_acquisition",
+      "sec_fact_selection",
+      "source_policy"
+    ],
+    "specs/001-fundamental-analysis-platform/contracts/update-orchestration.md": [
+      "cache_refresh",
+      "incremental_updates",
+      "pipeline_states"
+    ],
+    "specs/001-fundamental-analysis-platform/data-model.md": [
+      "accounting_profiles",
+      "fundamental_bundle",
+      "local_storage",
+      "xbrl_mapping"
+    ],
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json": [
+      "requirements_traceability"
+    ],
+    "specs/001-fundamental-analysis-platform/definitions/data-quality-profile.md": [
+      "fundamental_quality"
+    ],
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json": [
+      "accounting_profiles",
+      "fundamental_quality",
+      "metrics",
+      "rule_ast"
+    ],
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.md": [
+      "rule_ast",
+      "rules"
+    ],
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json": [
+      "accounting_profiles",
+      "decimal_arithmetic",
+      "formula_definitions",
+      "fundamental_quality",
+      "price_quality",
+      "xbrl_mapping"
+    ],
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.md": [
+      "formula_definitions",
+      "metrics"
+    ],
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-matrix.md": [
+      "gateway_problems",
+      "local_issues"
+    ],
+    "specs/001-fundamental-analysis-platform/fixtures/metrics/metric-test-vectors.json": [
+      "decimal_arithmetic"
+    ],
+    "specs/001-fundamental-analysis-platform/plan.md": [
+      "AUTH-036",
+      "acceptance",
+      "accessibility",
+      "cloudflare_free_budget",
+      "constitution",
+      "decimal_arithmetic",
+      "formula_definitions",
+      "phase_gate",
+      "product_scope",
+      "replacement_deferral",
+      "requirements_traceability",
+      "sec_fact_selection",
+      "security_input_limits",
+      "ui_framework"
+    ],
+    "specs/001-fundamental-analysis-platform/quickstart.md": [
+      "acceptance",
+      "accessibility",
+      "cache_refresh",
+      "incremental_updates",
+      "local_export_restore",
+      "local_issues",
+      "local_storage",
+      "pipeline_states",
+      "product_scope",
+      "sec_acquisition"
+    ],
+    "specs/001-fundamental-analysis-platform/research.md": [
+      "cloudflare_free_budget",
+      "decimal_arithmetic",
+      "source_policy",
+      "ui_framework"
+    ],
+    "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json": [
+      "fingerprints"
+    ],
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json": [
+      "fingerprints"
+    ],
+    "specs/001-fundamental-analysis-platform/spec.md": [
+      "acceptance",
+      "accessibility",
+      "constitution",
+      "decimal_arithmetic",
+      "gateway_api",
+      "issuer_identity",
+      "phase_gate",
+      "requirements_traceability",
+      "ui_framework"
+    ],
+    "specs/001-fundamental-analysis-platform/tasks.md": [
+      "AUTH-036"
+    ],
+    "src/core/schema-validator.ts": [
+      "AUTH-036"
+    ],
+    "src/core/schema-registry.ts": [
+      "AUTH-036"
+    ],
+    "tests/contract/schema-registry.test.ts": [
+      "AUTH-036"
+    ]
+  },
+  "status": "ACTIVE_AUTHORITY",
+  "version": "1.2.0"
+}

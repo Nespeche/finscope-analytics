@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "1.1.0",
+  "packageRevision": "v0.21.12_B11_completed",
+  "batchId": "B11",
+  "status": "COMPLETED",
+  "sourceBaseline": {
+    "logicalName": "FS_v0.21.11_B10_completed.zip",
+    "sha256": "8a73e0ebbb8bb4e56f3aeb1df7982ae8bbd9e4789060d830250985820d86c06e",
+    "verified": true
+  },
+  "scope": {
+    "title": "Builders y pipeline fundamental",
+    "executionOrder": [
+      "T047",
+      "T048"
+    ],
+    "browserRequired": false,
+    "futureBatchImplemented": false,
+    "convergenceExecuted": false,
+    "specifyModified": false
+  },
+  "taskResults": [
+    {
+      "taskId": "T047",
+      "status": "COMPLETED",
+      "files": [
+        "src/domain/fundamental/bundle-builder.ts",
+        "src/domain/fundamental/analysis-builder.ts",
+        "tests/unit/fundamental/bundle-vectors.test.ts"
+      ],
+      "tests": [
+        "tests/unit/fundamental/bundle-vectors.test.ts"
+      ],
+      "doneWhen": "positive/negative bundle and analysis schemas pass"
+    },
+    {
+      "taskId": "T048",
+      "status": "COMPLETED",
+      "files": [
+        "src/worker/fundamental-pipeline.ts",
+        "src/worker/operation-registry.ts",
+        "tests/integration/worker/fundamental-pipeline.test.ts"
+      ],
+      "tests": [
+        "tests/integration/worker/fundamental-pipeline.test.ts"
+      ],
+      "doneWhen": "the fundamental operation is dispatchable through the registry and publishes exactly the bundle/analysis candidate built by domain producers or preserves previous state"
+    }
+  ],
+  "authoringValidation": {
+    "baselinePreflight": {
+      "status": "PASS",
+      "zipSha256": "8a73e0ebbb8bb4e56f3aeb1df7982ae8bbd9e4789060d830250985820d86c06e",
+      "root": "FinScope_v0.21.4",
+      "controlPlaneChecks": 1030,
+      "specifyFileCount": 19,
+      "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
+    },
+    "syntaxAndFocusedTypes": {
+      "status": "PASS_NON_NORMATIVE",
+      "typescriptFilesParsed": 6,
+      "focusedStrictTypeCheck": "PASS_WITH_TEMPORARY_EXTERNAL_MODULE_DECLARATIONS",
+      "passClaimed": false
+    },
+    "normativeCommands": {
+      "sourceEvidence": "FinScope_local_evidence_B11_20260728-131922732.zip",
+      "sourceEvidenceSha256": "8bcd8e22068631450920fe2a34314546055363aca8ec0d460d76dd3a2f180dc3",
+      "sourceCandidate": "FS_B11_r3.zip",
+      "pass": 6,
+      "fail": 0,
+      "notRun": 0,
+      "primaryFailure": null,
+      "remediationReport": "implementation-control/reports/B11_R2_VALIDATION_FAILURE_AND_R3_REMEDIATION.json",
+      "r3FullPassClaimed": true
+    }
+  },
+  "requiredExternalValidation": {
+    "candidate": "FS_B11_r3.zip",
+    "candidateSidecar": "FS_B11_r3.zip.sha256",
+    "runner": "Run-FinScope-BatchValidation_B11_r3_v1.ps1",
+    "runnerSidecar": "Run-FinScope-BatchValidation_B11_r3_v1.ps1.sha256",
+    "inputDirectory": "C:\\FS\\B11r3v1\\input",
+    "workRoot": "C:\\FS\\B11r3v1\\work",
+    "commands": [
+      "npm ci",
+      "npm run typecheck",
+      "npm run test:unit -- tests/unit/fundamental/bundle-vectors.test.ts",
+      "npm run test:integration -- tests/integration/worker/fundamental-pipeline.test.ts",
+      "npm run test",
+      "npm run build"
+    ],
+    "expectedEvidence": "FinScope_local_evidence_B11_<timestamp>.zip",
+    "expectedFailedEvidence": "FinScope_local_evidence_B11_<timestamp>_FAILED.zip",
+    "closureRule": "Satisfied by authenticated exact r3 evidence; B11 is completed."
+  },
+  "runner": {
+    "logicalName": "Run-FinScope-BatchValidation_B11_r3_v1.ps1",
+    "sha256": "b5b89a8e734c67e0a92dd77ad90226454a1eecbede9236553ba8e3ed956090c6",
+    "selfTestOnly": true,
+    "preflightOnly": true,
+    "browserRequiredDerived": false,
+    "authoringExecutableQualification": "R2 EXACT RUNNER PASSED AUTHENTICATED SELFTEST/PREFLIGHT; R3 IS IDENTITY-ONLY AND MUST REPEAT SELFTEST",
+    "staticQualification": "PASS_STATIC_AND_IDENTITY_EQUIVALENCE",
+    "staticQualificationReport": "implementation-control/reports/B11_AUTHORING_VALIDATION/runner-static-qualification.json",
+    "explicitGateAnchorDirectCheck": true
+  },
+  "integrity": {
+    "tasksSha256": "57e9167d5cd0e22265a4fcfd1d8697cc0233aaf8fb9fc4a79442da962db855a8",
+    "b11Sha256": "d242f32cd9acfc59433e79ad14ad52a09e2f2166ecbb24d538d10be727ae2ca2",
+    "specifyFileCount": 19,
+    "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+    "specifyModified": false,
+    "targetFileHashes": {
+      "src/domain/fundamental/analysis-builder.ts": "7b9240035034b03715a43f9f2bd32ab919b7d80c29ed41df361e0eb5fa46ae33",
+      "src/domain/fundamental/bundle-builder.ts": "0baccbe4d8fb6ec4f3e0c8a3463009933006f2a6e4da175b1d9c35c43725ac0c",
+      "src/worker/fundamental-pipeline.ts": "b05bc5c89f444dc40c7761ed78fad48a211375dd2941508de0eef669ff9e2d3c",
+      "src/worker/operation-registry.ts": "f55209d312efc10bdc3c81e715d66691e4bc11b99f0cb09376e97f8f10b3fa7d",
+      "tests/integration/worker/fundamental-pipeline.test.ts": "89d24a1441b5da0fbc21d20f4c8f080f6f36d5fcfceb807410e7ed5c05b2da59",
+      "tests/unit/fundamental/bundle-vectors.test.ts": "ac64d706d07a0a9c772eedc6012a8846fc05b8a686f562290b3488b702dba8fa"
+    }
+  },
+  "futureScope": {
+    "B12": "PENDING",
+    "activeBatchId": "B12",
+    "nextAuthorizedBatchId": "B12",
+    "convergenceAuthorized": false
+  },
+  "closureReport": "implementation-control/reports/B11_EVIDENCE_VERIFICATION_AND_CLOSURE.json"
+}

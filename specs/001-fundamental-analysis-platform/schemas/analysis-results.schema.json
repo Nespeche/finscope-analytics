@@ -1,0 +1,269 @@
+{
+  "$defs": {
+    "FundamentalAnalysis": {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "not": {
+            "anyOf": [
+              {
+                "required": [
+                  "historicalPriceOverlayFingerprint"
+                ]
+              },
+              {
+                "required": [
+                  "priceAnalysisFingerprint"
+                ]
+              },
+              {
+                "required": [
+                  "priceMetricResults"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "properties": {
+        "analysisId": {
+          "type": "string"
+        },
+        "analysisKind": {
+          "const": "fundamental"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "fundamentalAnalysisFingerprint": {
+          "$ref": "common.schema.json#/$defs/Sha256Fingerprint"
+        },
+        "fundamentalInputFingerprint": {
+          "$ref": "common.schema.json#/$defs/Sha256Fingerprint"
+        },
+        "issuerCik": {
+          "$ref": "common.schema.json#/$defs/Cik"
+        },
+        "metricResults": {
+          "items": {
+            "$ref": "#/$defs/MetricResult"
+          },
+          "type": "array"
+        },
+        "ruleEvaluations": {
+          "items": {
+            "$ref": "#/$defs/RuleEvaluation"
+          },
+          "type": "array"
+        },
+        "synthesis": {
+          "additionalProperties": false,
+          "properties": {
+            "limitations": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "state": {
+              "$ref": "common.schema.json#/$defs/SynthesisState"
+            },
+            "triggeredRuleIds": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "state",
+            "triggeredRuleIds"
+          ],
+          "type": "object"
+        },
+        "versions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "analysisKind",
+        "analysisId",
+        "issuerCik",
+        "fundamentalInputFingerprint",
+        "metricResults",
+        "ruleEvaluations",
+        "synthesis",
+        "versions",
+        "fundamentalAnalysisFingerprint"
+      ],
+      "type": "object"
+    },
+    "MetricResult": {
+      "additionalProperties": false,
+      "properties": {
+        "evidenceRefs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "metricId": {
+          "pattern": "^(?:FND|MKT)_[A-Z0-9_]+$",
+          "type": "string"
+        },
+        "periodKey": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "qualityClassification": {
+          "$ref": "common.schema.json#/$defs/QualityClassification"
+        },
+        "reasonCodes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "state": {
+          "$ref": "common.schema.json#/$defs/MetricState"
+        },
+        "unit": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "valueDecimal": {
+          "$ref": "common.schema.json#/$defs/DecimalString"
+        },
+        "valueEnum": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "metricId",
+        "state",
+        "qualityClassification"
+      ],
+      "type": "object"
+    },
+    "PriceAnalysis": {
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "not": {
+            "anyOf": [
+              {
+                "required": [
+                  "fundamentalInputFingerprint"
+                ]
+              },
+              {
+                "required": [
+                  "fundamentalAnalysisFingerprint"
+                ]
+              },
+              {
+                "required": [
+                  "ruleEvaluations"
+                ]
+              },
+              {
+                "required": [
+                  "synthesis"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "properties": {
+        "analysisId": {
+          "type": "string"
+        },
+        "analysisKind": {
+          "const": "historical_price_descriptive"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "historicalPriceOverlayFingerprint": {
+          "$ref": "common.schema.json#/$defs/Sha256Fingerprint"
+        },
+        "issuerCik": {
+          "$ref": "common.schema.json#/$defs/Cik"
+        },
+        "priceAnalysisFingerprint": {
+          "$ref": "common.schema.json#/$defs/Sha256Fingerprint"
+        },
+        "priceMetricResults": {
+          "items": {
+            "$ref": "#/$defs/MetricResult"
+          },
+          "type": "array"
+        },
+        "priceQuality": {
+          "$ref": "historical-price-overlay.schema.json#/properties/priceQuality"
+        },
+        "versions": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "analysisKind",
+        "analysisId",
+        "issuerCik",
+        "historicalPriceOverlayFingerprint",
+        "priceQuality",
+        "priceMetricResults",
+        "versions",
+        "priceAnalysisFingerprint"
+      ],
+      "type": "object"
+    },
+    "RuleEvaluation": {
+      "additionalProperties": false,
+      "properties": {
+        "evidenceRefs": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "reasonCodes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "ruleId": {
+          "type": "string"
+        },
+        "state": {
+          "$ref": "common.schema.json#/$defs/RuleState"
+        }
+      },
+      "required": [
+        "ruleId",
+        "state"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://finscope.local/schemas/analysis-results.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/FundamentalAnalysis"
+    },
+    {
+      "$ref": "#/$defs/PriceAnalysis"
+    }
+  ],
+  "title": "Separated fundamental and price analysis results v5.0.0"
+}

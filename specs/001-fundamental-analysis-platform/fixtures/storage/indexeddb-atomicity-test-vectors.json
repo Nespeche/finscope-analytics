@@ -1,0 +1,64 @@
+{
+  "fixtureSetId": "indexeddb-atomicity-test-vectors",
+  "fixtures": [
+    {
+      "expected": {
+        "candidateRecordsVisible": true,
+        "commitRecordPresent": true,
+        "pointerUpdated": true
+      },
+      "faultAt": null,
+      "fixtureId": "IDB-FUNDAMENTAL-COMMIT",
+      "transactionId": "commit_fundamental_snapshot"
+    },
+    {
+      "expected": {
+        "candidateRecordsVisible": false,
+        "orphanRecords": 0,
+        "previousPointerUnchanged": true
+      },
+      "faultAt": "before_pointer_update",
+      "fixtureId": "IDB-FUNDAMENTAL-ROLLBACK-BEFORE-POINTER",
+      "transactionId": "commit_fundamental_snapshot"
+    },
+    {
+      "expected": {
+        "fundamentalPointerUnchanged": true,
+        "pricePointerUpdated": true
+      },
+      "faultAt": null,
+      "fixtureId": "IDB-PRICE-COMMIT-INDEPENDENT",
+      "transactionId": "commit_price_overlay"
+    },
+    {
+      "expected": {
+        "bothPreviousPointersUnchanged": true,
+        "candidateRecordsVisible": false,
+        "orphanRecords": 0
+      },
+      "faultAt": "after_candidate_before_commit",
+      "fixtureId": "IDB-PRICE-ROLLBACK",
+      "transactionId": "commit_price_overlay"
+    },
+    {
+      "expected": {
+        "fundamentalRecordsUnchanged": true,
+        "pricePointerPresent": false,
+        "priceRecordsRemaining": 0
+      },
+      "faultAt": null,
+      "fixtureId": "IDB-PRICE-DELETE",
+      "transactionId": "delete_price_history"
+    },
+    {
+      "expected": {
+        "allPriorDataPresent": true,
+        "partialDeletion": false
+      },
+      "faultAt": "mid_delete",
+      "fixtureId": "IDB-DELETE-ALL-ROLLBACK",
+      "transactionId": "delete_all_personal_data"
+    }
+  ],
+  "version": "5.0.0"
+}

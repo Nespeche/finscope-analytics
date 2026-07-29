@@ -1,0 +1,58 @@
+{
+  "policyId": "sec-filing-fact-selection-policy",
+  "version": "1.0.0",
+  "status": "ACTIVE_AUTHORITY",
+  "primarySource": "company_facts",
+  "exactFallbackSource": "company_concept",
+  "admittedForms": [
+    "10-K",
+    "10-K/A",
+    "10-Q",
+    "10-Q/A",
+    "20-F",
+    "20-F/A",
+    "6-K",
+    "6-K/A",
+    "40-F",
+    "40-F/A"
+  ],
+  "evidenceOnlyForms": [
+    "8-K",
+    "8-K/A"
+  ],
+  "framesPolicy": "never use XBRL Frames to select a fact for one issuer; preserve an existing frame value only as evidence metadata",
+  "selectionGroup": [
+    "canonicalConceptId",
+    "taxonomy",
+    "tag",
+    "unit",
+    "start",
+    "end",
+    "scope"
+  ],
+  "orderedPrecedence": [
+    "eligible exact mapping ACTIVE",
+    "compatible accounting profile and scope",
+    "admitted form",
+    "latest filed date",
+    "stable accessionNumber ascending as deterministic tie-break only when values are equal"
+  ],
+  "duplicatePolicy": "collapse exact duplicate values inside one selectionGroup while preserving every sourceRef",
+  "amendmentPolicy": "an amendment may replace only facts it actually contains; absence in an amendment never deletes an original fact",
+  "restatementPolicy": "a later eligible filing may restate a comparative prior period and takes precedence when lineage, unit, period and scope are compatible",
+  "conflictPolicy": "different values with identical effective precedence are ambiguous/conflicting; do not choose silently and do not emit a metric value",
+  "unitPolicy": "no inferred unit conversion; unit must be exact and allowed by mapping/metric",
+  "partialHistoryPolicy": "follow Submissions files[] in declared order within the 14-call operation budget; exhausted history produces partial with evidence",
+  "reasonCodes": [
+    "form_not_admitted",
+    "evidence_only_form",
+    "mapping_not_active",
+    "scope_incompatible",
+    "unit_incompatible",
+    "exact_duplicate_collapsed",
+    "amendment_precedence",
+    "restatement_precedence",
+    "conflicting_equal_precedence",
+    "history_budget_exhausted"
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "1.1.0",
+  "batchId": "B09",
+  "status": "COMPLETED",
+  "baseline": {
+    "logicalName": "FS_v0.21.9_B08_completed.zip",
+    "sha256": "2e223126bf9402dce9e6ad9c247eaa999c316684ed37c13a08ff891259048f4e",
+    "sidecarMatch": true,
+    "crcValid": true,
+    "singleRoot": true,
+    "safeExtraction": true
+  },
+  "candidate": {
+    "logicalName": "FS_B09_r2.zip",
+    "sha256": "b97d7e1dbdfe2345aaa38334cddc778070a5700dd7afd0fceb89dbf2259149ca",
+    "sidecarMatch": true,
+    "rootDirectory": "FinScope_v0.21.4",
+    "archiveFileCount": 635,
+    "crcValid": true,
+    "safePaths": true
+  },
+  "runner": {
+    "logicalName": "Run-FinScope-BatchValidation_B09_r2_v1.ps1",
+    "sha256": "25d6ad3be32313960dbce654d1ec4ae3cd950f288a6c4733737c395843dc5f04",
+    "sidecarMatch": true,
+    "powerShellVersion": "7.6.4",
+    "powerShellEdition": "Core"
+  },
+  "localEvidence": {
+    "logicalName": "FinScope_local_evidence_B09_20260727-223609830.zip",
+    "sha256": "9b58ee1b03832de4c0fce93fb3fb82398623bfa0d8576a01d5ef8900d4357b05",
+    "sidecarMatch": true,
+    "candidateSha256": "b97d7e1dbdfe2345aaa38334cddc778070a5700dd7afd0fceb89dbf2259149ca",
+    "runnerSha256": "25d6ad3be32313960dbce654d1ec4ae3cd950f288a6c4733737c395843dc5f04",
+    "schemaVersion": "1.1.0",
+    "status": "PASS",
+    "entryCount": 29
+  },
+  "taskResults": [
+    {
+      "taskId": "T041",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T043",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T042",
+      "status": "COMPLETED"
+    }
+  ],
+  "testResults": [
+    {
+      "id": "npm-ci",
+      "command": "npm ci",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "typecheck",
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-unit",
+      "command": "npm run test:unit -- tests/unit/analytics/formula-vectors.test.ts tests/unit/analytics/fundamental-metric-vectors.test.ts tests/unit/analytics/quality-cartesian.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "testFilesPassed": 3,
+      "testsPassed": 120,
+      "testsFailed": 0,
+      "testsSkipped": 0
+    },
+    {
+      "id": "regression-vitest",
+      "command": "npm run test",
+      "status": "PASS",
+      "exitCode": 0,
+      "testFilesPassed": 41,
+      "testsPassed": 278,
+      "testsFailed": 0,
+      "testsSkipped": 0
+    },
+    {
+      "id": "build",
+      "command": "npm run build",
+      "status": "PASS",
+      "exitCode": 0,
+      "modulesTransformed": 250,
+      "assetCount": 3,
+      "assetBytes": 1440018
+    }
+  ],
+  "controlPlane": {
+    "initial": {
+      "status": "PASS",
+      "checkCount": 1023,
+      "passCount": 1023,
+      "failCount": 0
+    },
+    "final": {
+      "status": "PASS",
+      "checkCount": 1023,
+      "passCount": 1023,
+      "failCount": 0
+    },
+    "postClosure": {
+      "status": "PASS",
+      "checkCount": 1026,
+      "passCount": 1026,
+      "failCount": 0
+    }
+  },
+  "treeRestoredAfterCleanup": true,
+  "specifyTreeSha256Before": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "specifyTreeSha256After": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "sourceTasksSha256Before": "e55c279eaeb6f6918a8e94d4b5dc7addde3a2afdb4de5c79865ce98587122d94",
+  "sourceTasksSha256AfterClosure": "71d17254d3d8698befc2c1f75b4619d80b0f98545560400470d452796ef6201c",
+  "promotion": {
+    "allowed": true,
+    "codeTestsRunnerScriptsSchemasDependenciesFixturesContractsUnchanged": true,
+    "npmRepeatedAfterClosure": false,
+    "nextBatchId": "B10",
+    "convergenceAuthorized": false
+  },
+  "b09Sha256AfterClosure": "5695883e3e6cef6dafd2d806f420e872620944a433ceafe3b402dd681e95ba70",
+  "completedPackageLogicalName": "FS_v0.21.10_B09_completed.zip"
+}

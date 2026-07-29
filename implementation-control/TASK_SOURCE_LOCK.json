@@ -1,0 +1,684 @@
+{
+  "$schema": "schemas/task-source-lock.schema.json",
+  "schemaVersion": "1.0.0",
+  "packageRevision": "v0.21.12_B11_completed",
+  "generatedOn": "2026-07-28",
+  "taskAuthority": "specs/001-fundamental-analysis-platform/tasks.md",
+  "tasksFileSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "taskCount": 109,
+  "tasks": [
+    {
+      "taskId": "T001",
+      "lineNumber": 24,
+      "sourceTaskSha256": "9cc908c109daa020339247bac144abdca7b0615844c9aa5643877803284d3d12"
+    },
+    {
+      "taskId": "T002",
+      "lineNumber": 25,
+      "sourceTaskSha256": "1a0330f2cdcde4d63d1b8267515e60fb12d84adcaa9fbf27532d5531f807ca2a"
+    },
+    {
+      "taskId": "T003",
+      "lineNumber": 26,
+      "sourceTaskSha256": "5d4486fc86d0e109bc748e1390b55f3c704b139fb4ecb953a28506e945a35cfb"
+    },
+    {
+      "taskId": "T004",
+      "lineNumber": 27,
+      "sourceTaskSha256": "74dfa35752d380563f2122222a802b9af21fead36148242b4d61ed73d328f9db"
+    },
+    {
+      "taskId": "T005",
+      "lineNumber": 28,
+      "sourceTaskSha256": "17ee22069c02b947ea406f4c9224d686b55c9d60b0db5b785917485f32e98166"
+    },
+    {
+      "taskId": "T006",
+      "lineNumber": 29,
+      "sourceTaskSha256": "78876cb0c1e6b48126e3112059af3b82d77a7ae40b1e84399d5e98621f75f39c"
+    },
+    {
+      "taskId": "T007",
+      "lineNumber": 30,
+      "sourceTaskSha256": "e607162ac4b889780a9ec0d860d42a60652cae66c3974e93011270e2f9d8f8b5"
+    },
+    {
+      "taskId": "T008",
+      "lineNumber": 31,
+      "sourceTaskSha256": "41af30c82dee362590147bd5b4718b587fa885d5ffaab7418a2fc0c61ede15c3"
+    },
+    {
+      "taskId": "T009",
+      "lineNumber": 32,
+      "sourceTaskSha256": "a683962890534618303a2fd4652dfdbf80b6baa336a1bbf1dc449dfb4090615a"
+    },
+    {
+      "taskId": "T010",
+      "lineNumber": 33,
+      "sourceTaskSha256": "f7a60120ff89af2570d428f376a17f17bb109c61713e7adbe7e43740f53e728f"
+    },
+    {
+      "taskId": "T011",
+      "lineNumber": 39,
+      "sourceTaskSha256": "b5ca04919f66d0bf24e580a0f94e621ba689381e750badf99d349e0442132797"
+    },
+    {
+      "taskId": "T012",
+      "lineNumber": 40,
+      "sourceTaskSha256": "849291c1aefaff902c887b0b0e28decdb1f0fdd285c12915e9a942a8137024ce"
+    },
+    {
+      "taskId": "T013",
+      "lineNumber": 41,
+      "sourceTaskSha256": "930a591306f00c8bddd4c203b7ab7d3515c702c69f2fde2592c580e68da7c6ea"
+    },
+    {
+      "taskId": "T014",
+      "lineNumber": 42,
+      "sourceTaskSha256": "2acf2e16cd1f927ac6b45b20de1e6440311463789f1512e3144b3d8c597c5928"
+    },
+    {
+      "taskId": "T015",
+      "lineNumber": 43,
+      "sourceTaskSha256": "949b610cf0373ab39f0b2ca5e66b6cf66f9d4682d0f92b2cac47dee80470c578"
+    },
+    {
+      "taskId": "T016",
+      "lineNumber": 44,
+      "sourceTaskSha256": "541a1581d36e1e1ab54a4dc753561a4b124fb5a7ff97829ab67a25aaa737517b"
+    },
+    {
+      "taskId": "T017",
+      "lineNumber": 45,
+      "sourceTaskSha256": "0c7b44cc8dabc16a43c4aaddbda006e9ea2da64817fbebd75543fa1b3bbb5640"
+    },
+    {
+      "taskId": "T018",
+      "lineNumber": 46,
+      "sourceTaskSha256": "f022df967e0b6f6486f41fe54b45b0c0f9125f4554118d5cd8a2b6e5630b8bb5"
+    },
+    {
+      "taskId": "T019",
+      "lineNumber": 47,
+      "sourceTaskSha256": "b45eb64fe3472c3e2f19cca66fc8779feb57cd59b26cbc6f5c7a096be93a2843"
+    },
+    {
+      "taskId": "T020",
+      "lineNumber": 48,
+      "sourceTaskSha256": "a5e6e7c3fc4f10ceb5e1d5f065e72fdafb0b33acd5b4551f81fdc6b9a3172fd4"
+    },
+    {
+      "taskId": "T021",
+      "lineNumber": 49,
+      "sourceTaskSha256": "17c9109bb511a0e71302d19bb0cb98c4243dafa0520461fe43515863516f00dc"
+    },
+    {
+      "taskId": "T022",
+      "lineNumber": 50,
+      "sourceTaskSha256": "8a9e84722c47790ebe3d687a8cbc4c36b08baa45833783c8cf52a8594d4fb9c0"
+    },
+    {
+      "taskId": "T023",
+      "lineNumber": 51,
+      "sourceTaskSha256": "0c8a8f8ce1bc1307812a4f01099a9e7b02602ef9fb8b52097caa7b5f516b938f"
+    },
+    {
+      "taskId": "T024",
+      "lineNumber": 59,
+      "sourceTaskSha256": "dc1306d7bda9652c48217f4681d80c18f5964997237431039d6fb91ad0d0ec3c"
+    },
+    {
+      "taskId": "T025",
+      "lineNumber": 60,
+      "sourceTaskSha256": "f848e7f06a5ac12b54a613d61c2f3f88fdcf3095df6d395153e4eb1c24ae7db4"
+    },
+    {
+      "taskId": "T026",
+      "lineNumber": 61,
+      "sourceTaskSha256": "1f1969759271d69337376c9c615b79188f6122f882b5b94f1202789106a5b6b0"
+    },
+    {
+      "taskId": "T027",
+      "lineNumber": 62,
+      "sourceTaskSha256": "3333bd85f02f6ff6e805f53dfe2fd59eeba9c4a4134e9eb6491e1021262bc290"
+    },
+    {
+      "taskId": "T028",
+      "lineNumber": 63,
+      "sourceTaskSha256": "29e883b3cf18d5bc8bf615bef55345395d4a1b434b019a136b2e41218d32a840"
+    },
+    {
+      "taskId": "T029",
+      "lineNumber": 64,
+      "sourceTaskSha256": "c345854c78b48555ed9549013b7b749797ef95a712e27d7726e5243e8968261a"
+    },
+    {
+      "taskId": "T030",
+      "lineNumber": 65,
+      "sourceTaskSha256": "09bd532630ed57be2b58f5f668092130bc8954d50c961c6d1234c4a53951c12e"
+    },
+    {
+      "taskId": "T031",
+      "lineNumber": 66,
+      "sourceTaskSha256": "9af3666d52654173864ad25dfa67da3243f447741d70b8fc5a87520322d22335"
+    },
+    {
+      "taskId": "T032",
+      "lineNumber": 67,
+      "sourceTaskSha256": "bb5932b1432ad60d30b281b66957800e4422660072a4f90c437159efb09dfd80"
+    },
+    {
+      "taskId": "T033",
+      "lineNumber": 68,
+      "sourceTaskSha256": "86e28edb470034dd8c5fa6c530a91d75629e95904287b860f2329a2f663c86de"
+    },
+    {
+      "taskId": "T034",
+      "lineNumber": 69,
+      "sourceTaskSha256": "e0fc3774a8c936286293f4b08fa1cd51d8759ae38822d01c72b5112876eb951d"
+    },
+    {
+      "taskId": "T035",
+      "lineNumber": 70,
+      "sourceTaskSha256": "3aff182efae69123ce261935797de9dddffb54cf315772b2428f52edf249bb4a"
+    },
+    {
+      "taskId": "T036",
+      "lineNumber": 78,
+      "sourceTaskSha256": "4639bb854f14e40b1c31f6ee060268f7cf749bf2f06c3d51081f8d304f84fef7"
+    },
+    {
+      "taskId": "T037",
+      "lineNumber": 79,
+      "sourceTaskSha256": "a3c2a6cb602fb21a633bb360eb6fbf86a97067a24a05f4d19db1080c762777dd"
+    },
+    {
+      "taskId": "T038",
+      "lineNumber": 80,
+      "sourceTaskSha256": "abd779af0e31352c89a7014bf40af56c5a3a9bc3816d6223e241a597bbbc505c"
+    },
+    {
+      "taskId": "T039",
+      "lineNumber": 81,
+      "sourceTaskSha256": "4eddd0ea4778ca00c92dc152cbb92195581b8c89598e8d3325db8222d6f0bd06"
+    },
+    {
+      "taskId": "T040",
+      "lineNumber": 82,
+      "sourceTaskSha256": "72d2637d019157f2b6c0d20b8da7a4dcd5db2d5fee5f3c18b623bf332ae38dd4"
+    },
+    {
+      "taskId": "T041",
+      "lineNumber": 83,
+      "sourceTaskSha256": "183cce3509340130789adcad078a0de3b1f1e0b3f1e7aa71739ba7a86a8a6bf1"
+    },
+    {
+      "taskId": "T042",
+      "lineNumber": 85,
+      "sourceTaskSha256": "1a40deec9707f8f1daa64f9c4ff15b7c414a3a9a2d9596639e2ebe5cffc8823b"
+    },
+    {
+      "taskId": "T043",
+      "lineNumber": 84,
+      "sourceTaskSha256": "96c9494851dd1f00cc29913996e277281ba4bb934b5dabafd2dbb16ed2713ca6"
+    },
+    {
+      "taskId": "T044",
+      "lineNumber": 86,
+      "sourceTaskSha256": "7ada8930ec5f351f7a254f9615dbfa258b19b8bf2abca0d9160007ba6b5578fe"
+    },
+    {
+      "taskId": "T045",
+      "lineNumber": 87,
+      "sourceTaskSha256": "26c52dd0a9b9edee67a57d099a0d98debdbe14fd86e8344751cedb758eb32668"
+    },
+    {
+      "taskId": "T046",
+      "lineNumber": 88,
+      "sourceTaskSha256": "169cf86da1de220bfa41c9327803151071332be576f721559fb95c69d2534913"
+    },
+    {
+      "taskId": "T047",
+      "lineNumber": 89,
+      "sourceTaskSha256": "868ba8accd7b0886c5d1994e781a7c8d7c9194d932d544757022b0c6ca1369d5"
+    },
+    {
+      "taskId": "T048",
+      "lineNumber": 90,
+      "sourceTaskSha256": "f25887db68e1520d90ff9378e29bfa097459c854d1c16bbd2f1a231371b49677"
+    },
+    {
+      "taskId": "T049",
+      "lineNumber": 91,
+      "sourceTaskSha256": "1beb4f54a29f928ef07a5dd21ed43bb01b99ed1d61dcd6e1bd9d6339eee6ba9f"
+    },
+    {
+      "taskId": "T050",
+      "lineNumber": 92,
+      "sourceTaskSha256": "6c86710a78a7c083f1f28c1deec10590f2df609a51de1187e900054aadf1c625"
+    },
+    {
+      "taskId": "T051",
+      "lineNumber": 93,
+      "sourceTaskSha256": "c170d396e2f1e038291337d10a97c32262580d7a221570d01edc169be6e69b3a"
+    },
+    {
+      "taskId": "T052",
+      "lineNumber": 94,
+      "sourceTaskSha256": "6787fc2537aac60b26413425757ef2285cc2b1d8d3e6ff67148299a0af233594"
+    },
+    {
+      "taskId": "T053",
+      "lineNumber": 95,
+      "sourceTaskSha256": "470e98a6d114ed737241d630424e7fa563d6ddec5e17fd7f03b92a41ed139e81"
+    },
+    {
+      "taskId": "T054",
+      "lineNumber": 103,
+      "sourceTaskSha256": "14342eeccdf1c58200434732f937e01f563c331a00c3caddbf08c9f378e2f0e8"
+    },
+    {
+      "taskId": "T055",
+      "lineNumber": 104,
+      "sourceTaskSha256": "635c96db9abbff4e20d4546db1f79901e5d64f9ae7abd3a21c34a6a990022723"
+    },
+    {
+      "taskId": "T056",
+      "lineNumber": 105,
+      "sourceTaskSha256": "1ed0206b3ade949aad328bf9529e00e26a8e9fb18dcbf2e4cb2a0ae824dcd68f"
+    },
+    {
+      "taskId": "T057",
+      "lineNumber": 106,
+      "sourceTaskSha256": "ec289a7d59bc922003f20f5b961d66f22c7c4b1f92b1919396499f6da88f2130"
+    },
+    {
+      "taskId": "T058",
+      "lineNumber": 107,
+      "sourceTaskSha256": "d5a412d86c7df47c7fd0ce519621a73542b6e60ce1262ac40825bdbe63bb4c6b"
+    },
+    {
+      "taskId": "T059",
+      "lineNumber": 108,
+      "sourceTaskSha256": "85ce9318b85dac57dece92101fffb70e8356377ba0d8a831ff3a25779f028524"
+    },
+    {
+      "taskId": "T060",
+      "lineNumber": 109,
+      "sourceTaskSha256": "92169a44e6716a8f0153eb75cc44c80ce5ceda82972c677e575618916a69ce7f"
+    },
+    {
+      "taskId": "T061",
+      "lineNumber": 110,
+      "sourceTaskSha256": "2268c0d58b73aeb353aa264c6070dac60c52453ffc1811cbaa6b7b019a27ca95"
+    },
+    {
+      "taskId": "T062",
+      "lineNumber": 111,
+      "sourceTaskSha256": "b1d959c1ed9de3bcb3d07fdc9999ba352e5976126b463d07b17aad6c5b07f98c"
+    },
+    {
+      "taskId": "T063",
+      "lineNumber": 119,
+      "sourceTaskSha256": "2071cdddc07ac7c9b8bb0fa20689633485b0d04d847f6138d7c713b92d7b8485"
+    },
+    {
+      "taskId": "T064",
+      "lineNumber": 120,
+      "sourceTaskSha256": "2ba280a0bcde262a487a9b724fdbbe7ce75a4bd6129f5d2493f88406a74c8325"
+    },
+    {
+      "taskId": "T065",
+      "lineNumber": 121,
+      "sourceTaskSha256": "c763013f3ecbee207e1b9bd6d134b70fbc102c76bc6423cb58cd1d8979eed222"
+    },
+    {
+      "taskId": "T066",
+      "lineNumber": 122,
+      "sourceTaskSha256": "4eeb46e56868458f20313bff906078c4e7926a454df4481e61f632c44334c7ea"
+    },
+    {
+      "taskId": "T067",
+      "lineNumber": 123,
+      "sourceTaskSha256": "cd082bc2277fe0cb31fa5d45d972505adb54b28125b5efe97aef9ece646d33a9"
+    },
+    {
+      "taskId": "T068",
+      "lineNumber": 124,
+      "sourceTaskSha256": "67d7488bf6b3ed5d4b08bed104a3e87fb0d81242e877a195f71f990f64fc0c61"
+    },
+    {
+      "taskId": "T069",
+      "lineNumber": 125,
+      "sourceTaskSha256": "f6cc774b8eb25c935220a07b57637eaa9ff14b34d1626a70b7279929f30be54d"
+    },
+    {
+      "taskId": "T070",
+      "lineNumber": 126,
+      "sourceTaskSha256": "ff824926cd5e084c0fb60be9d696dd39821811fa73a119e2a57f42396d922409"
+    },
+    {
+      "taskId": "T071",
+      "lineNumber": 127,
+      "sourceTaskSha256": "d6ec35741a818d8f5d043a5d38adba410820beaaeb38c407c7fcecb7ebb9f964"
+    },
+    {
+      "taskId": "T072",
+      "lineNumber": 135,
+      "sourceTaskSha256": "70ec731a97ee23338defabc5472a12625cea7f0983f2a8d81fc76ef3e162a17f"
+    },
+    {
+      "taskId": "T073",
+      "lineNumber": 136,
+      "sourceTaskSha256": "16b0b2d7931ca72fc3f4264e6b0a34eb36897bcf26c073871a20645315561559"
+    },
+    {
+      "taskId": "T074",
+      "lineNumber": 137,
+      "sourceTaskSha256": "e6fc57409ad589e7f013c3a8541d867dc8f9c69cf68eb68d8811a563a1e151f7"
+    },
+    {
+      "taskId": "T075",
+      "lineNumber": 138,
+      "sourceTaskSha256": "01a634bde7b3f3ebe4232e438516532f5955854a9de3468acf984e3a8e5cad00"
+    },
+    {
+      "taskId": "T076",
+      "lineNumber": 139,
+      "sourceTaskSha256": "8acb05962fda298a60146a06fe0654a09497c2a5c484fee89a7e86c65e56962f"
+    },
+    {
+      "taskId": "T077",
+      "lineNumber": 140,
+      "sourceTaskSha256": "0bc0257b4631739d8d18298628e64b955c5f098d25a2396277ac3b51d8b13196"
+    },
+    {
+      "taskId": "T078",
+      "lineNumber": 141,
+      "sourceTaskSha256": "446d759cb47b994a2f36e5c86967977f36b234228d105ab8a5fdca0563b06f10"
+    },
+    {
+      "taskId": "T079",
+      "lineNumber": 142,
+      "sourceTaskSha256": "8fca1a90a89460617b44121c12d62f8f0577541f5d59fa8d23c2886a49cd7711"
+    },
+    {
+      "taskId": "T080",
+      "lineNumber": 143,
+      "sourceTaskSha256": "e199cc77272686a868c07299707733025d7c6a27e9bbb2e43305a90aee5fce95"
+    },
+    {
+      "taskId": "T081",
+      "lineNumber": 151,
+      "sourceTaskSha256": "7302f74282d402bcc368c12e3d684dc8ff0401411ae95d8bdd1f9250790fe712"
+    },
+    {
+      "taskId": "T082",
+      "lineNumber": 152,
+      "sourceTaskSha256": "ef2e0ee4c4e4120f00c87b2ab1af7b1443a9d9c1bdf71166c4fe4598468d4e08"
+    },
+    {
+      "taskId": "T083",
+      "lineNumber": 154,
+      "sourceTaskSha256": "552d5ee98ae9166b5c5c2231d39e83b5fc1eb415978cd40f4fcf16b19ab1404d"
+    },
+    {
+      "taskId": "T084",
+      "lineNumber": 155,
+      "sourceTaskSha256": "2919737438cfac1876a58a97d6f9429e1072aa023c2e8af22af8018e5f20f381"
+    },
+    {
+      "taskId": "T085",
+      "lineNumber": 156,
+      "sourceTaskSha256": "367ec7f87a27744a98fdf1ea79cb589d2033885854afcc3a9c787c8de48770fa"
+    },
+    {
+      "taskId": "T086",
+      "lineNumber": 157,
+      "sourceTaskSha256": "91116d4260f05623e6a8b2fa9d27dcc04b9571e6fdf11d61426e099cc83fad12"
+    },
+    {
+      "taskId": "T087",
+      "lineNumber": 158,
+      "sourceTaskSha256": "e44abf190ba59e87a9226d35c2fe50d8f61641ac4125bfd10dfdd768b8862e5a"
+    },
+    {
+      "taskId": "T088",
+      "lineNumber": 159,
+      "sourceTaskSha256": "12e27961a6555a4d67312d2cf735003f2a81a80e3e5f08770e00f94061ea1576"
+    },
+    {
+      "taskId": "T089",
+      "lineNumber": 153,
+      "sourceTaskSha256": "0946c03432daa25ebbef13e207a38e085ef1ce6a9d9e03b479d8960dde088e8b"
+    },
+    {
+      "taskId": "T090",
+      "lineNumber": 165,
+      "sourceTaskSha256": "e2312d8a0cbe5590c2da7cccb68ecdd9a01c450d2710d4b4f6bf914c4cb66c38"
+    },
+    {
+      "taskId": "T091",
+      "lineNumber": 166,
+      "sourceTaskSha256": "92718d909c0332e524dab860f447277598590922dc8dfd1267dac3671d6b8a12"
+    },
+    {
+      "taskId": "T092",
+      "lineNumber": 167,
+      "sourceTaskSha256": "d9cc9d724765080ec4d8a1bc8f3e7ad81948e097463de277fdc144c27446bef5"
+    },
+    {
+      "taskId": "T093",
+      "lineNumber": 168,
+      "sourceTaskSha256": "8b4df1df768981d53ecd3b0fc83f02904b7cef16b7b135fbb254ccd821d07113"
+    },
+    {
+      "taskId": "T094",
+      "lineNumber": 169,
+      "sourceTaskSha256": "9d21787521824281cf3db9b097851195ed657466d34b3955c190d441d8811d6d"
+    },
+    {
+      "taskId": "T095",
+      "lineNumber": 170,
+      "sourceTaskSha256": "21699bc6c0d4236eac3d908c5be00a498d836678554e8629d1797c68099946b4"
+    },
+    {
+      "taskId": "T096",
+      "lineNumber": 171,
+      "sourceTaskSha256": "66fcfdc56520735c56fe025e791d4224922747d24c8b7a057776e5a9cf70c7c0"
+    },
+    {
+      "taskId": "T097",
+      "lineNumber": 172,
+      "sourceTaskSha256": "e8319db5f4b323233c1bed221ff0a217a0321c7f1d411cc01e658596766eeef3"
+    },
+    {
+      "taskId": "T098",
+      "lineNumber": 173,
+      "sourceTaskSha256": "7075abd818df00edcbb6116f304937e40a8684cbf1ba8b00df15c87fee166305"
+    },
+    {
+      "taskId": "T099",
+      "lineNumber": 174,
+      "sourceTaskSha256": "4e1d91f58eef5b93bdc21c68156abda996d614a136fa3e55489ee3a4fc979aa8"
+    },
+    {
+      "taskId": "T100",
+      "lineNumber": 180,
+      "sourceTaskSha256": "64ce4f18c3b455e8c0023d464940c062cdf400d98b29202ce0c66c02d2aa830d"
+    },
+    {
+      "taskId": "T101",
+      "lineNumber": 181,
+      "sourceTaskSha256": "444ce7419948c1c76e607450901fba2c70feceb52866ad1896e2268b6bd08ce7"
+    },
+    {
+      "taskId": "T102",
+      "lineNumber": 182,
+      "sourceTaskSha256": "eb3130d0d419ed8e09018e1624e03a3dfa0048159fa0dc3ab02fdcc174da6d3c"
+    },
+    {
+      "taskId": "T103",
+      "lineNumber": 183,
+      "sourceTaskSha256": "3c591f623c80dc52f645d99c348e5981115c1df43722ec7dde634b5f25920bb2"
+    },
+    {
+      "taskId": "T104",
+      "lineNumber": 184,
+      "sourceTaskSha256": "3c566e061e3588321165baf9c9b9c43f90dc1ee5608b0ea69048f2149a9986cb"
+    },
+    {
+      "taskId": "T105",
+      "lineNumber": 185,
+      "sourceTaskSha256": "65a62509cebc274438f30bfa54feb9025ff43a9f107f9a2d9b4a5d95b2d09a37"
+    },
+    {
+      "taskId": "T106",
+      "lineNumber": 186,
+      "sourceTaskSha256": "a8f4b1119d0cf36c90a9d2f59344358dd21984802145471f55821d2e2df4a1cb"
+    },
+    {
+      "taskId": "T107",
+      "lineNumber": 187,
+      "sourceTaskSha256": "cc92e75ed3eb0d7c9a1c46f108c5e68f211eb944bab90fd22f1e6b6e32ac9e56"
+    },
+    {
+      "taskId": "T108",
+      "lineNumber": 188,
+      "sourceTaskSha256": "9bff2d9779767a336479c8a96b803b73cf24f5166d7e9d9a7bc026176fcf704b"
+    },
+    {
+      "taskId": "T109",
+      "lineNumber": 189,
+      "sourceTaskSha256": "bee9c381367253c6cbd076c86e8cbd901b33c5b35a4b6296aed7e3fe56eeef4b"
+    }
+  ],
+  "batchCount": 25,
+  "batches": [
+    {
+      "batchId": "B01",
+      "path": "implementation-control/batches/B01.json",
+      "sha256": "1654f8c62698ea5929a7e9f68c31755eef76ec76c7cfe2de8fd71b0d263643ee"
+    },
+    {
+      "batchId": "B02",
+      "path": "implementation-control/batches/B02.json",
+      "sha256": "ae88f93926c842d50dfddd0089da3c80e31af4e69cb504fd9440d509f3ab1557"
+    },
+    {
+      "batchId": "B03",
+      "path": "implementation-control/batches/B03.json",
+      "sha256": "f29ccd4124385754ae133053bd68724cd3e6673c45214a784a8d39cb0e1be28a"
+    },
+    {
+      "batchId": "B04",
+      "path": "implementation-control/batches/B04.json",
+      "sha256": "6f5fd1ab068dc2937a1629b25c43cfcbfb5dbc30aafd4e9c02b32cf9900be799"
+    },
+    {
+      "batchId": "B05",
+      "path": "implementation-control/batches/B05.json",
+      "sha256": "14f118d1d0ab86915b0af2d389ec81fb882f9be8ae6cdd5912804d7b2d9366f3"
+    },
+    {
+      "batchId": "B06",
+      "path": "implementation-control/batches/B06.json",
+      "sha256": "2a7c554b0e5eeda6acb09182b08b8a719079bfd7317740c1875fb73fd38093ac"
+    },
+    {
+      "batchId": "B07",
+      "path": "implementation-control/batches/B07.json",
+      "sha256": "4b07d9ab7c5a8484606ec2136af8eaf3087c18bd0097c0e6f8c904fcbbce9c95"
+    },
+    {
+      "batchId": "B08",
+      "path": "implementation-control/batches/B08.json",
+      "sha256": "fd541bd3c5f84e057a7fe459b38fbeb0f4a596c9866a8d70da75806a1cddab70"
+    },
+    {
+      "batchId": "B09",
+      "path": "implementation-control/batches/B09.json",
+      "sha256": "0df4b080741ff77a356813eab452b48e81c7f6eb69325d9bf5df38b96b168c83"
+    },
+    {
+      "batchId": "B10",
+      "path": "implementation-control/batches/B10.json",
+      "sha256": "b9ad45e4b90bbd53267af8f73a3f7bedd08b22bc9f222114b09d6469ede70e40"
+    },
+    {
+      "batchId": "B11",
+      "path": "implementation-control/batches/B11.json",
+      "sha256": "b53f4c1106cb84345d5570a5d23d0b8d2db1d4bc9a0f75bd345bff2df2a632a5"
+    },
+    {
+      "batchId": "B12",
+      "path": "implementation-control/batches/B12.json",
+      "sha256": "78381e751674e7fe46fbc6b8591c4f4531842d33f0091d0b922b0e677107cb9b"
+    },
+    {
+      "batchId": "B13",
+      "path": "implementation-control/batches/B13.json",
+      "sha256": "a31670ab9ab23ce829364b80cd230b48ad083058dfb21c1a4753f2b9930ee908"
+    },
+    {
+      "batchId": "B14",
+      "path": "implementation-control/batches/B14.json",
+      "sha256": "e8e9eff526f017090ba23615d6649dc8ea0fafe7f47d120e010fe79cbd08e279"
+    },
+    {
+      "batchId": "B15",
+      "path": "implementation-control/batches/B15.json",
+      "sha256": "a4e7d22562b4364d67c7ca3a7628d9178f23037d843a5293290bcae28ec3afa0"
+    },
+    {
+      "batchId": "B16",
+      "path": "implementation-control/batches/B16.json",
+      "sha256": "84db182a95e6d49a1c703cfd30a64ac868d201145d019db316302f1fae7d3499"
+    },
+    {
+      "batchId": "B17",
+      "path": "implementation-control/batches/B17.json",
+      "sha256": "ed8e0fc387488003d262c9604a9064c6f04ad121d0d83a9ba41a8aec1cab96bd"
+    },
+    {
+      "batchId": "B18",
+      "path": "implementation-control/batches/B18.json",
+      "sha256": "75c885b06811efc9cf5768e0875053ff07c4f8ad7b0596bbd7713eedf471c1e2"
+    },
+    {
+      "batchId": "B19",
+      "path": "implementation-control/batches/B19.json",
+      "sha256": "79750eeb6f85293986376693eaef67a659ddaec4d9de2fee9874881d3a4bcb72"
+    },
+    {
+      "batchId": "B20",
+      "path": "implementation-control/batches/B20.json",
+      "sha256": "5f2a868c8f687f83f7e332dba197a8cc21db5de40877ddee95e4f18d85b3f019"
+    },
+    {
+      "batchId": "B21",
+      "path": "implementation-control/batches/B21.json",
+      "sha256": "4f6746ff56a41505bf82eb9ec7ce91cf1437835a618cc1d55755eecad64bbb5a"
+    },
+    {
+      "batchId": "B22",
+      "path": "implementation-control/batches/B22.json",
+      "sha256": "8c53b7357e89df161a1de6a39a9e84f45b0fbc0862267f04f882e01dcbbe75ce"
+    },
+    {
+      "batchId": "B23",
+      "path": "implementation-control/batches/B23.json",
+      "sha256": "c77aa60599ee24bf03f9600ebf878925eedcccd940d47bb5e807d4e442b1b56f"
+    },
+    {
+      "batchId": "B24",
+      "path": "implementation-control/batches/B24.json",
+      "sha256": "5756d230fc41ee64f1f3826520b7f75dc94531c948630100410aa25bdba28946"
+    },
+    {
+      "batchId": "B25",
+      "path": "implementation-control/batches/B25.json",
+      "sha256": "2be5049bccd0926765103d8ad27703df39606086d42ea46062cbf80228692e57"
+    }
+  ]
+}

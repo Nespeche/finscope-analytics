@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "batchId": "B10",
+  "attempt": 2,
+  "command": "npm ci",
+  "cwdObserved": "/mnt/data/B10_work/FinScope_v0.21.4",
+  "cwdLogical": "FinScope_v0.21.4",
+  "startedAt": "2026-07-28T02:51:44.174Z",
+  "finishedAt": "2026-07-28T02:52:55.107Z",
+  "exitCode": 1,
+  "exitCodeEvidence": "npm debug log final records: verbose exit 1; verbose code 1",
+  "outcome": "FAIL",
+  "npmErrorCode": "E503",
+  "primaryFailure": "HTTP 503 Service Temporarily Unavailable while downloading zimmerframe-1.1.4.tgz from the configured npm registry gateway",
+  "stdout": {
+    "path": "implementation-control/reports/B10_AUTHORING_VALIDATION/npm-ci.stdout.log",
+    "sizeBytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "implementation-control/reports/B10_AUTHORING_VALIDATION/npm-ci.stderr.log",
+    "sizeBytes": 314,
+    "sha256": "feef621771d339119b2cb43bfe7d3d2ba97a9ef00ca092987f060f12760ed2c8"
+  },
+  "failFast": true,
+  "dependentCommands": [
+    {
+      "command": "npm run typecheck",
+      "status": "NOT_RUN"
+    },
+    {
+      "command": "npm run test:unit -- tests/unit/analytics/rule-vectors.test.ts tests/unit/analytics/synthesis.test.ts tests/unit/fingerprints/fingerprint-vectors.test.ts",
+      "status": "NOT_RUN"
+    },
+    {
+      "command": "npm run test",
+      "status": "NOT_RUN"
+    },
+    {
+      "command": "npm run build",
+      "status": "NOT_RUN"
+    }
+  ],
+  "discovery": {
+    "status": "NOT_APPLICABLE",
+    "reason": "npm ci failed before test discovery"
+  },
+  "passClaimed": false
+}

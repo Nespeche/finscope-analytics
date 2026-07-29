@@ -1,0 +1,289 @@
+{
+  "$id": "https://finscope.local/schemas/formula-catalog.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Formula catalog v1.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "catalogId",
+    "version",
+    "status",
+    "invariants",
+    "reasonCodes",
+    "formulas",
+    "evaluationPrecedence"
+  ],
+  "properties": {
+    "catalogId": {
+      "const": "formula-catalog"
+    },
+    "version": {
+      "const": "1.1.0"
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "invariants": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "reasonCodes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]+$"
+      }
+    },
+    "formulas": {
+      "type": "array",
+      "minItems": 15,
+      "maxItems": 15,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "formulaId",
+          "formulaVersion",
+          "priority",
+          "arity",
+          "inputKind",
+          "expression",
+          "semantics",
+          "decimalPolicy",
+          "orderingPolicy",
+          "negativeValuePolicy",
+          "edgeCases",
+          "outputContract"
+        ],
+        "properties": {
+          "formulaId": {
+            "enum": [
+              "identity",
+              "add",
+              "subtract",
+              "divide",
+              "ratio_change",
+              "divide_average_balance",
+              "debt_bucket_sum",
+              "last",
+              "min",
+              "max",
+              "mean",
+              "median",
+              "simple_return",
+              "max_drawdown",
+              "normalized_ols_ordinal"
+            ]
+          },
+          "formulaVersion": {
+            "const": "1.1.0"
+          },
+          "priority": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "arity": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "minimum",
+              "maximum"
+            ],
+            "properties": {
+              "minimum": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "maximum": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 1
+              }
+            }
+          },
+          "inputKind": {
+            "enum": [
+              "scalar",
+              "ordered_scalars",
+              "named_buckets",
+              "ordered_series",
+              "price_series"
+            ]
+          },
+          "expression": {
+            "type": "string",
+            "minLength": 1
+          },
+          "semantics": {
+            "type": "string",
+            "minLength": 1
+          },
+          "decimalPolicy": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "library",
+              "input",
+              "precision",
+              "persistedScale",
+              "rounding",
+              "serialization",
+              "clockDependency"
+            ],
+            "properties": {
+              "library": {
+                "const": "decimal.js"
+              },
+              "input": {
+                "const": "canonical DecimalString"
+              },
+              "precision": {
+                "const": "arbitrary"
+              },
+              "persistedScale": {
+                "const": 12
+              },
+              "rounding": {
+                "const": "ROUND_HALF_EVEN"
+              },
+              "serialization": {
+                "type": "string",
+                "minLength": 1
+              },
+              "clockDependency": {
+                "const": "PROHIBITED"
+              }
+            }
+          },
+          "orderingPolicy": {
+            "type": "string",
+            "minLength": 1
+          },
+          "negativeValuePolicy": {
+            "type": "string",
+            "minLength": 1
+          },
+          "edgeCases": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "condition",
+                "state",
+                "reasonCode"
+              ],
+              "properties": {
+                "condition": {
+                  "type": "string"
+                },
+                "state": {
+                  "enum": [
+                    "insufficient",
+                    "not_meaningful",
+                    "partial"
+                  ]
+                },
+                "reasonCode": {
+                  "enum": [
+                    "invalid_arity",
+                    "required_input_missing",
+                    "invalid_input",
+                    "non_canonical_decimal",
+                    "insufficient_observations",
+                    "zero_denominator",
+                    "non_finite_result",
+                    "invalid_price_observation",
+                    "incomplete_debt_buckets",
+                    "overlapping_debt_buckets"
+                  ]
+                },
+                "valueMustBeAbsent": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "outputContract": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "availableValue",
+              "unavailableValue",
+              "stateRequired",
+              "reasonCodeRequiredWhenUnavailable"
+            ],
+            "properties": {
+              "availableValue": {
+                "const": "canonical DecimalString"
+              },
+              "unavailableValue": {
+                "const": "omitted"
+              },
+              "stateRequired": {
+                "const": true
+              },
+              "reasonCodeRequiredWhenUnavailable": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "evaluationPrecedence": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "order",
+          "conditionClass",
+          "reasonCode",
+          "rule"
+        ],
+        "properties": {
+          "order": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 7
+          },
+          "conditionClass": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reasonCode": {
+            "enum": [
+              "invalid_arity",
+              "required_input_missing",
+              "invalid_input",
+              "non_canonical_decimal",
+              "insufficient_observations",
+              "zero_denominator",
+              "non_finite_result",
+              "invalid_price_observation",
+              "incomplete_debt_buckets",
+              "overlapping_debt_buckets"
+            ]
+          },
+          "rule": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

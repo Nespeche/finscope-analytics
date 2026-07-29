@@ -1,0 +1,90 @@
+{
+  "contractId": "local-export-restore-contract",
+  "version": "1.1.0",
+  "status": "ACTIVE_AUTHORITY",
+  "format": "finscope-local-export",
+  "formatVersion": "1.1.0",
+  "export": {
+    "includedRecordKinds": [
+      "fundamentalSnapshot",
+      "fundamentalBundle",
+      "fundamentalAnalysis",
+      "historicalPriceOverlay",
+      "priceAnalysis",
+      "activePointer",
+      "commitRecord"
+    ],
+    "excluded": [
+      "deployment variables",
+      "network consent",
+      "storage consent",
+      "operational cache timestamps",
+      "logs"
+    ],
+    "manifestFields": [
+      "format",
+      "formatVersion",
+      "createdAt",
+      "recordCount",
+      "recordsSha256"
+    ],
+    "recordFields": [
+      "schemaId",
+      "recordKind",
+      "recordId",
+      "payloadSha256",
+      "payload"
+    ],
+    "hashing": "SHA-256 over RFC 8785 canonical JSON",
+    "createdAtFingerprintRole": "display metadata only; excluded from record fingerprints"
+  },
+  "preview": {
+    "requiredBeforeWrite": true,
+    "shows": [
+      "formatVersion",
+      "record counts by kind",
+      "issuer CIKs",
+      "overlay counts",
+      "conflicts",
+      "incompatible records",
+      "estimated writes"
+    ],
+    "networkAllowed": false
+  },
+  "restore": {
+    "storageConsentRequired": true,
+    "importGrantsNetworkConsent": false,
+    "validateAllBeforeWrite": true,
+    "validateSchemas": true,
+    "validateHashes": true,
+    "validateReferences": true,
+    "defaultConflictPolicy": "reject_on_conflict",
+    "userMaySelectAfterPreview": [
+      "reject_on_conflict",
+      "replace_matching_record_ids"
+    ],
+    "transactional": true,
+    "partialWritesAllowed": false,
+    "atomicStores": [
+      "fundamentalSnapshots",
+      "fundamentalBundles",
+      "fundamentalAnalyses",
+      "priceOverlays",
+      "priceAnalyses",
+      "activePointers",
+      "commitLog"
+    ]
+  },
+  "privacy": "entirely local; no export or restore payload is sent to a server",
+  "compatibilityAndIntegrity": {
+    "checksum": "SHA-256 over RFC 8785 canonical JSON for each record and the complete records array",
+    "versionPolicy": "exact major format version required; compatible minor versions may use an explicit migration plan",
+    "migrationPolicy": "migration is preview-only until every source and destination schema validates; no network access",
+    "unknownRecordKinds": "reject",
+    "invalidRowsOrRecords": "reject the entire restore candidate",
+    "duplicateRecordIds": "reject unless previewed deterministic replace_matching_record_ids is selected",
+    "maximumSizeBytes": 52428800,
+    "atomicRollback": "all stores commit atomically; any error causes complete rollback",
+    "archivePolicy": "ZIP and other archive containers are unsupported and rejected"
+  }
+}

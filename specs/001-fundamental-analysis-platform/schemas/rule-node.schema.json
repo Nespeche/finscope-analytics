@@ -1,0 +1,259 @@
+{
+  "$defs": {
+    "All": {
+      "additionalProperties": false,
+      "properties": {
+        "children": {
+          "items": {
+            "$ref": "#/$defs/RuleNode"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "op": {
+          "const": "all"
+        }
+      },
+      "required": [
+        "op",
+        "children"
+      ],
+      "type": "object"
+    },
+    "Any": {
+      "additionalProperties": false,
+      "properties": {
+        "children": {
+          "items": {
+            "$ref": "#/$defs/RuleNode"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "op": {
+          "const": "any"
+        }
+      },
+      "required": [
+        "op",
+        "children"
+      ],
+      "type": "object"
+    },
+    "Comparison": {
+      "additionalProperties": false,
+      "properties": {
+        "comparator": {
+          "enum": [
+            "gt",
+            "gte",
+            "lt",
+            "lte",
+            "eq",
+            "neq"
+          ]
+        },
+        "left": {
+          "$ref": "#/$defs/Operand"
+        },
+        "op": {
+          "const": "comparison"
+        },
+        "right": {
+          "$ref": "#/$defs/Operand"
+        }
+      },
+      "required": [
+        "op",
+        "left",
+        "comparator",
+        "right"
+      ],
+      "type": "object"
+    },
+    "CountAtLeast": {
+      "additionalProperties": false,
+      "properties": {
+        "child": {
+          "$ref": "#/$defs/RuleNode"
+        },
+        "minimum": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "op": {
+          "const": "count_at_least"
+        },
+        "window": {
+          "additionalProperties": false,
+          "properties": {
+            "count": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "periodSet": {
+              "enum": [
+                "latest_annual",
+                "latest_quarterly"
+              ]
+            }
+          },
+          "required": [
+            "periodSet",
+            "count"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "op",
+        "minimum",
+        "window",
+        "child"
+      ],
+      "type": "object"
+    },
+    "DecimalOperand": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "decimal"
+        },
+        "valueDecimal": {
+          "$ref": "common.schema.json#/$defs/DecimalString"
+        }
+      },
+      "required": [
+        "kind",
+        "valueDecimal"
+      ],
+      "type": "object"
+    },
+    "MetricOperand": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "metric"
+        },
+        "metricId": {
+          "pattern": "^(?:FND|MKT)_[A-Z0-9_]+$",
+          "type": "string"
+        },
+        "periodSelector": {
+          "enum": [
+            "current",
+            "prior_year",
+            "previous_quarter",
+            "window_item"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "metricId",
+        "periodSelector"
+      ],
+      "type": "object"
+    },
+    "MetricStateIs": {
+      "additionalProperties": false,
+      "properties": {
+        "metricId": {
+          "type": "string"
+        },
+        "op": {
+          "const": "metric_state_is"
+        },
+        "periodSelector": {
+          "enum": [
+            "current",
+            "prior_year",
+            "previous_quarter",
+            "window_item"
+          ]
+        },
+        "states": {
+          "items": {
+            "$ref": "common.schema.json#/$defs/MetricState"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "op",
+        "metricId",
+        "states",
+        "periodSelector"
+      ],
+      "type": "object"
+    },
+    "Operand": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/MetricOperand"
+        },
+        {
+          "$ref": "#/$defs/DecimalOperand"
+        }
+      ]
+    },
+    "QualityAtLeast": {
+      "additionalProperties": false,
+      "properties": {
+        "minimumQuality": {
+          "$ref": "common.schema.json#/$defs/QualityClassification"
+        },
+        "op": {
+          "const": "quality_is_at_least"
+        },
+        "periodSelector": {
+          "enum": [
+            "current",
+            "prior_year",
+            "previous_quarter",
+            "window_item"
+          ]
+        },
+        "targetId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "op",
+        "targetId",
+        "minimumQuality",
+        "periodSelector"
+      ],
+      "type": "object"
+    },
+    "RuleNode": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/All"
+        },
+        {
+          "$ref": "#/$defs/Any"
+        },
+        {
+          "$ref": "#/$defs/CountAtLeast"
+        },
+        {
+          "$ref": "#/$defs/Comparison"
+        },
+        {
+          "$ref": "#/$defs/MetricStateIs"
+        },
+        {
+          "$ref": "#/$defs/QualityAtLeast"
+        }
+      ]
+    }
+  },
+  "$id": "https://finscope.local/schemas/rule-node.schema.json",
+  "$ref": "#/$defs/RuleNode",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Closed RuleNode AST v5.0.0"
+}

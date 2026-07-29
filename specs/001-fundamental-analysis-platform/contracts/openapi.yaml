@@ -1,0 +1,525 @@
+openapi: 3.1.1
+info:
+  title: FinScope Analytics public gateway contract
+  version: 5.0.1
+  description: Read-only gateway. Local pipeline, IndexedDB, price import and analysis are not HTTP operations.
+servers:
+- url: https://finscope.example/api
+tags:
+- name: system
+- name: catalogs
+- name: sec
+paths:
+  /health:
+    get:
+      operationId: getHealth
+      summary: Health check
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+  /policies:
+    get:
+      operationId: getPolicies
+      summary: Read effective public policies
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDocument'
+  /definitions:
+    get:
+      operationId: listDefinitions
+      summary: List active definition catalogs
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogIndex'
+        '400':
+          description: Gateway Problem Details 400
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/InvalidRequestProblem
+  /definitions/{definitionId}:
+    get:
+      operationId: getDefinition
+      summary: Read one active definition document
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDocument'
+        '400':
+          description: Gateway Problem Details 400
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/InvalidRequestProblem
+        '404':
+          description: Gateway Problem Details 404
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/DefinitionNotFoundProblem
+      parameters:
+      - $ref: '#/components/parameters/DefinitionId'
+  /mappings:
+    get:
+      operationId: listMappings
+      summary: List exact active mappings
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogIndex'
+        '400':
+          description: Gateway Problem Details 400
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/InvalidRequestProblem
+  /mappings/{mappingId}:
+    get:
+      operationId: getMapping
+      summary: Read one exact mapping
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDocument'
+        '400':
+          description: Gateway Problem Details 400
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/InvalidRequestProblem
+        '404':
+          description: Gateway Problem Details 404
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/MappingNotFoundProblem
+      parameters:
+      - $ref: '#/components/parameters/MappingId'
+  /issuers/{cik}:
+    get:
+      operationId: getIssuer
+      summary: Resolve issuer identity by authoritative CIK
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssuerIdentity'
+        '400':
+          description: Gateway Problem Details 400
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/InvalidRequestProblem
+        '403':
+          description: Gateway Problem Details 403
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/BlockedByPolicyProblem
+        '404':
+          description: Gateway Problem Details 404
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/IssuerNotFoundProblem
+        '502':
+          description: Gateway Problem Details 502
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - $ref: ../schemas/problem-details.schema.json#/$defs/ProviderUnavailableProblem
+                - $ref: ../schemas/problem-details.schema.json#/$defs/InvalidPayloadProblem
+        '504':
+          description: Upstream request exceeded 20 seconds or the complete operation exceeded 120 seconds
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/UpstreamTimeoutProblem
+      parameters:
+      - $ref: '#/components/parameters/Cik'
+  /issuers/{cik}/submissions:
+    get:
+      operationId: getIssuerSubmissions
+      summary: Proxy SEC submissions under fair-access policy
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecPayloadEnvelope'
+        '400':
+          description: Gateway Problem Details 400
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/InvalidRequestProblem
+        '403':
+          description: Gateway Problem Details 403
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/BlockedByPolicyProblem
+        '404':
+          description: Gateway Problem Details 404
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/IssuerNotFoundProblem
+        '413':
+          description: Upstream response exceeded 67,108,864 uncompressed bytes
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/PayloadTooLargeProblem
+        '502':
+          description: Gateway Problem Details 502
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - $ref: ../schemas/problem-details.schema.json#/$defs/ProviderUnavailableProblem
+                - $ref: ../schemas/problem-details.schema.json#/$defs/InvalidPayloadProblem
+        '504':
+          description: Upstream request exceeded 20 seconds or the complete operation exceeded 120 seconds
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/UpstreamTimeoutProblem
+      parameters:
+      - $ref: '#/components/parameters/Cik'
+  /issuers/{cik}/filings/{accessionNumber}:
+    get:
+      operationId: getIssuerFiling
+      summary: Read filing metadata/evidence
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecPayloadEnvelope'
+        '400':
+          description: Gateway Problem Details 400
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/InvalidRequestProblem
+        '403':
+          description: Gateway Problem Details 403
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/BlockedByPolicyProblem
+        '404':
+          description: Gateway Problem Details 404
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/FilingNotFoundProblem
+        '413':
+          description: Upstream response exceeded 67,108,864 uncompressed bytes
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/PayloadTooLargeProblem
+        '502':
+          description: Gateway Problem Details 502
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - $ref: ../schemas/problem-details.schema.json#/$defs/ProviderUnavailableProblem
+                - $ref: ../schemas/problem-details.schema.json#/$defs/InvalidPayloadProblem
+        '504':
+          description: Upstream request exceeded 20 seconds or the complete operation exceeded 120 seconds
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/UpstreamTimeoutProblem
+      parameters:
+      - $ref: '#/components/parameters/Cik'
+      - $ref: '#/components/parameters/AccessionNumber'
+  /issuers/{cik}/company-facts:
+    get:
+      operationId: getCompanyFacts
+      summary: Primary SEC Company Facts payload
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecPayloadEnvelope'
+        '400':
+          description: Gateway Problem Details 400
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/InvalidRequestProblem
+        '403':
+          description: Gateway Problem Details 403
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/BlockedByPolicyProblem
+        '404':
+          description: Gateway Problem Details 404
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/IssuerNotFoundProblem
+        '413':
+          description: Upstream response exceeded 67,108,864 uncompressed bytes
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/PayloadTooLargeProblem
+        '502':
+          description: Gateway Problem Details 502
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - $ref: ../schemas/problem-details.schema.json#/$defs/ProviderUnavailableProblem
+                - $ref: ../schemas/problem-details.schema.json#/$defs/InvalidPayloadProblem
+        '504':
+          description: Upstream request exceeded 20 seconds or the complete operation exceeded 120 seconds
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/UpstreamTimeoutProblem
+      parameters:
+      - $ref: '#/components/parameters/Cik'
+  /issuers/{cik}/company-concepts/{taxonomy}/{tag}:
+    get:
+      operationId: getCompanyConcept
+      summary: Selective Company Concept fallback
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecPayloadEnvelope'
+        '400':
+          description: Gateway Problem Details 400
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/InvalidRequestProblem
+        '403':
+          description: Gateway Problem Details 403
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/BlockedByPolicyProblem
+        '404':
+          description: Gateway Problem Details 404
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/IssuerNotFoundProblem
+        '413':
+          description: Upstream response exceeded 67,108,864 uncompressed bytes
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/PayloadTooLargeProblem
+        '502':
+          description: Gateway Problem Details 502
+          content:
+            application/problem+json:
+              schema:
+                oneOf:
+                - $ref: ../schemas/problem-details.schema.json#/$defs/ProviderUnavailableProblem
+                - $ref: ../schemas/problem-details.schema.json#/$defs/InvalidPayloadProblem
+        '504':
+          description: Upstream request exceeded 20 seconds or the complete operation exceeded 120 seconds
+          content:
+            application/problem+json:
+              schema:
+                $ref: ../schemas/problem-details.schema.json#/$defs/UpstreamTimeoutProblem
+      parameters:
+      - $ref: '#/components/parameters/Cik'
+      - $ref: '#/components/parameters/Taxonomy'
+      - $ref: '#/components/parameters/Tag'
+components:
+  parameters:
+    Cik:
+      name: cik
+      in: path
+      required: true
+      schema:
+        $ref: ../schemas/common.schema.json#/$defs/Cik
+    DefinitionId:
+      name: definitionId
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[a-z0-9][a-z0-9._-]+$
+    MappingId:
+      name: mappingId
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^map-[a-z0-9-]+$
+    AccessionNumber:
+      name: accessionNumber
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[0-9]{10}-[0-9]{2}-[0-9]{6}$
+    Taxonomy:
+      name: taxonomy
+      in: path
+      required: true
+      schema:
+        enum:
+        - us-gaap
+        - ifrs-full
+        - dei
+    Tag:
+      name: tag
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[A-Za-z][A-Za-z0-9]+$
+  schemas:
+    Health:
+      type: object
+      additionalProperties: false
+      required:
+      - status
+      - contractVersion
+      properties:
+        status:
+          const: ok
+        contractVersion:
+          const: 5.0.0
+    CatalogIndex:
+      type: object
+      additionalProperties: false
+      required:
+      - catalogId
+      - version
+      - entries
+      properties:
+        catalogId:
+          type: string
+        version:
+          const: 5.0.0
+        entries:
+          type: array
+          items:
+            type: object
+    CatalogDocument:
+      type: object
+      additionalProperties: true
+      required:
+      - version
+      - status
+      properties:
+        version:
+          const: 5.0.0
+        status:
+          type: string
+    IssuerIdentity:
+      type: object
+      additionalProperties: false
+      required:
+      - cik
+      - legalName
+      - analysisProfile
+      properties:
+        cik:
+          $ref: ../schemas/common.schema.json#/$defs/Cik
+        legalName:
+          type: string
+          minLength: 1
+        analysisProfile:
+          $ref: ../schemas/common.schema.json#/$defs/AccountingProfileId
+    SecPayloadEnvelope:
+      type: object
+      additionalProperties: false
+      required:
+      - cik
+      - sourceKind
+      - payloadSha256
+      - payload
+      properties:
+        cik:
+          $ref: ../schemas/common.schema.json#/$defs/Cik
+        sourceKind:
+          enum:
+          - submissions
+          - filing_metadata
+          - company_facts
+          - company_concept
+        payloadSha256:
+          type: string
+          pattern: ^[0-9a-f]{64}$
+        payload:
+          type: object
+x-finscope-invariants:
+  unsupportedProfileHttpStatus: null
+  localIssueHttpStatuses: []
+  secMaxExternalCallsPerOperation: 14
+  companyFactsPrimary: true
+  companyConceptSelectiveFallback: true
+  problemCatalog: ../definitions/gateway-problem-details-catalog.json
+x-finscope-security-policy:
+  authority: security-and-input-limits.json
+  allowedUpstreamHosts:
+  - data.sec.gov
+  - www.sec.gov
+  maximumUncompressedResponseBytes: 67108864
+  requestTimeoutSeconds: 20
+  operationTimeoutSeconds: 120
+  concurrencyPerClient: 1
+x-finscope-sec-policy:
+  companyFactsPrimary: true
+  companyConceptExactFallbackOnly: true
+  framesSelectorAllowed: false
+  admittedForms:
+  - 10-K
+  - 10-K/A
+  - 10-Q
+  - 10-Q/A
+  - 20-F
+  - 20-F/A
+  - 6-K
+  - 6-K/A
+  - 40-F
+  - 40-F/A
+  evidenceOnlyForms:
+  - 8-K
+  - 8-K/A

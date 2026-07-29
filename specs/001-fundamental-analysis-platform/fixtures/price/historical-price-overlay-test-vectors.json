@@ -1,0 +1,196 @@
+{
+  "fixtureSetId": "historical-price-overlay-test-vectors",
+  "fixtures": [
+    {
+      "expectedFundamentalArtifactsChanged": false,
+      "expectedSchemaValid": true,
+      "fixtureId": "PRICE-OVERLAY-VALID",
+      "input": {
+        "adjustmentStatus": "unadjusted",
+        "contractVersion": "5.0.0",
+        "createdAt": "2026-07-21T10:00:00Z",
+        "currency": "USD",
+        "frequency": "monthly",
+        "historicalPriceOverlayFingerprint": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "instrument": {
+          "symbol": "AAPL",
+          "venueMic": "XNAS"
+        },
+        "issuerCik": "0000320193",
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ],
+        "origin": {
+          "method": "csv_import",
+          "profileId": "local_csv_manual_v1",
+          "sourceFileSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "overlayId": "price-overlay-0000320193-aapl",
+        "overlayVersion": 1,
+        "priceQuality": {
+          "axes": {
+            "adjustmentDisclosure": "declared",
+            "currencyIntegrity": "single_declared",
+            "dateIntegrity": "unique_sorted",
+            "rowValidity": "all_valid"
+          },
+          "classification": "verified"
+        },
+        "priceUse": "historical_descriptive_only",
+        "sourceEvidenceFingerprint": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "warnings": []
+      }
+    },
+    {
+      "expectedReason": "displayAgeDays is derived display data and cannot be persisted or fingerprinted",
+      "expectedSchemaValid": false,
+      "fixtureId": "PRICE-OVERLAY-LOCAL-CLOCK-FORBIDDEN",
+      "input": {
+        "adjustmentStatus": "unadjusted",
+        "contractVersion": "5.0.0",
+        "createdAt": "2026-07-21T10:00:00Z",
+        "currency": "USD",
+        "displayAgeDays": 1,
+        "frequency": "monthly",
+        "historicalPriceOverlayFingerprint": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "instrument": {
+          "symbol": "AAPL",
+          "venueMic": "XNAS"
+        },
+        "issuerCik": "0000320193",
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          },
+          {
+            "date": "2025-03-31",
+            "priceDecimal": "11"
+          },
+          {
+            "date": "2025-04-30",
+            "priceDecimal": "15"
+          }
+        ],
+        "origin": {
+          "method": "csv_import",
+          "profileId": "local_csv_manual_v1",
+          "sourceFileSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "overlayId": "price-overlay-0000320193-aapl",
+        "overlayVersion": 1,
+        "priceQuality": {
+          "axes": {
+            "adjustmentDisclosure": "declared",
+            "currencyIntegrity": "single_declared",
+            "dateIntegrity": "unique_sorted",
+            "rowValidity": "all_valid"
+          },
+          "classification": "verified"
+        },
+        "priceUse": "historical_descriptive_only",
+        "sourceEvidenceFingerprint": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "warnings": []
+      }
+    },
+    {
+      "expectedSchemaValid": true,
+      "fixtureId": "PRICE-OVERLAY-DUPLICATE-DATE",
+      "input": {
+        "adjustmentStatus": "unadjusted",
+        "contractVersion": "5.0.0",
+        "createdAt": "2026-07-21T10:00:00Z",
+        "currency": "USD",
+        "frequency": "monthly",
+        "historicalPriceOverlayFingerprint": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "instrument": {
+          "symbol": "AAPL",
+          "venueMic": "XNAS"
+        },
+        "issuerCik": "0000320193",
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          }
+        ],
+        "origin": {
+          "method": "csv_import",
+          "profileId": "local_csv_manual_v1",
+          "sourceFileSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "overlayId": "price-overlay-0000320193-aapl",
+        "overlayVersion": 1,
+        "priceQuality": {
+          "axes": {
+            "adjustmentDisclosure": "declared",
+            "currencyIntegrity": "single_declared",
+            "dateIntegrity": "unique_sorted",
+            "rowValidity": "all_valid"
+          },
+          "classification": "verified"
+        },
+        "priceUse": "historical_descriptive_only",
+        "sourceEvidenceFingerprint": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "warnings": []
+      },
+      "semanticExpected": {
+        "publicationAllowed": false,
+        "qualityClassification": "insufficient"
+      }
+    },
+    {
+      "candidate": {
+        "overlayId": "price-overlay-0000320193-aapl",
+        "overlayVersion": 2
+      },
+      "existing": {
+        "overlayId": "price-overlay-0000320193-aapl",
+        "overlayVersion": 1
+      },
+      "expected": {
+        "fundamentalPointerUnchanged": true,
+        "newImmutableRecord": true,
+        "oldRecordPreserved": true,
+        "pointerGenerationIncrement": 1
+      },
+      "fixtureId": "PRICE-OVERLAY-REPLACEMENT"
+    },
+    {
+      "expected": {
+        "fundamentalPointerPreserved": true,
+        "fundamentalRecordsPreserved": true,
+        "pricePointerDeleted": true,
+        "priceRecordsDeleted": true
+      },
+      "fixtureId": "PRICE-OVERLAY-DELETE",
+      "input": {
+        "issuerCik": "0000320193"
+      }
+    }
+  ],
+  "version": "5.0.0"
+}

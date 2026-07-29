@@ -1,0 +1,1064 @@
+{
+  "catalogId": "metric-catalog",
+  "deferredMetricIds": [
+    "VAL_MARKET_CAP",
+    "VAL_PE",
+    "VAL_PS",
+    "VAL_PB",
+    "VAL_ENTERPRISE_VALUE",
+    "VAL_EV_SALES",
+    "VAL_EV_EBITDA",
+    "VAL_FCF_YIELD",
+    "MKT_VOLATILITY",
+    "MKT_CAGR",
+    "MKT_ADJUSTED_RETURN",
+    "MKT_BENCHMARK_RETURN",
+    "MKT_SESSION_FRESHNESS",
+    "MKT_CORPORATE_ACTION_ADJUSTED",
+    "MKT_RANGE_POSITION"
+  ],
+  "invariants": [
+    "exactly 24 active fundamental metrics",
+    "exactly 8 active historical-price metrics",
+    "market metrics never appear in fundamentalAnalysisFingerprint",
+    "each metric has exactly one metricPriority",
+    "metric state, profile allowlist and minimum quality are explicit",
+    "every formulaId resolves exactly once in formula-catalog.json",
+    "price metrics use price-overlay identity scope and never accounting consolidation scope"
+  ],
+  "metrics": [
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules",
+        "evidence"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "identity",
+      "inputIds": [
+        "revenue"
+      ],
+      "metricId": "FND_REVENUE",
+      "metricPriority": 10,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "duration annual or quarter, comparable",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "exact",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "currency"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "ratio_change",
+      "inputIds": [
+        "revenue.current",
+        "revenue.prior_year"
+      ],
+      "metricId": "FND_REVENUE_GROWTH_YOY",
+      "metricPriority": 20,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same fiscal duration and basis",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "general_operating_ifrs_limited",
+        "reit_limited"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "ratio_change",
+      "inputIds": [
+        "revenue.current_quarter",
+        "revenue.previous_quarter"
+      ],
+      "metricId": "FND_REVENUE_GROWTH_QOQ_COMPATIBLE",
+      "metricPriority": 30,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same quarter duration and fiscal basis",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable",
+        "not_meaningful"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "divide",
+      "inputIds": [
+        "grossProfit",
+        "revenue"
+      ],
+      "metricId": "FND_GROSS_MARGIN",
+      "metricPriority": 40,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same duration and lineage",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable",
+        "not_meaningful"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "divide",
+      "inputIds": [
+        "operatingIncome",
+        "revenue"
+      ],
+      "metricId": "FND_OPERATING_MARGIN",
+      "metricPriority": 50,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same duration and lineage",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable",
+        "not_meaningful"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "divide",
+      "inputIds": [
+        "netIncome",
+        "revenue"
+      ],
+      "metricId": "FND_NET_MARGIN",
+      "metricPriority": 60,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same duration and lineage",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "general_operating_ifrs_limited"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules",
+        "evidence"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "identity",
+      "inputIds": [
+        "cashFlowFromOperations"
+      ],
+      "metricId": "FND_CFO",
+      "metricPriority": 70,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "duration",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "general_operating_ifrs_limited",
+        "reit_limited"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "exact",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "currency"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "identity",
+      "inputIds": [
+        "capitalExpenditures"
+      ],
+      "metricId": "FND_CAPEX",
+      "metricPriority": 80,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "duration",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "exact",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "currency"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "subtract",
+      "inputIds": [
+        "cashFlowFromOperations",
+        "capitalExpenditures"
+      ],
+      "metricId": "FND_FCF",
+      "metricPriority": 90,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same duration, currency, scope and lineage",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "exact",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "currency"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "identity",
+      "inputIds": [
+        "cashAndEquivalents"
+      ],
+      "metricId": "FND_CASH",
+      "metricPriority": 100,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "instant",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "general_operating_ifrs_limited",
+        "financial_institution_limited",
+        "insurance_limited",
+        "reit_limited"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "exact",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "currency"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "partial",
+        "insufficient",
+        "not_applicable"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "dependent_metrics",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "debt_bucket_sum",
+      "inputCompletenessPolicy": "available only when completeness/non-overlap can be proven; partial or insufficient otherwise",
+      "inputIds": [
+        "shortTermBorrowings",
+        "currentPortionLongTermDebt",
+        "longTermDebtNoncurrent",
+        "commercialPaper",
+        "otherApprovedInterestBearingBorrowings"
+      ],
+      "metricId": "FND_BORROWINGS_DEBT",
+      "metricPriority": 110,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [
+        "partial has no aggregate value; resolved components remain visible"
+      ],
+      "optionalInputIds": [
+        "otherApprovedInterestBearingBorrowings"
+      ],
+      "periodPolicy": "same instant, currency, scope and lineage; no overlap",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "qualityModel": "fundamental",
+      "requiredInputIds": [
+        "shortTermBorrowings",
+        "currentPortionLongTermDebt",
+        "longTermDebtNoncurrent",
+        "commercialPaper"
+      ],
+      "roundingPolicy": "exact",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "currency"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "subtract",
+      "inputIds": [
+        "FND_BORROWINGS_DEBT",
+        "cashAndEquivalents"
+      ],
+      "metricId": "FND_NET_DEBT",
+      "metricPriority": 120,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same instant, currency and scope",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "exact",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "currency"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable",
+        "not_meaningful"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "divide",
+      "inputIds": [
+        "currentAssets",
+        "currentLiabilities"
+      ],
+      "metricId": "FND_CURRENT_RATIO",
+      "metricPriority": 130,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same instant and scope",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "subtract",
+      "inputIds": [
+        "currentAssets",
+        "currentLiabilities"
+      ],
+      "metricId": "FND_WORKING_CAPITAL",
+      "metricPriority": 140,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same instant and scope",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "exact",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "currency"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable",
+        "not_meaningful"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "divide",
+      "inputIds": [
+        "cashFlowFromOperations",
+        "netIncome"
+      ],
+      "metricId": "FND_EARNINGS_QUALITY",
+      "metricPriority": 150,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same duration and lineage",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "add",
+      "inputIds": [
+        "operatingIncome",
+        "depreciationAndAmortization"
+      ],
+      "metricId": "FND_DERIVED_EBITDA",
+      "metricPriority": 160,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [
+        "derived quality is never required to be verified"
+      ],
+      "periodPolicy": "same duration, currency, scope and lineage",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "exact",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "currency"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable",
+        "not_meaningful"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "divide",
+      "inputIds": [
+        "FND_DERIVED_EBITDA",
+        "revenue"
+      ],
+      "metricId": "FND_EBITDA_MARGIN",
+      "metricPriority": 170,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same duration and lineage",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable",
+        "not_meaningful"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "divide",
+      "inputIds": [
+        "FND_BORROWINGS_DEBT",
+        "equity"
+      ],
+      "metricId": "FND_DEBT_EQUITY",
+      "metricPriority": 180,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same instant and scope",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable",
+        "not_meaningful"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "divide",
+      "inputIds": [
+        "operatingIncome",
+        "interestExpense"
+      ],
+      "metricId": "FND_INTEREST_COVERAGE",
+      "metricPriority": 190,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same duration and lineage",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable",
+        "not_meaningful"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "divide_average_balance",
+      "inputIds": [
+        "netIncome",
+        "assets.opening",
+        "assets.closing"
+      ],
+      "metricId": "FND_ROA",
+      "metricPriority": 200,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "duration aligned to opening and closing instants",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "general_operating_ifrs_limited",
+        "financial_institution_limited",
+        "insurance_limited",
+        "reit_limited"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable",
+        "not_meaningful"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "divide_average_balance",
+      "inputIds": [
+        "netIncome",
+        "equity.opening",
+        "equity.closing"
+      ],
+      "metricId": "FND_ROE",
+      "metricPriority": 210,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "duration aligned to opening and closing instants",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "general_operating_ifrs_limited",
+        "financial_institution_limited",
+        "insurance_limited",
+        "reit_limited"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable",
+        "not_meaningful"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "divide",
+      "inputIds": [
+        "cashFlowFromOperations",
+        "FND_DERIVED_EBITDA"
+      ],
+      "metricId": "FND_CASH_CONVERSION",
+      "metricPriority": 220,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same duration and lineage",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable",
+        "not_meaningful"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "divide",
+      "inputIds": [
+        "capitalExpenditures",
+        "revenue"
+      ],
+      "metricId": "FND_CAPEX_REVENUE",
+      "metricPriority": 230,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same duration and lineage",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_applicable"
+      ],
+      "class": "fundamental",
+      "consumers": [
+        "dashboard",
+        "rules"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "fundamental_analysis",
+      "formulaId": "ratio_change",
+      "inputIds": [
+        "dilutedShares.current",
+        "dilutedShares.prior_year"
+      ],
+      "metricId": "FND_DILUTED_SHARES_EVOLUTION",
+      "metricPriority": 240,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "same duration and fiscal basis",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "general_operating_ifrs_limited",
+        "financial_institution_limited",
+        "insurance_limited",
+        "reit_limited"
+      ],
+      "qualityModel": "fundamental",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same compatible consolidated scope unless explicitly stated",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient"
+      ],
+      "class": "market_descriptive",
+      "consumers": [
+        "overlay_panel"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "price_analysis",
+      "formulaId": "last",
+      "inputIds": [
+        "observations"
+      ],
+      "metricId": "MKT_LAST_OBSERVATION",
+      "metricPriority": 1000,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "at least 1 observation",
+      "profileAllowlist": [
+        "local_csv_manual_v1"
+      ],
+      "qualityModel": "historical_price",
+      "roundingPolicy": "exact",
+      "scopePolicy": "same issuerCik, instrumentId, venueMic, currency, frequency, overlayVersion and declared observation window",
+      "unit": "price"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient"
+      ],
+      "class": "market_descriptive",
+      "consumers": [
+        "overlay_panel"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "price_analysis",
+      "formulaId": "min",
+      "inputIds": [
+        "observations"
+      ],
+      "metricId": "MKT_MIN",
+      "metricPriority": 1010,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "at least 1 observation",
+      "profileAllowlist": [
+        "local_csv_manual_v1"
+      ],
+      "qualityModel": "historical_price",
+      "roundingPolicy": "exact",
+      "scopePolicy": "same issuerCik, instrumentId, venueMic, currency, frequency, overlayVersion and declared observation window",
+      "unit": "price"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient"
+      ],
+      "class": "market_descriptive",
+      "consumers": [
+        "overlay_panel"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "price_analysis",
+      "formulaId": "max",
+      "inputIds": [
+        "observations"
+      ],
+      "metricId": "MKT_MAX",
+      "metricPriority": 1020,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "at least 1 observation",
+      "profileAllowlist": [
+        "local_csv_manual_v1"
+      ],
+      "qualityModel": "historical_price",
+      "roundingPolicy": "exact",
+      "scopePolicy": "same issuerCik, instrumentId, venueMic, currency, frequency, overlayVersion and declared observation window",
+      "unit": "price"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient"
+      ],
+      "class": "market_descriptive",
+      "consumers": [
+        "overlay_panel"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "price_analysis",
+      "formulaId": "mean",
+      "inputIds": [
+        "observations"
+      ],
+      "metricId": "MKT_MEAN",
+      "metricPriority": 1030,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "at least 1 observation",
+      "profileAllowlist": [
+        "local_csv_manual_v1"
+      ],
+      "qualityModel": "historical_price",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same issuerCik, instrumentId, venueMic, currency, frequency, overlayVersion and declared observation window",
+      "unit": "price"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient"
+      ],
+      "class": "market_descriptive",
+      "consumers": [
+        "overlay_panel"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "price_analysis",
+      "formulaId": "median",
+      "inputIds": [
+        "observations"
+      ],
+      "metricId": "MKT_MEDIAN",
+      "metricPriority": 1040,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "at least 1 observation",
+      "profileAllowlist": [
+        "local_csv_manual_v1"
+      ],
+      "qualityModel": "historical_price",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same issuerCik, instrumentId, venueMic, currency, frequency, overlayVersion and declared observation window",
+      "unit": "price"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient",
+        "not_meaningful"
+      ],
+      "class": "market_descriptive",
+      "consumers": [
+        "overlay_panel"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "price_analysis",
+      "formulaId": "simple_return",
+      "inputIds": [
+        "observations"
+      ],
+      "metricId": "MKT_SIMPLE_RETURN",
+      "metricPriority": 1050,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "at least 2 observations",
+      "profileAllowlist": [
+        "local_csv_manual_v1"
+      ],
+      "qualityModel": "historical_price",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same issuerCik, instrumentId, venueMic, currency, frequency, overlayVersion and declared observation window",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient"
+      ],
+      "class": "market_descriptive",
+      "consumers": [
+        "overlay_panel"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "price_analysis",
+      "formulaId": "max_drawdown",
+      "inputIds": [
+        "observations"
+      ],
+      "metricId": "MKT_MAX_DRAWDOWN",
+      "metricPriority": 1060,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [],
+      "periodPolicy": "at least 2 observations",
+      "profileAllowlist": [
+        "local_csv_manual_v1"
+      ],
+      "qualityModel": "historical_price",
+      "roundingPolicy": "scale=12;half_even",
+      "scopePolicy": "same issuerCik, instrumentId, venueMic, currency, frequency, overlayVersion and declared observation window",
+      "unit": "ratio"
+    },
+    {
+      "allowedStates": [
+        "available",
+        "insufficient"
+      ],
+      "class": "market_descriptive",
+      "consumers": [
+        "overlay_panel"
+      ],
+      "definitionVersion": "5.0.1",
+      "fingerprintDomain": "price_analysis",
+      "formulaId": "normalized_ols_ordinal",
+      "inputIds": [
+        "observations"
+      ],
+      "metricId": "MKT_TREND_DIRECTION",
+      "metricPriority": 1070,
+      "minimumQuality": "usable_with_caveats",
+      "notes": [
+        "flat iff absolute normalized slope <= 0.001; up iff > 0.001; down iff < -0.001"
+      ],
+      "periodPolicy": "at least 3 observations; ordinal spacing",
+      "profileAllowlist": [
+        "local_csv_manual_v1"
+      ],
+      "qualityModel": "historical_price",
+      "roundingPolicy": "normalized slope scale=12;half_even",
+      "scopePolicy": "same issuerCik, instrumentId, venueMic, currency, frequency, overlayVersion and declared observation window",
+      "unit": "enum:up|flat|down"
+    }
+  ],
+  "roundingDefault": {
+    "canonicalizeTrailingZeros": true,
+    "mode": "ROUND_HALF_EVEN",
+    "scale": 12
+  },
+  "status": "ACTIVE_AUTHORITY",
+  "version": "5.0.1",
+  "formulaCatalogRef": "definitions/formula-catalog.json#/formulas"
+}

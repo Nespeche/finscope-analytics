@@ -1,0 +1,100 @@
+{
+  "fixtureSetId": "sec-schema-examples",
+  "negativeFixtures": [
+    {
+      "expectedValid": false,
+      "fixtureId": "SEC-REQUEST-BUDGET-15",
+      "input": {
+        "cik": "0000320193",
+        "fallbackPolicy": "company_facts_primary_company_concept_selective",
+        "maxExternalCalls": 15,
+        "operationId": "op-sec-001",
+        "reason": "manual_refresh",
+        "requestedConceptIds": [
+          "revenue",
+          "netIncome"
+        ]
+      }
+    },
+    {
+      "expectedValid": false,
+      "fixtureId": "SEC-RESULT-COUNT-15",
+      "input": {
+        "attempts": [
+          {
+            "attemptIndex": 1,
+            "payloadSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "priority": 30,
+            "requestKey": "submissions:0000320193",
+            "sourceKind": "submissions",
+            "status": "success"
+          },
+          {
+            "attemptIndex": 2,
+            "payloadSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "priority": 40,
+            "requestKey": "companyfacts:0000320193",
+            "sourceKind": "company_facts",
+            "status": "success"
+          }
+        ],
+        "budgetRemaining": 12,
+        "cik": "0000320193",
+        "externalCallCount": 15,
+        "operationId": "op-sec-001",
+        "primarySource": "company_facts",
+        "status": "complete",
+        "unresolvedConceptIds": []
+      }
+    }
+  ],
+  "validFixtures": [
+    {
+      "expectedValid": true,
+      "fixtureId": "SEC-REQUEST-VALID",
+      "input": {
+        "cik": "0000320193",
+        "fallbackPolicy": "company_facts_primary_company_concept_selective",
+        "maxExternalCalls": 14,
+        "operationId": "op-sec-001",
+        "reason": "manual_refresh",
+        "requestedConceptIds": [
+          "revenue",
+          "netIncome"
+        ]
+      }
+    },
+    {
+      "expectedValid": true,
+      "fixtureId": "SEC-RESULT-VALID",
+      "input": {
+        "attempts": [
+          {
+            "attemptIndex": 1,
+            "payloadSha256": "1111111111111111111111111111111111111111111111111111111111111111",
+            "priority": 30,
+            "requestKey": "submissions:0000320193",
+            "sourceKind": "submissions",
+            "status": "success"
+          },
+          {
+            "attemptIndex": 2,
+            "payloadSha256": "2222222222222222222222222222222222222222222222222222222222222222",
+            "priority": 40,
+            "requestKey": "companyfacts:0000320193",
+            "sourceKind": "company_facts",
+            "status": "success"
+          }
+        ],
+        "budgetRemaining": 12,
+        "cik": "0000320193",
+        "externalCallCount": 2,
+        "operationId": "op-sec-001",
+        "primarySource": "company_facts",
+        "status": "complete",
+        "unresolvedConceptIds": []
+      }
+    }
+  ],
+  "version": "5.0.0"
+}

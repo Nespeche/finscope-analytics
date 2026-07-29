@@ -1,0 +1,147 @@
+{
+  "catalogId": "local-operation-issue-catalog",
+  "issues": [
+    {
+      "accessibilityKey": "a11y.error.identity_ambiguous",
+      "blockedOperations": [
+        "requested_operation"
+      ],
+      "code": "identity_ambiguous",
+      "messageKey": "error.identity_ambiguous",
+      "pipelineState": "failed",
+      "preservedCapabilities": [
+        "definitions",
+        "evidence"
+      ],
+      "recoveryActions": [
+        "select_issuer_by_cik"
+      ],
+      "retryability": "after_user_action"
+    },
+    {
+      "accessibilityKey": "a11y.error.cancelled",
+      "blockedOperations": [
+        "active_operation"
+      ],
+      "code": "cancelled",
+      "messageKey": "error.cancelled",
+      "pipelineState": "cancelled",
+      "preservedCapabilities": [
+        "issuer_identity",
+        "local_snapshot",
+        "definitions",
+        "mappings",
+        "evidence"
+      ],
+      "recoveryActions": [
+        "restart",
+        "use_last_snapshot"
+      ],
+      "retryability": "after_user_action"
+    },
+    {
+      "accessibilityKey": "a11y.error.quality_gate_failed",
+      "blockedOperations": [
+        "normalization"
+      ],
+      "code": "quality_gate_failed",
+      "messageKey": "error.quality_gate_failed",
+      "pipelineState": "partial",
+      "preservedCapabilities": [
+        "issuer_identity",
+        "filings",
+        "definitions",
+        "mappings",
+        "evidence",
+        "local_snapshot"
+      ],
+      "recoveryActions": [
+        "review_limitations",
+        "retry",
+        "use_last_snapshot"
+      ],
+      "retryability": "after_data_or_mapping_change"
+    },
+    {
+      "accessibilityKey": "a11y.error.storage_consent_required",
+      "blockedOperations": [
+        "persistence"
+      ],
+      "code": "storage_consent_required",
+      "messageKey": "error.storage_consent_required",
+      "pipelineState": "failed",
+      "preservedCapabilities": [
+        "issuer_identity",
+        "filings",
+        "fundamentals",
+        "insights",
+        "price_import",
+        "price_descriptive",
+        "evidence",
+        "definitions",
+        "mappings"
+      ],
+      "recoveryActions": [
+        "request_storage_consent",
+        "continue_without_persistence"
+      ],
+      "retryability": "after_user_action"
+    },
+    {
+      "accessibilityKey": "a11y.error.invalid_fact_value",
+      "blockedOperations": [
+        "normalization"
+      ],
+      "code": "invalid_fact_value",
+      "messageKey": "error.invalid_fact_value",
+      "pipelineState": "partial",
+      "preservedCapabilities": [
+        "issuer_identity",
+        "filings",
+        "definitions",
+        "mappings",
+        "evidence",
+        "local_snapshot"
+      ],
+      "recoveryActions": [
+        "review_source_fact",
+        "continue_with_compatible_metrics"
+      ],
+      "retryability": "after_source_change"
+    }
+  ],
+  "replacements": [
+    {
+      "newKind": "normal_analysis_profile_outcome",
+      "oldCode": "unsupported_profile",
+      "oldKind": "HTTP_422_PROBLEM",
+      "status": "REPLACED"
+    },
+    {
+      "newKind": "local_operation_issue",
+      "oldCode": "identity_ambiguous",
+      "oldKind": "HTTP_409_PROBLEM",
+      "status": "REPLACED"
+    },
+    {
+      "newKind": "local_operation_issue",
+      "oldCode": "cancelled",
+      "oldKind": "HTTP_409_PROBLEM",
+      "status": "REPLACED"
+    },
+    {
+      "newKind": "local_operation_issue",
+      "oldCode": "quality_gate_failed",
+      "oldKind": "HTTP_409_PROBLEM",
+      "status": "REPLACED"
+    },
+    {
+      "newKind": "local_operation_issue",
+      "oldCode": "storage_consent_required",
+      "oldKind": "HTTP_409_PROBLEM",
+      "status": "REPLACED"
+    }
+  ],
+  "status": "ACTIVE_AUTHORITY",
+  "version": "5.0.0"
+}

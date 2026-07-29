@@ -1,0 +1,158 @@
+{
+  "$schema": "schemas/authority-matrix.schema.json",
+  "schemaVersion": "1.0.0",
+  "packageRevision": "v0.21.12_B11_completed",
+  "fieldAuthorities": [
+    {
+      "fieldId": "constitutional_rules",
+      "scope": "Principios, límites y orden Spec-Driven",
+      "authority": ".specify/memory/constitution.md",
+      "mirrors": [
+        "START_HERE_CHATGPT.md",
+        "PROJECT_CONTEXT.md",
+        "implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt"
+      ],
+      "forbiddenOverrides": [
+        "spec.md",
+        "plan.md",
+        "tasks.md",
+        "reports",
+        "metadata"
+      ]
+    },
+    {
+      "fieldId": "phase_gate_flags",
+      "scope": "Todos los flags *Authorized",
+      "authority": "V0.21_PHASE_STATUS.md#gate",
+      "mirrors": [
+        "PACKAGE_METADATA.json",
+        "implementation-control/IMPLEMENTATION_STATE.json"
+      ],
+      "forbiddenOverrides": [
+        "tasks.md",
+        "batch files",
+        "reports",
+        "prompts",
+        "historical phase files"
+      ]
+    },
+    {
+      "fieldId": "product_requirements",
+      "scope": "Alcance, FR y NFR",
+      "authority": "specs/001-fundamental-analysis-platform/spec.md",
+      "mirrors": [
+        "plan.md",
+        "tasks.md",
+        "traceability reports"
+      ],
+      "forbiddenOverrides": [
+        "batch files",
+        "implementation reports",
+        "code comments"
+      ]
+    },
+    {
+      "fieldId": "product_behavior",
+      "scope": "Contratos, schemas, catálogos, decisiones y fixtures",
+      "authority": "specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json -> primaryAuthority",
+      "mirrors": [
+        "acceptance criteria",
+        "task authority IDs",
+        "batch primaryAuthorityRefs"
+      ],
+      "forbiddenOverrides": [
+        "summaries",
+        "historical reports",
+        "implementation shortcuts"
+      ]
+    },
+    {
+      "fieldId": "task_definition",
+      "scope": "ID, dependencia, paralelismo, archivos, pruebas y Done when",
+      "authority": "specs/001-fundamental-analysis-platform/tasks.md",
+      "mirrors": [
+        "implementation-control/batches/Bxx.json",
+        "IMPLEMENTATION_BATCH_MAP.json",
+        "TASK_SOURCE_LOCK.json"
+      ],
+      "forbiddenOverrides": [
+        "batch report",
+        "chat prompt",
+        "implementation state"
+      ]
+    },
+    {
+      "fieldId": "execution_status",
+      "scope": "Estado corriente de tareas/lotes, lote activo y continuidad",
+      "authority": "implementation-control/IMPLEMENTATION_STATE.json",
+      "mirrors": [
+        "batch status fields",
+        "IMPLEMENTATION_BATCH_MAP.json",
+        "PACKAGE_METADATA.json"
+      ],
+      "forbiddenOverrides": [
+        "root summaries",
+        "historical reports",
+        "candidate packages not closed"
+      ]
+    },
+    {
+      "fieldId": "execution_method",
+      "scope": "Carga de contexto, orden operativo, roles, validación, cambio progresivo y handoff",
+      "authority": "implementation-control/IMPLEMENTATION_EXECUTION_PROTOCOL.md",
+      "mirrors": [
+        "CONTEXT_LOADING_POLICY.md",
+        "LOCAL_VALIDATION_PROTOCOL.md",
+        "specdev-prompts/speckit.implement-batch.md",
+        "SDD_OPERATING_MODEL.md",
+        "CONTEXT_MAINTENANCE_MODEL.md"
+      ],
+      "forbiddenOverrides": [
+        "historical prompts",
+        "conversation memory"
+      ]
+    },
+    {
+      "fieldId": "package_identity",
+      "scope": "Nombre lógico, revisión, baseline inmediato y raíz",
+      "authority": "PACKAGE_METADATA.json",
+      "mirrors": [
+        "IMPLEMENTATION_STATE.json",
+        "START_HERE_CHATGPT.md",
+        "V0.21_PHASE_STATUS.md"
+      ],
+      "forbiddenOverrides": [
+        "embedded historical validation reports"
+      ]
+    },
+    {
+      "fieldId": "package_integrity",
+      "scope": "SHA-256, CRC, manifiesto, inventario y árbol .specify",
+      "authority": "external sidecar + FILE_MANIFEST.sha256 + PACKAGE_INVENTORY.json",
+      "mirrors": [
+        "PACKAGE_METADATA.json",
+        "batch reports"
+      ],
+      "forbiddenOverrides": [
+        "unverified chat claims",
+        "file names alone"
+      ]
+    }
+  ],
+  "conflictProcedure": [
+    "Identify the exact field in conflict.",
+    "Read the authority assigned to that field and its primary references.",
+    "Treat every lower mirror as stale until reconciled.",
+    "Block only the affected scope; do not infer or broaden requirements.",
+    "Record the conflict and correction in CHANGE_LEDGER and the active report.",
+    "Recalculate task locks, batch mirrors, metadata, inventory and manifest after correction."
+  ],
+  "historicalPolicy": {
+    "historicalPatterns": [
+      "V0.9_PHASE_STATUS.md through V0.20_PHASE_STATUS.md",
+      "specs/**/reports/v0.20 and earlier",
+      "superseded/candidate/partial package reports"
+    ],
+    "candidateRule": "A candidate or LOCAL_VALIDATION_REQUIRED package is never the active Project Source and cannot change completed task or batch status until evidence closure."
+  }
+}

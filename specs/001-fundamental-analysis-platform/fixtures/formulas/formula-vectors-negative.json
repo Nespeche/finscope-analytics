@@ -1,0 +1,134 @@
+{
+  "fixtureSetId": "formula-vector-negative-cases",
+  "version": "1.0.0",
+  "schemaRef": "schemas/formula-vectors.schema.json#/$defs/vector",
+  "caseCount": 7,
+  "cases": [
+    {
+      "caseId": "NEG-TRAILING-ZEROS",
+      "description": "trailing fractional zeros are non-canonical",
+      "schemaPointer": "#/$defs/vector",
+      "expectedValid": false,
+      "expectedFailure": "DecimalString",
+      "instance": {
+        "vectorId": "identity-normal",
+        "formulaId": "identity",
+        "inputs": [
+          "12.340"
+        ],
+        "expected": {
+          "state": "available",
+          "value": "12.34"
+        }
+      }
+    },
+    {
+      "caseId": "NEG-EXPONENT",
+      "description": "exponential notation is forbidden",
+      "schemaPointer": "#/$defs/vector",
+      "expectedValid": false,
+      "expectedFailure": "DecimalString",
+      "instance": {
+        "vectorId": "identity-normal",
+        "formulaId": "identity",
+        "inputs": [
+          "1e2"
+        ],
+        "expected": {
+          "state": "available",
+          "value": "12.34"
+        }
+      }
+    },
+    {
+      "caseId": "NEG-NEGATIVE-ZERO",
+      "description": "negative zero is forbidden",
+      "schemaPointer": "#/$defs/vector",
+      "expectedValid": false,
+      "expectedFailure": "DecimalString",
+      "instance": {
+        "vectorId": "identity-normal",
+        "formulaId": "identity",
+        "inputs": [
+          "-0"
+        ],
+        "expected": {
+          "state": "available",
+          "value": "12.34"
+        }
+      }
+    },
+    {
+      "caseId": "NEG-EXTRA-PROPERTY",
+      "description": "additional vector properties are forbidden",
+      "schemaPointer": "#/$defs/vector",
+      "expectedValid": false,
+      "expectedFailure": "additionalProperties",
+      "instance": {
+        "vectorId": "identity-normal",
+        "formulaId": "identity",
+        "inputs": [
+          "12.34"
+        ],
+        "expected": {
+          "state": "available",
+          "value": "12.34"
+        },
+        "unexpected": true
+      }
+    },
+    {
+      "caseId": "NEG-UNKNOWN-REASON",
+      "description": "reasonCode must exist in the normative catalog",
+      "schemaPointer": "#/$defs/vector",
+      "expectedValid": false,
+      "expectedFailure": "reasonCode enum",
+      "instance": {
+        "vectorId": "identity-normal",
+        "formulaId": "identity",
+        "inputs": [
+          "12.34"
+        ],
+        "expected": {
+          "state": "insufficient",
+          "reasonCode": "unknown_reason",
+          "valueAbsent": true
+        }
+      }
+    },
+    {
+      "caseId": "NEG-UNKNOWN-FORMULA",
+      "description": "formulaId must resolve to the normative formula catalog",
+      "schemaPointer": "#/$defs/vector",
+      "expectedValid": false,
+      "expectedFailure": "formulaId enum",
+      "instance": {
+        "vectorId": "identity-normal",
+        "formulaId": "unknown_formula",
+        "inputs": [
+          "12.34"
+        ],
+        "expected": {
+          "state": "available",
+          "value": "12.34"
+        }
+      }
+    },
+    {
+      "caseId": "NEG-INVALID-ARITY",
+      "description": "invalid arity cannot claim an available result",
+      "schemaPointer": "#/$defs/vector",
+      "expectedValid": false,
+      "expectedFailure": "formula-specific arity",
+      "instance": {
+        "vectorId": "identity-normal",
+        "formulaId": "identity",
+        "inputs": [],
+        "expected": {
+          "state": "available",
+          "value": "12.34"
+        }
+      }
+    }
+  ]
+}

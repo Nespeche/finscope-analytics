@@ -1,0 +1,206 @@
+{
+  "$defs": {
+    "Attempt": {
+      "additionalProperties": false,
+      "properties": {
+        "attemptIndex": {
+          "maximum": 14,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "conceptId": {
+          "type": "string"
+        },
+        "payloadSha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "priority": {
+          "minimum": 10,
+          "type": "integer"
+        },
+        "requestKey": {
+          "type": "string"
+        },
+        "sourceKind": {
+          "enum": [
+            "submissions",
+            "company_facts",
+            "company_concept"
+          ]
+        },
+        "status": {
+          "enum": [
+            "cache_hit",
+            "success",
+            "not_found",
+            "invalid_payload",
+            "blocked",
+            "timeout",
+            "provider_error",
+            "skipped_budget"
+          ]
+        },
+        "tag": {
+          "type": "string"
+        },
+        "taxonomy": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "attemptIndex",
+        "sourceKind",
+        "priority",
+        "requestKey",
+        "status"
+      ],
+      "type": "object"
+    },
+    "Request": {
+      "additionalProperties": false,
+      "properties": {
+        "cik": {
+          "$ref": "common.schema.json#/$defs/Cik"
+        },
+        "fallbackPolicy": {
+          "const": "company_facts_primary_company_concept_selective"
+        },
+        "maxExternalCalls": {
+          "const": 14
+        },
+        "operationId": {
+          "type": "string"
+        },
+        "reason": {
+          "enum": [
+            "initial_load",
+            "manual_refresh",
+            "consented_resume",
+            "new_filing_detected"
+          ]
+        },
+        "requestedConceptIds": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "operationId",
+        "cik",
+        "reason",
+        "maxExternalCalls",
+        "fallbackPolicy"
+      ],
+      "type": "object"
+    },
+    "Result": {
+      "additionalProperties": false,
+      "properties": {
+        "attempts": {
+          "items": {
+            "$ref": "#/$defs/Attempt"
+          },
+          "maxItems": 14,
+          "type": "array"
+        },
+        "budgetRemaining": {
+          "maximum": 14,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "cik": {
+          "$ref": "common.schema.json#/$defs/Cik"
+        },
+        "externalCallCount": {
+          "maximum": 14,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "operationId": {
+          "type": "string"
+        },
+        "primarySource": {
+          "const": "company_facts"
+        },
+        "status": {
+          "enum": [
+            "complete",
+            "partial",
+            "failed",
+            "cancelled"
+          ]
+        },
+        "unresolvedConceptIds": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "operationId",
+        "cik",
+        "primarySource",
+        "attempts",
+        "externalCallCount",
+        "budgetRemaining",
+        "unresolvedConceptIds",
+        "status"
+      ],
+      "type": "object"
+    },
+    "CacheDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "band",
+        "networkAction"
+      ],
+      "properties": {
+        "band": {
+          "enum": [
+            "fresh",
+            "stale_revalidatable",
+            "expired"
+          ]
+        },
+        "networkAction": {
+          "type": "string"
+        }
+      }
+    },
+    "NoveltyDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "changed",
+        "fingerprint"
+      ],
+      "properties": {
+        "changed": {
+          "type": "boolean"
+        },
+        "fingerprint": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  },
+  "$id": "https://finscope.local/schemas/sec-acquisition.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/Request"
+    },
+    {
+      "$ref": "#/$defs/Result"
+    }
+  ],
+  "title": "SEC acquisition schemas v5.0.1"
+}

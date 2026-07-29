@@ -1,0 +1,145 @@
+{
+  "$id": "https://finscope.local/schemas/security-and-input-limits.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Security/input limits 1.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "policyId",
+    "version",
+    "status",
+    "secGateway",
+    "priceCsv",
+    "responseHeaders",
+    "sanitization",
+    "threatModel",
+    "privacyLifecycle",
+    "supplyChain",
+    "importControls"
+  ],
+  "properties": {
+    "policyId": {
+      "const": "security-and-input-limits"
+    },
+    "version": {
+      "const": "1.1.0"
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "secGateway": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allowedHosts",
+        "allowedMethods",
+        "crossHostRedirectsAllowed",
+        "maximumUncompressedResponseBytes",
+        "requestTimeoutSeconds",
+        "operationTimeoutSeconds",
+        "maximumAttemptsPerLogicalRequest",
+        "backoffSeconds",
+        "maximumJitterMilliseconds",
+        "retryAfterPrecedence",
+        "maximumRetryAfterSeconds",
+        "maximumExternalCallsPerOperation",
+        "retriesCountAgainstOperationBudget",
+        "concurrencyPerClient",
+        "requiredDeploymentVariables",
+        "secretsOrPersonalValuesPermittedInPackage"
+      ],
+      "properties": {
+        "allowedHosts": {
+          "const": [
+            "data.sec.gov",
+            "www.sec.gov"
+          ]
+        },
+        "allowedMethods": {
+          "const": [
+            "GET",
+            "HEAD"
+          ]
+        },
+        "crossHostRedirectsAllowed": {
+          "const": false
+        },
+        "maximumUncompressedResponseBytes": {
+          "const": 67108864
+        },
+        "requestTimeoutSeconds": {
+          "const": 20
+        },
+        "operationTimeoutSeconds": {
+          "const": 120
+        },
+        "maximumAttemptsPerLogicalRequest": {
+          "const": 3
+        },
+        "backoffSeconds": {
+          "const": [
+            1,
+            2,
+            4
+          ]
+        },
+        "maximumJitterMilliseconds": {
+          "const": 250
+        },
+        "retryAfterPrecedence": {
+          "const": true
+        },
+        "maximumRetryAfterSeconds": {
+          "const": 30
+        },
+        "maximumExternalCallsPerOperation": {
+          "const": 14
+        },
+        "retriesCountAgainstOperationBudget": {
+          "const": true
+        },
+        "concurrencyPerClient": {
+          "const": 1
+        },
+        "requiredDeploymentVariables": {
+          "const": [
+            "SEC_USER_AGENT",
+            "SEC_CONTACT_EMAIL"
+          ]
+        },
+        "secretsOrPersonalValuesPermittedInPackage": {
+          "const": false
+        }
+      }
+    },
+    "priceCsv": {
+      "type": "object"
+    },
+    "responseHeaders": {
+      "type": "object"
+    },
+    "sanitization": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "threatModel": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "privacyLifecycle": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "supplyChain": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "importControls": {
+      "type": "object",
+      "minProperties": 1
+    }
+  }
+}

@@ -1,0 +1,413 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B17",
+  "ordinal": 17,
+  "title": "Consentimiento, repositorios, export y preview",
+  "domain": "storage-export",
+  "status": "PENDING",
+  "taskCount": 5,
+  "executionOrder": [
+    "T072",
+    "T073",
+    "T074",
+    "T075",
+    "T076"
+  ],
+  "externalDependencies": [
+    "T012",
+    "T013",
+    "T018",
+    "T021",
+    "T022",
+    "T046",
+    "T066",
+    "T068"
+  ],
+  "requirements": [
+    "FR-021",
+    "FR-022",
+    "FR-030",
+    "FR-034",
+    "FR-035",
+    "FR-036",
+    "FR-039",
+    "NFR-002",
+    "NFR-004"
+  ],
+  "acceptanceCriteria": [
+    "AC-049",
+    "AC-056",
+    "AC-057",
+    "AC-058",
+    "AC-063",
+    "AC-065",
+    "AC-073",
+    "AC-075",
+    "AC-076",
+    "AC-078"
+  ],
+  "authorityIds": [
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-009",
+    "AUTH-014",
+    "AUTH-016",
+    "AUTH-017",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-022",
+    "AUTH-026",
+    "AUTH-027"
+  ],
+  "primaryAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/decisions/ui-framework.md",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md#active-source-policy",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions/3",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/1",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-049",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-056",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-057",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-058",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-063",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-065",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-073",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-075",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-076",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-078"
+  ],
+  "targetFiles": [
+    "src/app/views/PrivacySettingsView.svelte",
+    "src/persistence/export-service.ts",
+    "src/persistence/price-repository.ts",
+    "src/persistence/restore-preview.ts",
+    "src/persistence/snapshot-repository.ts",
+    "tests/e2e/consent.spec.ts",
+    "tests/integration/persistence/atomic-publication.test.ts",
+    "tests/integration/persistence/price-repository.test.ts",
+    "tests/negative/persistence/restore-validation.test.ts",
+    "tests/unit/persistence/export.test.ts"
+  ],
+  "testFiles": [
+    "tests/e2e/consent.spec.ts",
+    "tests/integration/persistence/atomic-publication.test.ts",
+    "tests/integration/persistence/price-repository.test.ts",
+    "tests/negative/persistence/restore-validation.test.ts",
+    "tests/unit/persistence/export.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T072",
+      "phaseNo": 7,
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "story": "US5",
+      "parallel": false,
+      "dependencies": [
+        "T021",
+        "T022"
+      ],
+      "requirementRefs": [
+        "FR-030",
+        "FR-034",
+        "NFR-002"
+      ],
+      "acceptanceRefs": [
+        "AC-056",
+        "AC-065",
+        "AC-076"
+      ],
+      "authorityIds": [
+        "AUTH-009",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-022",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/views/PrivacySettingsView.svelte",
+        "tests/e2e/consent.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/consent.spec.ts"
+      ],
+      "doneWhen": "the view exports an AUTH-027 routeDefinition, analysis works in memory without storage consent, no network occurs without refresh consent and revocation is visible and effective",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "70ec731a97ee23338defabc5472a12625cea7f0983f2a8d81fc76ef3e162a17f"
+    },
+    {
+      "id": "T073",
+      "phaseNo": 7,
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "story": "US5",
+      "parallel": false,
+      "dependencies": [
+        "T021",
+        "T046"
+      ],
+      "requirementRefs": [
+        "FR-034",
+        "FR-035",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "acceptanceRefs": [
+        "AC-057",
+        "AC-058",
+        "AC-073"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-009",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-022"
+      ],
+      "files": [
+        "src/persistence/snapshot-repository.ts",
+        "tests/integration/persistence/atomic-publication.test.ts"
+      ],
+      "tests": [
+        "tests/integration/persistence/atomic-publication.test.ts"
+      ],
+      "doneWhen": "candidate, evidence and pointer commit together or not at all",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "16b0b2d7931ca72fc3f4264e6b0a34eb36897bcf26c073871a20645315561559"
+    },
+    {
+      "id": "T074",
+      "phaseNo": 7,
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "story": "US5",
+      "parallel": true,
+      "dependencies": [
+        "T021",
+        "T066",
+        "T068"
+      ],
+      "requirementRefs": [
+        "FR-021",
+        "FR-022",
+        "FR-034",
+        "NFR-002"
+      ],
+      "acceptanceRefs": [
+        "AC-049",
+        "AC-057",
+        "AC-063",
+        "AC-078"
+      ],
+      "authorityIds": [
+        "AUTH-009",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-022"
+      ],
+      "files": [
+        "src/persistence/price-repository.ts",
+        "tests/integration/persistence/price-repository.test.ts"
+      ],
+      "tests": [
+        "tests/integration/persistence/price-repository.test.ts"
+      ],
+      "doneWhen": "price deletion cannot reference, update or delete fundamental records or pointers",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "e6fc57409ad589e7f013c3a8541d867dc8f9c69cf68eb68d8811a563a1e151f7"
+    },
+    {
+      "id": "T075",
+      "phaseNo": 7,
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "story": "US5",
+      "parallel": false,
+      "dependencies": [
+        "T013",
+        "T073",
+        "T074"
+      ],
+      "requirementRefs": [
+        "FR-036",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "acceptanceRefs": [
+        "AC-076"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-009",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-022"
+      ],
+      "files": [
+        "src/persistence/export-service.ts",
+        "tests/unit/persistence/export.test.ts"
+      ],
+      "tests": [
+        "tests/unit/persistence/export.test.ts"
+      ],
+      "doneWhen": "exported records come from repository reads, quarantined/invalid records, consents and deployment variables are excluded, and hashes are reproducible",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "01a634bde7b3f3ebe4232e438516532f5955854a9de3468acf984e3a8e5cad00"
+    },
+    {
+      "id": "T076",
+      "phaseNo": 7,
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "story": "US5",
+      "parallel": true,
+      "dependencies": [
+        "T012",
+        "T018",
+        "T073",
+        "T074",
+        "T075"
+      ],
+      "requirementRefs": [
+        "FR-036",
+        "FR-039",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "acceptanceRefs": [
+        "AC-075",
+        "AC-076"
+      ],
+      "authorityIds": [
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-009",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-022",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/persistence/restore-preview.ts",
+        "tests/negative/persistence/restore-validation.test.ts"
+      ],
+      "tests": [
+        "tests/negative/persistence/restore-validation.test.ts"
+      ],
+      "doneWhen": "corrupt, oversized, unknown, duplicate or incompatible records are rejected and permitted migrations/conflicts are fully previewed before transaction",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "8acb05962fda298a60146a06fe0654a09497c2a5c484fee89a7e86c65e56962f"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": true,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-unit",
+        "category": "unit",
+        "command": "npm run test:unit -- tests/unit/persistence/export.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-integration",
+        "category": "integration",
+        "command": "npm run test:integration -- tests/integration/persistence/atomic-publication.test.ts tests/integration/persistence/price-repository.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-negative",
+        "category": "negative",
+        "command": "npm run test:negative -- tests/negative/persistence/restore-validation.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-e2e",
+        "category": "e2e",
+        "command": "npm run test:e2e -- tests/e2e/consent.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B17_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

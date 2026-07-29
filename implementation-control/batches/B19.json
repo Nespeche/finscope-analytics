@@ -1,0 +1,445 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B19",
+  "ordinal": 19,
+  "title": "Contexto, recuperación y accesibilidad base",
+  "domain": "a11y-foundation",
+  "status": "PENDING",
+  "taskCount": 6,
+  "executionOrder": [
+    "T081",
+    "T082",
+    "T089",
+    "T083",
+    "T084",
+    "T085"
+  ],
+  "externalDependencies": [
+    "T004",
+    "T017",
+    "T018",
+    "T022",
+    "T047",
+    "T050",
+    "T067",
+    "T079"
+  ],
+  "requirements": [
+    "FR-017",
+    "FR-023",
+    "FR-037",
+    "FR-039",
+    "FR-041",
+    "FR-042",
+    "NFR-004",
+    "NFR-007"
+  ],
+  "acceptanceCriteria": [
+    "AC-002",
+    "AC-036",
+    "AC-047",
+    "AC-048",
+    "AC-052",
+    "AC-067",
+    "AC-068",
+    "AC-069",
+    "AC-070",
+    "AC-071",
+    "AC-072",
+    "AC-073",
+    "AC-074",
+    "AC-075"
+  ],
+  "authorityIds": [
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-009",
+    "AUTH-012",
+    "AUTH-013",
+    "AUTH-015",
+    "AUTH-017",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-026",
+    "AUTH-027"
+  ],
+  "primaryAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/decisions/ui-framework.md",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria/70",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/resourceNotFoundVariants",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/0",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/1",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json",
+    "specs/001-fundamental-analysis-platform/quickstart.md",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-002",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-036",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-047",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-048",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-052",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-067",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-068",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-069",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-070",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-071",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-072",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-073",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-074",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-075"
+  ],
+  "targetFiles": [
+    "src/app/a11y/focus-manager.ts",
+    "src/app/a11y/status-announcer.ts",
+    "src/app/components/AnalysisContext.svelte",
+    "src/app/components/AnalysisDisclaimer.svelte",
+    "src/app/components/RecoveryPanel.svelte",
+    "src/app/recovery/recovery-actions.ts",
+    "src/app/styles/accessibility.css",
+    "src/app/styles/tokens.css",
+    "tests/e2e/accessibility/focus.spec.ts",
+    "tests/e2e/accessibility/status.spec.ts",
+    "tests/e2e/accessibility/visual-behavior.spec.ts",
+    "tests/e2e/context-persistence.spec.ts",
+    "tests/e2e/no-investment-advice.spec.ts",
+    "tests/unit/recovery/recovery-map.test.ts"
+  ],
+  "testFiles": [
+    "tests/e2e/accessibility/focus.spec.ts",
+    "tests/e2e/accessibility/status.spec.ts",
+    "tests/e2e/accessibility/visual-behavior.spec.ts",
+    "tests/e2e/context-persistence.spec.ts",
+    "tests/e2e/no-investment-advice.spec.ts",
+    "tests/unit/recovery/recovery-map.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T081",
+      "phaseNo": 8,
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "story": "US6",
+      "parallel": false,
+      "dependencies": [
+        "T004",
+        "T022",
+        "T047"
+      ],
+      "requirementRefs": [
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptanceRefs": [
+        "AC-074"
+      ],
+      "authorityIds": [
+        "AUTH-015",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/components/AnalysisContext.svelte",
+        "tests/e2e/context-persistence.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/context-persistence.spec.ts"
+      ],
+      "doneWhen": "the context header is mounted through composition and context never switches silently during refresh or navigation",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "7302f74282d402bcc368c12e3d684dc8ff0401411ae95d8bdd1f9250790fe712"
+    },
+    {
+      "id": "T082",
+      "phaseNo": 8,
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "story": "US6",
+      "parallel": false,
+      "dependencies": [
+        "T017",
+        "T018",
+        "T022",
+        "T079"
+      ],
+      "requirementRefs": [
+        "FR-039",
+        "FR-041",
+        "NFR-004"
+      ],
+      "acceptanceRefs": [
+        "AC-002",
+        "AC-047",
+        "AC-048",
+        "AC-075"
+      ],
+      "authorityIds": [
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-009",
+        "AUTH-015",
+        "AUTH-017",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/app/recovery/recovery-actions.ts",
+        "src/app/components/RecoveryPanel.svelte",
+        "tests/unit/recovery/recovery-map.test.ts"
+      ],
+      "tests": [
+        "tests/unit/recovery/recovery-map.test.ts"
+      ],
+      "doneWhen": "no terminal-only recovery exists, quarantined data offers validated restore, and each action maps to an active operation",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "ef2e0ee4c4e4120f00c87b2ab1af7b1443a9d9c1bdf71166c4fe4598468d4e08"
+    },
+    {
+      "id": "T089",
+      "phaseNo": 8,
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "story": "US6",
+      "parallel": false,
+      "dependencies": [
+        "T022",
+        "T050",
+        "T067"
+      ],
+      "requirementRefs": [
+        "FR-017",
+        "FR-023",
+        "FR-041"
+      ],
+      "acceptanceRefs": [
+        "AC-036",
+        "AC-052",
+        "AC-074"
+      ],
+      "authorityIds": [
+        "AUTH-009",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-015",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-027"
+      ],
+      "files": [
+        "tests/e2e/no-investment-advice.spec.ts",
+        "src/app/components/AnalysisDisclaimer.svelte"
+      ],
+      "tests": [
+        "tests/e2e/no-investment-advice.spec.ts"
+      ],
+      "doneWhen": "the disclaimer is mounted through composition and no buy/sell/hold, target price, personalized recommendation or return promise appears",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "0946c03432daa25ebbef13e207a38e085ef1ce6a9d9e03b479d8960dde088e8b"
+    },
+    {
+      "id": "T083",
+      "phaseNo": 8,
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "story": "US6",
+      "parallel": true,
+      "dependencies": [
+        "T022"
+      ],
+      "requirementRefs": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "acceptanceRefs": [
+        "AC-067",
+        "AC-068",
+        "AC-073"
+      ],
+      "authorityIds": [
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/a11y/focus-manager.ts",
+        "tests/e2e/accessibility/focus.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/accessibility/focus.spec.ts"
+      ],
+      "doneWhen": "the plugin installs once and focus is visible, unobscured and returned to the invoker",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "552d5ee98ae9166b5c5c2231d39e83b5fc1eb415978cd40f4fcf16b19ab1404d"
+    },
+    {
+      "id": "T084",
+      "phaseNo": 8,
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "story": "US6",
+      "parallel": true,
+      "dependencies": [
+        "T017",
+        "T022"
+      ],
+      "requirementRefs": [
+        "FR-037",
+        "FR-041",
+        "FR-042",
+        "NFR-007"
+      ],
+      "acceptanceRefs": [
+        "AC-070",
+        "AC-071",
+        "AC-072",
+        "AC-073"
+      ],
+      "authorityIds": [
+        "AUTH-015",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/a11y/status-announcer.ts",
+        "tests/e2e/accessibility/status.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/accessibility/status.spec.ts"
+      ],
+      "doneWhen": "the plugin installs once and status changes are concise, non-duplicated and state-accurate",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "2919737438cfac1876a58a97d6f9429e1072aa023c2e8af22af8018e5f20f381"
+    },
+    {
+      "id": "T085",
+      "phaseNo": 8,
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "story": "US6",
+      "parallel": true,
+      "dependencies": [
+        "T004"
+      ],
+      "requirementRefs": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "acceptanceRefs": [
+        "AC-067",
+        "AC-069",
+        "AC-074"
+      ],
+      "authorityIds": [
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/styles/tokens.css",
+        "src/app/styles/accessibility.css",
+        "tests/e2e/accessibility/visual-behavior.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/accessibility/visual-behavior.spec.ts"
+      ],
+      "doneWhen": "styles are loaded without later App.svelte edits and 320 CSS px reflow and 200% text zoom have no two-dimensional scroll",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "367ec7f87a27744a98fdf1ea79cb589d2033885854afcc3a9c787c8de48770fa"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": true,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-unit",
+        "category": "unit",
+        "command": "npm run test:unit -- tests/unit/recovery/recovery-map.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-e2e",
+        "category": "e2e",
+        "command": "npm run test:e2e -- tests/e2e/accessibility/focus.spec.ts tests/e2e/accessibility/status.spec.ts tests/e2e/accessibility/visual-behavior.spec.ts tests/e2e/context-persistence.spec.ts tests/e2e/no-investment-advice.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B19_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

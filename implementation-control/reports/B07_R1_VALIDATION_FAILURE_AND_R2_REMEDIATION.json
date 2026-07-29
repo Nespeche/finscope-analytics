@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0.0",
+  "batchId": "B07",
+  "candidateRevision": "r2",
+  "status": "REMEDIATED_PENDING_VALIDATION",
+  "sourceEvidence": {
+    "logicalName": "FinScope_local_evidence_B07_20260726-201038455_FAILED.zip",
+    "sha256": "50860118aa006cda58c38fd033781e85a99dbafbe8a573d4979ed0169af33b8e",
+    "status": "FAIL",
+    "authenticated": true
+  },
+  "sourceCandidate": {
+    "logicalName": "FS_B07_r1.zip",
+    "sha256": "2a7b921bb8bd797e156b2d57a331d4a17dfb4ef370ad5c036d2fa57e0178adbe"
+  },
+  "sourceRunner": {
+    "logicalName": "Run-FinScope-BatchValidation_B07_r1_v2.ps1",
+    "sha256": "5fb3410bafc6bac1293e3aa2f76000b582c23d72144dc7b03357a707d1f34683"
+  },
+  "commandOutcome": {
+    "pass": [
+      "npm-ci",
+      "playwright-chromium",
+      "typecheck"
+    ],
+    "fail": [
+      "test-unit"
+    ],
+    "notRun": [
+      "test-integration",
+      "test-contract",
+      "test-negative",
+      "test-e2e",
+      "regression-vitest",
+      "regression-browser",
+      "build"
+    ]
+  },
+  "failedTest": {
+    "file": "tests/unit/fundamental/filing-selection.test.ts",
+    "test": "covers every frozen selection vector and keeps 8-K/frame values evidence-only",
+    "expectedByR1Test": {
+      "state": "not_found"
+    },
+    "actualAndNormative": {
+      "state": "evidence_only",
+      "reasonCode": "evidence_only_form"
+    }
+  },
+  "authorities": [
+    "specs/001-fundamental-analysis-platform/contracts/sec-filing-fact-selection-policy.json#/framesPolicy",
+    "specs/001-fundamental-analysis-platform/fixtures/sec/sec-selection-test-vectors.json#/vectors/frame-ignored-for-selection"
+  ],
+  "r2Change": {
+    "productRuntimeChanged": false,
+    "testOracleChanged": true,
+    "changedFile": "tests/unit/fundamental/filing-selection.test.ts",
+    "candidateLogicalName": "FS_B07_r2.zip",
+    "runnerLogicalName": "Run-FinScope-BatchValidation_B07_r2_v1.ps1",
+    "runnerSha256": "c58960a5393a9f252c9fa9430542325b2402b5aaa4bf18bb467d453db8ffacaa"
+  },
+  "state": {
+    "B07": "LOCAL_VALIDATION_REQUIRED",
+    "tasks": [
+      "T029",
+      "T031",
+      "T032",
+      "T033",
+      "T034",
+      "T035"
+    ],
+    "taskStatus": "IMPLEMENTED_PENDING_VALIDATION",
+    "B08": "PENDING",
+    "convergenceAuthorized": false
+  },
+  "closureRule": "Fresh full 11-command PASS evidence bound to exact r2 candidate and runner is required."
+}

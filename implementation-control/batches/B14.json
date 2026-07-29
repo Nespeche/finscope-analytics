@@ -1,0 +1,326 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B14",
+  "ordinal": 14,
+  "title": "Apertura, reanudación y refresh resiliente",
+  "domain": "refresh-ui-e2e",
+  "status": "PENDING",
+  "taskCount": 3,
+  "executionOrder": [
+    "T060",
+    "T061",
+    "T062"
+  ],
+  "externalDependencies": [
+    "T021",
+    "T022",
+    "T053",
+    "T054",
+    "T055",
+    "T056",
+    "T057",
+    "T058",
+    "T059"
+  ],
+  "requirements": [
+    "FR-030",
+    "FR-031",
+    "FR-032",
+    "FR-033",
+    "FR-035",
+    "FR-041",
+    "FR-042",
+    "NFR-003",
+    "NFR-004"
+  ],
+  "acceptanceCriteria": [
+    "AC-004",
+    "AC-058",
+    "AC-059",
+    "AC-060",
+    "AC-061",
+    "AC-062",
+    "AC-065",
+    "AC-066",
+    "AC-070",
+    "AC-071",
+    "AC-072",
+    "AC-073",
+    "AC-075"
+  ],
+  "authorityIds": [
+    "AUTH-005",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-017",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-022",
+    "AUTH-027"
+  ],
+  "primaryAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/decisions/ui-framework.md",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md#active-source-policy"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria/70",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/1",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-004",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-058",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-059",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-060",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-061",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-062",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-065",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-066",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-070",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-071",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-072",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-073",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-075"
+  ],
+  "targetFiles": [
+    "src/app/components/RefreshFundamentals.svelte",
+    "src/app/lifecycle/resume-refresh.ts",
+    "tests/e2e/manual-refresh.spec.ts",
+    "tests/e2e/open-resume.spec.ts",
+    "tests/e2e/refresh-resilience.spec.ts"
+  ],
+  "testFiles": [
+    "tests/e2e/manual-refresh.spec.ts",
+    "tests/e2e/open-resume.spec.ts",
+    "tests/e2e/refresh-resilience.spec.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T060",
+      "phaseNo": 5,
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "story": "US3",
+      "parallel": false,
+      "dependencies": [
+        "T021",
+        "T053",
+        "T054",
+        "T055",
+        "T056",
+        "T057",
+        "T059"
+      ],
+      "requirementRefs": [
+        "FR-030",
+        "FR-031",
+        "FR-041"
+      ],
+      "acceptanceRefs": [
+        "AC-004",
+        "AC-065",
+        "AC-072"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/lifecycle/resume-refresh.ts",
+        "tests/e2e/open-resume.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/open-resume.spec.ts"
+      ],
+      "doneWhen": "the plugin installs once, opening or resuming with `refreshConsent=false` performs zero calls, consented flows preserve one active operation, and a closed app performs no work",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "92169a44e6716a8f0153eb75cc44c80ce5ceda82972c677e575618916a69ce7f"
+    },
+    {
+      "id": "T061",
+      "phaseNo": 5,
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "story": "US3",
+      "parallel": false,
+      "dependencies": [
+        "T021",
+        "T022",
+        "T053",
+        "T055",
+        "T056",
+        "T057",
+        "T059"
+      ],
+      "requirementRefs": [
+        "FR-032",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptanceRefs": [
+        "AC-066",
+        "AC-070",
+        "AC-071",
+        "AC-072",
+        "AC-073",
+        "AC-075"
+      ],
+      "authorityIds": [
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/components/RefreshFundamentals.svelte",
+        "tests/e2e/manual-refresh.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/manual-refresh.spec.ts"
+      ],
+      "doneWhen": "the control is mounted through composition and never bypasses consent, fair access, retry, locks, cancellation, quota guards or the previous snapshot",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "2268c0d58b73aeb353aa264c6070dac60c52453ffc1811cbaa6b7b019a27ca95"
+    },
+    {
+      "id": "T062",
+      "phaseNo": 5,
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "story": "US3",
+      "parallel": false,
+      "dependencies": [
+        "T053",
+        "T054",
+        "T055",
+        "T056",
+        "T057",
+        "T058",
+        "T059",
+        "T060",
+        "T061"
+      ],
+      "requirementRefs": [
+        "FR-030",
+        "FR-031",
+        "FR-032",
+        "FR-033",
+        "FR-035",
+        "NFR-003",
+        "NFR-004"
+      ],
+      "acceptanceRefs": [
+        "AC-004",
+        "AC-058",
+        "AC-059",
+        "AC-060",
+        "AC-061",
+        "AC-062",
+        "AC-065",
+        "AC-066",
+        "AC-072",
+        "AC-073"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-022"
+      ],
+      "files": [
+        "tests/e2e/refresh-resilience.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/refresh-resilience.spec.ts"
+      ],
+      "doneWhen": "no-consent open/resume makes zero calls, all recovery paths preserve exact capabilities and pointers, and no scenario assumes work while closed",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "b1d959c1ed9de3bcb3d07fdc9999ba352e5976126b463d07b17aad6c5b07f98c"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": true,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-e2e",
+        "category": "e2e",
+        "command": "npm run test:e2e -- tests/e2e/manual-refresh.spec.ts tests/e2e/open-resume.spec.ts tests/e2e/refresh-resilience.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B14_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

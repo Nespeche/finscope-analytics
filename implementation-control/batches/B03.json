@@ -1,0 +1,450 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B03",
+  "ordinal": 3,
+  "title": "Decimal, JCS, reloj, autoridades y mensajes",
+  "domain": "foundation-core",
+  "status": "COMPLETED",
+  "taskCount": 5,
+  "executionOrder": [
+    "T011",
+    "T013",
+    "T014",
+    "T015",
+    "T016"
+  ],
+  "externalDependencies": [
+    "T001",
+    "T002",
+    "T005",
+    "T012"
+  ],
+  "requirements": [
+    "FR-008",
+    "FR-014",
+    "FR-024",
+    "FR-025",
+    "FR-027",
+    "FR-029",
+    "FR-037",
+    "FR-038",
+    "NFR-001",
+    "NFR-005",
+    "NFR-006"
+  ],
+  "acceptanceCriteria": [
+    "AC-019",
+    "AC-020",
+    "AC-026",
+    "AC-027",
+    "AC-028",
+    "AC-034",
+    "AC-039",
+    "AC-040",
+    "AC-041",
+    "AC-042",
+    "AC-048",
+    "AC-064",
+    "AC-072",
+    "AC-073",
+    "AC-079",
+    "AC-083",
+    "AC-084"
+  ],
+  "authorityIds": [
+    "AUTH-003",
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-006",
+    "AUTH-007",
+    "AUTH-008",
+    "AUTH-009",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-013",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-024",
+    "AUTH-025",
+    "AUTH-026",
+    "AUTH-034"
+  ],
+  "primaryAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+    "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json#/entries",
+    "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+    "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-test-vectors.json",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/1",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+    "specs/001-fundamental-analysis-platform/fixtures/rules/rule-test-vectors.json",
+    "specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json",
+    "specs/001-fundamental-analysis-platform/reports/v0.16/09_V0.16_HISTORICAL_VALIDATION_ADDENDUM.md",
+    "specs/001-fundamental-analysis-platform/schemas/common.schema.json#/$defs/DecimalString",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-019",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-020",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-026",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-027",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-028",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-034",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-039",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-040",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-041",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-042",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-048",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-064",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-072",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-073",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-079",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-083",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-084"
+  ],
+  "targetFiles": [
+    "src/authority/loaders.ts",
+    "src/authority/types.ts",
+    "src/core/canonical-json.ts",
+    "src/core/clock.ts",
+    "src/core/decimal.ts",
+    "src/core/presentation-time.ts",
+    "src/core/sha256.ts",
+    "src/types/messages.ts",
+    "tests/contract/authority-loading.test.ts",
+    "tests/unit/core/canonical-json.test.ts",
+    "tests/unit/core/clock-boundary.test.ts",
+    "tests/unit/core/decimal.test.ts",
+    "tests/unit/types/messages.test.ts"
+  ],
+  "testFiles": [
+    "tests/contract/authority-loading.test.ts",
+    "tests/unit/core/canonical-json.test.ts",
+    "tests/unit/core/clock-boundary.test.ts",
+    "tests/unit/core/decimal.test.ts",
+    "tests/unit/types/messages.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T011",
+      "phaseNo": 2,
+      "phase": "Phase 2 — Foundational",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T001",
+        "T002",
+        "T005"
+      ],
+      "requirementRefs": [
+        "FR-008",
+        "FR-014",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-019",
+        "AC-020",
+        "AC-026",
+        "AC-027"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/core/decimal.ts",
+        "tests/unit/core/decimal.test.ts"
+      ],
+      "tests": [
+        "tests/unit/core/decimal.test.ts"
+      ],
+      "doneWhen": "all formula decimal edge vectors pass without Number arithmetic",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "b5ca04919f66d0bf24e580a0f94e621ba689381e750badf99d349e0442132797"
+    },
+    {
+      "id": "T013",
+      "phaseNo": 2,
+      "phase": "Phase 2 — Foundational",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T002",
+        "T005"
+      ],
+      "requirementRefs": [
+        "FR-025",
+        "FR-029",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-039",
+        "AC-040",
+        "AC-041"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/core/canonical-json.ts",
+        "src/core/sha256.ts",
+        "tests/unit/core/canonical-json.test.ts"
+      ],
+      "tests": [
+        "tests/unit/core/canonical-json.test.ts"
+      ],
+      "doneWhen": "official package vectors produce exact bytes and digests",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "930a591306f00c8bddd4c203b7ab7d3515c702c69f2fde2592c580e68da7c6ea"
+    },
+    {
+      "id": "T014",
+      "phaseNo": 2,
+      "phase": "Phase 2 — Foundational",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T002",
+        "T005"
+      ],
+      "requirementRefs": [
+        "FR-024",
+        "FR-027",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-064",
+        "AC-079"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/core/clock.ts",
+        "src/core/presentation-time.ts",
+        "tests/unit/core/clock-boundary.test.ts"
+      ],
+      "tests": [
+        "tests/unit/core/clock-boundary.test.ts"
+      ],
+      "doneWhen": "normative modules accept no ambient Date.now or locale dependency",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "2acf2e16cd1f927ac6b45b20de1e6440311463789f1512e3144b3d8c597c5928"
+    },
+    {
+      "id": "T015",
+      "phaseNo": 2,
+      "phase": "Phase 2 — Foundational",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T012"
+      ],
+      "requirementRefs": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptanceRefs": [
+        "AC-028",
+        "AC-034",
+        "AC-042",
+        "AC-083",
+        "AC-084"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "src/authority/loaders.ts",
+        "src/authority/types.ts",
+        "tests/contract/authority-loading.test.ts"
+      ],
+      "tests": [
+        "tests/contract/authority-loading.test.ts"
+      ],
+      "doneWhen": "unknown authority IDs, missing pointers and heuristic paths fail closed",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "949b610cf0373ab39f0b2ca5e66b6cf66f9d4682d0f92b2cac47dee80470c578"
+    },
+    {
+      "id": "T016",
+      "phaseNo": 2,
+      "phase": "Phase 2 — Foundational",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T002",
+        "T012"
+      ],
+      "requirementRefs": [
+        "FR-037",
+        "FR-038",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-048",
+        "AC-072",
+        "AC-073"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/types/messages.ts",
+        "tests/unit/types/messages.test.ts"
+      ],
+      "tests": [
+        "tests/unit/types/messages.test.ts"
+      ],
+      "doneWhen": "switches are exhaustive and duplicate operation IDs are detectable",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "541a1581d36e1e1ab54a4dc753561a4b124fb5a7ff97829ab67a25aaa737517b"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": false,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-unit",
+        "category": "unit",
+        "command": "npm run test:unit -- tests/unit/core/canonical-json.test.ts tests/unit/core/clock-boundary.test.ts tests/unit/core/decimal.test.ts tests/unit/types/messages.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-contract",
+        "category": "contract",
+        "command": "npm run test:contract -- tests/contract/authority-loading.test.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B03_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

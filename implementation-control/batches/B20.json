@@ -1,0 +1,384 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B20",
+  "ordinal": 20,
+  "title": "Cierre transversal WCAG",
+  "domain": "a11y-closure",
+  "status": "PENDING",
+  "taskCount": 3,
+  "executionOrder": [
+    "T086",
+    "T087",
+    "T088"
+  ],
+  "externalDependencies": [
+    "T006",
+    "T025",
+    "T034",
+    "T049",
+    "T050",
+    "T051",
+    "T052",
+    "T053",
+    "T061",
+    "T062",
+    "T069",
+    "T070",
+    "T071",
+    "T072",
+    "T080",
+    "T081",
+    "T082",
+    "T083",
+    "T084",
+    "T085",
+    "T089"
+  ],
+  "requirements": [
+    "FR-041",
+    "FR-042",
+    "NFR-005",
+    "NFR-007"
+  ],
+  "acceptanceCriteria": [
+    "AC-067",
+    "AC-068",
+    "AC-069",
+    "AC-070",
+    "AC-071",
+    "AC-072",
+    "AC-073",
+    "AC-074",
+    "AC-075"
+  ],
+  "authorityIds": [
+    "AUTH-008",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-013",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-024",
+    "AUTH-025",
+    "AUTH-034"
+  ],
+  "primaryAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json#/entries",
+    "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria/70",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/1",
+    "specs/001-fundamental-analysis-platform/quickstart.md"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-067",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-068",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-069",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-070",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-071",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-072",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-073",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-074",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-075"
+  ],
+  "targetFiles": [
+    "docs/accessibility-evidence.md",
+    "src/app/components/RecoveryPanel.svelte",
+    "src/app/views/AcquisitionView.svelte",
+    "src/app/views/DataManagementView.svelte",
+    "src/app/views/FactsView.svelte",
+    "src/app/views/FundamentalMetricsView.svelte",
+    "src/app/views/InsightsView.svelte",
+    "src/app/views/IssuerEvidenceView.svelte",
+    "src/app/views/IssuerSearchView.svelte",
+    "src/app/views/PriceAnalysisView.svelte",
+    "src/app/views/PriceImportView.svelte",
+    "src/app/views/PrivacySettingsView.svelte",
+    "tests/accessibility/manual-wcag-checklist.md",
+    "tests/accessibility/wcag-automated.spec.ts",
+    "tests/accessibility/wcag-matrix-loader.ts",
+    "tests/e2e/accessibility/names-errors.spec.ts"
+  ],
+  "testFiles": [
+    "tests/accessibility/manual-wcag-checklist.md",
+    "tests/accessibility/wcag-automated.spec.ts",
+    "tests/accessibility/wcag-matrix-loader.ts",
+    "tests/e2e/accessibility/names-errors.spec.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T086",
+      "phaseNo": 8,
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "story": "US6",
+      "parallel": false,
+      "dependencies": [
+        "T025",
+        "T034",
+        "T049",
+        "T050",
+        "T051",
+        "T052",
+        "T061",
+        "T069",
+        "T070",
+        "T072",
+        "T080",
+        "T082"
+      ],
+      "requirementRefs": [
+        "FR-041",
+        "FR-042",
+        "NFR-007"
+      ],
+      "acceptanceRefs": [
+        "AC-069",
+        "AC-070",
+        "AC-071",
+        "AC-074",
+        "AC-075"
+      ],
+      "authorityIds": [
+        "AUTH-015",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021"
+      ],
+      "files": [
+        "src/app/views/IssuerSearchView.svelte",
+        "src/app/views/AcquisitionView.svelte",
+        "src/app/views/IssuerEvidenceView.svelte",
+        "src/app/views/FactsView.svelte",
+        "src/app/views/FundamentalMetricsView.svelte",
+        "src/app/views/InsightsView.svelte",
+        "src/app/views/PriceImportView.svelte",
+        "src/app/views/PriceAnalysisView.svelte",
+        "src/app/views/PrivacySettingsView.svelte",
+        "src/app/views/DataManagementView.svelte",
+        "src/app/components/RecoveryPanel.svelte",
+        "tests/e2e/accessibility/names-errors.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/accessibility/names-errors.spec.ts"
+      ],
+      "doneWhen": "no placeholder-only label, duplicate name, chart-only meaning, unassociated error or silent status remains",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "91116d4260f05623e6a8b2fa9d27dcc04b9571e6fdf11d61426e099cc83fad12"
+    },
+    {
+      "id": "T087",
+      "phaseNo": 8,
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "story": "US6",
+      "parallel": false,
+      "dependencies": [
+        "T006",
+        "T053",
+        "T062",
+        "T071",
+        "T080",
+        "T081",
+        "T082",
+        "T083",
+        "T084",
+        "T085",
+        "T086",
+        "T089"
+      ],
+      "requirementRefs": [
+        "FR-042",
+        "NFR-005",
+        "NFR-007"
+      ],
+      "acceptanceRefs": [
+        "AC-067",
+        "AC-068",
+        "AC-069",
+        "AC-070",
+        "AC-071",
+        "AC-072",
+        "AC-073",
+        "AC-074",
+        "AC-075"
+      ],
+      "authorityIds": [
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "tests/accessibility/wcag-automated.spec.ts",
+        "tests/accessibility/wcag-matrix-loader.ts"
+      ],
+      "tests": [
+        "tests/accessibility/wcag-automated.spec.ts",
+        "tests/accessibility/wcag-matrix-loader.ts"
+      ],
+      "doneWhen": "every applicable automated criterion links to its matrix ID, AC and exact UI evidence while axe remains supplemental",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "e44abf190ba59e87a9226d35c2fe50d8f61641ac4125bfd10dfdd768b8862e5a"
+    },
+    {
+      "id": "T088",
+      "phaseNo": 8,
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "story": "US6",
+      "parallel": false,
+      "dependencies": [
+        "T053",
+        "T062",
+        "T071",
+        "T080",
+        "T081",
+        "T082",
+        "T083",
+        "T084",
+        "T085",
+        "T086",
+        "T087",
+        "T089"
+      ],
+      "requirementRefs": [
+        "FR-042",
+        "NFR-005",
+        "NFR-007"
+      ],
+      "acceptanceRefs": [
+        "AC-067",
+        "AC-068",
+        "AC-069",
+        "AC-070",
+        "AC-071",
+        "AC-072",
+        "AC-073",
+        "AC-074",
+        "AC-075"
+      ],
+      "authorityIds": [
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "tests/accessibility/manual-wcag-checklist.md",
+        "docs/accessibility-evidence.md"
+      ],
+      "tests": [
+        "tests/accessibility/manual-wcag-checklist.md"
+      ],
+      "doneWhen": "55/55 criteria retain applicability, 12 justified N/A items with reopen triggers, oracle, evidence and result",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "12e27961a6555a4d67312d2cf735003f2a81a80e3e5f08770e00f94061ea1576"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": true,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-e2e",
+        "category": "e2e",
+        "command": "npm run test:e2e -- tests/e2e/accessibility/names-errors.spec.ts",
+        "required": true
+      },
+      {
+        "id": "test-accessibility",
+        "category": "accessibility",
+        "command": "npm run test:accessibility -- tests/accessibility/wcag-automated.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B20_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

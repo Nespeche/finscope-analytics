@@ -1,0 +1,473 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B01",
+  "ordinal": 1,
+  "title": "Proyecto, TypeScript, Vite y arnés de pruebas",
+  "domain": "setup",
+  "status": "COMPLETED",
+  "taskCount": 6,
+  "executionOrder": [
+    "T001",
+    "T002",
+    "T003",
+    "T005",
+    "T006",
+    "T010"
+  ],
+  "externalDependencies": [],
+  "requirements": [
+    "FR-042",
+    "NFR-001",
+    "NFR-005",
+    "NFR-006",
+    "NFR-007"
+  ],
+  "acceptanceCriteria": [
+    "AC-039",
+    "AC-040",
+    "AC-067",
+    "AC-068",
+    "AC-069",
+    "AC-070",
+    "AC-071",
+    "AC-077",
+    "AC-083",
+    "AC-084"
+  ],
+  "authorityIds": [
+    "AUTH-003",
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-006",
+    "AUTH-007",
+    "AUTH-008",
+    "AUTH-009",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-013",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-024",
+    "AUTH-025",
+    "AUTH-026",
+    "AUTH-034"
+  ],
+  "primaryAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+    "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json#/entries",
+    "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+    "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-test-vectors.json",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria/70",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+    "specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json",
+    "specs/001-fundamental-analysis-platform/reports/v0.16/09_V0.16_HISTORICAL_VALIDATION_ADDENDUM.md"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-039",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-040",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-067",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-068",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-069",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-070",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-071",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-077",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-083",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-084"
+  ],
+  "targetFiles": [
+    "README.md",
+    "docs/development.md",
+    "index.html",
+    "package-lock.json",
+    "package.json",
+    "playwright.config.ts",
+    "src/main.ts",
+    "tests/accessibility/axe.ts",
+    "tests/contract/dependency-inventory.test.ts",
+    "tests/contract/typescript-strict-config.test.ts",
+    "tests/contract/vite-build-config.test.ts",
+    "tests/e2e/global.setup.ts",
+    "tests/setup/deterministic-environment.ts",
+    "tsconfig.json",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "workers/sec-gateway/tsconfig.json"
+  ],
+  "testFiles": [
+    "tests/accessibility/axe.ts",
+    "tests/contract/dependency-inventory.test.ts",
+    "tests/contract/typescript-strict-config.test.ts",
+    "tests/contract/vite-build-config.test.ts",
+    "tests/e2e/global.setup.ts",
+    "tests/setup/deterministic-environment.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T001",
+      "phaseNo": 1,
+      "phase": "Phase 1 — Setup",
+      "story": null,
+      "parallel": false,
+      "dependencies": [],
+      "requirementRefs": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptanceRefs": [
+        "AC-077",
+        "AC-083",
+        "AC-084"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "package.json",
+        "package-lock.json",
+        "tests/contract/dependency-inventory.test.ts"
+      ],
+      "tests": [
+        "tests/contract/dependency-inventory.test.ts"
+      ],
+      "doneWhen": "dependencies are exact, licenses recorded, no unused framework or paid SDK is present",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "9cc908c109daa020339247bac144abdca7b0615844c9aa5643877803284d3d12"
+    },
+    {
+      "id": "T002",
+      "phaseNo": 1,
+      "phase": "Phase 1 — Setup",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T001"
+      ],
+      "requirementRefs": [
+        "NFR-001",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-039",
+        "AC-083"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-026",
+        "AUTH-034"
+      ],
+      "files": [
+        "tsconfig.json",
+        "workers/sec-gateway/tsconfig.json",
+        "tests/contract/typescript-strict-config.test.ts"
+      ],
+      "tests": [
+        "tests/contract/typescript-strict-config.test.ts"
+      ],
+      "doneWhen": "typecheck rejects any in domain boundaries and all external inputs begin as unknown",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "1a0330f2cdcde4d63d1b8267515e60fb12d84adcaa9fbf27532d5531f807ca2a"
+    },
+    {
+      "id": "T003",
+      "phaseNo": 1,
+      "phase": "Phase 1 — Setup",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T001",
+        "T002"
+      ],
+      "requirementRefs": [
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-077",
+        "AC-083"
+      ],
+      "authorityIds": [
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "vite.config.ts",
+        "src/main.ts",
+        "index.html",
+        "tests/contract/vite-build-config.test.ts"
+      ],
+      "tests": [
+        "tests/contract/vite-build-config.test.ts"
+      ],
+      "doneWhen": "SPA builds without SvelteKit and reports asset count/size",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "5d4486fc86d0e109bc748e1390b55f3c704b139fb4ecb953a28506e945a35cfb"
+    },
+    {
+      "id": "T005",
+      "phaseNo": 1,
+      "phase": "Phase 1 — Setup",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T001",
+        "T002"
+      ],
+      "requirementRefs": [
+        "NFR-001",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-039",
+        "AC-040",
+        "AC-083"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-026",
+        "AUTH-034"
+      ],
+      "files": [
+        "vitest.config.ts",
+        "tests/setup/deterministic-environment.ts"
+      ],
+      "tests": [
+        "tests/setup/deterministic-environment.ts"
+      ],
+      "doneWhen": "tests use frozen fixtures and no live SEC gate",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "17ee22069c02b947ea406f4c9224d686b55c9d60b0db5b785917485f32e98166"
+    },
+    {
+      "id": "T006",
+      "phaseNo": 1,
+      "phase": "Phase 1 — Setup",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T001",
+        "T002",
+        "T005"
+      ],
+      "requirementRefs": [
+        "FR-042",
+        "NFR-005",
+        "NFR-007"
+      ],
+      "acceptanceRefs": [
+        "AC-067",
+        "AC-068",
+        "AC-069",
+        "AC-070",
+        "AC-071"
+      ],
+      "authorityIds": [
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "playwright.config.ts",
+        "tests/e2e/global.setup.ts",
+        "tests/accessibility/axe.ts"
+      ],
+      "tests": [
+        "tests/e2e/global.setup.ts",
+        "tests/accessibility/axe.ts"
+      ],
+      "doneWhen": "e2e, accessibility and performance browser suites are discoverable, axe is supplemental and manual WCAG cases remain explicit",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "78876cb0c1e6b48126e3112059af3b82d77a7ae40b1e84399d5e98621f75f39c"
+    },
+    {
+      "id": "T010",
+      "phaseNo": 1,
+      "phase": "Phase 1 — Setup",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T001",
+        "T002",
+        "T003",
+        "T005",
+        "T006"
+      ],
+      "requirementRefs": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptanceRefs": [
+        "AC-077",
+        "AC-083",
+        "AC-084"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "README.md",
+        "docs/development.md"
+      ],
+      "tests": [],
+      "doneWhen": "setup, category-specific test, local-validation and build steps are executable in Windows/VS Code and do not require terminal use by end users",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "f7a60120ff89af2570d428f376a17f17bb109c61713e7adbe7e43740f53e728f"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": false,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-contract",
+        "category": "contract",
+        "command": "npm run test:contract -- tests/contract/dependency-inventory.test.ts tests/contract/typescript-strict-config.test.ts tests/contract/vite-build-config.test.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B01_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

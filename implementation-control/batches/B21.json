@@ -1,0 +1,491 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B21",
+  "ordinal": 21,
+  "title": "Cloudflare Free, observabilidad y rendimiento Worker",
+  "domain": "cloudflare-worker",
+  "status": "PENDING",
+  "taskCount": 6,
+  "executionOrder": [
+    "T090",
+    "T091",
+    "T092",
+    "T093",
+    "T094",
+    "T095"
+  ],
+  "externalDependencies": [
+    "T003",
+    "T005",
+    "T007",
+    "T008",
+    "T012",
+    "T018",
+    "T019",
+    "T027",
+    "T028",
+    "T029",
+    "T030",
+    "T056",
+    "T059"
+  ],
+  "requirements": [
+    "FR-003",
+    "FR-031",
+    "FR-032",
+    "FR-041",
+    "NFR-003",
+    "NFR-004",
+    "NFR-005"
+  ],
+  "acceptanceCriteria": [
+    "AC-003",
+    "AC-004",
+    "AC-009",
+    "AC-047",
+    "AC-058",
+    "AC-065",
+    "AC-066",
+    "AC-075",
+    "AC-077",
+    "AC-081",
+    "AC-083"
+  ],
+  "authorityIds": [
+    "AUTH-005",
+    "AUTH-008",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-013",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-017",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-022",
+    "AUTH-024",
+    "AUTH-025",
+    "AUTH-034"
+  ],
+  "primaryAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json#/entries",
+    "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md#active-source-policy",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/resourceNotFoundVariants",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-003",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-004",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-009",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-047",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-058",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-065",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-066",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-075",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-077",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-081",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-083"
+  ],
+  "targetFiles": [
+    "scripts/check-cloudflare-budgets.mjs",
+    "src/domain/orchestration/quota-degradation.ts",
+    "tests/contract/cloudflare/budget.test.ts",
+    "tests/contract/cloudflare/build-budget.test.ts",
+    "tests/integration/cloudflare/d1-budget.test.ts",
+    "tests/integration/cloudflare/quota-degradation.test.ts",
+    "tests/integration/cloudflare/worker-observability.test.ts",
+    "tests/performance/fixtures/sec-payload-sizes.ts",
+    "tests/performance/worker-streaming.test.ts",
+    "workers/sec-gateway/src/budget.ts",
+    "workers/sec-gateway/src/catalog/d1-metrics.ts",
+    "workers/sec-gateway/src/observability.ts",
+    "workers/sec-gateway/src/quota-errors.ts"
+  ],
+  "testFiles": [
+    "tests/contract/cloudflare/budget.test.ts",
+    "tests/contract/cloudflare/build-budget.test.ts",
+    "tests/integration/cloudflare/d1-budget.test.ts",
+    "tests/integration/cloudflare/quota-degradation.test.ts",
+    "tests/integration/cloudflare/worker-observability.test.ts",
+    "tests/performance/fixtures/sec-payload-sizes.ts",
+    "tests/performance/worker-streaming.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T090",
+      "phaseNo": 9,
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T007",
+        "T012",
+        "T056"
+      ],
+      "requirementRefs": [
+        "FR-031",
+        "FR-041",
+        "NFR-003",
+        "NFR-004",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-004",
+        "AC-047",
+        "AC-065",
+        "AC-075",
+        "AC-077"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-022",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "workers/sec-gateway/src/budget.ts",
+        "tests/contract/cloudflare/budget.test.ts"
+      ],
+      "tests": [
+        "tests/contract/cloudflare/budget.test.ts"
+      ],
+      "doneWhen": "official limits and internal safety margins are exact, nonessential refresh fails closed and no paid fallback is present",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "e2312d8a0cbe5590c2da7cccb68ecdd9a01c450d2710d4b4f6bf914c4cb66c38"
+    },
+    {
+      "id": "T091",
+      "phaseNo": 9,
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T018",
+        "T030",
+        "T059",
+        "T090"
+      ],
+      "requirementRefs": [
+        "FR-031",
+        "FR-032",
+        "FR-041",
+        "NFR-004"
+      ],
+      "acceptanceRefs": [
+        "AC-047",
+        "AC-058",
+        "AC-065",
+        "AC-066",
+        "AC-075"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021"
+      ],
+      "files": [
+        "workers/sec-gateway/src/quota-errors.ts",
+        "src/domain/orchestration/quota-degradation.ts",
+        "tests/integration/cloudflare/quota-degradation.test.ts"
+      ],
+      "tests": [
+        "tests/integration/cloudflare/quota-degradation.test.ts"
+      ],
+      "doneWhen": "quota exhaustion preserves the prior snapshot and no paid fallback or silent service substitution is possible",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "92718d909c0332e524dab860f447277598590922dc8dfd1267dac3671d6b8a12"
+    },
+    {
+      "id": "T092",
+      "phaseNo": 9,
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T019",
+        "T027",
+        "T028"
+      ],
+      "requirementRefs": [
+        "NFR-003",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-003",
+        "AC-009",
+        "AC-081"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-022",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "workers/sec-gateway/src/observability.ts",
+        "tests/integration/cloudflare/worker-observability.test.ts"
+      ],
+      "tests": [
+        "tests/integration/cloudflare/worker-observability.test.ts"
+      ],
+      "doneWhen": "telemetry proves one upstream subrequest, captures p95 CPU targets and contains no personal data or contact values",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "d9cc9d724765080ec4d8a1bc8f3e7ad81948e097463de277fdc144c27446bef5"
+    },
+    {
+      "id": "T093",
+      "phaseNo": 9,
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T008",
+        "T029"
+      ],
+      "requirementRefs": [
+        "NFR-004",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-077",
+        "AC-083"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-017",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "workers/sec-gateway/src/catalog/d1-metrics.ts",
+        "tests/integration/cloudflare/d1-budget.test.ts"
+      ],
+      "tests": [
+        "tests/integration/cloudflare/d1-budget.test.ts"
+      ],
+      "doneWhen": "runtime reads stay within two queries and publication batches retain documented Free margins",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "8b4df1df768981d53ecd3b0fc83f02904b7cef16b7b135fbb254ccd821d07113"
+    },
+    {
+      "id": "T094",
+      "phaseNo": 9,
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T003",
+        "T007"
+      ],
+      "requirementRefs": [
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-077",
+        "AC-083"
+      ],
+      "authorityIds": [
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "scripts/check-cloudflare-budgets.mjs",
+        "tests/contract/cloudflare/build-budget.test.ts"
+      ],
+      "tests": [
+        "tests/contract/cloudflare/build-budget.test.ts"
+      ],
+      "doneWhen": "deployment stops before internal targets or current Free platform limits are exceeded",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "9d21787521824281cf3db9b097851195ed657466d34b3955c190d441d8811d6d"
+    },
+    {
+      "id": "T095",
+      "phaseNo": 9,
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T005",
+        "T028",
+        "T030",
+        "T092"
+      ],
+      "requirementRefs": [
+        "FR-003",
+        "NFR-003",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-003",
+        "AC-009",
+        "AC-081"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-022",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "tests/performance/worker-streaming.test.ts",
+        "tests/performance/fixtures/sec-payload-sizes.ts"
+      ],
+      "tests": [
+        "tests/performance/worker-streaming.test.ts",
+        "tests/performance/fixtures/sec-payload-sizes.ts"
+      ],
+      "doneWhen": "p95 CPU remains within the internal target, no body is fully buffered, memory is bounded and redirect chains cannot inflate subrequests silently",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "21699bc6c0d4236eac3d908c5be00a498d836678554e8629d1797c68099946b4"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": false,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-integration",
+        "category": "integration",
+        "command": "npm run test:integration -- tests/integration/cloudflare/d1-budget.test.ts tests/integration/cloudflare/quota-degradation.test.ts tests/integration/cloudflare/worker-observability.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-contract",
+        "category": "contract",
+        "command": "npm run test:contract -- tests/contract/cloudflare/budget.test.ts tests/contract/cloudflare/build-budget.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-performance-unit",
+        "category": "performance-unit",
+        "command": "npm run test:performance:unit -- tests/performance/worker-streaming.test.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B21_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "cacheLookupCountsAsExternalCall": false,
+  "fairAccess": {
+    "cacheRequired": true,
+    "concurrencyPerClient": 1,
+    "contactRequired": true,
+    "retryPolicy": "bounded exponential backoff with Retry-After precedence",
+    "userAgentRequired": true,
+    "requestTimeoutSeconds": 20,
+    "operationTimeoutSeconds": 120,
+    "maximumAttemptsPerLogicalRequest": 3,
+    "backoffSeconds": [
+      1,
+      2,
+      4
+    ],
+    "maximumJitterMilliseconds": 250,
+    "maximumRetryAfterSeconds": 30,
+    "retriesCountAgainstBudget": true,
+    "declaredSecMaximumRequestsPerSecond": 10
+  },
+  "fallbackSource": "company_concept",
+  "invariants": [
+    "Company Facts is always attempted before Company Concept on a network acquisition",
+    "Company Concept is selective and never taxonomy-wide",
+    "attemptIndex and externalCallCount are monotonic",
+    "no retry may exceed 14 total external calls",
+    "duplicate SEC request keys are forbidden within one operation",
+    "local cancellation publishes no candidate",
+    "cache freshness and novelty decisions follow cache-and-refresh-policy.json",
+    "fact selection/restatement/conflict behavior follows sec-filing-fact-selection-policy.json",
+    "8-K and 8-K/A are evidence-only and never canonical statement selectors",
+    "XBRL Frames never selects an issuer fact"
+  ],
+  "maxExternalCallsPerOperation": 14,
+  "orderedSteps": [
+    {
+      "maxCalls": 0,
+      "priority": 10,
+      "sourceKind": "local",
+      "stepId": "validate_request"
+    },
+    {
+      "maxCalls": 0,
+      "priority": 20,
+      "sourceKind": "local",
+      "stepId": "read_cache"
+    },
+    {
+      "condition": "cache miss, stale/expired revalidation, novelty check or manual refresh with refreshConsent=true",
+      "maxCalls": 1,
+      "priority": 30,
+      "sourceKind": "submissions",
+      "stepId": "fetch_submissions"
+    },
+    {
+      "condition": "novelty detected, cache missing, dependent authority changed or manual refresh forced",
+      "maxCalls": 1,
+      "priority": 40,
+      "sourceKind": "company_facts",
+      "stepId": "fetch_company_facts"
+    },
+    {
+      "maxCalls": 0,
+      "priority": 50,
+      "sourceKind": "local",
+      "stepId": "resolve_exact_mappings"
+    },
+    {
+      "maxCalls": 0,
+      "ordering": [
+        "profile concept allowlist order",
+        "metricPriority ascending",
+        "mapping precedence ascending",
+        "canonicalConceptId ascending"
+      ],
+      "priority": 60,
+      "sourceKind": "local",
+      "stepId": "select_company_concept_fallbacks"
+    },
+    {
+      "condition": "only unresolved allowlisted concepts with an ACTIVE exact mapping",
+      "maxCalls": 12,
+      "priority": 70,
+      "sourceKind": "company_concept",
+      "stepId": "fetch_company_concepts"
+    },
+    {
+      "condition": "budget exhausted or no eligible fallback",
+      "maxCalls": 0,
+      "priority": 80,
+      "sourceKind": "local",
+      "stepId": "stop_and_publish_partial"
+    }
+  ],
+  "policyId": "sec-acquisition-policy",
+  "primarySource": "company_facts",
+  "status": "ACTIVE_AUTHORITY",
+  "version": "5.0.1",
+  "cacheAndRefreshPolicyRef": "contracts/cache-and-refresh-policy.json",
+  "factSelectionPolicyRef": "contracts/sec-filing-fact-selection-policy.json",
+  "securityAndInputLimitsRef": "contracts/security-and-input-limits.json",
+  "admittedForms": [
+    "10-K",
+    "10-K/A",
+    "10-Q",
+    "10-Q/A",
+    "20-F",
+    "20-F/A",
+    "6-K",
+    "6-K/A",
+    "40-F",
+    "40-F/A"
+  ],
+  "evidenceOnlyForms": [
+    "8-K",
+    "8-K/A"
+  ]
+}

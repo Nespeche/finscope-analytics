@@ -1,0 +1,95 @@
+{
+  "$id": "https://finscope.local/schemas/cache-and-refresh-policy.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cache and refresh policy 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "policyId",
+    "version",
+    "status",
+    "executionModel",
+    "consent",
+    "freshnessBands",
+    "noveltyFingerprint",
+    "companyFactsFetchConditions",
+    "offlinePolicy",
+    "cacheValidators",
+    "fingerprintBoundary"
+  ],
+  "properties": {
+    "policyId": {
+      "const": "cache-and-refresh-policy"
+    },
+    "version": {
+      "const": "1.0.0"
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "executionModel": {
+      "const": "foreground_on_open_or_resume"
+    },
+    "consent": {
+      "type": "object"
+    },
+    "freshnessBands": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "band",
+          "minimumAgeSeconds",
+          "maximumAgeSecondsExclusive",
+          "networkAction"
+        ],
+        "properties": {
+          "band": {
+            "enum": [
+              "fresh",
+              "stale_revalidatable",
+              "expired"
+            ]
+          },
+          "minimumAgeSeconds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "maximumAgeSecondsExclusive": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "networkAction": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "noveltyFingerprint": {
+      "type": "object"
+    },
+    "companyFactsFetchConditions": {
+      "type": "array",
+      "minItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "offlinePolicy": {
+      "type": "object"
+    },
+    "cacheValidators": {
+      "type": "object"
+    },
+    "fingerprintBoundary": {
+      "type": "string"
+    }
+  }
+}

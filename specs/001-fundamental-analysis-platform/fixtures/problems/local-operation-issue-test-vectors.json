@@ -1,0 +1,149 @@
+{
+  "fixtureSetId": "local-operation-issue-test-vectors",
+  "fixtures": [
+    {
+      "expectedHttpStatus": null,
+      "expectedValid": true,
+      "fixtureId": "LOCAL-IDENTITY_AMBIGUOUS",
+      "input": {
+        "accessibilityKey": "a11y.error.identity_ambiguous",
+        "blockedOperations": [
+          "requested_operation"
+        ],
+        "code": "identity_ambiguous",
+        "kind": "local_operation_issue",
+        "message": "Deterministic example for identity_ambiguous",
+        "messageKey": "error.identity_ambiguous",
+        "pipelineState": "failed",
+        "preservedCapabilities": [
+          "definitions",
+          "evidence"
+        ],
+        "recoveryActions": [
+          "select_issuer_by_cik"
+        ],
+        "retryability": "after_user_action"
+      }
+    },
+    {
+      "expectedHttpStatus": null,
+      "expectedValid": true,
+      "fixtureId": "LOCAL-CANCELLED",
+      "input": {
+        "accessibilityKey": "a11y.error.cancelled",
+        "blockedOperations": [
+          "active_operation"
+        ],
+        "code": "cancelled",
+        "kind": "local_operation_issue",
+        "message": "Deterministic example for cancelled",
+        "messageKey": "error.cancelled",
+        "pipelineState": "cancelled",
+        "preservedCapabilities": [
+          "issuer_identity",
+          "local_snapshot",
+          "definitions",
+          "mappings",
+          "evidence"
+        ],
+        "recoveryActions": [
+          "restart",
+          "use_last_snapshot"
+        ],
+        "retryability": "after_user_action"
+      }
+    },
+    {
+      "expectedHttpStatus": null,
+      "expectedValid": true,
+      "fixtureId": "LOCAL-QUALITY_GATE_FAILED",
+      "input": {
+        "accessibilityKey": "a11y.error.quality_gate_failed",
+        "blockedOperations": [
+          "normalization"
+        ],
+        "code": "quality_gate_failed",
+        "kind": "local_operation_issue",
+        "message": "Deterministic example for quality_gate_failed",
+        "messageKey": "error.quality_gate_failed",
+        "pipelineState": "partial",
+        "preservedCapabilities": [
+          "issuer_identity",
+          "filings",
+          "definitions",
+          "mappings",
+          "evidence",
+          "local_snapshot"
+        ],
+        "recoveryActions": [
+          "review_limitations",
+          "retry",
+          "use_last_snapshot"
+        ],
+        "retryability": "after_data_or_mapping_change"
+      }
+    },
+    {
+      "expectedHttpStatus": null,
+      "expectedValid": true,
+      "fixtureId": "LOCAL-STORAGE_CONSENT_REQUIRED",
+      "input": {
+        "accessibilityKey": "a11y.error.storage_consent_required",
+        "blockedOperations": [
+          "persistence"
+        ],
+        "code": "storage_consent_required",
+        "kind": "local_operation_issue",
+        "message": "Deterministic example for storage_consent_required",
+        "messageKey": "error.storage_consent_required",
+        "pipelineState": "failed",
+        "preservedCapabilities": [
+          "issuer_identity",
+          "filings",
+          "fundamentals",
+          "insights",
+          "price_import",
+          "price_descriptive",
+          "evidence",
+          "definitions",
+          "mappings"
+        ],
+        "recoveryActions": [
+          "request_storage_consent",
+          "continue_without_persistence"
+        ],
+        "retryability": "after_user_action"
+      }
+    },
+    {
+      "expectedHttpStatus": null,
+      "expectedValid": true,
+      "fixtureId": "LOCAL-INVALID_FACT_VALUE",
+      "input": {
+        "accessibilityKey": "a11y.error.invalid_fact_value",
+        "blockedOperations": [
+          "normalization"
+        ],
+        "code": "invalid_fact_value",
+        "kind": "local_operation_issue",
+        "message": "Deterministic example for invalid_fact_value",
+        "messageKey": "error.invalid_fact_value",
+        "pipelineState": "partial",
+        "preservedCapabilities": [
+          "issuer_identity",
+          "filings",
+          "definitions",
+          "mappings",
+          "evidence",
+          "local_snapshot"
+        ],
+        "recoveryActions": [
+          "review_source_fact",
+          "continue_with_compatible_metrics"
+        ],
+        "retryability": "after_source_change"
+      }
+    }
+  ],
+  "version": "5.0.0"
+}

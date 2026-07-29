@@ -1,0 +1,1231 @@
+{
+  "matrixId": "wcag-2.2-aa-matrix",
+  "version": "2.1.0",
+  "status": "ACTIVE_AUTHORITY",
+  "target": "WCAG 2.2 Level AA: complete inventory of every Level A and AA success criterion",
+  "normativeSource": "https://www.w3.org/TR/WCAG22/",
+  "conformancePolicy": "Level AA requires all Level A and Level AA success criteria; NOT_APPLICABLE is an implementation-scope classification with an individual justification and reclassification trigger, not an exclusion from WCAG conformance.",
+  "criterionCount": 55,
+  "applicableCount": 43,
+  "notApplicableCount": 12,
+  "criteria": [
+    {
+      "successCriterion": "1.1.1",
+      "level": "A",
+      "name": "Non-text Content",
+      "applicability": "APPLICABLE",
+      "components": [
+        "charts",
+        "icons",
+        "status graphics and evidence links"
+      ],
+      "risk": "meaning is unavailable to screen-reader users",
+      "oracle": "every informative non-text item has an equivalent accessible name/description; decorative items are hidden",
+      "testMethod": "axe/Playwright accessibility tree plus manual chart alternative review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-1-1",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "1.2.1",
+      "level": "A",
+      "name": "Audio-only and Video-only (Prerecorded)",
+      "applicability": "NOT_APPLICABLE",
+      "components": [
+        "product scope and feature inventory"
+      ],
+      "risk": "an untracked feature could invalidate the documented non-applicability decision",
+      "oracle": "the excluded content or interaction is absent from every release scope item",
+      "testMethod": "manual scope and feature inventory review before release",
+      "automationPossible": false,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-2-1",
+      "releaseBlocking": true,
+      "notApplicableJustification": "The MVP contains no prerecorded audio-only or video-only media.",
+      "reclassificationTrigger": "any feature introducing content or interaction covered by this success criterion",
+      "acceptanceCriterionIds": [
+        "AC-077"
+      ]
+    },
+    {
+      "successCriterion": "1.2.2",
+      "level": "A",
+      "name": "Captions (Prerecorded)",
+      "applicability": "NOT_APPLICABLE",
+      "components": [
+        "product scope and feature inventory"
+      ],
+      "risk": "an untracked feature could invalidate the documented non-applicability decision",
+      "oracle": "the excluded content or interaction is absent from every release scope item",
+      "testMethod": "manual scope and feature inventory review before release",
+      "automationPossible": false,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-2-2",
+      "releaseBlocking": true,
+      "notApplicableJustification": "The MVP contains no prerecorded synchronized media requiring captions.",
+      "reclassificationTrigger": "any feature introducing content or interaction covered by this success criterion",
+      "acceptanceCriterionIds": [
+        "AC-077"
+      ]
+    },
+    {
+      "successCriterion": "1.2.3",
+      "level": "A",
+      "name": "Audio Description or Media Alternative (Prerecorded)",
+      "applicability": "NOT_APPLICABLE",
+      "components": [
+        "product scope and feature inventory"
+      ],
+      "risk": "an untracked feature could invalidate the documented non-applicability decision",
+      "oracle": "the excluded content or interaction is absent from every release scope item",
+      "testMethod": "manual scope and feature inventory review before release",
+      "automationPossible": false,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-2-3",
+      "releaseBlocking": true,
+      "notApplicableJustification": "The MVP contains no prerecorded synchronized media requiring audio description or a media alternative.",
+      "reclassificationTrigger": "any feature introducing content or interaction covered by this success criterion",
+      "acceptanceCriterionIds": [
+        "AC-077"
+      ]
+    },
+    {
+      "successCriterion": "1.2.4",
+      "level": "AA",
+      "name": "Captions (Live)",
+      "applicability": "NOT_APPLICABLE",
+      "components": [
+        "product scope and feature inventory"
+      ],
+      "risk": "an untracked feature could invalidate the documented non-applicability decision",
+      "oracle": "the excluded content or interaction is absent from every release scope item",
+      "testMethod": "manual scope and feature inventory review before release",
+      "automationPossible": false,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-2-4",
+      "releaseBlocking": true,
+      "notApplicableJustification": "The MVP contains no live synchronized media.",
+      "reclassificationTrigger": "any feature introducing content or interaction covered by this success criterion",
+      "acceptanceCriterionIds": [
+        "AC-077"
+      ]
+    },
+    {
+      "successCriterion": "1.2.5",
+      "level": "AA",
+      "name": "Audio Description (Prerecorded)",
+      "applicability": "NOT_APPLICABLE",
+      "components": [
+        "product scope and feature inventory"
+      ],
+      "risk": "an untracked feature could invalidate the documented non-applicability decision",
+      "oracle": "the excluded content or interaction is absent from every release scope item",
+      "testMethod": "manual scope and feature inventory review before release",
+      "automationPossible": false,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-2-5",
+      "releaseBlocking": true,
+      "notApplicableJustification": "The MVP contains no prerecorded video requiring audio description.",
+      "reclassificationTrigger": "any feature introducing content or interaction covered by this success criterion",
+      "acceptanceCriterionIds": [
+        "AC-077"
+      ]
+    },
+    {
+      "successCriterion": "1.3.1",
+      "level": "A",
+      "name": "Info and Relationships",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 1.3.1 Info and Relationships prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 1.3.1 (Info and Relationships) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-3-1",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "1.3.2",
+      "level": "A",
+      "name": "Meaningful Sequence",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 1.3.2 Meaningful Sequence prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 1.3.2 (Meaningful Sequence) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-3-2",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "1.3.3",
+      "level": "A",
+      "name": "Sensory Characteristics",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 1.3.3 Sensory Characteristics prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 1.3.3 (Sensory Characteristics) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-3-3",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "1.3.4",
+      "level": "AA",
+      "name": "Orientation",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 1.3.4 Orientation prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 1.3.4 (Orientation) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-3-4",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "1.3.5",
+      "level": "AA",
+      "name": "Identify Input Purpose",
+      "applicability": "NOT_APPLICABLE",
+      "components": [
+        "product scope and feature inventory"
+      ],
+      "risk": "an untracked feature could invalidate the documented non-applicability decision",
+      "oracle": "the excluded content or interaction is absent from every release scope item",
+      "testMethod": "manual scope and feature inventory review before release",
+      "automationPossible": false,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-3-5",
+      "releaseBlocking": true,
+      "notApplicableJustification": "The MVP does not collect user-purpose personal fields covered by the WCAG input-purpose taxonomy; CIK, ticker and local file inputs are domain data, not user identity data.",
+      "reclassificationTrigger": "any feature introducing content or interaction covered by this success criterion",
+      "acceptanceCriterionIds": [
+        "AC-077"
+      ]
+    },
+    {
+      "successCriterion": "1.4.1",
+      "level": "A",
+      "name": "Use of Color",
+      "applicability": "APPLICABLE",
+      "components": [
+        "charts",
+        "quality/status badges",
+        "errors and selections"
+      ],
+      "risk": "information is encoded only by color",
+      "oracle": "color is always accompanied by text, pattern, icon or programmatic state",
+      "testMethod": "visual regression and DOM assertions plus manual color-blind review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-4-1",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "1.4.2",
+      "level": "A",
+      "name": "Audio Control",
+      "applicability": "NOT_APPLICABLE",
+      "components": [
+        "product scope and feature inventory"
+      ],
+      "risk": "an untracked feature could invalidate the documented non-applicability decision",
+      "oracle": "the excluded content or interaction is absent from every release scope item",
+      "testMethod": "manual scope and feature inventory review before release",
+      "automationPossible": false,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-4-2",
+      "releaseBlocking": true,
+      "notApplicableJustification": "The MVP has no autoplay or other audio output.",
+      "reclassificationTrigger": "any feature introducing content or interaction covered by this success criterion",
+      "acceptanceCriterionIds": [
+        "AC-077"
+      ]
+    },
+    {
+      "successCriterion": "1.4.3",
+      "level": "AA",
+      "name": "Contrast (Minimum)",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 1.4.3 Contrast (Minimum) prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 1.4.3 (Contrast (Minimum)) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-4-3",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "1.4.4",
+      "level": "AA",
+      "name": "Resize Text",
+      "applicability": "APPLICABLE",
+      "components": [
+        "all text and controls"
+      ],
+      "risk": "zoom causes clipping or lost functionality",
+      "oracle": "200% text resize preserves content and operation",
+      "testMethod": "Playwright browser zoom/text scaling plus manual inspection",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-4-4",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "1.4.5",
+      "level": "AA",
+      "name": "Images of Text",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 1.4.5 Images of Text prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 1.4.5 (Images of Text) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-4-5",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "1.4.10",
+      "level": "AA",
+      "name": "Reflow",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 1.4.10 Reflow prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 1.4.10 (Reflow) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-4-10",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "1.4.11",
+      "level": "AA",
+      "name": "Non-text Contrast",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 1.4.11 Non-text Contrast prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 1.4.11 (Non-text Contrast) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-4-11",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "1.4.12",
+      "level": "AA",
+      "name": "Text Spacing",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 1.4.12 Text Spacing prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 1.4.12 (Text Spacing) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-4-12",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "1.4.13",
+      "level": "AA",
+      "name": "Content on Hover or Focus",
+      "applicability": "APPLICABLE",
+      "components": [
+        "tooltips",
+        "popovers and help content"
+      ],
+      "risk": "hover/focus content cannot be dismissed, hovered or persisted",
+      "oracle": "supplemental hover/focus content is dismissible, hoverable and persistent while needed",
+      "testMethod": "Playwright pointer/keyboard sequence plus manual inspection",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-1-4-13",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "2.1.1",
+      "level": "A",
+      "name": "Keyboard",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 2.1.1 Keyboard prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 2.1.1 (Keyboard) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-1-1",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-067",
+        "AC-068"
+      ]
+    },
+    {
+      "successCriterion": "2.1.2",
+      "level": "A",
+      "name": "No Keyboard Trap",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 2.1.2 No Keyboard Trap prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 2.1.2 (No Keyboard Trap) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-1-2",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-067",
+        "AC-068"
+      ]
+    },
+    {
+      "successCriterion": "2.1.4",
+      "level": "A",
+      "name": "Character Key Shortcuts",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 2.1.4 Character Key Shortcuts prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 2.1.4 (Character Key Shortcuts) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-1-4",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-067",
+        "AC-068"
+      ]
+    },
+    {
+      "successCriterion": "2.2.1",
+      "level": "A",
+      "name": "Timing Adjustable",
+      "applicability": "NOT_APPLICABLE",
+      "components": [
+        "product scope and feature inventory"
+      ],
+      "risk": "an untracked feature could invalidate the documented non-applicability decision",
+      "oracle": "the excluded content or interaction is absent from every release scope item",
+      "testMethod": "manual scope and feature inventory review before release",
+      "automationPossible": false,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-2-1",
+      "releaseBlocking": true,
+      "notApplicableJustification": "The MVP imposes no user-facing time limit; network and operation timeouts are system error handling and never terminate a user form deadline.",
+      "reclassificationTrigger": "any feature introducing content or interaction covered by this success criterion",
+      "acceptanceCriterionIds": [
+        "AC-077"
+      ]
+    },
+    {
+      "successCriterion": "2.2.2",
+      "level": "A",
+      "name": "Pause, Stop, Hide",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 2.2.2 Pause, Stop, Hide prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 2.2.2 (Pause, Stop, Hide) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-2-2",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-077"
+      ]
+    },
+    {
+      "successCriterion": "2.3.1",
+      "level": "A",
+      "name": "Three Flashes or Below Threshold",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 2.3.1 Three Flashes or Below Threshold prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 2.3.1 (Three Flashes or Below Threshold) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-3-1",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "2.4.1",
+      "level": "A",
+      "name": "Bypass Blocks",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 2.4.1 Bypass Blocks prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 2.4.1 (Bypass Blocks) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-4-1",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "2.4.2",
+      "level": "A",
+      "name": "Page Titled",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell and routed views"
+      ],
+      "risk": "users cannot identify the current purpose",
+      "oracle": "each page/view has a unique descriptive document title",
+      "testMethod": "Playwright document.title assertions",
+      "automationPossible": true,
+      "manualTestRequired": false,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-4-2",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "2.4.3",
+      "level": "A",
+      "name": "Focus Order",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 2.4.3 Focus Order prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 2.4.3 (Focus Order) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-4-3",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-067",
+        "AC-068"
+      ]
+    },
+    {
+      "successCriterion": "2.4.4",
+      "level": "A",
+      "name": "Link Purpose (In Context)",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 2.4.4 Link Purpose (In Context) prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 2.4.4 (Link Purpose (In Context)) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-4-4",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "2.4.5",
+      "level": "AA",
+      "name": "Multiple Ways",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 2.4.5 Multiple Ways prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 2.4.5 (Multiple Ways) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-4-5",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "2.4.6",
+      "level": "AA",
+      "name": "Headings and Labels",
+      "applicability": "APPLICABLE",
+      "components": [
+        "headings",
+        "field labels",
+        "buttons and regions"
+      ],
+      "risk": "labels do not describe purpose",
+      "oracle": "headings and labels are unique enough and describe topic or purpose",
+      "testMethod": "accessibility tree assertions plus manual content review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-4-6",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "2.4.7",
+      "level": "AA",
+      "name": "Focus Visible",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 2.4.7 Focus Visible prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 2.4.7 (Focus Visible) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-4-7",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-067",
+        "AC-068"
+      ]
+    },
+    {
+      "successCriterion": "2.4.11",
+      "level": "AA",
+      "name": "Focus Not Obscured (Minimum)",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 2.4.11 Focus Not Obscured (Minimum) prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 2.4.11 (Focus Not Obscured (Minimum)) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-4-11",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-067",
+        "AC-068"
+      ]
+    },
+    {
+      "successCriterion": "2.5.1",
+      "level": "A",
+      "name": "Pointer Gestures",
+      "applicability": "NOT_APPLICABLE",
+      "components": [
+        "product scope and feature inventory"
+      ],
+      "risk": "an untracked feature could invalidate the documented non-applicability decision",
+      "oracle": "the excluded content or interaction is absent from every release scope item",
+      "testMethod": "manual scope and feature inventory review before release",
+      "automationPossible": false,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-5-1",
+      "releaseBlocking": true,
+      "notApplicableJustification": "No function requires a multipoint or path-based pointer gesture; every operation is a single-point control or keyboard action.",
+      "reclassificationTrigger": "any feature introducing content or interaction covered by this success criterion",
+      "acceptanceCriterionIds": [
+        "AC-077"
+      ]
+    },
+    {
+      "successCriterion": "2.5.2",
+      "level": "A",
+      "name": "Pointer Cancellation",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 2.5.2 Pointer Cancellation prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 2.5.2 (Pointer Cancellation) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-5-2",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-069",
+        "AC-073"
+      ]
+    },
+    {
+      "successCriterion": "2.5.3",
+      "level": "A",
+      "name": "Label in Name",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 2.5.3 Label in Name prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 2.5.3 (Label in Name) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-5-3",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-069",
+        "AC-073"
+      ]
+    },
+    {
+      "successCriterion": "2.5.4",
+      "level": "A",
+      "name": "Motion Actuation",
+      "applicability": "NOT_APPLICABLE",
+      "components": [
+        "product scope and feature inventory"
+      ],
+      "risk": "an untracked feature could invalidate the documented non-applicability decision",
+      "oracle": "the excluded content or interaction is absent from every release scope item",
+      "testMethod": "manual scope and feature inventory review before release",
+      "automationPossible": false,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-5-4",
+      "releaseBlocking": true,
+      "notApplicableJustification": "No function is operated by device motion or user motion.",
+      "reclassificationTrigger": "any feature introducing content or interaction covered by this success criterion",
+      "acceptanceCriterionIds": [
+        "AC-077"
+      ]
+    },
+    {
+      "successCriterion": "2.5.7",
+      "level": "AA",
+      "name": "Dragging Movements",
+      "applicability": "NOT_APPLICABLE",
+      "components": [
+        "product scope and feature inventory"
+      ],
+      "risk": "an untracked feature could invalidate the documented non-applicability decision",
+      "oracle": "the excluded content or interaction is absent from every release scope item",
+      "testMethod": "manual scope and feature inventory review before release",
+      "automationPossible": false,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-5-7",
+      "releaseBlocking": true,
+      "notApplicableJustification": "No function requires dragging; ordering and selection use buttons, fields or keyboard-operable controls.",
+      "reclassificationTrigger": "any feature introducing content or interaction covered by this success criterion",
+      "acceptanceCriterionIds": [
+        "AC-077"
+      ]
+    },
+    {
+      "successCriterion": "2.5.8",
+      "level": "AA",
+      "name": "Target Size (Minimum)",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 2.5.8 Target Size (Minimum) prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 2.5.8 (Target Size (Minimum)) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-2-5-8",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "3.1.1",
+      "level": "A",
+      "name": "Language of Page",
+      "applicability": "APPLICABLE",
+      "components": [
+        "HTML document"
+      ],
+      "risk": "screen readers use an incorrect default language",
+      "oracle": "the document root declares a valid primary language",
+      "testMethod": "axe/Playwright lang assertion",
+      "automationPossible": true,
+      "manualTestRequired": false,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-3-1-1",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "3.1.2",
+      "level": "AA",
+      "name": "Language of Parts",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 3.1.2 Language of Parts prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 3.1.2 (Language of Parts) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-3-1-2",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "3.2.1",
+      "level": "A",
+      "name": "On Focus",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 3.2.1 On Focus prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 3.2.1 (On Focus) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-3-2-1",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-072",
+        "AC-073"
+      ]
+    },
+    {
+      "successCriterion": "3.2.2",
+      "level": "A",
+      "name": "On Input",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 3.2.2 On Input prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 3.2.2 (On Input) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-3-2-2",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-072",
+        "AC-073"
+      ]
+    },
+    {
+      "successCriterion": "3.2.3",
+      "level": "AA",
+      "name": "Consistent Navigation",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 3.2.3 Consistent Navigation prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 3.2.3 (Consistent Navigation) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-3-2-3",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "3.2.4",
+      "level": "AA",
+      "name": "Consistent Identification",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 3.2.4 Consistent Identification prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 3.2.4 (Consistent Identification) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-3-2-4",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "3.2.6",
+      "level": "A",
+      "name": "Consistent Help",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 3.2.6 Consistent Help prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 3.2.6 (Consistent Help) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-3-2-6",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-074"
+      ]
+    },
+    {
+      "successCriterion": "3.3.1",
+      "level": "A",
+      "name": "Error Identification",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 3.3.1 Error Identification prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 3.3.1 (Error Identification) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-3-3-1",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-069",
+        "AC-075"
+      ]
+    },
+    {
+      "successCriterion": "3.3.2",
+      "level": "A",
+      "name": "Labels or Instructions",
+      "applicability": "APPLICABLE",
+      "components": [
+        "CIK/ticker",
+        "CSV import",
+        "consent and destructive confirmations"
+      ],
+      "risk": "users lack required format or action guidance",
+      "oracle": "each input has a visible/programmatic label and necessary instructions before submission",
+      "testMethod": "Playwright label association plus manual instruction review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-3-3-2",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-069",
+        "AC-075"
+      ]
+    },
+    {
+      "successCriterion": "3.3.3",
+      "level": "AA",
+      "name": "Error Suggestion",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 3.3.3 Error Suggestion prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 3.3.3 (Error Suggestion) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-3-3-3",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-069",
+        "AC-075"
+      ]
+    },
+    {
+      "successCriterion": "3.3.4",
+      "level": "AA",
+      "name": "Error Prevention (Legal, Financial, Data)",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 3.3.4 Error Prevention (Legal, Financial, Data) prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 3.3.4 (Error Prevention (Legal, Financial, Data)) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-3-3-4",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-069",
+        "AC-075"
+      ]
+    },
+    {
+      "successCriterion": "3.3.7",
+      "level": "A",
+      "name": "Redundant Entry",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 3.3.7 Redundant Entry prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 3.3.7 (Redundant Entry) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-3-3-7",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-072",
+        "AC-073"
+      ]
+    },
+    {
+      "successCriterion": "3.3.8",
+      "level": "AA",
+      "name": "Accessible Authentication (Minimum)",
+      "applicability": "NOT_APPLICABLE",
+      "components": [
+        "product scope and feature inventory"
+      ],
+      "risk": "an untracked feature could invalidate the documented non-applicability decision",
+      "oracle": "the excluded content or interaction is absent from every release scope item",
+      "testMethod": "manual scope and feature inventory review before release",
+      "automationPossible": false,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-3-3-8",
+      "releaseBlocking": true,
+      "notApplicableJustification": "The MVP has no authentication, login or cognitive-function authentication step.",
+      "reclassificationTrigger": "any feature introducing content or interaction covered by this success criterion",
+      "acceptanceCriterionIds": [
+        "AC-077"
+      ]
+    },
+    {
+      "successCriterion": "4.1.2",
+      "level": "A",
+      "name": "Name, Role, Value",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 4.1.2 Name, Role, Value prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 4.1.2 (Name, Role, Value) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-4-1-2",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-069"
+      ]
+    },
+    {
+      "successCriterion": "4.1.3",
+      "level": "AA",
+      "name": "Status Messages",
+      "applicability": "APPLICABLE",
+      "components": [
+        "application shell",
+        "analysis views",
+        "dialogs",
+        "forms and status regions"
+      ],
+      "risk": "failure of 4.1.3 Status Messages prevents equivalent or predictable operation",
+      "oracle": "all in-scope UI states satisfy WCAG 2.2 success criterion 4.1.3 (Status Messages) without relying on an undocumented exception",
+      "testMethod": "Playwright and accessibility-tree assertions where automatable, plus criterion-specific manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/oracles/SC-4-1-3",
+      "releaseBlocking": true,
+      "acceptanceCriterionIds": [
+        "AC-070",
+        "AC-071"
+      ]
+    }
+  ],
+  "productRequirements": [
+    {
+      "successCriterion": "2.3.3",
+      "level": "AAA-treated-as-product-requirement",
+      "name": "Animation from Interactions",
+      "applicability": "APPLICABLE",
+      "components": [
+        "all motion and state transitions"
+      ],
+      "risk": "nonessential interaction animation can cause vestibular harm",
+      "oracle": "prefers-reduced-motion disables nonessential motion while preserving information and functionality",
+      "testMethod": "Playwright media emulation plus manual review",
+      "automationPossible": true,
+      "manualTestRequired": true,
+      "fixtureRef": "specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json#/productRequirements/SC-2-3-3",
+      "releaseBlocking": true
+    }
+  ],
+  "verifiedOn": "2026-07-21"
+}

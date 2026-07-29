@@ -1,0 +1,48 @@
+{
+  "fixtureSetId": "xbrl-mapping-resolution-vectors",
+  "fixtures": [
+    {
+      "availableTags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax",
+        "SalesRevenueNet"
+      ],
+      "canonicalConceptId": "revenue",
+      "expectedMappingId": "map-usgaap-revenue-primary",
+      "expectedState": "resolved",
+      "fixtureId": "MAP-EXACT-PRECEDENCE",
+      "profileId": "general_operating_us_gaap"
+    },
+    {
+      "availableTags": [
+        "CustomRevenueLikeExtension"
+      ],
+      "canonicalConceptId": "revenue",
+      "expectedFallbackEligible": false,
+      "expectedMappingId": null,
+      "expectedState": "absent",
+      "fixtureId": "MAP-NO-INFERENCE",
+      "profileId": "general_operating_us_gaap"
+    },
+    {
+      "availableTags": [
+        "LongTermDebtAndFinanceLeaseObligationsCurrent"
+      ],
+      "canonicalConceptId": "borrowingsDebt",
+      "expectedReason": "lease-inclusive generic total not explicitly active",
+      "expectedState": "absent",
+      "fixtureId": "MAP-DEBT-NO-GENERIC-TOTAL",
+      "profileId": "general_operating_us_gaap"
+    },
+    {
+      "availableTags": [
+        "RevenueFromContractWithCustomerExcludingAssessedTax"
+      ],
+      "canonicalConceptId": "revenue",
+      "expectedHttpStatus": null,
+      "expectedState": "not_applicable",
+      "fixtureId": "MAP-UNSUPPORTED-PROFILE",
+      "profileId": "unsupported_profile"
+    }
+  ],
+  "version": "5.0.0"
+}

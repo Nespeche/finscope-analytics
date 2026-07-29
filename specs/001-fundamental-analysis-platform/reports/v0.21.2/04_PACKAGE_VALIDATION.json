@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0.0",
+  "packageRevision": "v0.21.2_authority_alignment_ready",
+  "generatedOn": "2026-07-22",
+  "inputBaseline": {
+    "logicalName": "FinScope_Analytics_SpecDev_ChatGPT_v0.21.1_B01_completed.zip",
+    "sha256": "487cb0e7ba76a8133c521a470b9a09856034ea6c439dc5fc8ee6132118d879e1",
+    "sidecarMatch": true,
+    "crc": "PASS",
+    "singleRoot": true,
+    "safeExtraction": true,
+    "caseFoldCollisions": 0
+  },
+  "structuralValidation": {
+    "result": "PASS",
+    "tasks": 109,
+    "batches": 25,
+    "authorityDomains": 36,
+    "dagCycles": 0,
+    "invalidDependencies": 0,
+    "taskMirrorHashMismatches": 0,
+    "batchMapDrift": 0,
+    "operationalSchemaErrors": 0,
+    "unmappedRunnableTests": 0,
+    "specifyByteIdentity": "19/19",
+    "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
+  },
+  "runtimeValidation": {
+    "executedInThisAudit": false,
+    "reason": "The authoring container had no npm registry/DNS access and no complete cached dependency tree. npm ci --offline failed ENOTCACHED for zimmerframe-1.1.4.tgz.",
+    "b01HistoricalRuntimeEvidencePreserved": true,
+    "b02Implemented": false,
+    "claim": "No new npm, Vitest, Playwright or build PASS is asserted by v0.21.2."
+  },
+  "packageValidation": {
+    "result": "PASS_STATIC_AND_PHYSICAL",
+    "fileCount": 463,
+    "manifestEntries": 462,
+    "inventoryEntries": 461,
+    "jsonDocuments": 140,
+    "yamlDocuments": 2,
+    "secretPatterns": 0,
+    "temporaryOrBuildArtifacts": 0,
+    "nestedArchives": 0,
+    "maximumRelativePathLength": 135,
+    "projectInstructionCharacters": 6568,
+    "projectInstructionWithin8000": true,
+    "finalZipSha256RecordedExternally": true
+  },
+  "gateState": {
+    "b01": "COMPLETED",
+    "b02": "PENDING_AND_ONLY_AUTHORIZED",
+    "b03Started": false,
+    "convergenceAuthorized": false
+  }
+}

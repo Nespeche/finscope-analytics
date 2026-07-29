@@ -1,0 +1,119 @@
+{
+  "$id": "https://finscope.local/schemas/insight-rule-catalog.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "catalogId": {
+      "const": "insight-rule-catalog"
+    },
+    "deferredRuleIds": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "invariants": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "replacedRuleIds": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "ruleNodeSchema": {
+      "const": "../schemas/rule-node.schema.json"
+    },
+    "rules": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "ast": {
+            "$ref": "rule-node.schema.json#/$defs/RuleNode"
+          },
+          "consumers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "inputMetricIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "minimumQuality": {
+            "$ref": "common.schema.json#/$defs/QualityClassification"
+          },
+          "polarity": {
+            "enum": [
+              "favorable",
+              "unfavorable"
+            ]
+          },
+          "profileAllowlist": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "ruleId": {
+            "pattern": "^INS_[A-Z0-9_]+$",
+            "type": "string"
+          },
+          "version": {
+            "const": "5.0.0"
+          }
+        },
+        "required": [
+          "ruleId",
+          "version",
+          "polarity",
+          "profileAllowlist",
+          "inputMetricIds",
+          "minimumQuality",
+          "consumers",
+          "ast"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "synthesisTable": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "version": {
+      "const": "5.0.0"
+    }
+  },
+  "required": [
+    "catalogId",
+    "version",
+    "status",
+    "ruleNodeSchema",
+    "invariants",
+    "replacedRuleIds",
+    "deferredRuleIds",
+    "synthesisTable",
+    "rules"
+  ],
+  "title": "Insight rule catalog v5.0.0",
+  "type": "object"
+}

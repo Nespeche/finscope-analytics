@@ -1,0 +1,59 @@
+{
+  "policyId": "cache-and-refresh-policy",
+  "version": "1.0.0",
+  "status": "ACTIVE_AUTHORITY",
+  "executionModel": "foreground_on_open_or_resume",
+  "consent": {
+    "required": "refreshConsent=true",
+    "closedApplicationBehavior": "no checks and no background scheduler",
+    "manualRefresh": "explicit control forces a novelty check even when fresh"
+  },
+  "freshnessBands": [
+    {
+      "band": "fresh",
+      "minimumAgeSeconds": 0,
+      "maximumAgeSecondsExclusive": 21600,
+      "networkAction": "none unless manual refresh"
+    },
+    {
+      "band": "stale_revalidatable",
+      "minimumAgeSeconds": 21600,
+      "maximumAgeSecondsExclusive": 604800,
+      "networkAction": "fetch Submissions first and continue only on novelty"
+    },
+    {
+      "band": "expired",
+      "minimumAgeSeconds": 604800,
+      "maximumAgeSecondsExclusive": null,
+      "networkAction": "attempt refresh; preserve last valid immutable snapshot on failure"
+    }
+  ],
+  "noveltyFingerprint": {
+    "algorithm": "SHA-256 over RFC 8785 canonical JSON",
+    "orderedFields": [
+      "accessionNumber",
+      "form",
+      "filingDate",
+      "reportDate",
+      "primaryDocument"
+    ],
+    "localClockExcluded": true
+  },
+  "companyFactsFetchConditions": [
+    "novelty detected",
+    "cache missing",
+    "dependent active authority version changed",
+    "manual refresh forced"
+  ],
+  "offlinePolicy": {
+    "serveLastValidSnapshot": true,
+    "displayStalenessWarning": true,
+    "publishCandidateOnFailedRefresh": false
+  },
+  "cacheValidators": {
+    "etag": "use when supplied",
+    "lastModified": "use when supplied",
+    "notModified": "retain payload and update operational check metadata only"
+  },
+  "fingerprintBoundary": "cache timestamps and local clock are operational/display metadata and never enter fundamentalAnalysisFingerprint or immutable fundamental payloads"
+}

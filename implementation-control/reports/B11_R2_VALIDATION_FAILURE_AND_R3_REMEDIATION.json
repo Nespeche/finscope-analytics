@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "1.0.0",
+  "batchId": "B11",
+  "candidateRevision": "r3",
+  "status": "REMEDIATED_PENDING_VALIDATION",
+  "sourceEvidence": {
+    "logicalName": "FinScope_local_evidence_B11_20260728-124812252_FAILED.zip",
+    "sha256": "34bb65f09a1909c95ed07cfed5d33d242f067d2d5ea4ce0bf3cdf115227e450a",
+    "status": "FAIL",
+    "authenticated": true,
+    "zipSidecarMatch": true,
+    "crcValid": true,
+    "manifestValid": true,
+    "inventoryValid": true,
+    "evidenceSchemaValid": true,
+    "controlPlaneInitial": "PASS",
+    "controlPlaneFinal": "PASS"
+  },
+  "sourceCandidate": {
+    "logicalName": "FS_B11_r2.zip",
+    "sha256": "3289a833accc609219158a19c0f79d3454b050d321bb29c8278dddd8fdbb8b40"
+  },
+  "sourceRunner": {
+    "logicalName": "Run-FinScope-BatchValidation_B11_r2_v1.ps1",
+    "sha256": "1cfd764eeb2c1ccc4f80994223ea63f091da51510a4fb003187a24e97d5f5e22",
+    "selfTest": "PASS",
+    "preflight": "PASS",
+    "runnerDefect": false
+  },
+  "commandOutcome": {
+    "pass": [
+      "npm-ci",
+      "typecheck",
+      "test-unit"
+    ],
+    "fail": [
+      "test-integration"
+    ],
+    "notRun": [
+      "regression-vitest",
+      "build"
+    ]
+  },
+  "focusedFailure": {
+    "file": "tests/integration/worker/fundamental-pipeline.test.ts",
+    "testFilesDiscovered": 1,
+    "testsDeclared": 4,
+    "bail": 1,
+    "firstFailedTest": "dispatches through the registry and publishes exactly one atomic domain candidate",
+    "line": 158,
+    "expectedDispatchStatus": "published",
+    "receivedDispatchStatus": "preserved",
+    "pipelineFailureClassification": "normalization_failed"
+  },
+  "rootCause": {
+    "type": "INTEGRATION_FIXTURE_VIOLATED_ACTIVE_BUNDLE_ID_SCHEMA",
+    "schema": "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+    "schemaPattern": "^fund-bundle-[a-z0-9-]+$",
+    "invalidGeneratedValue": "fund-bundle-0000320193-fy2025-v1:fundamental-pipeline-ready",
+    "correctedGeneratedValue": "fund-bundle-0000320193-fy2025-v1-fundamental-pipeline-ready",
+    "whyPreserved": "buildFundamentalBundle rejected the malformed bundleId; fundamental-pipeline mapped that rejection to normalization_failed; OperationRegistry therefore preserved the prior publication as required.",
+    "productRuntimeAffected": false,
+    "pipelineDefect": false,
+    "registryDefect": false,
+    "schemaDefect": false,
+    "runnerDefect": false
+  },
+  "r3Change": {
+    "changedExecutableFile": "tests/integration/worker/fundamental-pipeline.test.ts",
+    "oldSha256": "e996b9cd39f757212064c1624a81a4970b2829ba66fdfaef37f43121c5b57722",
+    "newSha256": "89d24a1441b5da0fbc21d20f4c8f080f6f36d5fcfceb807410e7ed5c05b2da59",
+    "oldExpression": "`${bundle.bundleId}:${operationId}`",
+    "newExpression": "`${bundle.bundleId}-${operationId}`",
+    "productRuntimeChanged": false,
+    "schemaChanged": false,
+    "fixtureCatalogChanged": false,
+    "batchMirrorChanged": false,
+    "tasksChanged": false,
+    "specifyChanged": false,
+    "candidateLogicalName": "FS_B11_r3.zip",
+    "runnerLogicalName": "Run-FinScope-BatchValidation_B11_r3_v1.ps1",
+    "runnerSha256": "b5b89a8e734c67e0a92dd77ad90226454a1eecbede9236553ba8e3ed956090c6",
+    "runnerLogicChanged": false
+  },
+  "preventiveChecks": [
+    "The corrected example is evaluated against the active schema regex during package authoring.",
+    "The r3/r2 runner texts are identical after transport-identity normalization.",
+    "The unit suite already passed in authenticated r2 evidence and remains byte-identical in r3.",
+    "All five production files for T047/T048 remain byte-identical to r2.",
+    "Full regression and build remain mandatory before COMPLETED; no PASS is inferred."
+  ],
+  "integrity": {
+    "tasksSha256": "57e9167d5cd0e22265a4fcfd1d8697cc0233aaf8fb9fc4a79442da962db855a8",
+    "b11Sha256": "d242f32cd9acfc59433e79ad14ad52a09e2f2166ecbb24d538d10be727ae2ca2",
+    "specifyFileCount": 19,
+    "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+    "specifyModified": false
+  },
+  "state": {
+    "B11": "LOCAL_VALIDATION_REQUIRED",
+    "tasks": [
+      "T047",
+      "T048"
+    ],
+    "taskStatus": "IMPLEMENTED_PENDING_VALIDATION",
+    "B12": "PENDING",
+    "convergenceAuthorized": false
+  },
+  "closureRule": "Fresh full six-command PASS evidence bound to exact r3 candidate and r3 runner is required."
+}

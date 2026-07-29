@@ -1,0 +1,82 @@
+{
+  "$id": "https://finscope.local/schemas/fingerprint-projections.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "algorithm": {
+      "type": "string"
+    },
+    "arrayOrdering": {
+      "type": "object"
+    },
+    "catalogId": {
+      "const": "fingerprint-projections"
+    },
+    "globalExclusions": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "outputFormat": {
+      "type": "string"
+    },
+    "projections": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "exclude": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "fingerprintId": {
+            "enum": [
+              "fundamentalInputFingerprint",
+              "fundamentalAnalysisFingerprint",
+              "historicalPriceOverlayFingerprint",
+              "priceAnalysisFingerprint",
+              "sourceEvidenceFingerprint"
+            ]
+          },
+          "include": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "fingerprintId",
+          "include",
+          "exclude"
+        ],
+        "type": "object"
+      },
+      "minItems": 5,
+      "type": "array"
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "version": {
+      "const": "5.0.0"
+    }
+  },
+  "required": [
+    "catalogId",
+    "version",
+    "status",
+    "algorithm",
+    "outputFormat",
+    "arrayOrdering",
+    "globalExclusions",
+    "projections"
+  ],
+  "title": "Fingerprint projections v5.0.0",
+  "type": "object"
+}

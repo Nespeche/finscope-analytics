@@ -1,0 +1,221 @@
+{
+  "$id": "https://finscope.local/schemas/acceptance-criteria-catalog.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "catalogId": {
+      "const": "acceptance-criteria-catalog"
+    },
+    "count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "countPolicy": {
+      "type": "string"
+    },
+    "criteria": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "accessibility": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "area": {
+            "type": "string"
+          },
+          "authority": {
+            "type": "string"
+          },
+          "authorityRef": {
+            "$ref": "#/$defs/authorityRef"
+          },
+          "capabilities": {
+            "type": "string"
+          },
+          "consumers": {
+            "type": "string"
+          },
+          "criterionId": {
+            "pattern": "^AC-[0-9]{3}$",
+            "type": "string"
+          },
+          "expectedState": {
+            "type": "string"
+          },
+          "fixtureInput": {
+            "type": "string"
+          },
+          "fixtureRef": {
+            "pattern": "^fixtures/acceptance/core-scenarios\\.json#/scenarios/AC-[0-9]{3}$",
+            "type": "string"
+          },
+          "oracle": {
+            "type": "string"
+          },
+          "oracleKind": {
+            "const": "single_exact_oracle"
+          },
+          "preconditions": {
+            "type": "string"
+          },
+          "prohibitedResult": {
+            "type": "string"
+          },
+          "recovery": {
+            "type": "string"
+          },
+          "remediation": {
+            "type": "string"
+          },
+          "requirement": {
+            "type": "string"
+          },
+          "sourceFinding": {
+            "type": "string"
+          },
+          "status": {
+            "const": "ACTIVE"
+          },
+          "requirementIds": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^(?:FR|NFR)-[0-9]{3}$"
+            }
+          },
+          "authorityId": {
+            "$ref": "#/$defs/authorityId"
+          }
+        },
+        "required": [
+          "criterionId",
+          "area",
+          "requirement",
+          "authority",
+          "authorityRef",
+          "preconditions",
+          "fixtureInput",
+          "action",
+          "oracle",
+          "oracleKind",
+          "expectedState",
+          "prohibitedResult",
+          "recovery",
+          "capabilities",
+          "accessibility",
+          "consumers",
+          "sourceFinding",
+          "fixtureRef",
+          "status",
+          "requirementIds",
+          "authorityId"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "oraclePolicy": {
+      "type": "string"
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "version": {
+      "const": "5.0.3"
+    },
+    "requirementLinkPolicy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fixtureResolutionPolicy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authorityResolutionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "normativeRoot",
+        "basePath",
+        "identityRegistryRef",
+        "authorityIdPolicy",
+        "authorityRefPolicy",
+        "heuristicResolution",
+        "forbiddenStrategies",
+        "validation",
+        "base"
+      ],
+      "properties": {
+        "normativeRoot": {
+          "const": "packageRoot"
+        },
+        "basePath": {
+          "const": "."
+        },
+        "identityRegistryRef": {
+          "const": "specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json#/domains"
+        },
+        "authorityIdPolicy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authorityRefPolicy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "heuristicResolution": {
+          "const": "PROHIBITED"
+        },
+        "forbiddenStrategies": {
+          "type": "array",
+          "minItems": 6,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "validation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "base": {
+          "const": "packageRoot"
+        }
+      }
+    }
+  },
+  "required": [
+    "catalogId",
+    "version",
+    "status",
+    "count",
+    "countPolicy",
+    "oraclePolicy",
+    "criteria",
+    "requirementLinkPolicy",
+    "fixtureResolutionPolicy",
+    "authorityResolutionPolicy"
+  ],
+  "title": "Acceptance catalog v5.0.3",
+  "type": "object",
+  "$defs": {
+    "authorityId": {
+      "type": "string",
+      "pattern": "^AUTH-[0-9]{3}$"
+    },
+    "authorityRef": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?:specs/001-fundamental-analysis-platform/[A-Za-z0-9._/-]+\\.(?:json|ya?ml)(?:#/[^\\s]*)?|specs/001-fundamental-analysis-platform/[A-Za-z0-9._/-]+\\.md(?:#[A-Za-z0-9._~%\\-áéíóúñ]+)?|V0\\.21_PHASE_STATUS\\.md#gate)$",
+      "not": {
+        "pattern": "(?:^|/)\\.\\.?/|\\*|\\||;|fallback|\\\\"
+      }
+    }
+  }
+}

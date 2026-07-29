@@ -1,0 +1,90 @@
+{
+  "$id": "https://finscope.local/schemas/accounting-profile-catalog.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "catalogId": {
+      "const": "accounting-profile-catalog"
+    },
+    "invariants": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "profiles": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "accountingStandard": {
+            "enum": [
+              "us_gaap",
+              "ifrs",
+              "unknown",
+              "mixed_or_unknown"
+            ]
+          },
+          "conceptAllowlist": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "metricAllowlist": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "profileId": {
+            "$ref": "common.schema.json#/$defs/AccountingProfileId"
+          },
+          "profilePriority": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "status": {
+            "enum": [
+              "ACTIVE_FULL",
+              "ACTIVE_LIMITED",
+              "ACTIVE_DEGRADED"
+            ]
+          },
+          "unsupportedBehavior": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "profileId",
+          "profilePriority",
+          "status",
+          "accountingStandard",
+          "conceptAllowlist",
+          "metricAllowlist",
+          "unsupportedBehavior"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "version": {
+      "const": "5.0.0"
+    }
+  },
+  "required": [
+    "catalogId",
+    "version",
+    "status",
+    "invariants",
+    "profiles"
+  ],
+  "title": "Accounting profiles v5.0.0",
+  "type": "object"
+}

@@ -1,0 +1,722 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://finscope.local/schemas/control-plane-validation-evidence.schema.json",
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nullableSha256": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/sha256"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nullableString": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "checkResult": {
+      "type": "object",
+      "required": [
+        "id",
+        "status",
+        "details"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "details": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "commandResult": {
+      "type": "object",
+      "required": [
+        "id",
+        "category",
+        "command",
+        "required",
+        "startedAt",
+        "finishedAt",
+        "durationMilliseconds",
+        "exitCode",
+        "status",
+        "stdoutLog",
+        "stderrLog",
+        "stdoutSha256",
+        "stderrSha256",
+        "stdoutBytes",
+        "stderrBytes",
+        "reason"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1
+        },
+        "command": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "startedAt": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "finishedAt": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "durationMilliseconds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "exitCode": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "status": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NOT_RUN"
+          ]
+        },
+        "stdoutLog": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "stderrLog": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "stdoutSha256": {
+          "$ref": "#/$defs/nullableSha256"
+        },
+        "stderrSha256": {
+          "$ref": "#/$defs/nullableSha256"
+        },
+        "stdoutBytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stderrBytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reason": {
+          "$ref": "#/$defs/nullableString"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "PASS",
+                  "FAIL"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "startedAt": {
+                "type": "string",
+                "minLength": 1
+              },
+              "finishedAt": {
+                "type": "string",
+                "minLength": 1
+              },
+              "exitCode": {
+                "type": "integer"
+              },
+              "stdoutLog": {
+                "type": "string",
+                "minLength": 1
+              },
+              "stderrLog": {
+                "type": "string",
+                "minLength": 1
+              },
+              "stdoutSha256": {
+                "$ref": "#/$defs/sha256"
+              },
+              "stderrSha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "NOT_RUN"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "startedAt": {
+                "type": "null"
+              },
+              "finishedAt": {
+                "type": "null"
+              },
+              "durationMilliseconds": {
+                "const": 0
+              },
+              "exitCode": {
+                "type": "null"
+              },
+              "stdoutLog": {
+                "type": "null"
+              },
+              "stderrLog": {
+                "type": "null"
+              },
+              "stdoutSha256": {
+                "type": "null"
+              },
+              "stderrSha256": {
+                "type": "null"
+              },
+              "stdoutBytes": {
+                "const": 0
+              },
+              "stderrBytes": {
+                "const": 0
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "exitCode": {
+                "const": 0
+              },
+              "reason": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "validationType",
+    "candidateRoot",
+    "candidate",
+    "environment",
+    "startedAt",
+    "finishedAt",
+    "status",
+    "preflight",
+    "commandSummary",
+    "commands",
+    "invariants",
+    "schemaValidation",
+    "regenerableArtifacts"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schemaVersion": {
+      "const": "1.0.0"
+    },
+    "validationType": {
+      "const": "CONTROL_PLANE_REMEDIATION"
+    },
+    "candidateRoot": {
+      "type": "string",
+      "minLength": 1
+    },
+    "candidate": {
+      "type": "object",
+      "required": [
+        "logicalZipName",
+        "zipSha256",
+        "sidecarFileName",
+        "sidecarExpectedSha256",
+        "sidecarMatch",
+        "sidecarFileNameMatch",
+        "rootDirectory",
+        "archiveFileCount",
+        "archiveRootCount",
+        "archiveCrcRead",
+        "archiveSafePaths",
+        "archiveMatchesExtraction",
+        "archiveSymlinksDetected",
+        "archiveCaseFoldCollisionsDetected",
+        "archiveNestedArchivesDetected",
+        "fileManifestSha256",
+        "fileManifestValid",
+        "inventorySha256",
+        "inventoryValid",
+        "metadataSha256",
+        "metadataValid",
+        "extractedTreeSha256"
+      ],
+      "properties": {
+        "logicalZipName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "zipSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "sidecarFileName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sidecarExpectedSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "sidecarMatch": {
+          "type": "boolean"
+        },
+        "sidecarFileNameMatch": {
+          "type": "boolean"
+        },
+        "rootDirectory": {
+          "type": "string",
+          "minLength": 1
+        },
+        "archiveFileCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "archiveRootCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "archiveCrcRead": {
+          "type": "boolean"
+        },
+        "archiveSafePaths": {
+          "type": "boolean"
+        },
+        "archiveMatchesExtraction": {
+          "type": "boolean"
+        },
+        "archiveSymlinksDetected": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "archiveCaseFoldCollisionsDetected": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "archiveNestedArchivesDetected": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fileManifestSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "fileManifestValid": {
+          "type": "boolean"
+        },
+        "inventorySha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "inventoryValid": {
+          "type": "boolean"
+        },
+        "metadataSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "metadataValid": {
+          "type": "boolean"
+        },
+        "extractedTreeSha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "additionalProperties": false
+    },
+    "environment": {
+      "type": "object",
+      "required": [
+        "operatingSystem",
+        "osVersion",
+        "osArchitecture",
+        "processArchitecture",
+        "powerShellVersion",
+        "powerShellEdition",
+        "nodeVersion",
+        "npmVersion"
+      ],
+      "properties": {
+        "operatingSystem": {
+          "type": "string",
+          "minLength": 1
+        },
+        "osVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "osArchitecture": {
+          "type": "string",
+          "minLength": 1
+        },
+        "processArchitecture": {
+          "type": "string",
+          "minLength": 1
+        },
+        "powerShellVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "powerShellEdition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "nodeVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "npmVersion": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "startedAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "finishedAt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "FAIL"
+      ]
+    },
+    "preflight": {
+      "type": "object",
+      "required": [
+        "status",
+        "passCount",
+        "failCount",
+        "checks"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "passCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/checkResult"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "commandSummary": {
+      "type": "object",
+      "required": [
+        "expectedCommandCount",
+        "recordedCommandCount",
+        "requiredPassCount",
+        "requiredFailCount",
+        "requiredNotRunCount"
+      ],
+      "properties": {
+        "expectedCommandCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "recordedCommandCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "requiredPassCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "requiredFailCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "requiredNotRunCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "commands": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/commandResult"
+      }
+    },
+    "invariants": {
+      "type": "object",
+      "required": [
+        "specifyTreeSha256Before",
+        "specifyTreeSha256After",
+        "sourceTasksSha256Before",
+        "sourceTasksSha256After",
+        "controlFileHashesBefore",
+        "controlFileHashesAfter",
+        "controlFilesUnchanged",
+        "sourceTreeSha256Before",
+        "sourceTreeSha256After",
+        "sourceTreeUnchanged"
+      ],
+      "properties": {
+        "specifyTreeSha256Before": {
+          "$ref": "#/$defs/sha256"
+        },
+        "specifyTreeSha256After": {
+          "$ref": "#/$defs/sha256"
+        },
+        "sourceTasksSha256Before": {
+          "$ref": "#/$defs/sha256"
+        },
+        "sourceTasksSha256After": {
+          "$ref": "#/$defs/sha256"
+        },
+        "controlFileHashesBefore": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/sha256"
+          }
+        },
+        "controlFileHashesAfter": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/sha256"
+          }
+        },
+        "controlFilesUnchanged": {
+          "type": "boolean"
+        },
+        "sourceTreeSha256Before": {
+          "$ref": "#/$defs/sha256"
+        },
+        "sourceTreeSha256After": {
+          "$ref": "#/$defs/sha256"
+        },
+        "sourceTreeUnchanged": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "schemaValidation": {
+      "type": "object",
+      "required": [
+        "schemaPath",
+        "status",
+        "validatorCommand"
+      ],
+      "properties": {
+        "schemaPath": {
+          "const": "implementation-control/schemas/control-plane-validation-evidence.schema.json"
+        },
+        "status": {
+          "enum": [
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "validatorCommand": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "regenerableArtifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "presentAfterValidation",
+          "packageDisposition"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "presentAfterValidation": {
+            "type": "boolean"
+          },
+          "packageDisposition": {
+            "const": "EXCLUDED_FROM_CANDIDATE_PACKAGE"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "PASS"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "candidate": {
+            "properties": {
+              "sidecarMatch": {
+                "const": true
+              },
+              "sidecarFileNameMatch": {
+                "const": true
+              },
+              "archiveCrcRead": {
+                "const": true
+              },
+              "archiveSafePaths": {
+                "const": true
+              },
+              "archiveMatchesExtraction": {
+                "const": true
+              },
+              "archiveRootCount": {
+                "const": 1
+              },
+              "archiveSymlinksDetected": {
+                "const": 0
+              },
+              "archiveCaseFoldCollisionsDetected": {
+                "const": 0
+              },
+              "archiveNestedArchivesDetected": {
+                "const": 0
+              },
+              "fileManifestValid": {
+                "const": true
+              },
+              "inventoryValid": {
+                "const": true
+              },
+              "metadataValid": {
+                "const": true
+              }
+            }
+          },
+          "preflight": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              },
+              "failCount": {
+                "const": 0
+              }
+            }
+          },
+          "commandSummary": {
+            "properties": {
+              "requiredFailCount": {
+                "const": 0
+              },
+              "requiredNotRunCount": {
+                "const": 0
+              }
+            }
+          },
+          "invariants": {
+            "properties": {
+              "controlFilesUnchanged": {
+                "const": true
+              },
+              "sourceTreeUnchanged": {
+                "const": true
+              }
+            }
+          },
+          "schemaValidation": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

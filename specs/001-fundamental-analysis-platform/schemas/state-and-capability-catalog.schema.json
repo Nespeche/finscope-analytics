@@ -1,0 +1,139 @@
+{
+  "$id": "https://finscope.local/schemas/state-and-capability-catalog.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "catalogId": {
+      "const": "state-and-capability-catalog"
+    },
+    "coverageStates": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "defaultRule": {
+      "type": "string"
+    },
+    "factResolutionStates": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "incrementalEvents": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "affected": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "event": {
+            "type": "string"
+          },
+          "unaffected": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "event",
+          "affected",
+          "unaffected"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "metricStates": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "pipelineStates": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "ruleStates": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "synthesisStates": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "transitions": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "event": {
+            "type": "string"
+          },
+          "from": {
+            "$ref": "common.schema.json#/$defs/PipelineState"
+          },
+          "guard": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "to": {
+            "$ref": "common.schema.json#/$defs/PipelineState"
+          }
+        },
+        "required": [
+          "from",
+          "event",
+          "to",
+          "operationId",
+          "guard"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "version": {
+      "const": "5.0.0"
+    }
+  },
+  "required": [
+    "catalogId",
+    "version",
+    "status",
+    "factResolutionStates",
+    "coverageStates",
+    "metricStates",
+    "ruleStates",
+    "synthesisStates",
+    "pipelineStates",
+    "defaultRule",
+    "transitions",
+    "incrementalEvents"
+  ],
+  "title": "State catalog v5.0.0",
+  "type": "object"
+}

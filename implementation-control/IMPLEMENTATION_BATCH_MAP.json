@@ -1,0 +1,756 @@
+{
+  "$schema": "schemas/implementation-batch-map.schema.json",
+  "schemaVersion": "1.1.0",
+  "mapId": "FinScope-v0.21.11-B10-completed-batch-map",
+  "normativeBaseline": "v0.21",
+  "packageRevision": "v0.21.12_B11_completed",
+  "generatedOn": "2026-07-28",
+  "sourceTaskAuthority": "specs/001-fundamental-analysis-platform/tasks.md",
+  "sourceCoverageMatrix": "specs/001-fundamental-analysis-platform/reports/v0.21/07_POST_TASKS_COVERAGE_MATRIX.json",
+  "taskCount": 109,
+  "batchCount": 25,
+  "maximumTasksPerBatch": 6,
+  "subdivisionRule": "between_tasks_only_before_mutation",
+  "batches": [
+    {
+      "batchId": "B01",
+      "ordinal": 1,
+      "title": "Proyecto, TypeScript, Vite y arnés de pruebas",
+      "domain": "setup",
+      "batchFile": "implementation-control/batches/B01.json",
+      "taskIds": [
+        "T001",
+        "T002",
+        "T003",
+        "T005",
+        "T006",
+        "T010"
+      ],
+      "taskCount": 6,
+      "externalDependencies": [],
+      "status": "COMPLETED"
+    },
+    {
+      "batchId": "B02",
+      "ordinal": 2,
+      "title": "Shell accesible, Cloudflare base y registro de schemas",
+      "domain": "setup-cloudflare",
+      "batchFile": "implementation-control/batches/B02.json",
+      "taskIds": [
+        "T004",
+        "T007",
+        "T008",
+        "T009",
+        "T012"
+      ],
+      "taskCount": 5,
+      "externalDependencies": [
+        "T001",
+        "T002",
+        "T003",
+        "T005",
+        "T006"
+      ],
+      "status": "COMPLETED"
+    },
+    {
+      "batchId": "B03",
+      "ordinal": 3,
+      "title": "Decimal, JCS, reloj, autoridades y mensajes",
+      "domain": "foundation-core",
+      "batchFile": "implementation-control/batches/B03.json",
+      "taskIds": [
+        "T011",
+        "T013",
+        "T014",
+        "T015",
+        "T016"
+      ],
+      "taskCount": 5,
+      "externalDependencies": [
+        "T001",
+        "T002",
+        "T005",
+        "T012"
+      ],
+      "status": "COMPLETED"
+    },
+    {
+      "batchId": "B04",
+      "ordinal": 4,
+      "title": "Estados, problemas, telemetría y modelo de dominio",
+      "domain": "foundation-domain",
+      "batchFile": "implementation-control/batches/B04.json",
+      "taskIds": [
+        "T017",
+        "T018",
+        "T019",
+        "T020"
+      ],
+      "taskCount": 4,
+      "externalDependencies": [
+        "T002",
+        "T005",
+        "T011",
+        "T012",
+        "T015",
+        "T016"
+      ],
+      "status": "COMPLETED"
+    },
+    {
+      "batchId": "B05",
+      "ordinal": 5,
+      "title": "IndexedDB base, primitivas UI y orquestador Worker",
+      "domain": "foundation-runtime",
+      "batchFile": "implementation-control/batches/B05.json",
+      "taskIds": [
+        "T021",
+        "T022",
+        "T023"
+      ],
+      "taskCount": 3,
+      "externalDependencies": [
+        "T002",
+        "T004",
+        "T005",
+        "T006",
+        "T012",
+        "T015",
+        "T016",
+        "T017"
+      ],
+      "status": "COMPLETED"
+    },
+    {
+      "batchId": "B06",
+      "ordinal": 6,
+      "title": "Identidad y superficie inicial del gateway SEC",
+      "domain": "sec-identity-gateway",
+      "batchFile": "implementation-control/batches/B06.json",
+      "taskIds": [
+        "T024",
+        "T025",
+        "T026",
+        "T027",
+        "T028",
+        "T030"
+      ],
+      "taskCount": 6,
+      "externalDependencies": [
+        "T007",
+        "T009",
+        "T012",
+        "T018",
+        "T019",
+        "T020",
+        "T022"
+      ],
+      "status": "COMPLETED"
+    },
+    {
+      "batchId": "B07",
+      "ordinal": 7,
+      "title": "Adquisición SEC, filings, cancelación y fixtures",
+      "domain": "sec-acquisition",
+      "batchFile": "implementation-control/batches/B07.json",
+      "taskIds": [
+        "T029",
+        "T031",
+        "T032",
+        "T033",
+        "T034",
+        "T035"
+      ],
+      "taskCount": 6,
+      "externalDependencies": [
+        "T008",
+        "T012",
+        "T015",
+        "T020",
+        "T023",
+        "T025",
+        "T027",
+        "T028",
+        "T030"
+      ],
+      "status": "COMPLETED"
+    },
+    {
+      "batchId": "B08",
+      "ordinal": 8,
+      "title": "Normalización, perfiles, períodos y deuda",
+      "domain": "fundamental-normalization",
+      "batchFile": "implementation-control/batches/B08.json",
+      "taskIds": [
+        "T036",
+        "T037",
+        "T038",
+        "T039",
+        "T040"
+      ],
+      "taskCount": 5,
+      "externalDependencies": [
+        "T011",
+        "T015",
+        "T018",
+        "T020",
+        "T030",
+        "T035"
+      ],
+      "status": "COMPLETED"
+    },
+    {
+      "batchId": "B09",
+      "ordinal": 9,
+      "title": "Fórmulas, calidad y métricas fundamentales",
+      "domain": "fundamental-metrics",
+      "batchFile": "implementation-control/batches/B09.json",
+      "taskIds": [
+        "T041",
+        "T043",
+        "T042"
+      ],
+      "taskCount": 3,
+      "externalDependencies": [
+        "T011",
+        "T012",
+        "T015",
+        "T039",
+        "T040"
+      ],
+      "status": "COMPLETED"
+    },
+    {
+      "batchId": "B10",
+      "ordinal": 10,
+      "title": "Reglas, síntesis y fingerprints",
+      "domain": "analytics-fingerprints",
+      "batchFile": "implementation-control/batches/B10.json",
+      "taskIds": [
+        "T044",
+        "T045",
+        "T046"
+      ],
+      "taskCount": 3,
+      "externalDependencies": [
+        "T012",
+        "T013",
+        "T014",
+        "T015",
+        "T020",
+        "T041",
+        "T042",
+        "T043"
+      ],
+      "status": "COMPLETED"
+    },
+    {
+      "batchId": "B11",
+      "ordinal": 11,
+      "title": "Builders y pipeline fundamental",
+      "domain": "fundamental-pipeline",
+      "batchFile": "implementation-control/batches/B11.json",
+      "taskIds": [
+        "T047",
+        "T048"
+      ],
+      "taskCount": 2,
+      "externalDependencies": [
+        "T023",
+        "T033",
+        "T035",
+        "T036",
+        "T037",
+        "T038",
+        "T041",
+        "T042",
+        "T043",
+        "T044",
+        "T045",
+        "T046"
+      ],
+      "status": "COMPLETED"
+    },
+    {
+      "batchId": "B12",
+      "ordinal": 12,
+      "title": "Interfaz y E2E del análisis fundamental",
+      "domain": "fundamental-ui",
+      "batchFile": "implementation-control/batches/B12.json",
+      "taskIds": [
+        "T049",
+        "T050",
+        "T051",
+        "T052",
+        "T053"
+      ],
+      "taskCount": 5,
+      "externalDependencies": [
+        "T022",
+        "T030",
+        "T034",
+        "T037",
+        "T041",
+        "T042",
+        "T043",
+        "T044",
+        "T045",
+        "T046",
+        "T047",
+        "T048"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "batchId": "B13",
+      "ordinal": 13,
+      "title": "Cache, novedad, retry, idempotencia e invalidación",
+      "domain": "refresh-core",
+      "batchFile": "implementation-control/batches/B13.json",
+      "taskIds": [
+        "T054",
+        "T055",
+        "T056",
+        "T057",
+        "T058",
+        "T059"
+      ],
+      "taskCount": 6,
+      "externalDependencies": [
+        "T013",
+        "T014",
+        "T015",
+        "T017",
+        "T023",
+        "T029",
+        "T030",
+        "T032",
+        "T041",
+        "T043",
+        "T045",
+        "T047"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "batchId": "B14",
+      "ordinal": 14,
+      "title": "Apertura, reanudación y refresh resiliente",
+      "domain": "refresh-ui-e2e",
+      "batchFile": "implementation-control/batches/B14.json",
+      "taskIds": [
+        "T060",
+        "T061",
+        "T062"
+      ],
+      "taskCount": 3,
+      "externalDependencies": [
+        "T021",
+        "T022",
+        "T053",
+        "T054",
+        "T055",
+        "T056",
+        "T057",
+        "T058",
+        "T059"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "batchId": "B15",
+      "ordinal": 15,
+      "title": "Ingesta, overlay y métricas de precio",
+      "domain": "price-core",
+      "batchFile": "implementation-control/batches/B15.json",
+      "taskIds": [
+        "T063",
+        "T064",
+        "T065",
+        "T066",
+        "T067",
+        "T068"
+      ],
+      "taskCount": 6,
+      "externalDependencies": [
+        "T012",
+        "T014",
+        "T018",
+        "T020",
+        "T023",
+        "T041",
+        "T043",
+        "T046"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "batchId": "B16",
+      "ordinal": 16,
+      "title": "Interfaz y ciclo E2E de precio",
+      "domain": "price-ui",
+      "batchFile": "implementation-control/batches/B16.json",
+      "taskIds": [
+        "T069",
+        "T070",
+        "T071"
+      ],
+      "taskCount": 3,
+      "externalDependencies": [
+        "T022",
+        "T063",
+        "T064",
+        "T065",
+        "T066",
+        "T067",
+        "T068"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "batchId": "B17",
+      "ordinal": 17,
+      "title": "Consentimiento, repositorios, export y preview",
+      "domain": "storage-export",
+      "batchFile": "implementation-control/batches/B17.json",
+      "taskIds": [
+        "T072",
+        "T073",
+        "T074",
+        "T075",
+        "T076"
+      ],
+      "taskCount": 5,
+      "externalDependencies": [
+        "T012",
+        "T013",
+        "T018",
+        "T021",
+        "T022",
+        "T046",
+        "T066",
+        "T068"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "batchId": "B18",
+      "ordinal": 18,
+      "title": "Restore, borrado, cuarentena e interfaz de datos",
+      "domain": "storage-recovery",
+      "batchFile": "implementation-control/batches/B18.json",
+      "taskIds": [
+        "T077",
+        "T078",
+        "T079",
+        "T080"
+      ],
+      "taskCount": 4,
+      "externalDependencies": [
+        "T021",
+        "T022",
+        "T072",
+        "T073",
+        "T074",
+        "T075",
+        "T076"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "batchId": "B19",
+      "ordinal": 19,
+      "title": "Contexto, recuperación y accesibilidad base",
+      "domain": "a11y-foundation",
+      "batchFile": "implementation-control/batches/B19.json",
+      "taskIds": [
+        "T081",
+        "T082",
+        "T089",
+        "T083",
+        "T084",
+        "T085"
+      ],
+      "taskCount": 6,
+      "externalDependencies": [
+        "T004",
+        "T017",
+        "T018",
+        "T022",
+        "T047",
+        "T050",
+        "T067",
+        "T079"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "batchId": "B20",
+      "ordinal": 20,
+      "title": "Cierre transversal WCAG",
+      "domain": "a11y-closure",
+      "batchFile": "implementation-control/batches/B20.json",
+      "taskIds": [
+        "T086",
+        "T087",
+        "T088"
+      ],
+      "taskCount": 3,
+      "externalDependencies": [
+        "T006",
+        "T025",
+        "T034",
+        "T049",
+        "T050",
+        "T051",
+        "T052",
+        "T053",
+        "T061",
+        "T062",
+        "T069",
+        "T070",
+        "T071",
+        "T072",
+        "T080",
+        "T081",
+        "T082",
+        "T083",
+        "T084",
+        "T085",
+        "T089"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "batchId": "B21",
+      "ordinal": 21,
+      "title": "Cloudflare Free, observabilidad y rendimiento Worker",
+      "domain": "cloudflare-worker",
+      "batchFile": "implementation-control/batches/B21.json",
+      "taskIds": [
+        "T090",
+        "T091",
+        "T092",
+        "T093",
+        "T094",
+        "T095"
+      ],
+      "taskCount": 6,
+      "externalDependencies": [
+        "T003",
+        "T005",
+        "T007",
+        "T008",
+        "T012",
+        "T018",
+        "T019",
+        "T027",
+        "T028",
+        "T029",
+        "T030",
+        "T056",
+        "T059"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "batchId": "B22",
+      "ordinal": 22,
+      "title": "Rendimiento browser, seguridad, supply chain y runbook",
+      "domain": "security-operations",
+      "batchFile": "implementation-control/batches/B22.json",
+      "taskIds": [
+        "T096",
+        "T097",
+        "T098",
+        "T099"
+      ],
+      "taskCount": 4,
+      "externalDependencies": [
+        "T001",
+        "T005",
+        "T006",
+        "T009",
+        "T012",
+        "T018",
+        "T048",
+        "T060",
+        "T063",
+        "T067",
+        "T073",
+        "T074",
+        "T077",
+        "T078",
+        "T079",
+        "T080",
+        "T090",
+        "T091",
+        "T092",
+        "T093",
+        "T094",
+        "T095"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "batchId": "B23",
+      "ordinal": 23,
+      "title": "Agregados de validación y lifecycle E2E",
+      "domain": "validation-aggregates",
+      "batchFile": "implementation-control/batches/B23.json",
+      "taskIds": [
+        "T100",
+        "T101",
+        "T102",
+        "T103"
+      ],
+      "taskCount": 4,
+      "externalDependencies": [
+        "T007",
+        "T009",
+        "T011",
+        "T012",
+        "T013",
+        "T014",
+        "T015",
+        "T017",
+        "T018",
+        "T026",
+        "T027",
+        "T028",
+        "T029",
+        "T030",
+        "T032",
+        "T033",
+        "T035",
+        "T040",
+        "T041",
+        "T042",
+        "T043",
+        "T044",
+        "T045",
+        "T046",
+        "T047",
+        "T048",
+        "T053",
+        "T054",
+        "T055",
+        "T056",
+        "T057",
+        "T058",
+        "T059",
+        "T060",
+        "T061",
+        "T062",
+        "T063",
+        "T064",
+        "T065",
+        "T066",
+        "T067",
+        "T068",
+        "T071",
+        "T073",
+        "T074",
+        "T076",
+        "T077",
+        "T078",
+        "T079",
+        "T080",
+        "T082",
+        "T087",
+        "T088",
+        "T089",
+        "T090",
+        "T091",
+        "T092",
+        "T093",
+        "T094",
+        "T096",
+        "T097",
+        "T098"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "batchId": "B24",
+      "ordinal": 24,
+      "title": "Gates finales, evidencia y documentación operativa",
+      "domain": "validation-gates",
+      "batchFile": "implementation-control/batches/B24.json",
+      "taskIds": [
+        "T104",
+        "T105",
+        "T106",
+        "T107"
+      ],
+      "taskCount": 4,
+      "externalDependencies": [
+        "T048",
+        "T049",
+        "T050",
+        "T051",
+        "T052",
+        "T060",
+        "T061",
+        "T067",
+        "T068",
+        "T070",
+        "T073",
+        "T074",
+        "T075",
+        "T076",
+        "T077",
+        "T078",
+        "T079",
+        "T080",
+        "T087",
+        "T088",
+        "T089",
+        "T090",
+        "T091",
+        "T092",
+        "T093",
+        "T094",
+        "T095",
+        "T096",
+        "T097",
+        "T098",
+        "T099"
+      ],
+      "status": "PENDING"
+    },
+    {
+      "batchId": "B25",
+      "ordinal": 25,
+      "title": "Invariantes finales y entrada a convergencia",
+      "domain": "implementation-closure",
+      "batchFile": "implementation-control/batches/B25.json",
+      "taskIds": [
+        "T108",
+        "T109"
+      ],
+      "taskCount": 2,
+      "externalDependencies": [
+        "T010",
+        "T019",
+        "T094",
+        "T095",
+        "T096",
+        "T097",
+        "T098",
+        "T099",
+        "T100",
+        "T101",
+        "T102",
+        "T103",
+        "T104",
+        "T105",
+        "T106",
+        "T107"
+      ],
+      "status": "PENDING"
+    }
+  ],
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70"
+}

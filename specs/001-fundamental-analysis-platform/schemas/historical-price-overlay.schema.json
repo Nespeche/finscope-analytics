@@ -1,0 +1,237 @@
+{
+  "$id": "https://finscope.local/schemas/historical-price-overlay.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "displayAgeDays"
+            ]
+          },
+          {
+            "required": [
+              "evaluationDate"
+            ]
+          },
+          {
+            "required": [
+              "rangeStart"
+            ]
+          },
+          {
+            "required": [
+              "rangeEnd"
+            ]
+          },
+          {
+            "required": [
+              "asOfDate"
+            ]
+          },
+          {
+            "required": [
+              "observationCount"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "properties": {
+    "adjustmentStatus": {
+      "enum": [
+        "unadjusted",
+        "adjusted",
+        "unknown"
+      ]
+    },
+    "contractVersion": {
+      "const": "5.0.0"
+    },
+    "createdAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "currency": {
+      "$ref": "common.schema.json#/$defs/CurrencyCode"
+    },
+    "frequency": {
+      "enum": [
+        "irregular",
+        "daily",
+        "weekly",
+        "monthly",
+        "quarterly",
+        "annual"
+      ]
+    },
+    "historicalPriceOverlayFingerprint": {
+      "$ref": "common.schema.json#/$defs/Sha256Fingerprint"
+    },
+    "instrument": {
+      "additionalProperties": false,
+      "properties": {
+        "instrumentId": {
+          "type": "string"
+        },
+        "symbol": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "venueMic": {
+          "pattern": "^[A-Z0-9]{4}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "symbol",
+        "venueMic"
+      ],
+      "type": "object"
+    },
+    "issuerCik": {
+      "$ref": "common.schema.json#/$defs/Cik"
+    },
+    "observations": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "date": {
+            "$ref": "common.schema.json#/$defs/IsoDate"
+          },
+          "priceDecimal": {
+            "$ref": "common.schema.json#/$defs/PositiveDecimalString"
+          }
+        },
+        "required": [
+          "date",
+          "priceDecimal"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "origin": {
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "enum": [
+            "csv_import",
+            "manual_entry",
+            "provider_adapter"
+          ]
+        },
+        "profileId": {
+          "enum": [
+            "local_csv_manual_v1",
+            "twelve_data_provider_v1",
+            "alpha_vantage_provider_v1"
+          ]
+        },
+        "sourceFileSha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "profileId",
+        "method"
+      ],
+      "type": "object"
+    },
+    "overlayId": {
+      "pattern": "^price-overlay-[a-z0-9-]+$",
+      "type": "string"
+    },
+    "overlayVersion": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "priceQuality": {
+      "additionalProperties": false,
+      "properties": {
+        "axes": {
+          "additionalProperties": false,
+          "properties": {
+            "adjustmentDisclosure": {
+              "enum": [
+                "declared",
+                "unknown"
+              ]
+            },
+            "currencyIntegrity": {
+              "enum": [
+                "single_declared",
+                "unknown_declared",
+                "mixed_or_missing"
+              ]
+            },
+            "dateIntegrity": {
+              "enum": [
+                "unique_sorted",
+                "duplicates_resolved",
+                "invalid"
+              ]
+            },
+            "rowValidity": {
+              "enum": [
+                "all_valid",
+                "rows_discarded",
+                "invalid"
+              ]
+            }
+          },
+          "required": [
+            "rowValidity",
+            "dateIntegrity",
+            "currencyIntegrity",
+            "adjustmentDisclosure"
+          ],
+          "type": "object"
+        },
+        "classification": {
+          "$ref": "common.schema.json#/$defs/QualityClassification"
+        }
+      },
+      "required": [
+        "classification",
+        "axes"
+      ],
+      "type": "object"
+    },
+    "priceUse": {
+      "const": "historical_descriptive_only"
+    },
+    "sourceEvidenceFingerprint": {
+      "$ref": "common.schema.json#/$defs/Sha256Fingerprint"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "overlayId",
+    "overlayVersion",
+    "contractVersion",
+    "issuerCik",
+    "instrument",
+    "currency",
+    "frequency",
+    "observations",
+    "adjustmentStatus",
+    "origin",
+    "warnings",
+    "priceUse",
+    "historicalPriceOverlayFingerprint"
+  ],
+  "title": "Versioned independent historical price overlay v5.0.0",
+  "type": "object"
+}

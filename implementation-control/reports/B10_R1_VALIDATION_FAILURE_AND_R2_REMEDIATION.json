@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "1.0.0",
+  "batchId": "B10",
+  "candidateRevision": "r2",
+  "status": "REMEDIATED_PENDING_VALIDATION",
+  "sourceEvidence": {
+    "logicalName": "FinScope_local_evidence_B10_20260728-003221644_FAILED.zip",
+    "sha256": "4bff6dfadd1f8eec8c4bfa4a4bb0930107f529a37465cb98fc18df8635c7e444",
+    "status": "FAIL",
+    "authenticated": true
+  },
+  "sourceCandidate": {
+    "logicalName": "FS_B10_r1.zip",
+    "sha256": "50a0cfda8966ce85420ea880e4af6d299c6e3837c33934ed021fefbce0df192e"
+  },
+  "sourceRunner": {
+    "logicalName": "Run-FinScope-BatchValidation_B10_r1_v2.ps1",
+    "sha256": "8a3f4e3c8b33389f83cd7fb69173abf92f5a9909cd1a14ecf2ecb167ac694936"
+  },
+  "commandOutcome": {
+    "pass": [
+      "npm-ci",
+      "typecheck",
+      "test-unit"
+    ],
+    "fail": [
+      "regression-vitest"
+    ],
+    "notRun": [
+      "build"
+    ]
+  },
+  "focusedDiscovery": {
+    "testFilesPassed": 3,
+    "testFilesFailed": 0,
+    "testsPassed": 47,
+    "testsFailed": 0
+  },
+  "regressionFailure": {
+    "file": "tests/contract/authority-loading.test.ts",
+    "test": "loads JSON pointers and explicit Markdown anchors from exact package-root paths",
+    "error": "AuthorityLoadError: Explicit anchor does not exist: #gate",
+    "authorityReference": "V0.21_PHASE_STATUS.md#gate"
+  },
+  "rootCause": {
+    "type": "ACTIVE_GATE_EXPLICIT_ANCHOR_OMITTED_DURING_R1_DOCUMENT_UPDATE",
+    "description": "The B09 completed gate document contained <a id=\"gate\"></a>; the B10 r1 rewrite omitted it while exact references remained active.",
+    "b10RuntimeAffected": false,
+    "financialVariablesAffected": false,
+    "loaderDefect": false
+  },
+  "authority": {
+    "fieldAuthority": "implementation-control/AUTHORITY_MATRIX.json -> phase_gate_flags",
+    "primaryReference": "V0.21_PHASE_STATUS.md#gate",
+    "resolutionPolicy": "Exact explicit Markdown anchors; no heading inference."
+  },
+  "alternatives": [
+    {
+      "id": "RESTORE_EXPLICIT_GATE_ANCHOR",
+      "recommendation": "APPLIED",
+      "functionalRisk": "NONE",
+      "reason": "Restores the authority contract already present in the completed baseline without changing behavior."
+    },
+    {
+      "id": "ALLOW_MARKDOWN_HEADING_INFERENCE",
+      "recommendation": "REJECTED",
+      "functionalRisk": "HIGH",
+      "reason": "Would weaken fail-closed exact authority loading and contradict the contract test."
+    },
+    {
+      "id": "REMOVE_FRAGMENT_OR_CHANGE_CROSSWALK",
+      "recommendation": "REJECTED",
+      "functionalRisk": "HIGH",
+      "reason": "Would alter the normative phase-gate authority reference instead of repairing the stale mirror."
+    }
+  ],
+  "r2Change": {
+    "productRuntimeChanged": false,
+    "b10TestsChanged": false,
+    "schemaChanged": false,
+    "fixtureChanged": false,
+    "authorityDocumentCorrected": "V0.21_PHASE_STATUS.md",
+    "exactInsertedAnchor": "<a id=\"gate\"></a>",
+    "candidateLogicalName": "FS_B10_r2.zip",
+    "runnerLogicalName": "Run-FinScope-BatchValidation_B10_r2_v1.ps1",
+    "runnerSha256": "8960f8d4dc9e05651e9c64130e62036c9e8e9500e229b8a4d2e909fb82f60489"
+  },
+  "integrity": {
+    "tasksSha256": "71d17254d3d8698befc2c1f75b4619d80b0f98545560400470d452796ef6201c",
+    "b10Sha256": "65ffdb45b269bee563feba66e46f8bc12a304d0042c5d53848a4866907df73eb",
+    "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+    "specifyModified": false
+  },
+  "state": {
+    "B10": "LOCAL_VALIDATION_REQUIRED",
+    "tasks": [
+      "T044",
+      "T045",
+      "T046"
+    ],
+    "taskStatus": "IMPLEMENTED_PENDING_VALIDATION",
+    "B11": "PENDING",
+    "convergenceAuthorized": false
+  },
+  "closureRule": "Fresh full five-command PASS evidence bound to the exact r2 candidate and r2 runner is required."
+}

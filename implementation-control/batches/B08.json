@@ -1,0 +1,414 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B08",
+  "ordinal": 8,
+  "title": "Normalización, perfiles, períodos y deuda",
+  "domain": "fundamental-normalization",
+  "status": "COMPLETED",
+  "taskCount": 5,
+  "executionOrder": [
+    "T036",
+    "T037",
+    "T038",
+    "T039",
+    "T040"
+  ],
+  "externalDependencies": [
+    "T011",
+    "T015",
+    "T018",
+    "T020",
+    "T030",
+    "T035"
+  ],
+  "requirements": [
+    "FR-006",
+    "FR-008",
+    "FR-009",
+    "FR-011",
+    "FR-012",
+    "FR-013",
+    "FR-014",
+    "FR-015",
+    "FR-019",
+    "FR-039",
+    "NFR-001"
+  ],
+  "acceptanceCriteria": [
+    "AC-012",
+    "AC-013",
+    "AC-014",
+    "AC-015",
+    "AC-016",
+    "AC-017",
+    "AC-018",
+    "AC-019",
+    "AC-020",
+    "AC-021",
+    "AC-022",
+    "AC-023",
+    "AC-024",
+    "AC-025",
+    "AC-080"
+  ],
+  "authorityIds": [
+    "AUTH-003",
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-006",
+    "AUTH-007",
+    "AUTH-008",
+    "AUTH-009",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-014",
+    "AUTH-016",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-026"
+  ],
+  "primaryAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+    "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles/5",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/debtPolicy",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+    "specs/001-fundamental-analysis-platform/schemas/common.schema.json#/$defs/DecimalString"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-012",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-013",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-014",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-015",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-016",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-017",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-018",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-019",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-020",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-021",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-022",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-023",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-024",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-025",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-080"
+  ],
+  "targetFiles": [
+    "src/domain/fundamental/debt-resolver.ts",
+    "src/domain/fundamental/fact-sanitizer.ts",
+    "src/domain/fundamental/mapping-resolver.ts",
+    "src/domain/fundamental/period-resolver.ts",
+    "src/domain/fundamental/profile-resolver.ts",
+    "tests/unit/fundamental/debt-resolver.test.ts",
+    "tests/unit/fundamental/fact-sanitizer.test.ts",
+    "tests/unit/fundamental/mapping-resolver.test.ts",
+    "tests/unit/fundamental/period-resolver.test.ts",
+    "tests/unit/fundamental/profile-resolver.test.ts"
+  ],
+  "testFiles": [
+    "tests/unit/fundamental/debt-resolver.test.ts",
+    "tests/unit/fundamental/fact-sanitizer.test.ts",
+    "tests/unit/fundamental/mapping-resolver.test.ts",
+    "tests/unit/fundamental/period-resolver.test.ts",
+    "tests/unit/fundamental/profile-resolver.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T036",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": false,
+      "dependencies": [
+        "T015",
+        "T020",
+        "T030"
+      ],
+      "requirementRefs": [
+        "FR-006",
+        "FR-011",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-080"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/domain/fundamental/mapping-resolver.ts",
+        "tests/unit/fundamental/mapping-resolver.test.ts"
+      ],
+      "tests": [
+        "tests/unit/fundamental/mapping-resolver.test.ts"
+      ],
+      "doneWhen": "precedence and ambiguity vectors pass exactly",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "4639bb854f14e40b1c31f6ee060268f7cf749bf2f06c3d51081f8d304f84fef7"
+    },
+    {
+      "id": "T037",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": true,
+      "dependencies": [
+        "T015",
+        "T020"
+      ],
+      "requirementRefs": [
+        "FR-011",
+        "FR-012",
+        "FR-013"
+      ],
+      "acceptanceRefs": [
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-080"
+      ],
+      "authorityIds": [
+        "AUTH-004",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-011"
+      ],
+      "files": [
+        "src/domain/fundamental/profile-resolver.ts",
+        "tests/unit/fundamental/profile-resolver.test.ts"
+      ],
+      "tests": [
+        "tests/unit/fundamental/profile-resolver.test.ts"
+      ],
+      "doneWhen": "unsupported profile is a normal partial local result",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "a3c2a6cb602fb21a633bb360eb6fbf86a97067a24a05f4d19db1080c762777dd"
+    },
+    {
+      "id": "T038",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": true,
+      "dependencies": [
+        "T011",
+        "T018",
+        "T020"
+      ],
+      "requirementRefs": [
+        "FR-008",
+        "FR-009",
+        "FR-039",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-019",
+        "AC-020"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/domain/fundamental/fact-sanitizer.ts",
+        "tests/unit/fundamental/fact-sanitizer.test.ts"
+      ],
+      "tests": [
+        "tests/unit/fundamental/fact-sanitizer.test.ts"
+      ],
+      "doneWhen": "invalid decimals are excluded and never hashed",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "abd779af0e31352c89a7014bf40af56c5a3a9bc3816d6223e241a597bbbc505c"
+    },
+    {
+      "id": "T039",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": false,
+      "dependencies": [
+        "T036",
+        "T038"
+      ],
+      "requirementRefs": [
+        "FR-008",
+        "FR-014",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-015",
+        "AC-016"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/domain/fundamental/period-resolver.ts",
+        "tests/unit/fundamental/period-resolver.test.ts"
+      ],
+      "tests": [
+        "tests/unit/fundamental/period-resolver.test.ts"
+      ],
+      "doneWhen": "incompatible durations yield insufficient, not fabricated sums",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "4eddd0ea4778ca00c92dc152cbb92195581b8c89598e8d3325db8222d6f0bd06"
+    },
+    {
+      "id": "T040",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": true,
+      "dependencies": [
+        "T035",
+        "T037"
+      ],
+      "requirementRefs": [
+        "FR-015",
+        "FR-019",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/domain/fundamental/debt-resolver.ts",
+        "tests/unit/fundamental/debt-resolver.test.ts"
+      ],
+      "tests": [
+        "tests/unit/fundamental/debt-resolver.test.ts"
+      ],
+      "doneWhen": "generic totals and partial buckets cannot create dependent ratios",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "72d2637d019157f2b6c0d20b8da7a4dcd5db2d5fee5f3c18b623bf332ae38dd4"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": false,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-unit",
+        "category": "unit",
+        "command": "npm run test:unit -- tests/unit/fundamental/debt-resolver.test.ts tests/unit/fundamental/fact-sanitizer.test.ts tests/unit/fundamental/mapping-resolver.test.ts tests/unit/fundamental/period-resolver.test.ts tests/unit/fundamental/profile-resolver.test.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B08_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

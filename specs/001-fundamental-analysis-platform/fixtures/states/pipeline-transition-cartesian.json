@@ -1,0 +1,919 @@
+{
+  "expectedCombinationCount": 81,
+  "fixtureSetId": "pipeline-transition-cartesian",
+  "fixtures": [
+    {
+      "events": [
+        "historical_price_import_confirmed"
+      ],
+      "fixtureId": "TRANSITION-IDLE-IDLE",
+      "from": "idle",
+      "operationIds": [
+        "publishPriceOverlay"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "idle"
+    },
+    {
+      "events": [
+        "issuer_selected",
+        "manual_refresh_requested"
+      ],
+      "fixtureId": "TRANSITION-IDLE-CHECKING",
+      "from": "idle",
+      "operationIds": [
+        "selectIssuer",
+        "refreshFundamentals"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "checking"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-IDLE-ACQUIRING",
+      "from": "idle",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "acquiring"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-IDLE-NORMALIZING",
+      "from": "idle",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "normalizing"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-IDLE-ANALYZING",
+      "from": "idle",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "analyzing"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-IDLE-READY",
+      "from": "idle",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "ready"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-IDLE-PARTIAL",
+      "from": "idle",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "partial"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-IDLE-FAILED",
+      "from": "idle",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "failed"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-IDLE-CANCELLED",
+      "from": "idle",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "cancelled"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-CHECKING-IDLE",
+      "from": "checking",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "idle"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-CHECKING-CHECKING",
+      "from": "checking",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "checking"
+    },
+    {
+      "events": [
+        "new_filing_available",
+        "cache_miss"
+      ],
+      "fixtureId": "TRANSITION-CHECKING-ACQUIRING",
+      "from": "checking",
+      "operationIds": [
+        "acquireSecData",
+        "acquireSecData"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "acquiring"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-CHECKING-NORMALIZING",
+      "from": "checking",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "normalizing"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-CHECKING-ANALYZING",
+      "from": "checking",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "analyzing"
+    },
+    {
+      "events": [
+        "cache_hit_no_refresh_needed"
+      ],
+      "fixtureId": "TRANSITION-CHECKING-READY",
+      "from": "checking",
+      "operationIds": [
+        "useActiveSnapshot"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "ready"
+    },
+    {
+      "events": [
+        "operation_failed_with_snapshot"
+      ],
+      "fixtureId": "TRANSITION-CHECKING-PARTIAL",
+      "from": "checking",
+      "operationIds": [
+        "showPartial"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "partial"
+    },
+    {
+      "events": [
+        "operation_failed"
+      ],
+      "fixtureId": "TRANSITION-CHECKING-FAILED",
+      "from": "checking",
+      "operationIds": [
+        "showFailure"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "failed"
+    },
+    {
+      "events": [
+        "cancel_requested"
+      ],
+      "fixtureId": "TRANSITION-CHECKING-CANCELLED",
+      "from": "checking",
+      "operationIds": [
+        "cancelOperation"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "cancelled"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-ACQUIRING-IDLE",
+      "from": "acquiring",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "idle"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-ACQUIRING-CHECKING",
+      "from": "acquiring",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "checking"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-ACQUIRING-ACQUIRING",
+      "from": "acquiring",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "acquiring"
+    },
+    {
+      "events": [
+        "acquisition_completed",
+        "budget_exhausted_with_usable_payload"
+      ],
+      "fixtureId": "TRANSITION-ACQUIRING-NORMALIZING",
+      "from": "acquiring",
+      "operationIds": [
+        "normalizeBundle",
+        "normalizeBundle"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "normalizing"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-ACQUIRING-ANALYZING",
+      "from": "acquiring",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "analyzing"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-ACQUIRING-READY",
+      "from": "acquiring",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "ready"
+    },
+    {
+      "events": [
+        "operation_failed_with_snapshot"
+      ],
+      "fixtureId": "TRANSITION-ACQUIRING-PARTIAL",
+      "from": "acquiring",
+      "operationIds": [
+        "showPartial"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "partial"
+    },
+    {
+      "events": [
+        "operation_failed"
+      ],
+      "fixtureId": "TRANSITION-ACQUIRING-FAILED",
+      "from": "acquiring",
+      "operationIds": [
+        "showFailure"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "failed"
+    },
+    {
+      "events": [
+        "cancel_requested"
+      ],
+      "fixtureId": "TRANSITION-ACQUIRING-CANCELLED",
+      "from": "acquiring",
+      "operationIds": [
+        "cancelOperation"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "cancelled"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-NORMALIZING-IDLE",
+      "from": "normalizing",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "idle"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-NORMALIZING-CHECKING",
+      "from": "normalizing",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "checking"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-NORMALIZING-ACQUIRING",
+      "from": "normalizing",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "acquiring"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-NORMALIZING-NORMALIZING",
+      "from": "normalizing",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "normalizing"
+    },
+    {
+      "events": [
+        "normalization_completed"
+      ],
+      "fixtureId": "TRANSITION-NORMALIZING-ANALYZING",
+      "from": "normalizing",
+      "operationIds": [
+        "analyzeFundamentals"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "analyzing"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-NORMALIZING-READY",
+      "from": "normalizing",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "ready"
+    },
+    {
+      "events": [
+        "operation_failed_with_snapshot"
+      ],
+      "fixtureId": "TRANSITION-NORMALIZING-PARTIAL",
+      "from": "normalizing",
+      "operationIds": [
+        "showPartial"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "partial"
+    },
+    {
+      "events": [
+        "operation_failed"
+      ],
+      "fixtureId": "TRANSITION-NORMALIZING-FAILED",
+      "from": "normalizing",
+      "operationIds": [
+        "showFailure"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "failed"
+    },
+    {
+      "events": [
+        "cancel_requested"
+      ],
+      "fixtureId": "TRANSITION-NORMALIZING-CANCELLED",
+      "from": "normalizing",
+      "operationIds": [
+        "cancelOperation"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "cancelled"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-ANALYZING-IDLE",
+      "from": "analyzing",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "idle"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-ANALYZING-CHECKING",
+      "from": "analyzing",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "checking"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-ANALYZING-ACQUIRING",
+      "from": "analyzing",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "acquiring"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-ANALYZING-NORMALIZING",
+      "from": "analyzing",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "normalizing"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-ANALYZING-ANALYZING",
+      "from": "analyzing",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "analyzing"
+    },
+    {
+      "events": [
+        "analysis_completed_full"
+      ],
+      "fixtureId": "TRANSITION-ANALYZING-READY",
+      "from": "analyzing",
+      "operationIds": [
+        "activateFundamentalSnapshot"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "ready"
+    },
+    {
+      "events": [
+        "analysis_completed_partial"
+      ],
+      "fixtureId": "TRANSITION-ANALYZING-PARTIAL",
+      "from": "analyzing",
+      "operationIds": [
+        "activateFundamentalSnapshot"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "partial"
+    },
+    {
+      "events": [
+        "operation_failed"
+      ],
+      "fixtureId": "TRANSITION-ANALYZING-FAILED",
+      "from": "analyzing",
+      "operationIds": [
+        "showFailure"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "failed"
+    },
+    {
+      "events": [
+        "cancel_requested"
+      ],
+      "fixtureId": "TRANSITION-ANALYZING-CANCELLED",
+      "from": "analyzing",
+      "operationIds": [
+        "cancelOperation"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "cancelled"
+    },
+    {
+      "events": [
+        "issuer_cleared",
+        "local_data_deleted"
+      ],
+      "fixtureId": "TRANSITION-READY-IDLE",
+      "from": "ready",
+      "operationIds": [
+        "clearIssuerContext",
+        "deleteLocalData"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "idle"
+    },
+    {
+      "events": [
+        "manual_refresh_requested",
+        "app_opened",
+        "app_resumed",
+        "issuer_selected"
+      ],
+      "fixtureId": "TRANSITION-READY-CHECKING",
+      "from": "ready",
+      "operationIds": [
+        "refreshFundamentals",
+        "refreshFundamentals",
+        "refreshFundamentals",
+        "selectIssuer"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "checking"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-READY-ACQUIRING",
+      "from": "ready",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "acquiring"
+    },
+    {
+      "events": [
+        "mapping_catalog_changed"
+      ],
+      "fixtureId": "TRANSITION-READY-NORMALIZING",
+      "from": "ready",
+      "operationIds": [
+        "reanalyzeAffectedMappings"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "normalizing"
+    },
+    {
+      "events": [
+        "metric_catalog_changed",
+        "rule_catalog_changed"
+      ],
+      "fixtureId": "TRANSITION-READY-ANALYZING",
+      "from": "ready",
+      "operationIds": [
+        "reanalyzeAffectedMetrics",
+        "reanalyzeRules"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "analyzing"
+    },
+    {
+      "events": [
+        "app_opened",
+        "app_resumed",
+        "historical_price_import_confirmed",
+        "historical_price_deleted"
+      ],
+      "fixtureId": "TRANSITION-READY-READY",
+      "from": "ready",
+      "operationIds": [
+        "useActiveSnapshot",
+        "useActiveSnapshot",
+        "publishPriceOverlay",
+        "deletePriceOverlay"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "ready"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-READY-PARTIAL",
+      "from": "ready",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "partial"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-READY-FAILED",
+      "from": "ready",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "failed"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-READY-CANCELLED",
+      "from": "ready",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "cancelled"
+    },
+    {
+      "events": [
+        "issuer_cleared",
+        "local_data_deleted"
+      ],
+      "fixtureId": "TRANSITION-PARTIAL-IDLE",
+      "from": "partial",
+      "operationIds": [
+        "clearIssuerContext",
+        "deleteLocalData"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "idle"
+    },
+    {
+      "events": [
+        "manual_refresh_requested",
+        "app_opened",
+        "issuer_selected"
+      ],
+      "fixtureId": "TRANSITION-PARTIAL-CHECKING",
+      "from": "partial",
+      "operationIds": [
+        "refreshFundamentals",
+        "refreshFundamentals",
+        "selectIssuer"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "checking"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-PARTIAL-ACQUIRING",
+      "from": "partial",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "acquiring"
+    },
+    {
+      "events": [
+        "mapping_catalog_changed"
+      ],
+      "fixtureId": "TRANSITION-PARTIAL-NORMALIZING",
+      "from": "partial",
+      "operationIds": [
+        "reanalyzeAffectedMappings"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "normalizing"
+    },
+    {
+      "events": [
+        "metric_catalog_changed",
+        "rule_catalog_changed"
+      ],
+      "fixtureId": "TRANSITION-PARTIAL-ANALYZING",
+      "from": "partial",
+      "operationIds": [
+        "reanalyzeAffectedMetrics",
+        "reanalyzeRules"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "analyzing"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-PARTIAL-READY",
+      "from": "partial",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "ready"
+    },
+    {
+      "events": [
+        "app_opened",
+        "historical_price_import_confirmed",
+        "historical_price_deleted"
+      ],
+      "fixtureId": "TRANSITION-PARTIAL-PARTIAL",
+      "from": "partial",
+      "operationIds": [
+        "useActiveSnapshot",
+        "publishPriceOverlay",
+        "deletePriceOverlay"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "partial"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-PARTIAL-FAILED",
+      "from": "partial",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "failed"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-PARTIAL-CANCELLED",
+      "from": "partial",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "cancelled"
+    },
+    {
+      "events": [
+        "issuer_cleared",
+        "local_data_deleted"
+      ],
+      "fixtureId": "TRANSITION-FAILED-IDLE",
+      "from": "failed",
+      "operationIds": [
+        "clearIssuerContext",
+        "deleteLocalData"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "idle"
+    },
+    {
+      "events": [
+        "manual_refresh_requested",
+        "issuer_selected"
+      ],
+      "fixtureId": "TRANSITION-FAILED-CHECKING",
+      "from": "failed",
+      "operationIds": [
+        "refreshFundamentals",
+        "selectIssuer"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "checking"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-FAILED-ACQUIRING",
+      "from": "failed",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "acquiring"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-FAILED-NORMALIZING",
+      "from": "failed",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "normalizing"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-FAILED-ANALYZING",
+      "from": "failed",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "analyzing"
+    },
+    {
+      "events": [
+        "use_last_snapshot"
+      ],
+      "fixtureId": "TRANSITION-FAILED-READY",
+      "from": "failed",
+      "operationIds": [
+        "useActiveSnapshot"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "ready"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-FAILED-PARTIAL",
+      "from": "failed",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "partial"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-FAILED-FAILED",
+      "from": "failed",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "failed"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-FAILED-CANCELLED",
+      "from": "failed",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "cancelled"
+    },
+    {
+      "events": [
+        "issuer_cleared",
+        "local_data_deleted"
+      ],
+      "fixtureId": "TRANSITION-CANCELLED-IDLE",
+      "from": "cancelled",
+      "operationIds": [
+        "clearIssuerContext",
+        "deleteLocalData"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "idle"
+    },
+    {
+      "events": [
+        "manual_refresh_requested",
+        "issuer_selected"
+      ],
+      "fixtureId": "TRANSITION-CANCELLED-CHECKING",
+      "from": "cancelled",
+      "operationIds": [
+        "refreshFundamentals",
+        "selectIssuer"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "checking"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-CANCELLED-ACQUIRING",
+      "from": "cancelled",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "acquiring"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-CANCELLED-NORMALIZING",
+      "from": "cancelled",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "normalizing"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-CANCELLED-ANALYZING",
+      "from": "cancelled",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "analyzing"
+    },
+    {
+      "events": [
+        "use_last_snapshot"
+      ],
+      "fixtureId": "TRANSITION-CANCELLED-READY",
+      "from": "cancelled",
+      "operationIds": [
+        "useActiveSnapshot"
+      ],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": true,
+      "to": "ready"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-CANCELLED-PARTIAL",
+      "from": "cancelled",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "partial"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-CANCELLED-FAILED",
+      "from": "cancelled",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "failed"
+    },
+    {
+      "events": [],
+      "fixtureId": "TRANSITION-CANCELLED-CANCELLED",
+      "from": "cancelled",
+      "operationIds": [],
+      "oracle": "state-and-capability-catalog.transitions; unlisted transitions forbidden",
+      "permitted": false,
+      "to": "cancelled"
+    }
+  ],
+  "stateCount": 9,
+  "version": "5.0.0"
+}

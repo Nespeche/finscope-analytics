@@ -1,0 +1,52 @@
+{
+  "fixtureSetId": "cache-refresh-test-vectors",
+  "version": "1.0.0",
+  "vectors": [
+    {
+      "vectorId": "fresh-no-network",
+      "ageSeconds": 21599,
+      "manualRefresh": false,
+      "refreshConsent": true,
+      "expectedBand": "fresh",
+      "expectedAction": "none"
+    },
+    {
+      "vectorId": "fresh-manual-check",
+      "ageSeconds": 1,
+      "manualRefresh": true,
+      "refreshConsent": true,
+      "expectedBand": "fresh",
+      "expectedAction": "fetch_submissions"
+    },
+    {
+      "vectorId": "stale-revalidate",
+      "ageSeconds": 21600,
+      "manualRefresh": false,
+      "refreshConsent": true,
+      "expectedBand": "stale_revalidatable",
+      "expectedAction": "fetch_submissions"
+    },
+    {
+      "vectorId": "expired-preserve-on-failure",
+      "ageSeconds": 604800,
+      "manualRefresh": false,
+      "refreshConsent": true,
+      "networkOutcome": "failure",
+      "expectedBand": "expired",
+      "expectedAction": "preserve_last_valid_snapshot"
+    },
+    {
+      "vectorId": "no-consent",
+      "ageSeconds": 604800,
+      "manualRefresh": false,
+      "refreshConsent": false,
+      "expectedAction": "no_network"
+    },
+    {
+      "vectorId": "closed-app",
+      "appState": "closed",
+      "refreshConsent": true,
+      "expectedAction": "no_background_scheduler"
+    }
+  ]
+}

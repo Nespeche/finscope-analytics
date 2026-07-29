@@ -1,0 +1,289 @@
+{
+  "invarianceVectors": [
+    {
+      "baseVector": "FP-OVERLAY-001",
+      "expectedFingerprint": "sha256:70a4d0f87b26447e5801bc2eab97a8de650fcec6d9cd5ce007041b1cb35c51b6",
+      "id": "FP-INV-LOCAL-DATE",
+      "mutationsOutsideProjection": [
+        {
+          "displayAgeDays": 10
+        },
+        {
+          "displayAgeDays": 11
+        },
+        {
+          "evaluationDate": "2026-07-20"
+        },
+        {
+          "evaluationDate": "2026-07-21"
+        }
+      ]
+    },
+    {
+      "baseVector": "FP-FUND-ANALYSIS-001",
+      "expectedFingerprint": "sha256:5086da3578b5837d3f81667388e72ea68e6952fee386ed4beac2be65cfb188db",
+      "id": "FP-INV-PRICE-INDEPENDENCE",
+      "mutationsOutsideProjection": [
+        {
+          "historicalPriceOverlayFingerprint": "sha256:d721383de7b04ccb84837667178eb090783288b8d03b70f59885374475f7292a"
+        },
+        {
+          "priceAnalysisFingerprint": "sha256:33365f2090439e8457c1cb3bee9aa738d0fcac6171b1812eccaadef8b87a2f62"
+        },
+        {
+          "pricePanelExpanded": true
+        }
+      ]
+    },
+    {
+      "baseVector": "FP-FUND-INPUT-001",
+      "expectedFingerprint": "sha256:68b48408acee8d3442ed52327dca225e855ca8381a00c27eaecf70ce649c3ef7",
+      "id": "FP-INV-EVIDENCE",
+      "mutationsOutsideProjection": [
+        {
+          "sourceEvidenceFingerprint": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "sourceEvidenceFingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        }
+      ]
+    }
+  ],
+  "negativeVectors": [
+    {
+      "id": "FP-NEG-SELF-REFERENCE",
+      "invalidPath": "metricResults[0].fundamentalAnalysisFingerprint",
+      "reason": "fingerprint fields are prohibited inside their own projection"
+    },
+    {
+      "id": "FP-NEG-NEGATIVE-ZERO",
+      "reason": "-0 is not a canonical decimal",
+      "value": "-0"
+    },
+    {
+      "id": "FP-NEG-TRAILING-ZERO",
+      "reason": "trailing fractional zeros are not canonical",
+      "value": "1.2300"
+    },
+    {
+      "id": "FP-NEG-NAN",
+      "reason": "NaN is prohibited",
+      "value": "NaN"
+    },
+    {
+      "id": "FP-NEG-INFINITY",
+      "reason": "Infinity is prohibited",
+      "value": "Infinity"
+    },
+    {
+      "dates": [
+        "2025-02-28",
+        "2025-01-31"
+      ],
+      "id": "FP-NEG-UNSORTED-OBS",
+      "reason": "observations must be sorted before projection"
+    },
+    {
+      "field": "asOfLocalDate",
+      "id": "FP-NEG-LOCAL-CLOCK",
+      "reason": "local clock fields are not allowed in any projection"
+    },
+    {
+      "field": "historicalPriceOverlayFingerprint",
+      "id": "FP-NEG-PRICE-IN-FUNDAMENTAL",
+      "reason": "price fields are prohibited in fundamentalAnalysisFingerprint"
+    }
+  ],
+  "positiveVectors": [
+    {
+      "expectedFingerprint": "sha256:68b48408acee8d3442ed52327dca225e855ca8381a00c27eaecf70ce649c3ef7",
+      "id": "FP-FUND-INPUT-001",
+      "input": {
+        "conceptResolutions": [
+          {
+            "canonicalConceptId": "revenue",
+            "factId": "fact-revenue-fy2025",
+            "periodId": "FY2025",
+            "scopeId": "consolidated",
+            "state": "resolved"
+          }
+        ],
+        "contractVersion": "5.0.0",
+        "coverage": [
+          {
+            "canonicalConceptId": "revenue",
+            "profileId": "general_operating_us_gaap",
+            "resolvedMappingIds": [
+              "map-usgaap-revenue-primary"
+            ],
+            "state": "complete"
+          }
+        ],
+        "currencies": [
+          "USD"
+        ],
+        "facts": [
+          {
+            "canonicalConceptId": "revenue",
+            "factId": "fact-revenue-fy2025",
+            "mappingId": "map-usgaap-revenue-primary",
+            "mappingVersion": "5.0.0",
+            "periodId": "FY2025",
+            "scopeId": "consolidated",
+            "valueDecimal": "1000"
+          }
+        ],
+        "filings": [
+          {
+            "accessionNumber": "0000320193-25-000079",
+            "filedDate": "2025-10-31",
+            "form": "10-K"
+          }
+        ],
+        "issuer": {
+          "accountingStandard": "us_gaap",
+          "analysisProfile": "general_operating_us_gaap",
+          "cik": "0000320193",
+          "entityType": "operating_company"
+        },
+        "mappings": [
+          {
+            "mappingId": "map-usgaap-revenue-primary",
+            "mappingVersion": "5.0.0"
+          }
+        ],
+        "reportingPeriods": [
+          {
+            "classification": "year",
+            "currency": "USD",
+            "durationDays": 364,
+            "endDate": "2025-09-27",
+            "fiscalPeriod": "FY",
+            "fiscalYear": 2025,
+            "kind": "duration",
+            "periodId": "FY2025",
+            "restatementLineageId": "lineage-1",
+            "scopeId": "consolidated",
+            "startDate": "2024-09-29"
+          }
+        ],
+        "scopes": [
+          "consolidated"
+        ],
+        "units": [
+          "USD"
+        ],
+        "versions": {
+          "contract": "5.0.0",
+          "mappingCatalog": "5.0.0",
+          "normalizer": "5.0.0",
+          "profileCatalog": "5.0.0"
+        }
+      },
+      "projectionId": "fundamentalInputFingerprint"
+    },
+    {
+      "expectedFingerprint": "sha256:5086da3578b5837d3f81667388e72ea68e6952fee386ed4beac2be65cfb188db",
+      "id": "FP-FUND-ANALYSIS-001",
+      "input": {
+        "fundamentalInputFingerprint": "sha256:68b48408acee8d3442ed52327dca225e855ca8381a00c27eaecf70ce649c3ef7",
+        "metricResults": [
+          {
+            "metricId": "FND_REVENUE",
+            "periodKey": "FY2025",
+            "qualityClassification": "verified",
+            "state": "available",
+            "unit": "USD",
+            "valueDecimal": "1000"
+          }
+        ],
+        "ruleEvaluations": [
+          {
+            "ruleId": "INS_GROWTH_MARGIN_DETERIORATION",
+            "state": "not_evaluable"
+          }
+        ],
+        "synthesis": {
+          "limitations": [
+            "insufficient comparable metrics"
+          ],
+          "state": "insufficient_information",
+          "triggeredRuleIds": []
+        },
+        "versions": {
+          "analysisContract": "5.0.0",
+          "metricCatalog": "5.0.0",
+          "ruleCatalog": "5.0.0"
+        }
+      },
+      "projectionId": "fundamentalAnalysisFingerprint"
+    },
+    {
+      "expectedFingerprint": "sha256:70a4d0f87b26447e5801bc2eab97a8de650fcec6d9cd5ce007041b1cb35c51b6",
+      "id": "FP-OVERLAY-001",
+      "input": {
+        "adjustmentStatus": "unknown",
+        "contractVersion": "5.0.0",
+        "currency": "USD",
+        "frequency": "monthly",
+        "instrument": {
+          "symbol": "EXM",
+          "venueMic": "XNAS"
+        },
+        "observations": [
+          {
+            "date": "2025-01-31",
+            "priceDecimal": "10"
+          },
+          {
+            "date": "2025-02-28",
+            "priceDecimal": "12"
+          }
+        ],
+        "origin": {
+          "method": "csv_import",
+          "profileId": "local_csv_manual_v1",
+          "sourceFileSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "priceUse": "historical_descriptive_only",
+        "warnings": [
+          "adjustment_status_unknown"
+        ]
+      },
+      "projectionId": "historicalPriceOverlayFingerprint"
+    },
+    {
+      "expectedFingerprint": "sha256:8acdcca99e9427516c8a8e24ec2cca895318e93229895cc16f6ff62fec31c66a",
+      "id": "FP-PRICE-ANALYSIS-001",
+      "input": {
+        "historicalPriceOverlayFingerprint": "sha256:d721383de7b04ccb84837667178eb090783288b8d03b70f59885374475f7292a",
+        "priceMetricResults": [
+          {
+            "metricId": "MKT_SIMPLE_RETURN",
+            "qualityClassification": "usable_with_caveats",
+            "state": "available",
+            "unit": "ratio",
+            "valueDecimal": "0.2"
+          }
+        ],
+        "priceQuality": {
+          "axes": {
+            "adjustmentDisclosure": "unknown",
+            "currencyIntegrity": "single_declared",
+            "dateIntegrity": "unique_sorted",
+            "rowValidity": "all_valid"
+          },
+          "classification": "usable_with_caveats"
+        },
+        "versions": {
+          "analysisContract": "5.0.0",
+          "metricCatalog": "5.0.0",
+          "priceQualityModel": "5.0.0"
+        }
+      },
+      "projectionId": "priceAnalysisFingerprint"
+    }
+  ],
+  "vectorSetId": "fingerprint-test-vectors-v5",
+  "version": "5.0.0"
+}

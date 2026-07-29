@@ -1,0 +1,267 @@
+{
+  "fixtureSetId": "fundamental-bundle-test-vectors",
+  "negativeFixtures": [
+    {
+      "expectedValid": false,
+      "fixtureId": "FUND-BUNDLE-PRICE-CONTAMINATION",
+      "input": {
+        "bundleId": "fund-bundle-0000320193-fy2025-v1",
+        "conceptResolutions": [
+          {
+            "canonicalConceptId": "revenue",
+            "factId": "fact-revenue-fy2025",
+            "periodId": "FY2025",
+            "scopeId": "consolidated",
+            "state": "resolved"
+          }
+        ],
+        "contractVersion": "5.0.0",
+        "coverage": [
+          {
+            "canonicalConceptId": "revenue",
+            "profileId": "general_operating_us_gaap",
+            "resolvedMappingIds": [
+              "map-usgaap-revenue-primary"
+            ],
+            "state": "complete"
+          }
+        ],
+        "createdAt": "2026-07-21T10:00:00Z",
+        "facts": [
+          {
+            "canonicalConceptId": "revenue",
+            "factId": "fact-revenue-fy2025",
+            "mappingId": "map-usgaap-revenue-primary",
+            "mappingVersion": "5.0.0",
+            "periodId": "FY2025",
+            "scopeId": "consolidated",
+            "sourceRef": "sec-companyfacts-0000320193",
+            "unit": "USD",
+            "valueDecimal": "1000"
+          }
+        ],
+        "filings": [
+          {
+            "accessionNumber": "0000320193-25-000079",
+            "filedDate": "2025-10-31",
+            "form": "10-K"
+          }
+        ],
+        "fundamentalInputFingerprint": "sha256:68b48408acee8d3442ed52327dca225e855ca8381a00c27eaecf70ce649c3ef7",
+        "historicalPriceOverlay": {},
+        "issuer": {
+          "accountingStandard": "us_gaap",
+          "analysisProfile": "general_operating_us_gaap",
+          "cik": "0000320193",
+          "entityType": "operating_company",
+          "legalName": "Example Corporation"
+        },
+        "reportingPeriods": [
+          {
+            "classification": "year",
+            "currency": "USD",
+            "durationDays": 364,
+            "endDate": "2025-09-27",
+            "fiscalPeriod": "FY",
+            "fiscalYear": 2025,
+            "kind": "duration",
+            "periodId": "FY2025",
+            "restatementLineageId": "lineage-1",
+            "scopeId": "consolidated",
+            "startDate": "2024-09-29"
+          }
+        ],
+        "sourceAcquisition": {
+          "callBudget": 14,
+          "companyConceptFallbacks": [],
+          "companyFactsUsed": true,
+          "operationId": "op-sec-001",
+          "primarySource": "sec_company_facts",
+          "secCallCount": 2
+        },
+        "sourceEvidenceFingerprint": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "versions": {
+          "contract": "5.0.0",
+          "mappingCatalog": "5.0.0",
+          "normalizer": "5.0.0",
+          "profileCatalog": "5.0.0"
+        }
+      }
+    },
+    {
+      "expectedValid": false,
+      "fixtureId": "FUND-BUNDLE-CALL-BUDGET",
+      "input": {
+        "bundleId": "fund-bundle-0000320193-fy2025-v1",
+        "conceptResolutions": [
+          {
+            "canonicalConceptId": "revenue",
+            "factId": "fact-revenue-fy2025",
+            "periodId": "FY2025",
+            "scopeId": "consolidated",
+            "state": "resolved"
+          }
+        ],
+        "contractVersion": "5.0.0",
+        "coverage": [
+          {
+            "canonicalConceptId": "revenue",
+            "profileId": "general_operating_us_gaap",
+            "resolvedMappingIds": [
+              "map-usgaap-revenue-primary"
+            ],
+            "state": "complete"
+          }
+        ],
+        "createdAt": "2026-07-21T10:00:00Z",
+        "facts": [
+          {
+            "canonicalConceptId": "revenue",
+            "factId": "fact-revenue-fy2025",
+            "mappingId": "map-usgaap-revenue-primary",
+            "mappingVersion": "5.0.0",
+            "periodId": "FY2025",
+            "scopeId": "consolidated",
+            "sourceRef": "sec-companyfacts-0000320193",
+            "unit": "USD",
+            "valueDecimal": "1000"
+          }
+        ],
+        "filings": [
+          {
+            "accessionNumber": "0000320193-25-000079",
+            "filedDate": "2025-10-31",
+            "form": "10-K"
+          }
+        ],
+        "fundamentalInputFingerprint": "sha256:68b48408acee8d3442ed52327dca225e855ca8381a00c27eaecf70ce649c3ef7",
+        "issuer": {
+          "accountingStandard": "us_gaap",
+          "analysisProfile": "general_operating_us_gaap",
+          "cik": "0000320193",
+          "entityType": "operating_company",
+          "legalName": "Example Corporation"
+        },
+        "reportingPeriods": [
+          {
+            "classification": "year",
+            "currency": "USD",
+            "durationDays": 364,
+            "endDate": "2025-09-27",
+            "fiscalPeriod": "FY",
+            "fiscalYear": 2025,
+            "kind": "duration",
+            "periodId": "FY2025",
+            "restatementLineageId": "lineage-1",
+            "scopeId": "consolidated",
+            "startDate": "2024-09-29"
+          }
+        ],
+        "sourceAcquisition": {
+          "callBudget": 14,
+          "companyConceptFallbacks": [],
+          "companyFactsUsed": true,
+          "operationId": "op-sec-001",
+          "primarySource": "sec_company_facts",
+          "secCallCount": 15
+        },
+        "sourceEvidenceFingerprint": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "versions": {
+          "contract": "5.0.0",
+          "mappingCatalog": "5.0.0",
+          "normalizer": "5.0.0",
+          "profileCatalog": "5.0.0"
+        }
+      }
+    }
+  ],
+  "validFixtures": [
+    {
+      "expectedValid": true,
+      "fixtureId": "FUND-BUNDLE-VALID",
+      "input": {
+        "bundleId": "fund-bundle-0000320193-fy2025-v1",
+        "conceptResolutions": [
+          {
+            "canonicalConceptId": "revenue",
+            "factId": "fact-revenue-fy2025",
+            "periodId": "FY2025",
+            "scopeId": "consolidated",
+            "state": "resolved"
+          }
+        ],
+        "contractVersion": "5.0.0",
+        "coverage": [
+          {
+            "canonicalConceptId": "revenue",
+            "profileId": "general_operating_us_gaap",
+            "resolvedMappingIds": [
+              "map-usgaap-revenue-primary"
+            ],
+            "state": "complete"
+          }
+        ],
+        "createdAt": "2026-07-21T10:00:00Z",
+        "facts": [
+          {
+            "canonicalConceptId": "revenue",
+            "factId": "fact-revenue-fy2025",
+            "mappingId": "map-usgaap-revenue-primary",
+            "mappingVersion": "5.0.0",
+            "periodId": "FY2025",
+            "scopeId": "consolidated",
+            "sourceRef": "sec-companyfacts-0000320193",
+            "unit": "USD",
+            "valueDecimal": "1000"
+          }
+        ],
+        "filings": [
+          {
+            "accessionNumber": "0000320193-25-000079",
+            "filedDate": "2025-10-31",
+            "form": "10-K"
+          }
+        ],
+        "fundamentalInputFingerprint": "sha256:68b48408acee8d3442ed52327dca225e855ca8381a00c27eaecf70ce649c3ef7",
+        "issuer": {
+          "accountingStandard": "us_gaap",
+          "analysisProfile": "general_operating_us_gaap",
+          "cik": "0000320193",
+          "entityType": "operating_company",
+          "legalName": "Example Corporation"
+        },
+        "reportingPeriods": [
+          {
+            "classification": "year",
+            "currency": "USD",
+            "durationDays": 364,
+            "endDate": "2025-09-27",
+            "fiscalPeriod": "FY",
+            "fiscalYear": 2025,
+            "kind": "duration",
+            "periodId": "FY2025",
+            "restatementLineageId": "lineage-1",
+            "scopeId": "consolidated",
+            "startDate": "2024-09-29"
+          }
+        ],
+        "sourceAcquisition": {
+          "callBudget": 14,
+          "companyConceptFallbacks": [],
+          "companyFactsUsed": true,
+          "operationId": "op-sec-001",
+          "primarySource": "sec_company_facts",
+          "secCallCount": 2
+        },
+        "sourceEvidenceFingerprint": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "versions": {
+          "contract": "5.0.0",
+          "mappingCatalog": "5.0.0",
+          "normalizer": "5.0.0",
+          "profileCatalog": "5.0.0"
+        }
+      }
+    }
+  ],
+  "version": "5.0.0"
+}

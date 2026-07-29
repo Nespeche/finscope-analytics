@@ -1,0 +1,476 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B15",
+  "ordinal": 15,
+  "title": "Ingesta, overlay y métricas de precio",
+  "domain": "price-core",
+  "status": "PENDING",
+  "taskCount": 6,
+  "executionOrder": [
+    "T063",
+    "T064",
+    "T065",
+    "T066",
+    "T067",
+    "T068"
+  ],
+  "externalDependencies": [
+    "T012",
+    "T014",
+    "T018",
+    "T020",
+    "T023",
+    "T041",
+    "T043",
+    "T046"
+  ],
+  "requirements": [
+    "FR-013",
+    "FR-016",
+    "FR-020",
+    "FR-021",
+    "FR-022",
+    "FR-023",
+    "FR-024",
+    "FR-026",
+    "FR-028",
+    "FR-033",
+    "FR-039",
+    "NFR-001",
+    "NFR-002"
+  ],
+  "acceptanceCriteria": [
+    "AC-028",
+    "AC-037",
+    "AC-049",
+    "AC-050",
+    "AC-051",
+    "AC-052",
+    "AC-053",
+    "AC-054",
+    "AC-055",
+    "AC-063",
+    "AC-078",
+    "AC-079"
+  ],
+  "authorityIds": [
+    "AUTH-003",
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-006",
+    "AUTH-007",
+    "AUTH-008",
+    "AUTH-009",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-014",
+    "AUTH-016",
+    "AUTH-017",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-022",
+    "AUTH-026"
+  ],
+  "primaryAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md#active-source-policy",
+    "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+    "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md#normative-flow",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-028",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-037",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-049",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-050",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-051",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-052",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-053",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-054",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-055",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-063",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-078",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-079"
+  ],
+  "targetFiles": [
+    "src/domain/orchestration/price-events.ts",
+    "src/domain/price/csv-parser.ts",
+    "src/domain/price/import-preview.ts",
+    "src/domain/price/manual-entry.ts",
+    "src/domain/price/overlay-builder.ts",
+    "src/domain/price/price-metrics.ts",
+    "tests/integration/price/price-isolation.test.ts",
+    "tests/negative/price/csv-security.test.ts",
+    "tests/unit/price/csv-parser.test.ts",
+    "tests/unit/price/import-preview.test.ts",
+    "tests/unit/price/manual-entry.test.ts",
+    "tests/unit/price/overlay-vectors.test.ts",
+    "tests/unit/price/price-metric-vectors.test.ts"
+  ],
+  "testFiles": [
+    "tests/integration/price/price-isolation.test.ts",
+    "tests/negative/price/csv-security.test.ts",
+    "tests/unit/price/csv-parser.test.ts",
+    "tests/unit/price/import-preview.test.ts",
+    "tests/unit/price/manual-entry.test.ts",
+    "tests/unit/price/overlay-vectors.test.ts",
+    "tests/unit/price/price-metric-vectors.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T063",
+      "phaseNo": 6,
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "story": "US4",
+      "parallel": false,
+      "dependencies": [
+        "T012",
+        "T018",
+        "T023"
+      ],
+      "requirementRefs": [
+        "FR-021",
+        "FR-022",
+        "FR-039",
+        "NFR-002"
+      ],
+      "acceptanceRefs": [
+        "AC-054",
+        "AC-055"
+      ],
+      "authorityIds": [
+        "AUTH-004",
+        "AUTH-009",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-022",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/domain/price/csv-parser.ts",
+        "tests/unit/price/csv-parser.test.ts",
+        "tests/negative/price/csv-security.test.ts"
+      ],
+      "tests": [
+        "tests/unit/price/csv-parser.test.ts",
+        "tests/negative/price/csv-security.test.ts"
+      ],
+      "doneWhen": "5 MiB, 50,000 rows and 8-column limits fail before persistence",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "2071cdddc07ac7c9b8bb0fa20689633485b0d04d847f6138d7c713b92d7b8485"
+    },
+    {
+      "id": "T064",
+      "phaseNo": 6,
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "story": "US4",
+      "parallel": true,
+      "dependencies": [
+        "T012",
+        "T020"
+      ],
+      "requirementRefs": [
+        "FR-021",
+        "FR-022"
+      ],
+      "acceptanceRefs": [
+        "AC-054",
+        "AC-055"
+      ],
+      "authorityIds": [
+        "AUTH-009",
+        "AUTH-014",
+        "AUTH-016"
+      ],
+      "files": [
+        "src/domain/price/manual-entry.ts",
+        "tests/unit/price/manual-entry.test.ts"
+      ],
+      "tests": [
+        "tests/unit/price/manual-entry.test.ts"
+      ],
+      "doneWhen": "manual and CSV data produce the same canonical observation model",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "2ba280a0bcde262a487a9b724fdbbe7ce75a4bd6129f5d2493f88406a74c8325"
+    },
+    {
+      "id": "T065",
+      "phaseNo": 6,
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "story": "US4",
+      "parallel": false,
+      "dependencies": [
+        "T063",
+        "T064"
+      ],
+      "requirementRefs": [
+        "FR-021",
+        "FR-022",
+        "NFR-002"
+      ],
+      "acceptanceRefs": [
+        "AC-050",
+        "AC-054",
+        "AC-055"
+      ],
+      "authorityIds": [
+        "AUTH-009",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-022"
+      ],
+      "files": [
+        "src/domain/price/import-preview.ts",
+        "tests/unit/price/import-preview.test.ts"
+      ],
+      "tests": [
+        "tests/unit/price/import-preview.test.ts"
+      ],
+      "doneWhen": "nothing is persisted on selection, invalid preview or missing confirmation",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "c763013f3ecbee207e1b9bd6d134b70fbc102c76bc6423cb58cd1d8979eed222"
+    },
+    {
+      "id": "T066",
+      "phaseNo": 6,
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "story": "US4",
+      "parallel": false,
+      "dependencies": [
+        "T014",
+        "T020",
+        "T046",
+        "T065"
+      ],
+      "requirementRefs": [
+        "FR-020",
+        "FR-021",
+        "FR-022",
+        "FR-024",
+        "FR-026",
+        "FR-028",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-049",
+        "AC-050",
+        "AC-053",
+        "AC-063",
+        "AC-078",
+        "AC-079"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-022",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/domain/price/overlay-builder.ts",
+        "tests/unit/price/overlay-vectors.test.ts"
+      ],
+      "tests": [
+        "tests/unit/price/overlay-vectors.test.ts"
+      ],
+      "doneWhen": "clock-derived fields are rejected, overlay versions are immutable and fundamental fingerprints stay identical",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "4eeb46e56868458f20313bff906078c4e7926a454df4481e61f632c44334c7ea"
+    },
+    {
+      "id": "T067",
+      "phaseNo": 6,
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "story": "US4",
+      "parallel": false,
+      "dependencies": [
+        "T041",
+        "T043",
+        "T066"
+      ],
+      "requirementRefs": [
+        "FR-013",
+        "FR-016",
+        "FR-023",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-028",
+        "AC-050",
+        "AC-051",
+        "AC-052"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/domain/price/price-metrics.ts",
+        "tests/unit/price/price-metric-vectors.test.ts"
+      ],
+      "tests": [
+        "tests/unit/price/price-metric-vectors.test.ts"
+      ],
+      "doneWhen": "last/min/max/mean/median/return/drawdown/trend pass 24 vectors without duplicated formulas or fundamental-domain prerequisites",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "cd082bc2277fe0cb31fa5d45d972505adb54b28125b5efe97aef9ece646d33a9"
+    },
+    {
+      "id": "T068",
+      "phaseNo": 6,
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "story": "US4",
+      "parallel": false,
+      "dependencies": [
+        "T066",
+        "T067"
+      ],
+      "requirementRefs": [
+        "FR-021",
+        "FR-022",
+        "FR-023",
+        "FR-033",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-037",
+        "AC-049",
+        "AC-063",
+        "AC-078"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/domain/orchestration/price-events.ts",
+        "tests/integration/price/price-isolation.test.ts"
+      ],
+      "tests": [
+        "tests/integration/price/price-isolation.test.ts"
+      ],
+      "doneWhen": "fundamental bundle, analysis, snapshot, pointer and fingerprints never change",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "67d7488bf6b3ed5d4b08bed104a3e87fb0d81242e877a195f71f990f64fc0c61"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": false,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-unit",
+        "category": "unit",
+        "command": "npm run test:unit -- tests/unit/price/csv-parser.test.ts tests/unit/price/import-preview.test.ts tests/unit/price/manual-entry.test.ts tests/unit/price/overlay-vectors.test.ts tests/unit/price/price-metric-vectors.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-integration",
+        "category": "integration",
+        "command": "npm run test:integration -- tests/integration/price/price-isolation.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-negative",
+        "category": "negative",
+        "command": "npm run test:negative -- tests/negative/price/csv-security.test.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B15_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

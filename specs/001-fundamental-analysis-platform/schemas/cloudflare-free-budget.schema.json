@@ -1,0 +1,298 @@
+{
+  "$id": "https://finscope.local/schemas/cloudflare-free-budget.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cloudflare Free budget 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "budgetId",
+    "version",
+    "status",
+    "verifiedOn",
+    "officialSources",
+    "officialLimits",
+    "notUsedServices",
+    "architectureInvariants",
+    "serviceBudgets",
+    "flowBudgets",
+    "canaryThresholds",
+    "revalidationPolicy"
+  ],
+  "properties": {
+    "budgetId": {
+      "const": "cloudflare-free-budget"
+    },
+    "version": {
+      "const": "1.1.0"
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "verifiedOn": {
+      "const": "2026-07-21"
+    },
+    "officialSources": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "service",
+          "url",
+          "lastObservedUpdate"
+        ],
+        "properties": {
+          "service": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "lastObservedUpdate": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      }
+    },
+    "officialLimits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pages_files",
+        "pages_asset_mib",
+        "workers_requests_day",
+        "workers_cpu_ms",
+        "workers_memory_mb",
+        "workers_subrequests",
+        "workers_bundle_mb",
+        "workers_cron_count",
+        "d1_rows_read_day",
+        "d1_rows_written_day",
+        "d1_storage_gb",
+        "d1_db_mb",
+        "d1_queries_invocation",
+        "kv_reads_day",
+        "kv_writes_day",
+        "kv_storage_gb",
+        "queues_operations_day",
+        "queues_retention_hours_free",
+        "pages_builds_month"
+      ],
+      "properties": {
+        "pages_files": {
+          "const": 20000
+        },
+        "pages_asset_mib": {
+          "const": 25
+        },
+        "workers_requests_day": {
+          "const": 100000
+        },
+        "workers_cpu_ms": {
+          "const": 10
+        },
+        "workers_memory_mb": {
+          "const": 128
+        },
+        "workers_subrequests": {
+          "const": 50
+        },
+        "workers_bundle_mb": {
+          "const": 3
+        },
+        "workers_cron_count": {
+          "const": 5
+        },
+        "d1_rows_read_day": {
+          "const": 5000000
+        },
+        "d1_rows_written_day": {
+          "const": 100000
+        },
+        "d1_storage_gb": {
+          "const": 5
+        },
+        "d1_db_mb": {
+          "const": 500
+        },
+        "d1_queries_invocation": {
+          "const": 50
+        },
+        "kv_reads_day": {
+          "const": 100000
+        },
+        "kv_writes_day": {
+          "const": 1000
+        },
+        "kv_storage_gb": {
+          "const": 1
+        },
+        "queues_operations_day": {
+          "const": 10000
+        },
+        "queues_retention_hours_free": {
+          "const": 24
+        },
+        "pages_builds_month": {
+          "type": "integer",
+          "const": 500
+        }
+      }
+    },
+    "notUsedServices": {
+      "type": "array",
+      "minItems": 6,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "architectureInvariants": {
+      "type": "array",
+      "minItems": 5,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "serviceBudgets": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "service",
+          "reason",
+          "expectedVolume",
+          "resourceBudget",
+          "safetyMargin",
+          "limitBehavior",
+          "cacheStrategy",
+          "batching",
+          "rateLimiting",
+          "controlledDegradation",
+          "freeAlternative"
+        ],
+        "properties": {
+          "service": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "expectedVolume": {
+            "type": "string",
+            "minLength": 1
+          },
+          "resourceBudget": {
+            "type": "string",
+            "minLength": 1
+          },
+          "safetyMargin": {
+            "type": "string",
+            "minLength": 1
+          },
+          "limitBehavior": {
+            "type": "string",
+            "minLength": 1
+          },
+          "cacheStrategy": {
+            "type": "string",
+            "minLength": 1
+          },
+          "batching": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rateLimiting": {
+            "type": "string",
+            "minLength": 1
+          },
+          "controlledDegradation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "freeAlternative": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "flowBudgets": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "flowId",
+          "workerRequests",
+          "workerCpuMsPerRequest",
+          "workerSubrequestsPerRequest",
+          "d1RowsRead",
+          "d1RowsWritten",
+          "payloadBytes",
+          "failureMode"
+        ],
+        "properties": {
+          "flowId": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "workerRequests": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "workerCpuMsPerRequest": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 6
+          },
+          "workerSubrequestsPerRequest": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 2
+          },
+          "d1RowsRead": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 500
+          },
+          "d1RowsWritten": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 500
+          },
+          "payloadBytes": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 67108864
+          },
+          "failureMode": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "canaryThresholds": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "revalidationPolicy": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

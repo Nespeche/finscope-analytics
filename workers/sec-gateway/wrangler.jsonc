@@ -1,0 +1,20 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "finscope-sec-gateway",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-22",
+  "workers_dev": false,
+  "preview_urls": false,
+  "d1_databases": [
+    {
+      "binding": "CATALOG_DB",
+      "database_name": "finscope-catalog-metadata",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ]
+  // Required deployment bindings are declared by SecGatewayEnvironment in src/index.ts:
+  // SEC_USER_AGENT
+  // SEC_CONTACT_EMAIL
+  // Values must be provided outside the package at deployment/runtime.
+}

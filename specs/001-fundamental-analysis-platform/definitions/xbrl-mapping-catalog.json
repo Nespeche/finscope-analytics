@@ -1,0 +1,737 @@
+{
+  "catalogId": "xbrl-mapping-catalog",
+  "debtPolicy": {
+    "buckets": [
+      "shortTermBorrowings",
+      "currentPortionLongTermDebt",
+      "longTermDebtNoncurrent",
+      "commercialPaper",
+      "otherApprovedInterestBearingBorrowings"
+    ],
+    "completeConditions": [
+      "every included fact resolves through an ACTIVE exact or approved_alias mapping",
+      "all included facts share instant date, scope, currency and lineage",
+      "no overlap pair is unresolved",
+      "any issuer-extension debt tag requires a separately approved exact mappingId before inclusion"
+    ],
+    "dependentMetricPolicy": "partial or insufficient borrowingsDebt forces FND_NET_DEBT and FND_DEBT_EQUITY to insufficient",
+    "directTotalPolicy": "disabled_by_default; a direct total may be used only through a separately ACTIVE exact mapping that explicitly excludes leases and operating liabilities; no such generic mapping is active in the MVP",
+    "insufficientConditions": [
+      "no approved bucket resolves and absence of debt cannot be established",
+      "currency, scope or instant date are incompatible"
+    ],
+    "knownAbsentConcepts": [
+      {
+        "canonicalConceptId": "otherApprovedInterestBearingBorrowings",
+        "impactOnMetrics": [
+          "FND_BORROWINGS_DEBT may reach partial state for issuers with non-standard debt tagging; this cascades to FND_NET_DEBT and FND_DEBT_EQUITY per dependentMetricPolicy"
+        ],
+        "intent": "known_absent_intent",
+        "rationale": "No canonical US-GAAP or IFRS XBRL tag maps to a residual catch-all for interest-bearing borrowings that are not ShortTermBorrowings, CurrentPortionLongTermDebt, LongTermDebtNoncurrent, or CommercialPaper. Company-specific extension tags require a separately approved exact mappingId per the completeConditions rule. Absence of this bucket does not trigger insufficient unless all other buckets also fail to resolve.",
+        "remediation": "NF-002 v0.18: formally declared known_absent_intent to resolve cross-document gap identified in audit"
+      }
+    ],
+    "leaseTreatment": "excluded",
+    "operatingLiabilitiesExcluded": true,
+    "partialConditions": [
+      "at least one approved bucket resolves and completeness cannot be proven",
+      "an overlap remains unresolved",
+      "an observed issuer-extension borrowing tag lacks an ACTIVE mapping"
+    ],
+    "policyId": "borrowings-debt-v2",
+    "version": "5.0.0"
+  },
+  "derivations": [
+    {
+      "conditions": [
+        "same periodId",
+        "same scopeId",
+        "same currency",
+        "same restatementLineageId",
+        "direct exact or approved-alias grossProfit absent"
+      ],
+      "derivationId": "derive-gross-profit-v1",
+      "formula": "revenue - costOfRevenue",
+      "inputConceptIds": [
+        "revenue",
+        "costOfRevenue"
+      ],
+      "outputConceptId": "grossProfit",
+      "outputMappingQuality": "derived",
+      "precedence": 100,
+      "profileIds": [
+        "general_operating_us_gaap"
+      ],
+      "version": "5.0.0"
+    },
+    {
+      "conditions": [
+        "same periodId",
+        "same scopeId",
+        "same currency",
+        "same restatementLineageId",
+        "components disjoint and complete",
+        "combined exact fact absent"
+      ],
+      "derivationId": "derive-da-sum-v1",
+      "formula": "depreciation + amortization",
+      "inputConceptIds": [
+        "depreciation",
+        "amortization"
+      ],
+      "outputConceptId": "depreciationAndAmortization",
+      "outputMappingQuality": "derived",
+      "precedence": 100,
+      "profileIds": [
+        "general_operating_us_gaap"
+      ],
+      "version": "5.0.0"
+    }
+  ],
+  "invariants": [
+    "no fuzzy matching",
+    "no label similarity",
+    "no unregistered taxonomy or tag",
+    "zero or one selected mapping per concept, period and scope; ties are ambiguous",
+    "mapping IDs and versions are included in fundamentalInputFingerprint"
+  ],
+  "mappings": [
+    {
+      "canonicalConceptId": "revenue",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-revenue-primary",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "RevenueFromContractWithCustomerExcludingAssessedTax",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "revenue",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-revenue-alias-sales-net",
+      "mappingQuality": "approved_alias",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 20,
+      "profileIds": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "SalesRevenueNet",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "revenue",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-ifrs-revenue-primary",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_ifrs_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "Revenue",
+      "taxonomy": "ifrs-full",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "costOfRevenue",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-cost-revenue-primary",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "CostOfRevenue",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "costOfRevenue",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-cost-revenue-alias",
+      "mappingQuality": "approved_alias",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 20,
+      "profileIds": [
+        "general_operating_us_gaap"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "CostOfGoodsAndServicesSold",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "grossProfit",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-gross-profit-primary",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "GrossProfit",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "operatingIncome",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-operating-income-primary",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "OperatingIncomeLoss",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "netIncome",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-net-income-primary",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap",
+        "financial_institution_limited",
+        "insurance_limited",
+        "reit_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "NetIncomeLoss",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "netIncome",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-net-income-common-alias",
+      "mappingQuality": "approved_alias",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 20,
+      "profileIds": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "NetIncomeLossAvailableToCommonStockholdersBasic",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "netIncome",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-ifrs-net-income-primary",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_ifrs_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "ProfitLoss",
+      "taxonomy": "ifrs-full",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "cashFlowFromOperations",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-cfo-primary",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "NetCashProvidedByUsedInOperatingActivities",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "cashFlowFromOperations",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-ifrs-cfo-primary",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_ifrs_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "CashFlowsFromUsedInOperatingActivities",
+      "taxonomy": "ifrs-full",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "capitalExpenditures",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-capex-primary",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "absolute_outflow",
+      "status": "ACTIVE",
+      "tag": "PaymentsToAcquirePropertyPlantAndEquipment",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "capitalExpenditures",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-capex-alias",
+      "mappingQuality": "approved_alias",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 20,
+      "profileIds": [
+        "general_operating_us_gaap"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "absolute_outflow",
+      "status": "ACTIVE",
+      "tag": "PaymentsForAdditionsToPropertyPlantAndEquipment",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "cashAndEquivalents",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-cash-primary",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "instant",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap",
+        "financial_institution_limited",
+        "insurance_limited",
+        "reit_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "CashAndCashEquivalentsAtCarryingValue",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "cashAndEquivalents",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-ifrs-cash-primary",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "instant",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_ifrs_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "CashAndCashEquivalents",
+      "taxonomy": "ifrs-full",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "currentAssets",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-current-assets",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "instant",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "AssetsCurrent",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "currentLiabilities",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-current-liabilities",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "instant",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "LiabilitiesCurrent",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "assets",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-assets",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "instant",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap",
+        "financial_institution_limited",
+        "insurance_limited",
+        "reit_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "Assets",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "assets",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-ifrs-assets",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "instant",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_ifrs_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "Assets",
+      "taxonomy": "ifrs-full",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "equity",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-equity",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "instant",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap",
+        "financial_institution_limited",
+        "insurance_limited",
+        "reit_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "StockholdersEquity",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "equity",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-ifrs-equity",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "instant",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_ifrs_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "Equity",
+      "taxonomy": "ifrs-full",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "interestExpense",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-interest-expense",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "absolute_expense",
+      "status": "ACTIVE",
+      "tag": "InterestExpenseNonOperating",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "depreciationAndAmortization",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-da-combined",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "absolute_expense",
+      "status": "ACTIVE",
+      "tag": "DepreciationDepletionAndAmortization",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "depreciation",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-depreciation",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 20,
+      "profileIds": [
+        "general_operating_us_gaap"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "absolute_expense",
+      "status": "ACTIVE",
+      "tag": "Depreciation",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "amortization",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-amortization",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 20,
+      "profileIds": [
+        "general_operating_us_gaap"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "absolute_expense",
+      "status": "ACTIVE",
+      "tag": "AmortizationOfIntangibleAssets",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "dilutedShares",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-usgaap-diluted-shares",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap",
+        "financial_institution_limited",
+        "insurance_limited",
+        "reit_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "WeightedAverageNumberOfDilutedSharesOutstanding",
+      "taxonomy": "us-gaap",
+      "unitKind": "shares"
+    },
+    {
+      "canonicalConceptId": "dilutedShares",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-ifrs-diluted-shares",
+      "mappingQuality": "approved_alias",
+      "mappingVersion": "5.0.0",
+      "periodKind": "duration",
+      "precedence": 20,
+      "profileIds": [
+        "general_operating_ifrs_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "as_reported",
+      "status": "ACTIVE",
+      "tag": "AdjustedWeightedAverageShares",
+      "taxonomy": "ifrs-full",
+      "unitKind": "shares"
+    },
+    {
+      "canonicalConceptId": "shortTermBorrowings",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-debt-short-term",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "instant",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "positive_liability",
+      "status": "ACTIVE",
+      "tag": "ShortTermBorrowings",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "currentPortionLongTermDebt",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-debt-current-ltd",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "instant",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "positive_liability",
+      "status": "ACTIVE",
+      "tag": "LongTermDebtCurrent",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "longTermDebtNoncurrent",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-debt-ltd-noncurrent",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "instant",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "positive_liability",
+      "status": "ACTIVE",
+      "tag": "LongTermDebtNoncurrent",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    },
+    {
+      "canonicalConceptId": "commercialPaper",
+      "evidenceRef": "SEC taxonomy definition plus catalog approval",
+      "inferenceAllowed": false,
+      "mappingId": "map-debt-commercial-paper",
+      "mappingQuality": "exact",
+      "mappingVersion": "5.0.0",
+      "periodKind": "instant",
+      "precedence": 10,
+      "profileIds": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "scopePolicy": "consolidated_only",
+      "signPolicy": "positive_liability",
+      "status": "ACTIVE",
+      "tag": "CommercialPaper",
+      "taxonomy": "us-gaap",
+      "unitKind": "currency"
+    }
+  ],
+  "selectionOrder": [
+    "mapping.precedence",
+    "mapping.mappingId"
+  ],
+  "status": "ACTIVE_AUTHORITY",
+  "version": "5.0.0"
+}

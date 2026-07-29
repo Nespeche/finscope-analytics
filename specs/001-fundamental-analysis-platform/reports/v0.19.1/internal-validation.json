@@ -1,0 +1,849 @@
+{
+  "normative": {
+    "summary": {
+      "checks": 53,
+      "passed": 53,
+      "failed": 0
+    },
+    "checks": [
+      {
+        "id": "V-001",
+        "domain": "syntax",
+        "passed": true,
+        "evidence": "81 JSON parsed",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-002",
+        "domain": "syntax",
+        "passed": true,
+        "evidence": "2 YAML parsed",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-003",
+        "domain": "schemas",
+        "passed": true,
+        "evidence": "24 schemas Draft 2020-12 valid",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-010",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "definitions/acceptance-criteria-catalog.json validates against acceptance-criteria-catalog.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-011",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "definitions/accounting-profile-catalog.json validates against accounting-profile-catalog.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-012",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "definitions/metric-catalog.json validates against metric-catalog.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-013",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "definitions/insight-rule-catalog.json validates against insight-rule-catalog.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-014",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "definitions/quality-model-catalog.json validates against quality-model-catalog.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-015",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "definitions/state-and-capability-catalog.json validates against state-and-capability-catalog.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-016",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "definitions/xbrl-mapping-catalog.json validates against xbrl-mapping-catalog.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-017",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "contracts/fingerprint-projections.json validates against fingerprint-projections.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-018",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "governance/requirements-acceptance-traceability.json validates against requirements-acceptance-traceability.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-019",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "definitions/formula-catalog.json validates against formula-catalog.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-020",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "contracts/cache-and-refresh-policy.json validates against cache-and-refresh-policy.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-021",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "contracts/sec-filing-fact-selection-policy.json validates against sec-filing-fact-selection-policy.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-022",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "contracts/security-and-input-limits.json validates against security-and-input-limits.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-023",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "definitions/wcag-2.2-aa-matrix.json validates against wcag-2.2-aa-matrix.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-024",
+        "domain": "schema-instance",
+        "passed": true,
+        "evidence": "contracts/local-export-restore-contract.json validates against local-export-restore-contract.schema.json",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-030",
+        "domain": "acceptance",
+        "passed": true,
+        "evidence": "AC-001..AC-084 exactly once",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-031",
+        "domain": "acceptance",
+        "passed": true,
+        "evidence": "84/84 fixtureRef resolve",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-032",
+        "domain": "acceptance",
+        "passed": true,
+        "evidence": "84/84 authorityRef resolve",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-033",
+        "domain": "acceptance",
+        "passed": true,
+        "evidence": "catalog/fixture mirror 84/84",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-034",
+        "domain": "traceability",
+        "passed": true,
+        "evidence": "49 exact FR/NFR",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-035",
+        "domain": "traceability",
+        "passed": true,
+        "evidence": "all requirements covered and no unknown requirement IDs",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-036",
+        "domain": "traceability",
+        "passed": true,
+        "evidence": "reverse requirement→AC matches catalog",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-040",
+        "domain": "governance",
+        "passed": true,
+        "evidence": "34 unique active authorities",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-041",
+        "domain": "governance",
+        "passed": true,
+        "evidence": "34/34 primary authorities resolve",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-042",
+        "domain": "governance",
+        "passed": true,
+        "evidence": "all authority consumers exist",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-043",
+        "domain": "governance",
+        "passed": true,
+        "evidence": "reverseConsumers exactly regenerated",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-050",
+        "domain": "formulas",
+        "passed": true,
+        "evidence": "15 formulas; no metric/formula orphans",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-051",
+        "domain": "metrics",
+        "passed": true,
+        "evidence": "24 fundamental + 8 price metrics",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-052",
+        "domain": "metrics",
+        "passed": true,
+        "evidence": "all price metrics use overlay scope, not accounting scope",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-053",
+        "domain": "metrics",
+        "passed": true,
+        "evidence": "96 metric vectors distributed 72/24",
+        "expected": null,
+        "actual": {
+          "fundamental": 72,
+          "price": 24
+        }
+      },
+      {
+        "id": "V-054",
+        "domain": "formulas",
+        "passed": true,
+        "evidence": "all formulas have vectors",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-060",
+        "domain": "states",
+        "passed": true,
+        "evidence": "81 combinations = 35 permitted + 46 prohibited",
+        "expected": null,
+        "actual": {
+          "total": 81,
+          "permitted": 35,
+          "prohibited": 46
+        }
+      },
+      {
+        "id": "V-070",
+        "domain": "sec",
+        "passed": true,
+        "evidence": "Company Facts primary, exact fallback, 14-call budget",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-071",
+        "domain": "sec",
+        "passed": true,
+        "evidence": "forms policy complete",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-072",
+        "domain": "sec",
+        "passed": true,
+        "evidence": "4 frozen SEC fixture files match manifest SHA-256",
+        "expected": null,
+        "actual": [
+          [
+            "apple-submissions-official-excerpt.json",
+            true
+          ],
+          [
+            "apple-companyfacts-official-excerpt.json",
+            true
+          ],
+          [
+            "apple-companyconcept-revenues-official-excerpt.json",
+            true
+          ],
+          [
+            "invalid-companyfacts-partial.json",
+            true
+          ]
+        ]
+      },
+      {
+        "id": "V-073",
+        "domain": "security",
+        "passed": true,
+        "evidence": "gateway limits exact",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-074",
+        "domain": "security",
+        "passed": true,
+        "evidence": "CSV limits exact",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-080",
+        "domain": "storage",
+        "passed": true,
+        "evidence": "export/restore/delete transactions defined",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-081",
+        "domain": "storage",
+        "passed": true,
+        "evidence": "restore transactional and prevalidated",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-090",
+        "domain": "accessibility",
+        "passed": true,
+        "evidence": "21 WCAG oracles release-blocking",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-091",
+        "domain": "typescript",
+        "passed": true,
+        "evidence": "TypeScript end-to-end decision explicit",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-100",
+        "domain": "openapi",
+        "passed": true,
+        "evidence": "OpenAPI 3.1.1 with exactly 11 GET operations",
+        "expected": null,
+        "actual": [
+          [
+            "GET",
+            "/health",
+            "getHealth"
+          ],
+          [
+            "GET",
+            "/policies",
+            "getPolicies"
+          ],
+          [
+            "GET",
+            "/definitions",
+            "listDefinitions"
+          ],
+          [
+            "GET",
+            "/definitions/{definitionId}",
+            "getDefinition"
+          ],
+          [
+            "GET",
+            "/mappings",
+            "listMappings"
+          ],
+          [
+            "GET",
+            "/mappings/{mappingId}",
+            "getMapping"
+          ],
+          [
+            "GET",
+            "/issuers/{cik}",
+            "getIssuer"
+          ],
+          [
+            "GET",
+            "/issuers/{cik}/submissions",
+            "getIssuerSubmissions"
+          ],
+          [
+            "GET",
+            "/issuers/{cik}/filings/{accessionNumber}",
+            "getIssuerFiling"
+          ],
+          [
+            "GET",
+            "/issuers/{cik}/company-facts",
+            "getCompanyFacts"
+          ],
+          [
+            "GET",
+            "/issuers/{cik}/company-concepts/{taxonomy}/{tag}",
+            "getCompanyConcept"
+          ]
+        ]
+      },
+      {
+        "id": "V-101",
+        "domain": "openapi",
+        "passed": true,
+        "evidence": "all OpenAPI references resolve",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-110",
+        "domain": "gate",
+        "passed": true,
+        "evidence": "downstream gates false",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-111",
+        "domain": "workflow",
+        "passed": true,
+        "evidence": "workflow exact constitutional phase sequence",
+        "expected": null,
+        "actual": [
+          "constitution",
+          "specify",
+          "clarify",
+          "plan",
+          "checklist",
+          "tasks",
+          "analyze",
+          "implement",
+          "converge"
+        ]
+      },
+      {
+        "id": "V-112",
+        "domain": "workflow",
+        "passed": true,
+        "evidence": "only generic integration",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-113",
+        "domain": "scope",
+        "passed": true,
+        "evidence": "no active tasks.md",
+        "expected": null,
+        "actual": null
+      },
+      {
+        "id": "V-114",
+        "domain": "scope",
+        "passed": true,
+        "evidence": "no product code/dependencies/SQL",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-120",
+        "domain": "hygiene",
+        "passed": true,
+        "evidence": "no secret patterns",
+        "expected": null,
+        "actual": []
+      },
+      {
+        "id": "V-121",
+        "domain": "hygiene",
+        "passed": true,
+        "evidence": "no temporary/regenerable artifacts",
+        "expected": null,
+        "actual": []
+      }
+    ]
+  },
+  "fixtureSchemas": {
+    "summary": {
+      "validations": 48,
+      "passed": 48,
+      "failed": 0
+    },
+    "results": [
+      {
+        "label": "fixtures/analysis/analysis-result-test-vectors.json:validFixtures[0]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/analysis/analysis-result-test-vectors.json:validFixtures[1]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/analysis/analysis-result-test-vectors.json:negativeFixtures[0]",
+        "passed": true,
+        "errorCount": 1,
+        "errors": [
+          "{'analysisId': 'fund-analysis-001', 'analysisKind': 'fundamental', 'createdAt': '2026-07-21T10:00:01Z', 'fundamentalAnalysisFingerprint': 'sha256:5086da3578b5837d3f81667388e72ea68e6952fee386ed4beac2be65cfb188db', 'fundamentalInputFingerprint': 'sha256:68b48408acee8d3442ed52327dca225e855ca8381a00c27eaecf70ce649c3ef7', 'issuerCik': '0000320193', 'metricResults': [{'evidenceRefs': ['fact-revenue-fy2025'], 'metricId': 'FND_REVENUE', 'periodKey': 'FY2025', 'qualityClassification': 'verified', 'reasonCodes': [], 'state': 'available', 'unit': 'USD', 'valueDecimal': '1000'}], 'priceAnalysisFingerprint': 'sha256:8acdcca99e9427516c8a8e24ec2cca895318e93229895cc16f6ff62fec31c66a', 'ruleEvaluations': [{'evidenceRefs': [], 'reasonCodes': ['prior_period_missing'], 'ruleId': 'INS_GROWTH_MARGIN_DETERIORATION', 'state': 'not_evaluable'}], 'synthesis': {'limitations': ['insufficient comparable metrics'], 'state': 'insufficient_information', 'triggeredRuleIds': []}, 'versions': {'analysisContract': '5.0.0', 'metricCatalog': '5.0.0', 'ruleCatalog': '5.0.0'}} is not valid under any of the given schemas"
+        ]
+      },
+      {
+        "label": "fixtures/analysis/analysis-result-test-vectors.json:negativeFixtures[1]",
+        "passed": true,
+        "errorCount": 1,
+        "errors": [
+          "{'analysisId': 'price-analysis-001', 'analysisKind': 'historical_price_descriptive', 'createdAt': '2026-07-21T10:00:02Z', 'historicalPriceOverlayFingerprint': 'sha256:70a4d0f87b26447e5801bc2eab97a8de650fcec6d9cd5ce007041b1cb35c51b6', 'issuerCik': '0000320193', 'priceAnalysisFingerprint': 'sha256:8acdcca99e9427516c8a8e24ec2cca895318e93229895cc16f6ff62fec31c66a', 'priceMetricResults': [{'evidenceRefs': ['price-overlay-001'], 'metricId': 'MKT_SIMPLE_RETURN', 'periodKey': '2025-01-31/2025-02-28', 'qualityClassification': 'usable_with_caveats', 'reasonCodes': ['adjustment_status_unknown'], 'state': 'available', 'unit': 'ratio', 'valueDecimal': '0.2'}], 'priceQuality': {'axes': {'adjustmentDisclosure': 'unknown', 'currencyIntegrity': 'single_declared', 'dateIntegrity': 'unique_sorted', 'rowValidity': 'all_valid'}, 'classification': 'usable_with_caveats'}, 'ruleEvaluations': [], 'versions': {'analysisContract': '5.0.0', 'metricCatalog': '5.0.0', 'priceQualityModel': '5.0.0'}} is not valid under any of the given schemas"
+        ]
+      },
+      {
+        "label": "fixtures/bundles/fundamental-bundle-test-vectors.json:validFixtures[0]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/bundles/fundamental-bundle-test-vectors.json:negativeFixtures[0]",
+        "passed": true,
+        "errorCount": 1,
+        "errors": [
+          "Additional properties are not allowed ('historicalPriceOverlay' was unexpected)"
+        ]
+      },
+      {
+        "label": "fixtures/bundles/fundamental-bundle-test-vectors.json:negativeFixtures[1]",
+        "passed": true,
+        "errorCount": 1,
+        "errors": [
+          "15 is greater than the maximum of 14"
+        ]
+      },
+      {
+        "label": "fixtures/storage/storage-record-schema-examples.json:validFixtures[0]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/storage/storage-record-schema-examples.json:validFixtures[1]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/storage/storage-record-schema-examples.json:validFixtures[2]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/storage/storage-record-schema-examples.json:validFixtures[3]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/sec/sec-schema-examples.json:validFixtures[0]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/sec/sec-schema-examples.json:validFixtures[1]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/sec/sec-schema-examples.json:negativeFixtures[0]",
+        "passed": true,
+        "errorCount": 1,
+        "errors": [
+          "14 was expected"
+        ]
+      },
+      {
+        "label": "fixtures/sec/sec-schema-examples.json:negativeFixtures[1]",
+        "passed": true,
+        "errorCount": 1,
+        "errors": [
+          "15 is greater than the maximum of 14"
+        ]
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:validFixtures[0]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:validFixtures[1]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:validFixtures[2]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:validFixtures[3]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:validFixtures[4]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:validFixtures[5]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:validFixtures[6]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:validFixtures[7]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:validFixtures[8]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:validFixtures[9]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:negativeFixtures[0]",
+        "passed": true,
+        "errorCount": 1,
+        "errors": [
+          "400 was expected"
+        ]
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:negativeFixtures[1]",
+        "passed": true,
+        "errorCount": 1,
+        "errors": [
+          "'invalid_request' was expected"
+        ]
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:negativeFixtures[2]",
+        "passed": true,
+        "errorCount": 1,
+        "errors": [
+          "Additional properties are not allowed ('unexpected' was unexpected)"
+        ]
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:negativeFixtures[3]",
+        "passed": true,
+        "errorCount": 1,
+        "errors": [
+          "['correct_input'] was expected"
+        ]
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:negativeFixtures[4]",
+        "passed": true,
+        "errorCount": 1,
+        "errors": [
+          "[] was expected"
+        ]
+      },
+      {
+        "label": "fixtures/problems/problem-details-test-vectors.json:negativeFixtures[5]",
+        "passed": true,
+        "errorCount": 1,
+        "errors": [
+          "'issuer' was expected"
+        ]
+      },
+      {
+        "label": "fixtures/problems/local-operation-issue-test-vectors.json[0]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/problems/local-operation-issue-test-vectors.json[1]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/problems/local-operation-issue-test-vectors.json[2]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/problems/local-operation-issue-test-vectors.json[3]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/problems/local-operation-issue-test-vectors.json[4]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/price/historical-price-overlay-test-vectors.json[0]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "fixtures/price/historical-price-overlay-test-vectors.json[1]",
+        "passed": true,
+        "errorCount": 2,
+        "errors": [
+          "Additional properties are not allowed ('displayAgeDays' was unexpected)",
+          "{'adjustmentStatus': 'unadjusted', 'contractVersion': '5.0.0', 'createdAt': '2026-07-21T10:00:00Z', 'currency': 'USD', 'displayAgeDays': 1, 'frequency': 'monthly', 'historicalPriceOverlayFingerprint': 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 'instrument': {'symbol': 'AAPL', 'venueMic': 'XNAS'}, 'issuerCik': '0000320193', 'observations': [{'date': '2025-01-31', 'priceDecimal': '10'}, {'date': '2025-02-28', 'priceDecimal': '12'}, {'date': '2025-03-31', 'priceDecimal': '11'}, {'date': '2025-04-30', 'priceDecimal': '15'}], 'origin': {'method': 'csv_import', 'profileId': 'local_csv_manual_v1', 'sourceFileSha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'}, 'overlayId': 'price-overlay-0000320193-aapl', 'overlayVersion': 1, 'priceQuality': {'axes': {'adjustmentDisclosure': 'declared', 'currencyIntegrity': 'single_declared', 'dateIntegrity': 'unique_sorted', 'rowValidity': 'all_valid'}, 'classification': 'verified'}, 'priceUse': 'historical_descriptive_only', 'sourceEvidenceFingerprint': 'sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc', 'warnings': []} should not be valid under {'anyOf': [{'required': ['displayAgeDays']}, {'required': ['evaluationDate']}, {'required': ['rangeStart']}, {'required': ['rangeEnd']}, {'required': ['asOfDate']}, {'required': ['observationCount']}]}"
+        ]
+      },
+      {
+        "label": "fixtures/price/historical-price-overlay-test-vectors.json[2]",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "rule:INS_GROWTH_MARGIN_DETERIORATION",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "rule:INS_EARNINGS_WITHOUT_CASH_CONVERSION",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "rule:INS_DEBT_FUNDED_GROWTH",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "rule:INS_LIQUIDITY_IMPROVEMENT",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "rule:INS_DELEVERAGING",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "rule:INS_PERSISTENT_NEGATIVE_FCF",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "rule:INS_DILUTION",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "rule:INS_INTEREST_COVERAGE_DETERIORATION",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      },
+      {
+        "label": "rule:INS_EBITDA_CASH_DIVERGENCE",
+        "passed": true,
+        "errorCount": 0,
+        "errors": []
+      }
+    ]
+  }
+}

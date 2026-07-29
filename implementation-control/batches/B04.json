@@ -1,0 +1,408 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B04",
+  "ordinal": 4,
+  "title": "Estados, problemas, telemetría y modelo de dominio",
+  "domain": "foundation-domain",
+  "status": "COMPLETED",
+  "taskCount": 4,
+  "executionOrder": [
+    "T017",
+    "T018",
+    "T019",
+    "T020"
+  ],
+  "externalDependencies": [
+    "T002",
+    "T005",
+    "T011",
+    "T012",
+    "T015",
+    "T016"
+  ],
+  "requirements": [
+    "FR-008",
+    "FR-020",
+    "FR-021",
+    "FR-026",
+    "FR-037",
+    "FR-038",
+    "FR-039",
+    "FR-040",
+    "FR-041",
+    "NFR-002",
+    "NFR-003",
+    "NFR-005"
+  ],
+  "acceptanceCriteria": [
+    "AC-002",
+    "AC-011",
+    "AC-042",
+    "AC-046",
+    "AC-047",
+    "AC-048",
+    "AC-049",
+    "AC-053",
+    "AC-071",
+    "AC-072",
+    "AC-073",
+    "AC-075",
+    "AC-076",
+    "AC-078",
+    "AC-082"
+  ],
+  "authorityIds": [
+    "AUTH-003",
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-006",
+    "AUTH-007",
+    "AUTH-008",
+    "AUTH-009",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-013",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-017",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-022",
+    "AUTH-024",
+    "AUTH-025",
+    "AUTH-026",
+    "AUTH-034"
+  ],
+  "primaryAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+    "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json#/entries",
+    "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md#active-source-policy",
+    "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions/3",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria/70",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/resourceNotFoundVariants",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/0",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/1",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md",
+    "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-002",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-011",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-042",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-046",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-047",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-048",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-049",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-053",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-071",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-072",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-073",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-075",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-076",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-078",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-082"
+  ],
+  "targetFiles": [
+    "src/core/telemetry.ts",
+    "src/domain/fundamental/types.ts",
+    "src/domain/issues/local-issue.ts",
+    "src/domain/model.ts",
+    "src/domain/orchestration/capabilities.ts",
+    "src/domain/orchestration/state-machine.ts",
+    "src/domain/price/types.ts",
+    "src/gateway/problem-details.ts",
+    "tests/contract/problem-details.test.ts",
+    "tests/negative/telemetry-redaction.test.ts",
+    "tests/unit/domain/immutability.test.ts",
+    "tests/unit/orchestration/state-matrix.test.ts",
+    "workers/sec-gateway/src/observability.ts"
+  ],
+  "testFiles": [
+    "tests/contract/problem-details.test.ts",
+    "tests/negative/telemetry-redaction.test.ts",
+    "tests/unit/domain/immutability.test.ts",
+    "tests/unit/orchestration/state-matrix.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T017",
+      "phaseNo": 2,
+      "phase": "Phase 2 — Foundational",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T015",
+        "T016"
+      ],
+      "requirementRefs": [
+        "FR-037",
+        "FR-038",
+        "FR-041",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-048",
+        "AC-071",
+        "AC-072",
+        "AC-073",
+        "AC-075"
+      ],
+      "authorityIds": [
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "src/domain/orchestration/state-machine.ts",
+        "src/domain/orchestration/capabilities.ts",
+        "tests/unit/orchestration/state-matrix.test.ts"
+      ],
+      "tests": [
+        "tests/unit/orchestration/state-matrix.test.ts"
+      ],
+      "doneWhen": "all 81 allowed/prohibited transition pairs match fixtures",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "0c7b44cc8dabc16a43c4aaddbda006e9ea2da64817fbebd75543fa1b3bbb5640"
+    },
+    {
+      "id": "T018",
+      "phaseNo": 2,
+      "phase": "Phase 2 — Foundational",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T012"
+      ],
+      "requirementRefs": [
+        "FR-039",
+        "FR-040",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-002",
+        "AC-046",
+        "AC-047",
+        "AC-082"
+      ],
+      "authorityIds": [
+        "AUTH-004",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-026",
+        "AUTH-034"
+      ],
+      "files": [
+        "src/domain/issues/local-issue.ts",
+        "src/gateway/problem-details.ts",
+        "tests/contract/problem-details.test.ts"
+      ],
+      "tests": [
+        "tests/contract/problem-details.test.ts"
+      ],
+      "doneWhen": "local issues never serialize as HTTP responses and invalid variants fail",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "f022df967e0b6f6486f41fe54b45b0c0f9125f4554118d5cd8a2b6e5630b8bb5"
+    },
+    {
+      "id": "T019",
+      "phaseNo": 2,
+      "phase": "Phase 2 — Foundational",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T002",
+        "T005"
+      ],
+      "requirementRefs": [
+        "NFR-002",
+        "NFR-003"
+      ],
+      "acceptanceRefs": [
+        "AC-053",
+        "AC-076"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-009",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-022"
+      ],
+      "files": [
+        "src/core/telemetry.ts",
+        "workers/sec-gateway/src/observability.ts",
+        "tests/negative/telemetry-redaction.test.ts"
+      ],
+      "tests": [
+        "tests/negative/telemetry-redaction.test.ts"
+      ],
+      "doneWhen": "logs contain operation/status/reason only and pass secret/value scans",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "b45eb64fe3472c3e2f19cca66fc8779feb57cd59b26cbc6f5c7a096be93a2843"
+    },
+    {
+      "id": "T020",
+      "phaseNo": 2,
+      "phase": "Phase 2 — Foundational",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T011",
+        "T012"
+      ],
+      "requirementRefs": [
+        "FR-008",
+        "FR-020",
+        "FR-021",
+        "FR-026"
+      ],
+      "acceptanceRefs": [
+        "AC-011",
+        "AC-042",
+        "AC-049",
+        "AC-078"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-009",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/domain/model.ts",
+        "src/domain/fundamental/types.ts",
+        "src/domain/price/types.ts",
+        "tests/unit/domain/immutability.test.ts"
+      ],
+      "tests": [
+        "tests/unit/domain/immutability.test.ts"
+      ],
+      "doneWhen": "types prevent price fields in fundamental records and records are readonly",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "a5e6e7c3fc4f10ceb5e1d5f065e72fdafb0b33acd5b4551f81fdc6b9a3172fd4"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": false,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-unit",
+        "category": "unit",
+        "command": "npm run test:unit -- tests/unit/domain/immutability.test.ts tests/unit/orchestration/state-matrix.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-contract",
+        "category": "contract",
+        "command": "npm run test:contract -- tests/contract/problem-details.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-negative",
+        "category": "negative",
+        "command": "npm run test:negative -- tests/negative/telemetry-redaction.test.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B04_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

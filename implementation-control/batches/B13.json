@@ -1,0 +1,467 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B13",
+  "ordinal": 13,
+  "title": "Cache, novedad, retry, idempotencia e invalidación",
+  "domain": "refresh-core",
+  "status": "PENDING",
+  "taskCount": 6,
+  "executionOrder": [
+    "T054",
+    "T055",
+    "T056",
+    "T057",
+    "T058",
+    "T059"
+  ],
+  "externalDependencies": [
+    "T013",
+    "T014",
+    "T015",
+    "T017",
+    "T023",
+    "T029",
+    "T030",
+    "T032",
+    "T041",
+    "T043",
+    "T045",
+    "T047"
+  ],
+  "requirements": [
+    "FR-003",
+    "FR-007",
+    "FR-030",
+    "FR-031",
+    "FR-032",
+    "FR-033",
+    "FR-035",
+    "FR-037",
+    "NFR-001",
+    "NFR-002",
+    "NFR-003",
+    "NFR-004"
+  ],
+  "acceptanceCriteria": [
+    "AC-004",
+    "AC-009",
+    "AC-010",
+    "AC-058",
+    "AC-059",
+    "AC-060",
+    "AC-061",
+    "AC-062",
+    "AC-063",
+    "AC-064",
+    "AC-065",
+    "AC-066",
+    "AC-072",
+    "AC-073",
+    "AC-075",
+    "AC-081"
+  ],
+  "authorityIds": [
+    "AUTH-003",
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-006",
+    "AUTH-008",
+    "AUTH-009",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-017",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-022",
+    "AUTH-026"
+  ],
+  "primaryAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md#active-source-policy",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/1",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-004",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-009",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-010",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-058",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-059",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-060",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-061",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-062",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-063",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-064",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-065",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-066",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-072",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-073",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-075",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-081"
+  ],
+  "targetFiles": [
+    "src/domain/orchestration/cache-policy.ts",
+    "src/domain/orchestration/degradation.ts",
+    "src/domain/orchestration/idempotency.ts",
+    "src/domain/orchestration/invalidation-graph.ts",
+    "src/domain/orchestration/novelty.ts",
+    "src/gateway/quota-state.ts",
+    "src/gateway/retry-policy.ts",
+    "tests/integration/orchestration/idempotency.test.ts",
+    "tests/integration/orchestration/stale-partial.test.ts",
+    "tests/unit/gateway/retry-policy.test.ts",
+    "tests/unit/orchestration/cache-vectors.test.ts",
+    "tests/unit/orchestration/invalidation-events.test.ts",
+    "tests/unit/orchestration/novelty.test.ts"
+  ],
+  "testFiles": [
+    "tests/integration/orchestration/idempotency.test.ts",
+    "tests/integration/orchestration/stale-partial.test.ts",
+    "tests/unit/gateway/retry-policy.test.ts",
+    "tests/unit/orchestration/cache-vectors.test.ts",
+    "tests/unit/orchestration/invalidation-events.test.ts",
+    "tests/unit/orchestration/novelty.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T054",
+      "phaseNo": 5,
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "story": "US3",
+      "parallel": false,
+      "dependencies": [
+        "T014",
+        "T015",
+        "T017"
+      ],
+      "requirementRefs": [
+        "FR-030",
+        "FR-031",
+        "NFR-002",
+        "NFR-003"
+      ],
+      "acceptanceRefs": [
+        "AC-004",
+        "AC-065"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-009",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-022"
+      ],
+      "files": [
+        "src/domain/orchestration/cache-policy.ts",
+        "tests/unit/orchestration/cache-vectors.test.ts"
+      ],
+      "tests": [
+        "tests/unit/orchestration/cache-vectors.test.ts"
+      ],
+      "doneWhen": "fresh causes zero network and stale/expired query Submissions first",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "14342eeccdf1c58200434732f937e01f563c331a00c3caddbf08c9f378e2f0e8"
+    },
+    {
+      "id": "T055",
+      "phaseNo": 5,
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "story": "US3",
+      "parallel": true,
+      "dependencies": [
+        "T013",
+        "T030"
+      ],
+      "requirementRefs": [
+        "FR-031",
+        "FR-033",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-004",
+        "AC-059",
+        "AC-061"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/domain/orchestration/novelty.ts",
+        "tests/unit/orchestration/novelty.test.ts"
+      ],
+      "tests": [
+        "tests/unit/orchestration/novelty.test.ts"
+      ],
+      "doneWhen": "unchanged submissions avoid Company Facts unless manual/dependency invalidation applies",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "635c96db9abbff4e20d4546db1f79901e5d64f9ae7abd3a21c34a6a990022723"
+    },
+    {
+      "id": "T056",
+      "phaseNo": 5,
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "story": "US3",
+      "parallel": true,
+      "dependencies": [
+        "T014",
+        "T029"
+      ],
+      "requirementRefs": [
+        "FR-003",
+        "FR-031",
+        "FR-032",
+        "NFR-003"
+      ],
+      "acceptanceRefs": [
+        "AC-004",
+        "AC-009",
+        "AC-066",
+        "AC-081"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-016",
+        "AUTH-022"
+      ],
+      "files": [
+        "src/gateway/retry-policy.ts",
+        "src/gateway/quota-state.ts",
+        "tests/unit/gateway/retry-policy.test.ts"
+      ],
+      "tests": [
+        "tests/unit/gateway/retry-policy.test.ts"
+      ],
+      "doneWhen": "three logical attempts, timeouts, the 14-call budget and nonessential-refresh stops are enforced by one shared guard",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "1ed0206b3ade949aad328bf9529e00e26a8e9fb18dcbf2e4cb2a0ae824dcd68f"
+    },
+    {
+      "id": "T057",
+      "phaseNo": 5,
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "story": "US3",
+      "parallel": false,
+      "dependencies": [
+        "T023",
+        "T032"
+      ],
+      "requirementRefs": [
+        "FR-032",
+        "FR-035",
+        "FR-037",
+        "NFR-004"
+      ],
+      "acceptanceRefs": [
+        "AC-066",
+        "AC-072",
+        "AC-073"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021"
+      ],
+      "files": [
+        "src/domain/orchestration/idempotency.ts",
+        "tests/integration/orchestration/idempotency.test.ts"
+      ],
+      "tests": [
+        "tests/integration/orchestration/idempotency.test.ts"
+      ],
+      "doneWhen": "double activation starts one operation and one candidate without depending on any presentation task",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "ec289a7d59bc922003f20f5b961d66f22c7c4b1f92b1919396499f6da88f2130"
+    },
+    {
+      "id": "T058",
+      "phaseNo": 5,
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "story": "US3",
+      "parallel": false,
+      "dependencies": [
+        "T015",
+        "T041",
+        "T043",
+        "T045"
+      ],
+      "requirementRefs": [
+        "FR-033",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-059",
+        "AC-060",
+        "AC-061",
+        "AC-062",
+        "AC-063",
+        "AC-064"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/domain/orchestration/invalidation-graph.ts",
+        "tests/unit/orchestration/invalidation-events.test.ts"
+      ],
+      "tests": [
+        "tests/unit/orchestration/invalidation-events.test.ts"
+      ],
+      "doneWhen": "only affected stages rerun and visual changes start zero domain work",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "d5a412d86c7df47c7fd0ce519621a73542b6e60ce1262ac40825bdbe63bb4c6b"
+    },
+    {
+      "id": "T059",
+      "phaseNo": 5,
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "story": "US3",
+      "parallel": false,
+      "dependencies": [
+        "T017",
+        "T047",
+        "T054",
+        "T056"
+      ],
+      "requirementRefs": [
+        "FR-007",
+        "FR-031",
+        "FR-035",
+        "NFR-004"
+      ],
+      "acceptanceRefs": [
+        "AC-010",
+        "AC-058",
+        "AC-065",
+        "AC-073",
+        "AC-075"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021"
+      ],
+      "files": [
+        "src/domain/orchestration/degradation.ts",
+        "tests/integration/orchestration/stale-partial.test.ts"
+      ],
+      "tests": [
+        "tests/integration/orchestration/stale-partial.test.ts"
+      ],
+      "doneWhen": "failed, cancelled or quota-blocked refresh never destroys the prior usable snapshot",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "85ce9318b85dac57dece92101fffb70e8356377ba0d8a831ff3a25779f028524"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": false,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-unit",
+        "category": "unit",
+        "command": "npm run test:unit -- tests/unit/gateway/retry-policy.test.ts tests/unit/orchestration/cache-vectors.test.ts tests/unit/orchestration/invalidation-events.test.ts tests/unit/orchestration/novelty.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-integration",
+        "category": "integration",
+        "command": "npm run test:integration -- tests/integration/orchestration/idempotency.test.ts tests/integration/orchestration/stale-partial.test.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B13_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

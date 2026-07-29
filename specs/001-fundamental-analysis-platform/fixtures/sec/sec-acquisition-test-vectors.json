@@ -1,0 +1,118 @@
+{
+  "fixtureSetId": "sec-acquisition-test-vectors",
+  "fixtures": [
+    {
+      "expectedAttempts": [
+        "submissions",
+        "company_facts"
+      ],
+      "expectedExternalCallCount": 2,
+      "expectedFallbacks": [],
+      "expectedStatus": "complete",
+      "fixtureId": "SEC-ORDER-PRIMARY-COMPLETE",
+      "request": {
+        "cik": "0000320193",
+        "maxExternalCalls": 14,
+        "requestedConceptIds": [
+          "revenue",
+          "netIncome"
+        ]
+      },
+      "simulated": {
+        "cache": "miss",
+        "companyFactsResolved": [
+          "revenue",
+          "netIncome"
+        ],
+        "submissions": "success"
+      }
+    },
+    {
+      "expectedAttempts": [
+        "submissions",
+        "company_facts",
+        "company_concept:us-gaap:NetIncomeLoss",
+        "company_concept:us-gaap:NetCashProvidedByUsedInOperatingActivities"
+      ],
+      "expectedExternalCallCount": 4,
+      "expectedStatus": "complete",
+      "fixtureId": "SEC-ORDER-SELECTIVE-FALLBACK",
+      "request": {
+        "cik": "0000320193",
+        "maxExternalCalls": 14,
+        "requestedConceptIds": [
+          "revenue",
+          "netIncome",
+          "cashFlowFromOperations"
+        ]
+      },
+      "simulated": {
+        "cache": "miss",
+        "companyFactsResolved": [
+          "revenue"
+        ],
+        "eligibleFallbacks": [
+          "us-gaap:NetIncomeLoss",
+          "us-gaap:NetCashProvidedByUsedInOperatingActivities"
+        ],
+        "submissions": "success"
+      }
+    },
+    {
+      "expectedCompanyConceptCallCount": 12,
+      "expectedExternalCallCount": 14,
+      "expectedStatus": "partial",
+      "expectedUnattemptedFallbackCount": 8,
+      "fixtureId": "SEC-BUDGET-HARD-STOP",
+      "request": {
+        "cik": "0000320193",
+        "maxExternalCalls": 14,
+        "requestedConceptIds": [
+          "concept-00",
+          "concept-01",
+          "concept-02",
+          "concept-03",
+          "concept-04",
+          "concept-05",
+          "concept-06",
+          "concept-07",
+          "concept-08",
+          "concept-09",
+          "concept-10",
+          "concept-11",
+          "concept-12",
+          "concept-13",
+          "concept-14",
+          "concept-15",
+          "concept-16",
+          "concept-17",
+          "concept-18",
+          "concept-19"
+        ]
+      },
+      "simulated": {
+        "cache": "miss",
+        "companyFactsResolved": [],
+        "eligibleFallbackCount": 20,
+        "submissions": "success"
+      }
+    },
+    {
+      "expectedAttempts": [],
+      "expectedExternalCallCount": 0,
+      "expectedStatus": "complete",
+      "fixtureId": "SEC-CACHE-ZERO-CALLS",
+      "request": {
+        "cik": "0000320193",
+        "maxExternalCalls": 14,
+        "requestedConceptIds": [
+          "revenue"
+        ]
+      },
+      "simulated": {
+        "cache": "valid_complete"
+      }
+    }
+  ],
+  "version": "5.0.0"
+}

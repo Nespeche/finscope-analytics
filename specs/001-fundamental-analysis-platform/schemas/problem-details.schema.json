@@ -1,0 +1,870 @@
+{
+  "$defs": {
+    "BlockedByPolicyProblem": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.blocked_by_policy"
+        },
+        "blockedCapabilities": {
+          "const": []
+        },
+        "blockedOperations": {
+          "const": [
+            "requested_operation"
+          ]
+        },
+        "code": {
+          "const": "blocked_by_policy"
+        },
+        "detail": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.blocked_by_policy"
+        },
+        "operationState": {
+          "const": "failed"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "issuer_identity",
+            "definitions",
+            "mappings",
+            "evidence"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "review_policy"
+          ]
+        },
+        "retryability": {
+          "const": "after_policy_change"
+        },
+        "status": {
+          "const": 403
+        },
+        "title": {
+          "const": "BlockedByPolicyProblem"
+        },
+        "traceId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": {
+          "const": "https://finscope.local/problems/blocked_by_policy"
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "status",
+        "code",
+        "detail",
+        "traceId",
+        "retryability",
+        "operationState",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey"
+      ],
+      "type": "object"
+    },
+    "DefinitionNotFoundProblem": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.resource_not_found"
+        },
+        "blockedCapabilities": {
+          "const": []
+        },
+        "blockedOperations": {
+          "const": [
+            "requested_resource"
+          ]
+        },
+        "code": {
+          "const": "resource_not_found"
+        },
+        "detail": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.resource_not_found"
+        },
+        "operationState": {
+          "const": "failed"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "definitions",
+            "evidence"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "choose_existing_resource"
+          ]
+        },
+        "resourceId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "resourceType": {
+          "const": "definition"
+        },
+        "retryability": {
+          "const": "after_input_change"
+        },
+        "status": {
+          "const": 404
+        },
+        "title": {
+          "const": "DefinitionNotFoundProblem"
+        },
+        "traceId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": {
+          "const": "https://finscope.local/problems/resource_not_found-definition"
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "status",
+        "code",
+        "detail",
+        "traceId",
+        "retryability",
+        "operationState",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey",
+        "resourceType",
+        "resourceId"
+      ],
+      "type": "object"
+    },
+    "FilingNotFoundProblem": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.resource_not_found"
+        },
+        "blockedCapabilities": {
+          "const": []
+        },
+        "blockedOperations": {
+          "const": [
+            "requested_resource"
+          ]
+        },
+        "code": {
+          "const": "resource_not_found"
+        },
+        "detail": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.resource_not_found"
+        },
+        "operationState": {
+          "const": "failed"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "definitions",
+            "evidence"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "choose_existing_resource"
+          ]
+        },
+        "resourceId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "resourceType": {
+          "const": "filing"
+        },
+        "retryability": {
+          "const": "after_input_change"
+        },
+        "status": {
+          "const": 404
+        },
+        "title": {
+          "const": "FilingNotFoundProblem"
+        },
+        "traceId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": {
+          "const": "https://finscope.local/problems/resource_not_found-filing"
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "status",
+        "code",
+        "detail",
+        "traceId",
+        "retryability",
+        "operationState",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey",
+        "resourceType",
+        "resourceId"
+      ],
+      "type": "object"
+    },
+    "InvalidPayloadProblem": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.invalid_payload"
+        },
+        "blockedCapabilities": {
+          "const": [
+            "fundamentals",
+            "insights"
+          ]
+        },
+        "blockedOperations": {
+          "const": [
+            "normalization"
+          ]
+        },
+        "code": {
+          "const": "invalid_payload"
+        },
+        "detail": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.invalid_payload"
+        },
+        "operationState": {
+          "const": "partial"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "issuer_identity",
+            "local_snapshot",
+            "definitions",
+            "mappings",
+            "evidence"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "retry",
+            "use_cached_sec_payload",
+            "use_last_snapshot"
+          ]
+        },
+        "retryability": {
+          "const": "after_source_change"
+        },
+        "status": {
+          "const": 502
+        },
+        "title": {
+          "const": "InvalidPayloadProblem"
+        },
+        "traceId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": {
+          "const": "https://finscope.local/problems/invalid_payload"
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "status",
+        "code",
+        "detail",
+        "traceId",
+        "retryability",
+        "operationState",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey"
+      ],
+      "type": "object"
+    },
+    "InvalidRequestProblem": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.invalid_request"
+        },
+        "blockedCapabilities": {
+          "const": []
+        },
+        "blockedOperations": {
+          "const": [
+            "requested_operation"
+          ]
+        },
+        "code": {
+          "const": "invalid_request"
+        },
+        "detail": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.invalid_request"
+        },
+        "operationState": {
+          "const": "failed"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "definitions"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "correct_input"
+          ]
+        },
+        "retryability": {
+          "const": "after_input_change"
+        },
+        "status": {
+          "const": 400
+        },
+        "title": {
+          "const": "InvalidRequestProblem"
+        },
+        "traceId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": {
+          "const": "https://finscope.local/problems/invalid_request"
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "status",
+        "code",
+        "detail",
+        "traceId",
+        "retryability",
+        "operationState",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey"
+      ],
+      "type": "object"
+    },
+    "IssuerNotFoundProblem": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.resource_not_found"
+        },
+        "blockedCapabilities": {
+          "const": []
+        },
+        "blockedOperations": {
+          "const": [
+            "requested_resource"
+          ]
+        },
+        "code": {
+          "const": "resource_not_found"
+        },
+        "detail": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.resource_not_found"
+        },
+        "operationState": {
+          "const": "failed"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "definitions",
+            "evidence"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "choose_existing_resource"
+          ]
+        },
+        "resourceId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "resourceType": {
+          "const": "issuer"
+        },
+        "retryability": {
+          "const": "after_input_change"
+        },
+        "status": {
+          "const": 404
+        },
+        "title": {
+          "const": "IssuerNotFoundProblem"
+        },
+        "traceId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": {
+          "const": "https://finscope.local/problems/resource_not_found-issuer"
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "status",
+        "code",
+        "detail",
+        "traceId",
+        "retryability",
+        "operationState",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey",
+        "resourceType",
+        "resourceId"
+      ],
+      "type": "object"
+    },
+    "MappingNotFoundProblem": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.resource_not_found"
+        },
+        "blockedCapabilities": {
+          "const": []
+        },
+        "blockedOperations": {
+          "const": [
+            "requested_resource"
+          ]
+        },
+        "code": {
+          "const": "resource_not_found"
+        },
+        "detail": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.resource_not_found"
+        },
+        "operationState": {
+          "const": "failed"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "definitions",
+            "evidence"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "choose_existing_resource"
+          ]
+        },
+        "resourceId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "resourceType": {
+          "const": "mapping"
+        },
+        "retryability": {
+          "const": "after_input_change"
+        },
+        "status": {
+          "const": 404
+        },
+        "title": {
+          "const": "MappingNotFoundProblem"
+        },
+        "traceId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": {
+          "const": "https://finscope.local/problems/resource_not_found-mapping"
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "status",
+        "code",
+        "detail",
+        "traceId",
+        "retryability",
+        "operationState",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey",
+        "resourceType",
+        "resourceId"
+      ],
+      "type": "object"
+    },
+    "PayloadTooLargeProblem": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.payload_too_large"
+        },
+        "blockedCapabilities": {
+          "const": [
+            "filings",
+            "fundamentals",
+            "insights"
+          ]
+        },
+        "blockedOperations": {
+          "const": [
+            "acquisition"
+          ]
+        },
+        "code": {
+          "const": "payload_too_large"
+        },
+        "detail": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.payload_too_large"
+        },
+        "operationState": {
+          "const": "failed"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "issuer_identity",
+            "local_snapshot",
+            "definitions",
+            "mappings",
+            "evidence"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "narrow_request",
+            "retry"
+          ]
+        },
+        "retryability": {
+          "const": "after_request_change"
+        },
+        "status": {
+          "const": 413
+        },
+        "title": {
+          "const": "PayloadTooLargeProblem"
+        },
+        "traceId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": {
+          "const": "https://finscope.local/problems/payload_too_large"
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "status",
+        "code",
+        "detail",
+        "traceId",
+        "retryability",
+        "operationState",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey"
+      ],
+      "type": "object"
+    },
+    "ProviderUnavailableProblem": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.provider_unavailable"
+        },
+        "blockedCapabilities": {
+          "const": [
+            "filings",
+            "fundamentals",
+            "insights"
+          ]
+        },
+        "blockedOperations": {
+          "const": [
+            "acquisition"
+          ]
+        },
+        "code": {
+          "const": "provider_unavailable"
+        },
+        "detail": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.provider_unavailable"
+        },
+        "operationState": {
+          "const": "partial"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "issuer_identity",
+            "local_snapshot",
+            "definitions",
+            "mappings",
+            "evidence"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "retry",
+            "use_cached_sec_payload",
+            "use_last_snapshot"
+          ]
+        },
+        "retryability": {
+          "const": "backoff"
+        },
+        "status": {
+          "const": 502
+        },
+        "title": {
+          "const": "ProviderUnavailableProblem"
+        },
+        "traceId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": {
+          "const": "https://finscope.local/problems/provider_unavailable"
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "status",
+        "code",
+        "detail",
+        "traceId",
+        "retryability",
+        "operationState",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey"
+      ],
+      "type": "object"
+    },
+    "UpstreamTimeoutProblem": {
+      "additionalProperties": false,
+      "properties": {
+        "accessibilityKey": {
+          "const": "a11y.error.upstream_timeout"
+        },
+        "blockedCapabilities": {
+          "const": [
+            "filings",
+            "fundamentals",
+            "insights"
+          ]
+        },
+        "blockedOperations": {
+          "const": [
+            "acquisition"
+          ]
+        },
+        "code": {
+          "const": "upstream_timeout"
+        },
+        "detail": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "messageKey": {
+          "const": "error.upstream_timeout"
+        },
+        "operationState": {
+          "const": "partial"
+        },
+        "preservedCapabilities": {
+          "const": [
+            "issuer_identity",
+            "local_snapshot",
+            "definitions",
+            "mappings",
+            "evidence"
+          ]
+        },
+        "recoveryActions": {
+          "const": [
+            "retry",
+            "use_cached_sec_payload",
+            "use_last_snapshot"
+          ]
+        },
+        "retryability": {
+          "const": "backoff"
+        },
+        "status": {
+          "const": 504
+        },
+        "title": {
+          "const": "UpstreamTimeoutProblem"
+        },
+        "traceId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": {
+          "const": "https://finscope.local/problems/upstream_timeout"
+        }
+      },
+      "required": [
+        "type",
+        "title",
+        "status",
+        "code",
+        "detail",
+        "traceId",
+        "retryability",
+        "operationState",
+        "recoveryActions",
+        "preservedCapabilities",
+        "blockedCapabilities",
+        "blockedOperations",
+        "messageKey",
+        "accessibilityKey"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "https://finscope.local/schemas/problem-details.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/InvalidRequestProblem"
+    },
+    {
+      "$ref": "#/$defs/BlockedByPolicyProblem"
+    },
+    {
+      "$ref": "#/$defs/PayloadTooLargeProblem"
+    },
+    {
+      "$ref": "#/$defs/ProviderUnavailableProblem"
+    },
+    {
+      "$ref": "#/$defs/InvalidPayloadProblem"
+    },
+    {
+      "$ref": "#/$defs/UpstreamTimeoutProblem"
+    },
+    {
+      "$ref": "#/$defs/IssuerNotFoundProblem"
+    },
+    {
+      "$ref": "#/$defs/FilingNotFoundProblem"
+    },
+    {
+      "$ref": "#/$defs/DefinitionNotFoundProblem"
+    },
+    {
+      "$ref": "#/$defs/MappingNotFoundProblem"
+    }
+  ],
+  "title": "RFC 9457 gateway Problem Details v5.0.0"
+}

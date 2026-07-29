@@ -1,0 +1,126 @@
+{
+  "entries": [
+    {
+      "artifact": "contracts/canonical-market-contract.md",
+      "reason": "MVP uses independent local historical overlay, not a central market feed",
+      "replacement": [
+        "schemas/historical-price-overlay.schema.json",
+        "contracts/historical-price-import.md"
+      ],
+      "status": "REPLACED"
+    },
+    {
+      "artifact": "contracts/market-venue-registry.md",
+      "reason": "no provider-backed market acquisition in MVP",
+      "replacement": [],
+      "status": "DEFERRED_POST_MVP"
+    },
+    {
+      "artifact": "contracts/provider-adapter.md",
+      "reason": "provider adapters are disabled; IDs reserved and normalized",
+      "replacement": [],
+      "status": "DEFERRED_POST_MVP"
+    },
+    {
+      "artifact": "definitions/valuation-compatibility-policy.md",
+      "reason": "valuation and investment recommendations are outside MVP",
+      "replacement": [],
+      "status": "DEFERRED_POST_MVP"
+    },
+    {
+      "artifact": "analysisOutputFingerprint",
+      "reason": "fundamental and price domains require independent projections",
+      "replacement": [
+        "fundamentalAnalysisFingerprint",
+        "priceAnalysisFingerprint"
+      ],
+      "status": "REPLACED"
+    },
+    {
+      "artifact": "HTTP 422 unsupported_profile",
+      "reason": "profile support is a local domain decision, not a gateway request error",
+      "replacement": [
+        "normal unsupported_profile analysis outcome"
+      ],
+      "status": "REPLACED"
+    },
+    {
+      "artifact": "HTTP 409 local conflicts",
+      "reason": "identity ambiguity, cancellation, quality gate and storage consent are local operation issues",
+      "replacement": [
+        "definitions/local-operation-issue-catalog.json"
+      ],
+      "status": "REPLACED"
+    },
+    {
+      "artifact": "v0.14 Markdown-only metric/rule/mapping/state authorities",
+      "reason": "machine-readable authorities introduced in v0.16 and retained as machine-readable authorities in v0.19.2 are deterministic and lintable",
+      "replacement": [
+        "definitions/*.json",
+        "schemas/*.json",
+        "fixtures/**/*.json"
+      ],
+      "status": "REPLACED"
+    },
+    {
+      "artifact": "v0.19 baseline, reports and phase status",
+      "status": "HISTORICAL_EVIDENCE",
+      "replacement": [],
+      "reason": "v0.19 is historical and non-normative for the active v0.20 package"
+    },
+    {
+      "artifact": "v0.19.1 checklist-remediation baseline",
+      "status": "HISTORICAL_EVIDENCE",
+      "replacement": [],
+      "reason": "v0.19.1 is preserved historical evidence and cannot act as a current baseline"
+    },
+    {
+      "artifact": "v0.18 active tasks draft",
+      "status": "REPLACED",
+      "replacement": [
+        "reports/v0.19/V0.18_TASKS_DRAFT_SUPERSEDED.md",
+        "specs/001-fundamental-analysis-platform/tasks.md"
+      ],
+      "reason": "the historical draft was premature and is replaced by the independently authorized and QA-validated v0.20 tasks authority"
+    },
+    {
+      "artifact": "v0.19.2 checklist-remediation baseline",
+      "status": "HISTORICAL_EVIDENCE",
+      "replacement": [],
+      "reason": "v0.19.2 was superseded by verified v0.19.3 and is retained only for historical control-failure evidence"
+    },
+    {
+      "artifact": "v0.19.3 independent-checklist-verified baseline",
+      "status": "HISTORICAL_BASELINE",
+      "replacement": [
+        "V0.20_PHASE_STATUS.md",
+        "specs/001-fundamental-analysis-platform/tasks.md",
+        "specs/001-fundamental-analysis-platform/reports/v0.20/"
+      ],
+      "reason": "v0.19.3 is the immediately preceding verified baseline; v0.20 adds task authority, task traceability and QA without changing .specify"
+    },
+    {
+      "artifact": "v0.20 tasks-ready baseline",
+      "status": "HISTORICAL_BASELINE",
+      "replacement": [
+        "V0.21_PHASE_STATUS.md",
+        "specs/001-fundamental-analysis-platform/tasks.md",
+        "specs/001-fundamental-analysis-platform/reports/v0.21/"
+      ],
+      "reason": "v0.20 remains the immediately preceding historical baseline and preserves the original post-tasks findings; v0.21 remediates ANA-001..ANA-013 and reruns analysis"
+    },
+    {
+      "artifact": "v0.21 post-analysis-remediated baseline",
+      "status": "ACTIVE_BASELINE",
+      "replacement": [
+        "V0.21_PHASE_STATUS.md",
+        "specs/001-fundamental-analysis-platform/tasks.md",
+        "specs/001-fundamental-analysis-platform/reports/v0.21/"
+      ],
+      "reason": "v0.21 is the active package after documentary remediation and a fresh conforming post-tasks analysis; implementation is authorized and convergence remains closed"
+    }
+  ],
+  "registerId": "replacement-and-deferral-register",
+  "status": "ACTIVE_AUTHORITY",
+  "version": "5.0.4"
+}

@@ -1,0 +1,337 @@
+{
+  "$id": "https://finscope.local/schemas/fundamental-bundle.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "bundleId": {
+      "pattern": "^fund-bundle-[a-z0-9-]+$",
+      "type": "string"
+    },
+    "conceptResolutions": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "canonicalConceptId": {
+            "type": "string"
+          },
+          "factId": {
+            "type": "string"
+          },
+          "periodId": {
+            "type": "string"
+          },
+          "reasonCode": {
+            "type": "string"
+          },
+          "scopeId": {
+            "type": "string"
+          },
+          "state": {
+            "$ref": "common.schema.json#/$defs/FactResolutionState"
+          }
+        },
+        "required": [
+          "canonicalConceptId",
+          "periodId",
+          "scopeId",
+          "state"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "contractVersion": {
+      "const": "5.0.0"
+    },
+    "coverage": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "canonicalConceptId": {
+            "type": "string"
+          },
+          "profileId": {
+            "$ref": "common.schema.json#/$defs/AccountingProfileId"
+          },
+          "reasonCode": {
+            "type": "string"
+          },
+          "resolvedMappingIds": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "state": {
+            "$ref": "common.schema.json#/$defs/CoverageState"
+          }
+        },
+        "required": [
+          "canonicalConceptId",
+          "profileId",
+          "state",
+          "resolvedMappingIds"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "createdAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "facts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "canonicalConceptId": {
+            "type": "string"
+          },
+          "factId": {
+            "type": "string"
+          },
+          "mappingId": {
+            "type": "string"
+          },
+          "mappingVersion": {
+            "const": "5.0.0"
+          },
+          "periodId": {
+            "type": "string"
+          },
+          "scopeId": {
+            "type": "string"
+          },
+          "sourceRef": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "valueDecimal": {
+            "$ref": "common.schema.json#/$defs/DecimalString"
+          }
+        },
+        "required": [
+          "factId",
+          "canonicalConceptId",
+          "periodId",
+          "scopeId",
+          "valueDecimal",
+          "mappingId",
+          "mappingVersion",
+          "sourceRef"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "filings": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "accessionNumber": {
+            "pattern": "^[0-9]{10}-[0-9]{2}-[0-9]{6}$",
+            "type": "string"
+          },
+          "filedDate": {
+            "$ref": "common.schema.json#/$defs/IsoDate"
+          },
+          "form": {
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "accessionNumber",
+          "filedDate",
+          "form"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "fundamentalInputFingerprint": {
+      "$ref": "common.schema.json#/$defs/Sha256Fingerprint"
+    },
+    "issuer": {
+      "additionalProperties": false,
+      "properties": {
+        "accountingStandard": {
+          "enum": [
+            "us_gaap",
+            "ifrs",
+            "unknown"
+          ]
+        },
+        "analysisProfile": {
+          "$ref": "common.schema.json#/$defs/AccountingProfileId"
+        },
+        "cik": {
+          "$ref": "common.schema.json#/$defs/Cik"
+        },
+        "entityType": {
+          "enum": [
+            "operating_company",
+            "financial_institution",
+            "insurance",
+            "reit",
+            "unknown"
+          ]
+        },
+        "legalName": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "cik",
+        "legalName",
+        "accountingStandard",
+        "entityType",
+        "analysisProfile"
+      ],
+      "type": "object"
+    },
+    "reportingPeriods": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "classification": {
+            "enum": [
+              "year",
+              "quarter",
+              "instant"
+            ]
+          },
+          "currency": {
+            "$ref": "common.schema.json#/$defs/CurrencyCode"
+          },
+          "durationDays": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "endDate": {
+            "$ref": "common.schema.json#/$defs/IsoDate"
+          },
+          "fiscalPeriod": {
+            "type": "string"
+          },
+          "fiscalYear": {
+            "minimum": 1900,
+            "type": "integer"
+          },
+          "kind": {
+            "enum": [
+              "instant",
+              "duration"
+            ]
+          },
+          "periodId": {
+            "type": "string"
+          },
+          "restatementLineageId": {
+            "type": "string"
+          },
+          "scopeId": {
+            "type": "string"
+          },
+          "startDate": {
+            "$ref": "common.schema.json#/$defs/IsoDate"
+          }
+        },
+        "required": [
+          "periodId",
+          "kind",
+          "endDate",
+          "scopeId"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "sourceAcquisition": {
+      "additionalProperties": false,
+      "properties": {
+        "callBudget": {
+          "const": 14
+        },
+        "companyConceptFallbacks": {
+          "items": {
+            "pattern": "^[a-zA-Z0-9_-]+:[a-zA-Z0-9_-]+$",
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "companyFactsUsed": {
+          "const": true
+        },
+        "operationId": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "primarySource": {
+          "const": "sec_company_facts"
+        },
+        "secCallCount": {
+          "maximum": 14,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "operationId",
+        "primarySource",
+        "companyFactsUsed",
+        "companyConceptFallbacks",
+        "secCallCount",
+        "callBudget"
+      ],
+      "type": "object"
+    },
+    "sourceEvidenceFingerprint": {
+      "$ref": "common.schema.json#/$defs/Sha256Fingerprint"
+    },
+    "versions": {
+      "additionalProperties": false,
+      "properties": {
+        "contract": {
+          "const": "5.0.0"
+        },
+        "mappingCatalog": {
+          "const": "5.0.0"
+        },
+        "normalizer": {
+          "const": "5.0.0"
+        },
+        "profileCatalog": {
+          "const": "5.0.0"
+        }
+      },
+      "required": [
+        "contract",
+        "mappingCatalog",
+        "profileCatalog",
+        "normalizer"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "bundleId",
+    "contractVersion",
+    "issuer",
+    "sourceAcquisition",
+    "reportingPeriods",
+    "facts",
+    "conceptResolutions",
+    "coverage",
+    "versions",
+    "fundamentalInputFingerprint"
+  ],
+  "title": "Immutable fundamental bundle v5.0.0",
+  "type": "object"
+}

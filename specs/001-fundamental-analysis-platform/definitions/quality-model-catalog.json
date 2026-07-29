@@ -1,0 +1,104 @@
+{
+  "catalogId": "quality-model-catalog",
+  "fundamental": {
+    "axes": {
+      "comparability": [
+        "comparable",
+        "limited",
+        "incompatible"
+      ],
+      "completeness": [
+        "complete",
+        "partial",
+        "missing"
+      ],
+      "mappingQuality": [
+        "exact",
+        "approved_alias",
+        "derived",
+        "ambiguous"
+      ],
+      "revisionState": [
+        "current",
+        "amended",
+        "restated",
+        "conflicted"
+      ]
+    },
+    "cardinality": 144,
+    "evaluationOrder": [
+      {
+        "result": "insufficient",
+        "when": "mappingQuality=ambiguous OR completeness=missing OR comparability=incompatible OR revisionState=conflicted"
+      },
+      {
+        "result": "verified",
+        "when": "completeness=complete AND mappingQuality IN [exact,approved_alias] AND comparability=comparable AND revisionState IN [current,amended,restated]"
+      },
+      {
+        "result": "usable_with_caveats",
+        "when": "otherwise"
+      }
+    ],
+    "expectedCounts": {
+      "insufficient": 108,
+      "usable_with_caveats": 30,
+      "verified": 6
+    }
+  },
+  "historicalPrice": {
+    "axes": {
+      "adjustmentDisclosure": [
+        "declared",
+        "unknown"
+      ],
+      "currencyIntegrity": [
+        "single_declared",
+        "unknown_declared",
+        "mixed_or_missing"
+      ],
+      "dateIntegrity": [
+        "unique_sorted",
+        "duplicates_resolved",
+        "invalid"
+      ],
+      "rowValidity": [
+        "all_valid",
+        "rows_discarded",
+        "invalid"
+      ]
+    },
+    "cardinality": 54,
+    "evaluationOrder": [
+      {
+        "result": "insufficient",
+        "when": "rowValidity=invalid OR dateIntegrity=invalid OR currencyIntegrity=mixed_or_missing"
+      },
+      {
+        "result": "verified",
+        "when": "rowValidity=all_valid AND dateIntegrity=unique_sorted AND currencyIntegrity=single_declared AND adjustmentDisclosure=declared"
+      },
+      {
+        "result": "usable_with_caveats",
+        "when": "otherwise"
+      }
+    ],
+    "expectedCounts": {
+      "insufficient": 38,
+      "usable_with_caveats": 15,
+      "verified": 1
+    }
+  },
+  "invariants": [
+    "fundamental and historical-price quality axes are never mixed",
+    "no numeric quality score exists",
+    "not_applicable is decided before quality"
+  ],
+  "ordinal": [
+    "insufficient",
+    "usable_with_caveats",
+    "verified"
+  ],
+  "status": "ACTIVE_AUTHORITY",
+  "version": "5.0.0"
+}

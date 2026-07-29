@@ -1,0 +1,270 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B25",
+  "ordinal": 25,
+  "title": "Invariantes finales y entrada a convergencia",
+  "domain": "implementation-closure",
+  "status": "PENDING",
+  "taskCount": 2,
+  "executionOrder": [
+    "T108",
+    "T109"
+  ],
+  "externalDependencies": [
+    "T010",
+    "T019",
+    "T094",
+    "T095",
+    "T096",
+    "T097",
+    "T098",
+    "T099",
+    "T100",
+    "T101",
+    "T102",
+    "T103",
+    "T104",
+    "T105",
+    "T106",
+    "T107"
+  ],
+  "requirements": [
+    "NFR-002",
+    "NFR-005",
+    "NFR-006"
+  ],
+  "acceptanceCriteria": [
+    "AC-053",
+    "AC-077",
+    "AC-083",
+    "AC-084"
+  ],
+  "authorityIds": [
+    "AUTH-003",
+    "AUTH-004",
+    "AUTH-006",
+    "AUTH-007",
+    "AUTH-008",
+    "AUTH-009",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-013",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-017",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-022",
+    "AUTH-024",
+    "AUTH-025",
+    "AUTH-034"
+  ],
+  "primaryAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+    "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json#/entries",
+    "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md#active-source-policy",
+    "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md",
+    "specs/001-fundamental-analysis-platform/reports/v0.16/09_V0.16_HISTORICAL_VALIDATION_ADDENDUM.md"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-053",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-077",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-083",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-084"
+  ],
+  "targetFiles": [
+    "docs/convergence-input.md",
+    "tests/contract/architecture-invariants.test.ts"
+  ],
+  "testFiles": [
+    "tests/contract/architecture-invariants.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T108",
+      "phaseNo": 10,
+      "phase": "Phase 10 — Validation and documentation",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T094",
+        "T095",
+        "T096",
+        "T097",
+        "T098",
+        "T105",
+        "T107"
+      ],
+      "requirementRefs": [
+        "NFR-002",
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptanceRefs": [
+        "AC-053",
+        "AC-077",
+        "AC-083",
+        "AC-084"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-022",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "tests/contract/architecture-invariants.test.ts"
+      ],
+      "tests": [
+        "tests/contract/architecture-invariants.test.ts"
+      ],
+      "doneWhen": "architecture, secret, scope, performance and deferred-service invariants pass",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "9bff2d9779767a336479c8a96b803b73cf24f5166d7e9d9a7bc026176fcf704b"
+    },
+    {
+      "id": "T109",
+      "phaseNo": 10,
+      "phase": "Phase 10 — Validation and documentation",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T010",
+        "T019",
+        "T099",
+        "T100",
+        "T101",
+        "T102",
+        "T103",
+        "T104",
+        "T105",
+        "T106",
+        "T107",
+        "T108"
+      ],
+      "requirementRefs": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptanceRefs": [
+        "AC-077",
+        "AC-083",
+        "AC-084"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "docs/convergence-input.md"
+      ],
+      "tests": [],
+      "doneWhen": "the report links exact unit, contract, integration, E2E, security, WCAG, Cloudflare, restore, D1, performance, documentation and architecture evidence, lists residual runtime risks, reaches every mandatory task transitively and is explicitly an input to the future convergence phase without opening any gate itself",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "bee9c381367253c6cbd076c86e8cbd901b33c5b35a4b6296aed7e3fe56eeef4b"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": false,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-contract",
+        "category": "contract",
+        "command": "npm run test:contract -- tests/contract/architecture-invariants.test.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B25_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

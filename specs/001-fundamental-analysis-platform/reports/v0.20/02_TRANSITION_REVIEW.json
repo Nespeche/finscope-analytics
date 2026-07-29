@@ -1,0 +1,216 @@
+{
+  "reportId": "FinScope-v0.20-transition-review",
+  "date": "2026-07-21",
+  "baseline": "v0.19.3",
+  "baselineSha256": "995b1b746374b70c17fc3baf483aade6ef9215a62ce3e47a1a6580e9b5d21d4d",
+  "integrity": {
+    "sidecarMatched": true,
+    "crcValid": true,
+    "singleRoot": "FinScope_v0.19.3",
+    "entryCount": 359,
+    "unsafePaths": 0,
+    "symlinks": 0,
+    "nestedArchives": 0,
+    "secretsDetected": 0,
+    "tasksInitiallyPresent": false
+  },
+  "scope": {
+    "mvp": "SEC-only CIK-first",
+    "globalNonSec": false,
+    "cnv": false,
+    "etfCoverage": false,
+    "price": "optional CSV/manual",
+    "providerPrice": false,
+    "closedAppAutomation": false,
+    "openResumeAutomation": true,
+    "domainButtons": true
+  },
+  "architecture": {
+    "ui": "Svelte 5 SPA + TypeScript strict + Vite",
+    "domain": "decimal.js HALF_EVEN in typed Web Worker",
+    "storage": "IndexedDB opt-in",
+    "edge": "Pages + read-only SEC Worker",
+    "d1": "catalog/version metadata only",
+    "notUsed": [
+      "Pages Functions",
+      "KV",
+      "R2",
+      "Queues",
+      "Durable Objects",
+      "Cron Triggers"
+    ]
+  },
+  "versionResolution": {
+    "packageVersion": "v0.20",
+    "contentRevision": "v0.19.3",
+    "historicalImmediate": "v0.19.3",
+    "legacyHeaders": "updated with explicit package/content distinction"
+  },
+  "initial103Fails": {
+    "controls": 103,
+    "severity": {
+      "MAJOR": 88,
+      "BLOCKER": 15
+    },
+    "domains": {
+      "document_governance": 2,
+      "authorities": 1,
+      "formulas_decimal": 1,
+      "sec_edgar_xbrl": 1,
+      "financial_data_kpis": 5,
+      "update_cache_automation": 2,
+      "security_privacy": 11,
+      "import_export_restore": 9,
+      "accessibility_wcag": 55,
+      "frontend_testing": 3,
+      "cloudflare_free": 13
+    },
+    "rootCauses": [
+      {
+        "id": "RC-01",
+        "cause": "WCAG matrix lacked direct AC linkage and complete N/A triggers",
+        "controls": 55
+      },
+      {
+        "id": "RC-02",
+        "cause": "Cloudflare Free had no machine-readable budget",
+        "controls": 13
+      },
+      {
+        "id": "RC-03",
+        "cause": "Security authority omitted a transversal threat-model vocabulary",
+        "controls": 11
+      },
+      {
+        "id": "RC-04",
+        "cause": "Import/export/restore contract omitted boundary cases",
+        "controls": 9
+      },
+      {
+        "id": "RC-05",
+        "cause": "Financial bundle documentation omitted FY/quarter/TTM/lineage/confidence terms",
+        "controls": 5
+      },
+      {
+        "id": "RC-06",
+        "cause": "Frontend test plan omitted E2E/negative/performance",
+        "controls": 3
+      },
+      {
+        "id": "RC-07",
+        "cause": "Historical governance classification drift",
+        "controls": 2
+      },
+      {
+        "id": "RC-08",
+        "cause": "Update orchestration omitted idempotency/retry terms",
+        "controls": 2
+      },
+      {
+        "id": "RC-09",
+        "cause": "Authority exact-base declaration ambiguity",
+        "controls": 1
+      },
+      {
+        "id": "RC-10",
+        "cause": "Two formula oracle interpretations were ambiguous",
+        "controls": 1
+      },
+      {
+        "id": "RC-11",
+        "cause": "SEC fair-access source/date stale",
+        "controls": 1
+      }
+    ],
+    "explanation": "103 controls were independent assertions, not 103 independent architecture defects. Repeated controls intentionally expose the blast radius of transversal omissions."
+  },
+  "cloudflareOfficialLimits": {
+    "d1_db_mb": 500,
+    "d1_queries_invocation": 50,
+    "d1_rows_read_day": 5000000,
+    "d1_rows_written_day": 100000,
+    "d1_storage_gb": 5,
+    "kv_reads_day": 100000,
+    "kv_storage_gb": 1,
+    "kv_writes_day": 1000,
+    "pages_asset_mib": 25,
+    "pages_builds_month": 500,
+    "pages_files": 20000,
+    "queues_operations_day": 10000,
+    "queues_retention_hours_free": 24,
+    "workers_bundle_mb": 3,
+    "workers_cpu_ms": 10,
+    "workers_cron_count": 5,
+    "workers_memory_mb": 128,
+    "workers_requests_day": 100000,
+    "workers_subrequests": 50
+  },
+  "problemsFound": [
+    {
+      "id": "TR-001",
+      "severity": "MAJOR",
+      "issue": "spec/plan/research/clarification headers and phase semantics were ambiguous between v0.19.2, v0.19.3 and the new task package",
+      "resolution": "distinguish material content revision v0.19.3 from active package/fase v0.20 and synchronize all current gates"
+    },
+    {
+      "id": "TR-002",
+      "severity": "MAJOR",
+      "issue": "MVP scope could be misread as global instruments, CNV or provider-backed price",
+      "resolution": "declare SEC-only CIK-first; defer CNV/global/ETF/provider price and closed-app automation"
+    },
+    {
+      "id": "TR-003",
+      "severity": "MAJOR",
+      "issue": "Plan lacked an exact future source tree and minimal dependency closure",
+      "resolution": "define SPA/Worker tree, native Worker/IndexedDB/SVG, Ajv and axe roles"
+    },
+    {
+      "id": "TR-004",
+      "severity": "MINOR",
+      "issue": "Cloudflare budget omitted Pages builds/month",
+      "resolution": "add official 500/month limit, target <=20/month and schema validation"
+    },
+    {
+      "id": "TR-005",
+      "severity": "MAJOR",
+      "issue": "Active documentation index and spec gate still described tasks as absent after generation",
+      "resolution": "synchronize index/spec/clarifications and make v0.20 the only active phase authority"
+    },
+    {
+      "id": "TR-006",
+      "severity": "MAJOR",
+      "issue": "AC-077 fixture and acceptance schema allowed the old v0.19.3 gate semantics",
+      "resolution": "update oracle, fixture and authorityRef pattern to v0.20 tasks-ready governance"
+    },
+    {
+      "id": "TR-007",
+      "severity": "MAJOR",
+      "issue": "Initial generated task QA contained false format/test flags and task definition stated 104 instead of 109",
+      "resolution": "repair task paths/tests/count and regenerate QA and traceability from the final tasks authority"
+    }
+  ],
+  "blockers": [],
+  "tasksGenerated": true,
+  "taskCount": 109,
+  "requirementsCovered": 49,
+  "acceptanceCovered": 84,
+  "result": "APPROVED_TASKS_READY_FOR_ANALYSIS",
+  "gates": {
+    "tasksAuthorized": true,
+    "analysisAuthorized": true,
+    "implementationAuthorized": false,
+    "convergenceAuthorized": false
+  },
+  "qa": {
+    "iterations": 3,
+    "result": "CONFORME",
+    "schemasCompiled": "26/26",
+    "directInstances": "16/16",
+    "formulaOracles": "15/15",
+    "taskCoverage": "49/49 requirements; 84/84 AC",
+    "cycles": 0,
+    "residualBlockers": 0,
+    "residualFails": 0
+  },
+  "fails": []
+}

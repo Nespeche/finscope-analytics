@@ -1,0 +1,184 @@
+{
+  "schemaVersion": "1.1.0",
+  "packageRevision": "v0.21.11_B10_r2",
+  "batchId": "B10",
+  "status": "LOCAL_VALIDATION_REQUIRED",
+  "sourceBaseline": {
+    "logicalName": "FS_v0.21.10_B09_completed.zip",
+    "sha256": "1d24563346366a4a4e6bd3780520a0e46784e42d3ca1cf708ac555a4dec65161",
+    "verified": true
+  },
+  "scope": {
+    "title": "Reglas, síntesis y fingerprints",
+    "executionOrder": [
+      "T044",
+      "T045",
+      "T046"
+    ],
+    "browserRequired": false,
+    "futureBatchImplemented": false,
+    "convergenceExecuted": false,
+    "specifyModified": false
+  },
+  "taskResults": [
+    {
+      "taskId": "T044",
+      "status": "IMPLEMENTED_PENDING_VALIDATION",
+      "files": [
+        "src/domain/analytics/rule-engine.ts",
+        "tests/unit/analytics/rule-vectors.test.ts"
+      ],
+      "tests": [
+        "tests/unit/analytics/rule-vectors.test.ts"
+      ],
+      "doneWhen": "27 rule vectors yield only three allowed states"
+    },
+    {
+      "taskId": "T045",
+      "status": "IMPLEMENTED_PENDING_VALIDATION",
+      "files": [
+        "src/domain/analytics/synthesis.ts",
+        "tests/unit/analytics/synthesis.test.ts"
+      ],
+      "tests": [
+        "tests/unit/analytics/synthesis.test.ts"
+      ],
+      "doneWhen": "synthesis consumes rule results, preserves not-evaluable reasons, and emits no recommendation, target price or confidence score"
+    },
+    {
+      "taskId": "T046",
+      "status": "IMPLEMENTED_PENDING_VALIDATION",
+      "files": [
+        "src/domain/fingerprints/projections.ts",
+        "src/domain/fingerprints/fingerprint-service.ts",
+        "tests/unit/fingerprints/fingerprint-vectors.test.ts"
+      ],
+      "tests": [
+        "tests/unit/fingerprints/fingerprint-vectors.test.ts"
+      ],
+      "doneWhen": "all exact digest/invariance vectors pass and no self-reference exists"
+    }
+  ],
+  "authoringValidation": {
+    "baselinePreflight": "PASS",
+    "controlPlaneBeforeMutation": {
+      "status": "PASS",
+      "checks": 1026
+    },
+    "targetStrictTypeScript": "PASS_WITH_TEMPORARY_AUTHORING_STUBS",
+    "normativeNpmCommands": {
+      "expected": 5,
+      "pass": 3,
+      "fail": 1,
+      "notRun": 1,
+      "primaryFailure": "npm run test: explicit anchor #gate missing from V0.21_PHASE_STATUS.md in r1",
+      "sourceEvidence": "FinScope_local_evidence_B10_20260728-003221644_FAILED.zip",
+      "sourceEvidenceSha256": "4bff6dfadd1f8eec8c4bfa4a4bb0930107f529a37465cb98fc18df8635c7e444",
+      "passClaimed": false
+    },
+    "npmCi": {
+      "command": "npm ci",
+      "cwdObserved": "/mnt/data/B10_work/FinScope_v0.21.4",
+      "cwdLogical": "FinScope_v0.21.4",
+      "attempts": [
+        {
+          "attempt": 1,
+          "startedAt": "2026-07-28T02:38:22.058Z",
+          "finishedAtObserved": "2026-07-28T02:39:33.223Z",
+          "exitClassification": "E503",
+          "numericExitCode": "NOT_CAPTURED_PARENT_TIMEOUT",
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "095247e69d8efda7a485dfbd91e33311175246b7eda5f04da6032e002d32c6c1"
+        },
+        {
+          "attempt": 2,
+          "startedAt": "2026-07-28T02:51:44.174Z",
+          "finishedAt": "2026-07-28T02:52:55.107Z",
+          "exitCode": 1,
+          "exitCodeEvidence": "npm debug log final records: verbose exit 1; verbose code 1",
+          "exitClassification": "E503",
+          "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderrSha256": "feef621771d339119b2cb43bfe7d3d2ba97a9ef00ca092987f060f12760ed2c8",
+          "packagedCommandResult": "implementation-control/reports/B10_AUTHORING_VALIDATION/command-result.json"
+        }
+      ],
+      "primaryFailure": "HTTP 503 Service Temporarily Unavailable downloading zimmerframe-1.1.4.tgz",
+      "passClaimed": false
+    },
+    "externalR1Evidence": {
+      "authenticated": "PASS",
+      "candidateSha256": "50a0cfda8966ce85420ea880e4af6d299c6e3837c33934ed021fefbce0df192e",
+      "runnerSha256": "8a3f4e3c8b33389f83cd7fb69173abf92f5a9909cd1a14ecf2ecb167ac694936",
+      "npmCi": "PASS",
+      "typecheck": "PASS",
+      "focusedB10Tests": "PASS_3_FILES_47_TESTS",
+      "regression": "FAIL_MISSING_EXPLICIT_GATE_ANCHOR",
+      "build": "NOT_RUN_FAIL_FAST"
+    },
+    "r2NpmCiAttempt": {
+      "command": "npm ci",
+      "status": "FAIL_ENVIRONMENT_HTTP_503",
+      "npmErrorCode": "E503",
+      "resource": "zimmerframe-1.1.4.tgz",
+      "numericExitCode": "NOT_CAPTURED_PARENT_TIMEOUT_CHILD_LOG_CONFIRMED_E503",
+      "dependentCommands": "NOT_RUN",
+      "passClaimed": false
+    }
+  },
+  "requiredExternalValidation": {
+    "candidate": "FS_B10_r2.zip",
+    "candidateSidecar": "FS_B10_r2.zip.sha256",
+    "runner": "Run-FinScope-BatchValidation_B10_r2_v1.ps1",
+    "runnerSidecar": "Run-FinScope-BatchValidation_B10_r2_v1.ps1.sha256",
+    "inputDirectory": "C:\\FS\\B10r2v1\\input",
+    "workRoot": "C:\\FS\\B10r2v1\\work",
+    "commands": [
+      "npm ci",
+      "npm run typecheck",
+      "npm run test:unit -- tests/unit/analytics/rule-vectors.test.ts tests/unit/analytics/synthesis.test.ts tests/unit/fingerprints/fingerprint-vectors.test.ts",
+      "npm run test",
+      "npm run build"
+    ],
+    "expectedEvidence": "FinScope_local_evidence_B10_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 with effective discovery and authenticated evidence before completion."
+  },
+  "runner": {
+    "logicalName": "Run-FinScope-BatchValidation_B10_r2_v1.ps1",
+    "sha256": "8960f8d4dc9e05651e9c64130e62036c9e8e9500e229b8a4d2e909fb82f60489",
+    "selfTestOnly": true,
+    "preflightOnly": true,
+    "browserRequiredDerived": false,
+    "authoringExecutableQualification": "NOT_EXECUTED_POWERSHELL_7_UNAVAILABLE; SELFTEST_REQUIRED_ON_WINDOWS"
+  },
+  "integrity": {
+    "tasksSha256": "71d17254d3d8698befc2c1f75b4619d80b0f98545560400470d452796ef6201c",
+    "b10Sha256": "65ffdb45b269bee563feba66e46f8bc12a304d0042c5d53848a4866907df73eb",
+    "specifyFileCount": 19,
+    "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+    "specifyModified": false,
+    "targetFileHashes": {
+      "src/domain/analytics/rule-engine.ts": "49cd96384c5930ecd99cf020d7cd170b6bee30b3c62a4c5e2396126d9ebdb781",
+      "src/domain/analytics/synthesis.ts": "867f269675ca3e4f29e6db836b6b5ee5addce80d0e3b0761c6b65e8c575429c5",
+      "src/domain/fingerprints/fingerprint-service.ts": "a2603c0360471ec7f890bab35a7408b554bdd364ef8687b52fe45fd816bb9c19",
+      "src/domain/fingerprints/projections.ts": "a5459c764fb02d949aa91e9f698be21952245dce90b72b38019f1c3d74d40a47",
+      "tests/unit/analytics/rule-vectors.test.ts": "7976706982cdcd3309c22086166865c433bab12c3a3f25bd0c7825fc1b118829",
+      "tests/unit/analytics/synthesis.test.ts": "223b6acbd48a665a0df75054493263986ded0616fd34e73cfe1250068d6447be",
+      "tests/unit/fingerprints/fingerprint-vectors.test.ts": "3b2dd805141da70fd96dbc92b445536e0f8f4b2ad6e96dcae7e095526ed30eb8"
+    }
+  },
+  "futureScope": {
+    "B11": "PENDING",
+    "activeBatchId": "B10",
+    "nextAuthorizedBatchId": "B10",
+    "convergenceAuthorized": false
+  },
+  "remediation": {
+    "sourceEvidence": "FinScope_local_evidence_B10_20260728-003221644_FAILED.zip",
+    "sourceEvidenceSha256": "4bff6dfadd1f8eec8c4bfa4a4bb0930107f529a37465cb98fc18df8635c7e444",
+    "rootCause": "V0.21_PHASE_STATUS.md r1 omitted the exact <a id=\"gate\"></a> anchor.",
+    "correctedFile": "V0.21_PHASE_STATUS.md",
+    "productRuntimeChanged": false,
+    "b10TestsChanged": false,
+    "report": "implementation-control/reports/B10_R1_VALIDATION_FAILURE_AND_R2_REMEDIATION.md"
+  }
+}

@@ -1,0 +1,438 @@
+{
+  "reportId": "FinScope_Analytics_v0.21_post_tasks_consistency_analysis",
+  "generatedAt": "2026-07-21",
+  "mode": "DOCUMENTARY_REMEDIATION_AND_FRESH_REANALYSIS",
+  "sourceBaseline": {
+    "logicalZip": "FinScope_Analytics_SpecDev_ChatGPT_v0.20_tasks_ready.zip",
+    "internalRoot": "FinScope_v0.20/",
+    "sha256": "2db689c928e92961057a601301c9f3c260e93bf1f4c94cfa03db8a1c816c7be7",
+    "hashMatches": true,
+    "crcOk": true,
+    "entryCount": 368
+  },
+  "remediatedBaseline": {
+    "logicalZip": "FinScope_Analytics_SpecDev_ChatGPT_v0.21_post_analysis_remediated.zip",
+    "internalRoot": "FinScope_v0.21/",
+    "treeModified": true,
+    "productCodeAdded": false,
+    "specifyModified": false
+  },
+  "integrity": {
+    "status": "CONFORME",
+    "utf8Errors": [],
+    "jsonErrors": [],
+    "yamlErrors": [],
+    "emptyFiles": [],
+    "schemasCompile": "26/26",
+    "specifyByteIdentical": true,
+    "productCodeFiles": []
+  },
+  "counts": {
+    "functionalRequirements": 42,
+    "nonFunctionalRequirements": 7,
+    "totalRequirements": 49,
+    "acceptanceCriteria": 84,
+    "tasks": 109,
+    "taskPhases": 10,
+    "dependencyEdges": 433,
+    "parallelMarkedTasks": 41,
+    "userStories": 6,
+    "formulaDefinitions": 15,
+    "formulaPositiveVectors": 36,
+    "metricsTotal": 32,
+    "fundamentalMetrics": 24,
+    "historicalPriceMetrics": 8,
+    "metricVectorsTotal": 96,
+    "insightRules": 9,
+    "insightRuleVectors": 27,
+    "wcagCriteria": 55,
+    "wcagApplicable": 43,
+    "wcagNotApplicable": 12,
+    "schemas": 26,
+    "xbrlMappings": 32,
+    "accountingProfiles": 6,
+    "pipelineStates": 9,
+    "stateTransitionRows": 56
+  },
+  "coverage": {
+    "requirementsWithTasks": {
+      "covered": 49,
+      "total": 49,
+      "percent": 100.0
+    },
+    "requirementsWithTestPaths": {
+      "covered": 49,
+      "total": 49,
+      "percent": 100.0
+    },
+    "acceptanceCriteriaWithTasks": {
+      "covered": 84,
+      "total": 84,
+      "percent": 100.0
+    },
+    "acceptanceCriteriaWithTestPaths": {
+      "covered": 84,
+      "total": 84,
+      "percent": 100.0
+    },
+    "tasksWithRequirementRefs": {
+      "covered": 109,
+      "total": 109,
+      "percent": 100.0
+    },
+    "tasksWithAcceptanceRefs": {
+      "covered": 109,
+      "total": 109,
+      "percent": 100.0
+    },
+    "tasksWithAuthority": {
+      "covered": 109,
+      "total": 109,
+      "percent": 100.0
+    },
+    "tasksWithAnyTestPath": {
+      "covered": 102,
+      "total": 109,
+      "percent": 93.58
+    },
+    "tasksWithoutAnyTestPath": [
+      "T010",
+      "T099",
+      "T104",
+      "T105",
+      "T106",
+      "T107",
+      "T109"
+    ],
+    "implementationOrConfigTasksWithoutTest": [],
+    "nominalAssessment": "COMPLETE",
+    "effectiveExecutableAssessment": "APPROVED"
+  },
+  "dependencyGraph": {
+    "nodes": 109,
+    "edges": 433,
+    "roots": [
+      "T001",
+      "T002",
+      "T003",
+      "T005",
+      "T006",
+      "T007",
+      "T009",
+      "T010"
+    ],
+    "leaves": [
+      "T109"
+    ],
+    "cycles": [],
+    "unknownDependencies": [],
+    "forwardDocumentOrderDependencies": [],
+    "longestPathEdges": 22,
+    "longestPath": [
+      "T001",
+      "T012",
+      "T018",
+      "T026",
+      "T027",
+      "T028",
+      "T030",
+      "T036",
+      "T039",
+      "T042",
+      "T044",
+      "T045",
+      "T047",
+      "T048",
+      "T053",
+      "T060",
+      "T062",
+      "T087",
+      "T088",
+      "T104",
+      "T107",
+      "T108",
+      "T109"
+    ],
+    "finalTaskClosure": 109,
+    "finalTaskMissing": []
+  },
+  "parallelism": {
+    "parallelTasks": 41,
+    "collisions": [],
+    "meaning": "parallel only after all dependencies"
+  },
+  "findings": [
+    {
+      "id": "ANA-001",
+      "severityBefore": "CRITICAL",
+      "domain": "Orden constitucional",
+      "status": "CLOSED",
+      "remediation": "T109 y el diagrama final ahora producen evidencia de entrada para convergencia; no existe transición implementación→análisis separado.",
+      "tasks": [
+        "T109"
+      ],
+      "verification": "T109 convergence-input and no second analysis"
+    },
+    {
+      "id": "ANA-002",
+      "severityBefore": "HIGH",
+      "domain": "Fórmulas, métricas y calidad",
+      "status": "CLOSED",
+      "remediation": "T042 y T067 consumen T041/T043, decimal.js, HALF_EVEN y DecimalString; se elimina duplicación y acoplamiento financiero cruzado.",
+      "tasks": [
+        "T041",
+        "T042",
+        "T043",
+        "T067"
+      ],
+      "verification": "metric engines consume formula and quality producers"
+    },
+    {
+      "id": "ANA-003",
+      "severityBefore": "HIGH",
+      "domain": "Síntesis y pipeline fundamental",
+      "status": "CLOSED",
+      "remediation": "T045 depende del evaluador de reglas, T048 de builders/fingerprints y T053 espera métricas, reglas, síntesis, evidencia y fingerprints visibles.",
+      "tasks": [
+        "T044",
+        "T045",
+        "T047",
+        "T048",
+        "T051",
+        "T052",
+        "T053"
+      ],
+      "verification": "synthesis/Worker/E2E depend on producers"
+    },
+    {
+      "id": "ANA-004",
+      "severityBefore": "HIGH",
+      "domain": "Refresh y consentimiento",
+      "status": "CLOSED",
+      "remediation": "Consentimientos separados nacen en T021 antes de lifecycle; T060–T062 conectan retry, idempotencia, locks, cancelación, degradación y quota guards sin trabajo con app cerrada.",
+      "tasks": [
+        "T021",
+        "T056",
+        "T057",
+        "T059",
+        "T060",
+        "T061",
+        "T062",
+        "T072"
+      ],
+      "verification": "consent foundation before lifecycle and refresh full chain"
+    },
+    {
+      "id": "ANA-005",
+      "severityBefore": "HIGH",
+      "domain": "Precio histórico",
+      "status": "CLOSED",
+      "remediation": "DAG reconstruido CSV/manual→preview→confirmación→overlay→fingerprint→8 métricas→eventos/pointer→UI→E2E, aislado de fundamentales.",
+      "tasks": [
+        "T063",
+        "T064",
+        "T065",
+        "T066",
+        "T067",
+        "T068",
+        "T069",
+        "T070",
+        "T071"
+      ],
+      "verification": "price DAG complete and isolated"
+    },
+    {
+      "id": "ANA-006",
+      "severityBefore": "HIGH",
+      "domain": "Persistencia/export/restore/delete",
+      "status": "CLOSED",
+      "remediation": "Secuencia IndexedDB→repositorios→export→preview→restore→delete→integridad/UI→E2E; T077 es consumida y restore/delete usan repositorios reales.",
+      "tasks": [
+        "T021",
+        "T073",
+        "T074",
+        "T075",
+        "T076",
+        "T077",
+        "T078",
+        "T079",
+        "T080"
+      ],
+      "verification": "persistence DAG complete"
+    },
+    {
+      "id": "ANA-007",
+      "severityBefore": "HIGH",
+      "domain": "WCAG 2.2 AA",
+      "status": "CLOSED",
+      "remediation": "T086 enumera fuentes reales; T087/T088/T104 esperan todas las vistas y cubren 55 criterios, 12 N/A y triggers; axe permanece suplementario.",
+      "tasks": [
+        "T083",
+        "T084",
+        "T085",
+        "T086",
+        "T087",
+        "T088",
+        "T104"
+      ],
+      "verification": "WCAG source paths and full closure"
+    },
+    {
+      "id": "ANA-008",
+      "severityBefore": "HIGH",
+      "domain": "Cloudflare Free",
+      "status": "CLOSED",
+      "remediation": "T105 depende de guards, degradación, telemetría, D1, build, rendimiento, seguridad, supply chain y runbook; mediciones dependen de implementaciones reales.",
+      "tasks": [
+        "T090",
+        "T091",
+        "T092",
+        "T093",
+        "T094",
+        "T095",
+        "T096",
+        "T097",
+        "T098",
+        "T099",
+        "T105"
+      ],
+      "verification": "Cloudflare validation consumes all evidence"
+    },
+    {
+      "id": "ANA-009",
+      "severityBefore": "HIGH",
+      "domain": "Clausura final",
+      "status": "CLOSED",
+      "remediation": "T100/T101/T102 definen membresía explícita, T103 cierra E2E por user story y T109 alcanza 109/109 tareas.",
+      "tasks": [
+        "T100",
+        "T101",
+        "T102",
+        "T103",
+        "T109"
+      ],
+      "verification": "aggregators explicit and final closure complete"
+    },
+    {
+      "id": "ANA-010",
+      "severityBefore": "HIGH",
+      "domain": "SEC User-Agent/contacto/redirects",
+      "status": "CLOSED",
+      "remediation": "T007 declara bindings sin valores; T028 implementa fail-closed, headers, redacción, redirect manual, Location y allowlist exacta; T035 congela positivos/negativos.",
+      "tasks": [
+        "T007",
+        "T028",
+        "T035"
+      ],
+      "verification": "SEC bindings and redirects explicit"
+    },
+    {
+      "id": "ANA-011",
+      "severityBefore": "HIGH",
+      "domain": "Corrupción IndexedDB",
+      "status": "CLOSED",
+      "remediation": "T079 implementa validación schema/hash, cuarentena, exclusión de pointers y preservación; T080 expone recuperación por restore validado y E2E.",
+      "tasks": [
+        "T079",
+        "T080",
+        "T082"
+      ],
+      "verification": "IndexedDB corruption read path explicit"
+    },
+    {
+      "id": "ANA-012",
+      "severityBefore": "MEDIUM",
+      "domain": "Paralelismo",
+      "status": "CLOSED",
+      "remediation": "Ejemplos sustituidos por ondas válidas; [P] solo aplica tras completar todas las dependencias.",
+      "tasks": [
+        "T010",
+        "T011",
+        "T012",
+        "T013",
+        "T014",
+        "T015"
+      ],
+      "verification": "parallel examples respect dependencies"
+    },
+    {
+      "id": "ANA-013",
+      "severityBefore": "MEDIUM",
+      "domain": "Dependencias artificiales",
+      "status": "CLOSED",
+      "remediation": "Se eliminaron todas las aristas señaladas y se sustituyeron por productores/interfaces reales.",
+      "tasks": [
+        "T057",
+        "T065",
+        "T066",
+        "T091",
+        "T094",
+        "T095"
+      ],
+      "verification": "artificial dependencies removed"
+    }
+  ],
+  "residualFindings": [],
+  "externalRevalidation": {
+    "SEC": {
+      "status": "CONFORME",
+      "facts": [
+        "declared User-Agent/contact required",
+        "data.sec.gov APIs need no API key",
+        "internal 14-call budget remains below SEC 10 requests/second policy"
+      ]
+    },
+    "WCAG": {
+      "status": "CONFORME",
+      "criteria": 55,
+      "applicable": 43,
+      "notApplicable": 12,
+      "axeSupplemental": true
+    },
+    "CloudflareFree": {
+      "status": "CONFORME",
+      "servicesUsed": [
+        "Pages",
+        "Workers Free",
+        "D1 Free"
+      ],
+      "servicesNotUsed": [
+        "Pages Functions",
+        "KV",
+        "R2",
+        "Queues",
+        "Durable Objects",
+        "Cron Triggers"
+      ]
+    }
+  },
+  "runtimeRisks": [
+    "Worker CPU and browser memory require measurements during implementation",
+    "IndexedDB eviction/corruption requires the T079/T080 recovery path",
+    "SEC taxonomy drift remains governed by exact versioned mappings",
+    "manual WCAG evidence remains required where automation is insufficient"
+  ],
+  "implementationReadiness": "APPROVED",
+  "gates": {
+    "tasksAuthorized": true,
+    "analysisAuthorized": true,
+    "implementationAuthorized": true,
+    "convergenceAuthorized": false
+  },
+  "errata": [
+    {
+      "id": "ERR-V021-METRIC-DOMAIN-COUNT",
+      "status": "CORRECTED_IN_V0.21.1_PACKAGE_REVISION",
+      "previous": {
+        "fundamentalMetrics": 0,
+        "historicalPriceMetrics": 32
+      },
+      "corrected": {
+        "fundamentalMetrics": 24,
+        "historicalPriceMetrics": 8
+      },
+      "authority": "FR-013; PACKAGE_METADATA.json; definitions/metric-catalog.json; 07_POST_TASKS_COVERAGE_MATRIX.json",
+      "semanticImpact": "NONE_ON_SPEC_PLAN_TASKS_OR_GATE"
+    }
+  ]
+}

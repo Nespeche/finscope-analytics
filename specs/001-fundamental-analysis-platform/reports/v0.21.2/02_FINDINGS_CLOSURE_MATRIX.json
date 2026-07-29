@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0.0",
+  "packageRevision": "v0.21.2_authority_alignment_ready",
+  "generatedOn": "2026-07-22",
+  "initialCounts": {
+    "BLOCKER": 1,
+    "HIGH": 8,
+    "MEDIUM": 8
+  },
+  "findings": [
+    {
+      "id": "F001",
+      "severity": "BLOCKER",
+      "code": "T004_BOOTSTRAP_SCOPE_GAP",
+      "cause": "T004 no podía montar App.svelte porque src/main.ts estaba fuera de alcance.",
+      "remediation": "T004 incluye src/main.ts, app/composition.ts y pruebas de composición/compilador/E2E.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "F002",
+      "severity": "HIGH",
+      "code": "AUTHORITY_PRECEDENCE_CONTRADICTION",
+      "cause": "Índice y política definían precedencias incompatibles.",
+      "remediation": "AUTHORITY_MATRIX por campo y procedimiento de conflicto.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "F003",
+      "severity": "HIGH",
+      "code": "STALE_ACTIVE_DOCUMENTS",
+      "cause": "Entrada/contexto/índice/gate describían estado anterior a B01.",
+      "remediation": "Documentos activos alineados con B01 completado/B02 pendiente.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "F004",
+      "severity": "HIGH",
+      "code": "TASK_MIRROR_DRIFT_RISK",
+      "cause": "Batches duplicaban tasks.md sin prueba de equivalencia.",
+      "remediation": "TASK_SOURCE_LOCK y hashes globales/por tarea/batch.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "F005",
+      "severity": "HIGH",
+      "code": "FALSE_PARALLELISM_T001",
+      "cause": "Arneses B01 no dependían de T001 aunque requerían dependencias/lockfile.",
+      "remediation": "Dependencias causales corregidas y mapa recalculado.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "F006",
+      "severity": "HIGH",
+      "code": "MISSING_COMPOSITION_ROOTS",
+      "cause": "Vistas, plugins, Worker runners y rutas podían quedar huérfanos.",
+      "remediation": "AUTH-027 y Done when de tareas afectados.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "F007",
+      "severity": "HIGH",
+      "code": "PLAYWRIGHT_DISCOVERY_GAP",
+      "cause": "tests/accessibility y tests/performance estaban fuera de testDir.",
+      "remediation": "testDir/testMatch y scripts por categoría.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "F008",
+      "severity": "HIGH",
+      "code": "VITEST_PERFORMANCE_DISCOVERY_GAP",
+      "cause": "tests/performance/*.test.ts no pertenecían a un proyecto.",
+      "remediation": "Proyecto Vitest performance y contrato de discovery.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "F009",
+      "severity": "HIGH",
+      "code": "AJV_RUNTIME_POLICY_GAP",
+      "cause": "T012 no fijaba strict/options/formats y fallaba con schemas compuestos.",
+      "remediation": "AUTH-036 runtime schema validation contract.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "F010",
+      "severity": "HIGH",
+      "code": "NO_DELEGATED_VALIDATION_STATE",
+      "cause": "No había estado formal entre autoría y ejecución local.",
+      "remediation": "IMPLEMENTED_PENDING_VALIDATION, LOCAL_VALIDATION_REQUIRED y protocolo/script.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "F011",
+      "severity": "MEDIUM",
+      "code": "PLAYWRIGHT_BROWSER_PREFLIGHT",
+      "cause": "Chromium no estaba documentado como precondición.",
+      "remediation": "Instalación explícita y comando automático por batch browser.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "F012",
+      "severity": "MEDIUM",
+      "code": "SOURCE_BASELINE_SEMANTICS",
+      "cause": "Origen normativo e input inmediato estaban mezclados.",
+      "remediation": "sourceBaseline y normativeSourceBaseline separados.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "F013",
+      "severity": "MEDIUM",
+      "code": "AUTHORITY_FRAGMENT_ANCHORS",
+      "cause": "Varias referencias Markdown dependían de anchors implícitos.",
+      "remediation": "Anchors explícitos añadidos; pointer OpenAPI se valida como JSON/YAML pointer.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "F014",
+      "severity": "MEDIUM",
+      "code": "STALE_V0211_REPORT_SCOPE",
+      "cause": "Reporte v0.21.1 de pre-orquestación parecía describir el paquete B01.",
+      "remediation": "v0.21.1 marcado histórico y v0.21.2 como reporte activo.",
+      "status": "CLOSED"
+    },
+    {
+      "id": "F015",
+      "severity": "MEDIUM",
+      "code": "B01_RAW_EVIDENCE_EXTERNAL",
+      "cause": "El ZIP bruto de evidencia B01 no venía dentro del baseline.",
+      "remediation": "Se preserva hash/resumen y se declara limitación; no se reconstruye evidencia.",
+      "status": "ACCEPTED_HISTORICAL_LIMITATION"
+    },
+    {
+      "id": "F016",
+      "severity": "MEDIUM",
+      "code": "SVELTE_DIAGNOSTIC_COVERAGE",
+      "cause": "tsc no cubre diagnósticos propios de componentes Svelte.",
+      "remediation": "T004 exige test de compilador Svelte con warnings fail-closed, build y E2E; sin dependencia nueva no bloqueada por lockfile.",
+      "status": "CLOSED_FOR_B02_SCOPE"
+    },
+    {
+      "id": "F017",
+      "severity": "MEDIUM",
+      "code": "CANDIDATE_PROMOTION_AMBIGUITY",
+      "cause": "No se distinguía qué paquete reemplaza Sources.",
+      "remediation": "baselineRole y regla candidato→evidencia→completed.",
+      "status": "CLOSED"
+    }
+  ],
+  "residualBlockingCount": 0,
+  "acceptedHistoricalLimitations": [
+    "F015"
+  ]
+}

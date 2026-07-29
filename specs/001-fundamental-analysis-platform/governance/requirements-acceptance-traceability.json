@@ -1,0 +1,2608 @@
+{
+  "matrixId": "requirements-acceptance-traceability",
+  "version": "5.0.4",
+  "status": "ACTIVE_AUTHORITY",
+  "requirementCount": 49,
+  "criterionCount": 84,
+  "invariants": [
+    "49 unique requirements equal 42 FR plus 7 NFR",
+    "84 unique criteria equal AC-001 through AC-084",
+    "requirement criterionIds and criterion requirementIds are exact reversible mirrors",
+    "criterion authorityId authorityRef fixtureRef and requirementIds exactly mirror the acceptance catalog and fixture",
+    "every requirement has one exact planRef and responsible component",
+    "planComponents reverse exactly to requirement componentId values",
+    "all plan, contract, schema, authority and fixture references resolve physically from the declared root",
+    "semantic-only coverage is prohibited"
+  ],
+  "requirements": [
+    {
+      "requirementId": "FR-001",
+      "statement": "CIK de 10 dígitos es la identidad primaria; ticker es alias no autoritativo.",
+      "criterionIds": [
+        "AC-001",
+        "AC-003"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-identity",
+      "planSection": "Identidad del emisor",
+      "componentId": "COMP-IDENTITY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/data-model.md",
+        "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/common.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/local-operation-issue.schema.json"
+      ],
+      "testStrategy": "fixtures de identidad, ambigüedad y resolución exacta por CIK; Vitest futuro y Playwright de selección"
+    },
+    {
+      "requirementId": "FR-002",
+      "statement": "una coincidencia ambigua produce `identity_ambiguous` local; nunca selección automática.",
+      "criterionIds": [
+        "AC-002"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-identity",
+      "planSection": "Identidad del emisor",
+      "componentId": "COMP-IDENTITY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/data-model.md",
+        "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/common.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/local-operation-issue.schema.json"
+      ],
+      "testStrategy": "fixtures de identidad, ambigüedad y resolución exacta por CIK; Vitest futuro y Playwright de selección"
+    },
+    {
+      "requirementId": "FR-003",
+      "statement": "una operación SEC tiene presupuesto fijo de 14 llamadas externas.",
+      "criterionIds": [
+        "AC-003",
+        "AC-009",
+        "AC-081"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-sec-gateway",
+      "planSection": "Gateway SEC y adquisición",
+      "componentId": "COMP-SEC-GATEWAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/sec-filing-fact-selection-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/security-and-input-limits.json",
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/sec-acquisition.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/sec-filing-fact-selection-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/security-and-input-limits.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/problem-details.schema.json"
+      ],
+      "testStrategy": "OpenAPI/ref checks, fixtures SEC congelados, selección determinística, límites, retry/backoff y variantes HTTP"
+    },
+    {
+      "requirementId": "FR-004",
+      "statement": "Submissions y Company Facts se solicitan antes de cualquier Company Concept.",
+      "criterionIds": [
+        "AC-005",
+        "AC-006",
+        "AC-081"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-sec-gateway",
+      "planSection": "Gateway SEC y adquisición",
+      "componentId": "COMP-SEC-GATEWAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/sec-filing-fact-selection-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/security-and-input-limits.json",
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/sec-acquisition.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/sec-filing-fact-selection-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/security-and-input-limits.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/problem-details.schema.json"
+      ],
+      "testStrategy": "OpenAPI/ref checks, fixtures SEC congelados, selección determinística, límites, retry/backoff y variantes HTTP"
+    },
+    {
+      "requirementId": "FR-005",
+      "statement": "Company Concept se solicita solo para conceptos no resueltos, allowlisted y con mapping exacto `ACTIVE`.",
+      "criterionIds": [
+        "AC-007",
+        "AC-081"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-sec-gateway",
+      "planSection": "Gateway SEC y adquisición",
+      "componentId": "COMP-SEC-GATEWAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/sec-filing-fact-selection-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/security-and-input-limits.json",
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/sec-acquisition.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/sec-filing-fact-selection-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/security-and-input-limits.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/problem-details.schema.json"
+      ],
+      "testStrategy": "OpenAPI/ref checks, fixtures SEC congelados, selección determinística, límites, retry/backoff y variantes HTTP"
+    },
+    {
+      "requirementId": "FR-006",
+      "statement": "el orden de fallback es estable: allowlist del perfil → prioridad de métrica → precedencia de mapping → conceptId.",
+      "criterionIds": [
+        "AC-008",
+        "AC-013",
+        "AC-081"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-sec-gateway",
+      "planSection": "Gateway SEC y adquisición",
+      "componentId": "COMP-SEC-GATEWAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/sec-filing-fact-selection-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/security-and-input-limits.json",
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/sec-acquisition.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/sec-filing-fact-selection-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/security-and-input-limits.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/problem-details.schema.json"
+      ],
+      "testStrategy": "OpenAPI/ref checks, fixtures SEC congelados, selección determinística, límites, retry/backoff y variantes HTTP"
+    },
+    {
+      "requirementId": "FR-007",
+      "statement": "agotado el presupuesto, se publica resultado `partial` si hay payload utilizable; no se ejecuta una llamada 15.",
+      "criterionIds": [
+        "AC-007",
+        "AC-009",
+        "AC-010",
+        "AC-081"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-sec-gateway",
+      "planSection": "Gateway SEC y adquisición",
+      "componentId": "COMP-SEC-GATEWAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/sec-filing-fact-selection-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/security-and-input-limits.json",
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/sec-acquisition.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/sec-filing-fact-selection-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/security-and-input-limits.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/problem-details.schema.json"
+      ],
+      "testStrategy": "OpenAPI/ref checks, fixtures SEC congelados, selección determinística, límites, retry/backoff y variantes HTTP"
+    },
+    {
+      "requirementId": "FR-008",
+      "statement": "cada fact mantiene `factId`, concepto canónico, período, scope, decimal canónico, mapping/version y sourceRef.",
+      "criterionIds": [
+        "AC-006",
+        "AC-011",
+        "AC-012",
+        "AC-015",
+        "AC-019",
+        "AC-020"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-normalization",
+      "planSection": "Normalización XBRL y bundle fundamental",
+      "componentId": "COMP-NORMALIZATION",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json",
+        "specs/001-fundamental-analysis-platform/contracts/fundamental-bundle.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/xbrl-mapping-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/accounting-profile-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/common.schema.json"
+      ],
+      "testStrategy": "fixtures XBRL exactos, perfiles, cobertura, deuda no solapada y bundles positivos/negativos"
+    },
+    {
+      "requirementId": "FR-009",
+      "statement": "los estados de fact resolution son `resolved|absent|ambiguous|incompatible`.",
+      "criterionIds": [
+        "AC-010",
+        "AC-014",
+        "AC-020"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-normalization",
+      "planSection": "Normalización XBRL y bundle fundamental",
+      "componentId": "COMP-NORMALIZATION",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json",
+        "specs/001-fundamental-analysis-platform/contracts/fundamental-bundle.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/xbrl-mapping-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/accounting-profile-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/common.schema.json"
+      ],
+      "testStrategy": "fixtures XBRL exactos, perfiles, cobertura, deuda no solapada y bundles positivos/negativos"
+    },
+    {
+      "requirementId": "FR-010",
+      "statement": "la cobertura agregada usa `complete|partial|missing|not_applicable`; no sustituye al estado del fact.",
+      "criterionIds": [
+        "AC-010",
+        "AC-011"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-normalization",
+      "planSection": "Normalización XBRL y bundle fundamental",
+      "componentId": "COMP-NORMALIZATION",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json",
+        "specs/001-fundamental-analysis-platform/contracts/fundamental-bundle.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/xbrl-mapping-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/accounting-profile-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/common.schema.json"
+      ],
+      "testStrategy": "fixtures XBRL exactos, perfiles, cobertura, deuda no solapada y bundles positivos/negativos"
+    },
+    {
+      "requirementId": "FR-011",
+      "statement": "perfiles aplican allowlists de conceptos y métricas; elementos fuera de allowlist son `not_applicable` o `absent`, nunca inferidos.",
+      "criterionIds": [
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-080"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-normalization",
+      "planSection": "Normalización XBRL y bundle fundamental",
+      "componentId": "COMP-NORMALIZATION",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json",
+        "specs/001-fundamental-analysis-platform/contracts/fundamental-bundle.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/xbrl-mapping-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/accounting-profile-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/common.schema.json"
+      ],
+      "testStrategy": "fixtures XBRL exactos, perfiles, cobertura, deuda no solapada y bundles positivos/negativos"
+    },
+    {
+      "requirementId": "FR-012",
+      "statement": "`unsupported_profile` es un resultado local normal que conserva identidad, filings y evidencia; no es HTTP 422.",
+      "criterionIds": [
+        "AC-017",
+        "AC-018"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-normalization",
+      "planSection": "Normalización XBRL y bundle fundamental",
+      "componentId": "COMP-NORMALIZATION",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json",
+        "specs/001-fundamental-analysis-platform/contracts/fundamental-bundle.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/xbrl-mapping-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/accounting-profile-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/common.schema.json"
+      ],
+      "testStrategy": "fixtures XBRL exactos, perfiles, cobertura, deuda no solapada y bundles positivos/negativos"
+    },
+    {
+      "requirementId": "FR-013",
+      "statement": "el catálogo ejecutable contiene exactamente 24 métricas fundamentales activas y 8 de precio activas.",
+      "criterionIds": [
+        "AC-016",
+        "AC-017",
+        "AC-028"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-analytics",
+      "planSection": "Fórmulas, métricas, calidad y reglas",
+      "componentId": "COMP-ANALYTICS",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/formula-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/formula-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/formula-vectors.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/metric-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/quality-model-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/analysis-results.schema.json"
+      ],
+      "testStrategy": "36 oráculos de fórmula, 96 vectores métricos, 27 reglas, DecimalString, determinismo y quality gates"
+    },
+    {
+      "requirementId": "FR-014",
+      "statement": "cada métrica declara fórmula, inputs, prioridad, perfiles, calidad mínima, rounding, consumidores y dominio de fingerprint.",
+      "criterionIds": [
+        "AC-015",
+        "AC-026",
+        "AC-027",
+        "AC-028"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-analytics",
+      "planSection": "Fórmulas, métricas, calidad y reglas",
+      "componentId": "COMP-ANALYTICS",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/formula-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/formula-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/formula-vectors.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/metric-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/quality-model-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/analysis-results.schema.json"
+      ],
+      "testStrategy": "36 oráculos de fórmula, 96 vectores métricos, 27 reglas, DecimalString, determinismo y quality gates"
+    },
+    {
+      "requirementId": "FR-015",
+      "statement": "deuda usa buckets exactos no solapados; un total genérico o lease-inclusive no se usa sin mapping exacto explícito.",
+      "criterionIds": [
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-normalization",
+      "planSection": "Normalización XBRL y bundle fundamental",
+      "componentId": "COMP-NORMALIZATION",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json",
+        "specs/001-fundamental-analysis-platform/contracts/fundamental-bundle.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/xbrl-mapping-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/accounting-profile-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/common.schema.json"
+      ],
+      "testStrategy": "fixtures XBRL exactos, perfiles, cobertura, deuda no solapada y bundles positivos/negativos"
+    },
+    {
+      "requirementId": "FR-016",
+      "statement": "calidad fundamental y calidad de precio son modelos distintos y no comparten ejes implícitos.",
+      "criterionIds": [
+        "AC-029",
+        "AC-030",
+        "AC-031",
+        "AC-032"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-analytics",
+      "planSection": "Fórmulas, métricas, calidad y reglas",
+      "componentId": "COMP-ANALYTICS",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/formula-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/formula-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/formula-vectors.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/metric-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/quality-model-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/analysis-results.schema.json"
+      ],
+      "testStrategy": "36 oráculos de fórmula, 96 vectores métricos, 27 reglas, DecimalString, determinismo y quality gates"
+    },
+    {
+      "requirementId": "FR-017",
+      "statement": "cada una de las 9 reglas activas usa AST validado por `rule-node.schema.json`, perfiles, calidad mínima y consumidores.",
+      "criterionIds": [
+        "AC-033",
+        "AC-034",
+        "AC-035",
+        "AC-036"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-analytics",
+      "planSection": "Fórmulas, métricas, calidad y reglas",
+      "componentId": "COMP-ANALYTICS",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/formula-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/formula-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/formula-vectors.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/metric-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/quality-model-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/analysis-results.schema.json"
+      ],
+      "testStrategy": "36 oráculos de fórmula, 96 vectores métricos, 27 reglas, DecimalString, determinismo y quality gates"
+    },
+    {
+      "requirementId": "FR-018",
+      "statement": "cada regla tiene tres fixtures: triggered, not_triggered y not_evaluable.",
+      "criterionIds": [
+        "AC-034"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-analytics",
+      "planSection": "Fórmulas, métricas, calidad y reglas",
+      "componentId": "COMP-ANALYTICS",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/formula-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/formula-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/formula-vectors.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/metric-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/quality-model-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/analysis-results.schema.json"
+      ],
+      "testStrategy": "36 oráculos de fórmula, 96 vectores métricos, 27 reglas, DecimalString, determinismo y quality gates"
+    },
+    {
+      "requirementId": "FR-019",
+      "statement": "una regla nunca se evalúa si un input requerido está indisponible o por debajo de la calidad mínima.",
+      "criterionIds": [
+        "AC-025",
+        "AC-027",
+        "AC-030",
+        "AC-035"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-analytics",
+      "planSection": "Fórmulas, métricas, calidad y reglas",
+      "componentId": "COMP-ANALYTICS",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/formula-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/formula-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/formula-vectors.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/metric-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/quality-model-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/analysis-results.schema.json"
+      ],
+      "testStrategy": "36 oráculos de fórmula, 96 vectores métricos, 27 reglas, DecimalString, determinismo y quality gates"
+    },
+    {
+      "requirementId": "FR-020",
+      "statement": "un bundle/snapshot fundamental no contiene overlay, métricas ni fingerprints de precio.",
+      "criterionIds": [
+        "AC-011",
+        "AC-037",
+        "AC-049",
+        "AC-078"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-price-overlay",
+      "planSection": "Separación fundamental y overlay de precio",
+      "componentId": "COMP-PRICE-OVERLAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md",
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-overlay.md",
+        "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json"
+      ],
+      "testStrategy": "fixtures de overlay, aislamiento de dominio, importación CSV y rechazo de campos derivados del reloj"
+    },
+    {
+      "requirementId": "FR-021",
+      "statement": "un overlay es inmutable por versión; reemplazarlo crea nueva versión y actualiza solo el pointer de precio.",
+      "criterionIds": [
+        "AC-049",
+        "AC-050",
+        "AC-054",
+        "AC-055",
+        "AC-063"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-price-overlay",
+      "planSection": "Separación fundamental y overlay de precio",
+      "componentId": "COMP-PRICE-OVERLAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md",
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-overlay.md",
+        "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json"
+      ],
+      "testStrategy": "fixtures de overlay, aislamiento de dominio, importación CSV y rechazo de campos derivados del reloj"
+    },
+    {
+      "requirementId": "FR-022",
+      "statement": "importar o borrar precio no modifica bundle, análisis, snapshot ni pointer fundamental.",
+      "criterionIds": [
+        "AC-054",
+        "AC-055",
+        "AC-063",
+        "AC-078"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-price-overlay",
+      "planSection": "Separación fundamental y overlay de precio",
+      "componentId": "COMP-PRICE-OVERLAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md",
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-overlay.md",
+        "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json"
+      ],
+      "testStrategy": "fixtures de overlay, aislamiento de dominio, importación CSV y rechazo de campos derivados del reloj"
+    },
+    {
+      "requirementId": "FR-023",
+      "statement": "precio se usa únicamente para métricas históricas descriptivas; no interviene en reglas fundamentales.",
+      "criterionIds": [
+        "AC-037",
+        "AC-049",
+        "AC-050",
+        "AC-051",
+        "AC-052"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-price-overlay",
+      "planSection": "Separación fundamental y overlay de precio",
+      "componentId": "COMP-PRICE-OVERLAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md",
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-overlay.md",
+        "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json"
+      ],
+      "testStrategy": "fixtures de overlay, aislamiento de dominio, importación CSV y rechazo de campos derivados del reloj"
+    },
+    {
+      "requirementId": "FR-024",
+      "statement": "`displayAgeDays`, `evaluationDate` y cualquier dato derivado del reloj son solo de presentación.",
+      "criterionIds": [
+        "AC-051",
+        "AC-064",
+        "AC-079"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-price-overlay",
+      "planSection": "Separación fundamental y overlay de precio",
+      "componentId": "COMP-PRICE-OVERLAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md",
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-overlay.md",
+        "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json"
+      ],
+      "testStrategy": "fixtures de overlay, aislamiento de dominio, importación CSV y rechazo de campos derivados del reloj"
+    },
+    {
+      "requirementId": "FR-025",
+      "statement": "serialización canónica RFC 8785 JCS y SHA-256 con prefijo `sha256:`.",
+      "criterionIds": [
+        "AC-019",
+        "AC-039",
+        "AC-040",
+        "AC-041"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-fingerprints",
+      "planSection": "Fingerprints y evidencia",
+      "componentId": "COMP-FINGERPRINTS",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-test-vectors.json",
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-and-sanitization.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/fingerprint-projections.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/analysis-results.schema.json"
+      ],
+      "testStrategy": "RFC 8785 JCS, SHA-256, proyecciones separadas, sourceRefs y invariancia frente al reloj/precio"
+    },
+    {
+      "requirementId": "FR-026",
+      "statement": "`fundamentalInputFingerprint`, `fundamentalAnalysisFingerprint`, `historicalPriceOverlayFingerprint`, `priceAnalysisFingerprint` y `sourceEvidenceFingerprint` tienen proyecciones distintas.",
+      "criterionIds": [
+        "AC-042",
+        "AC-078"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-fingerprints",
+      "planSection": "Fingerprints y evidencia",
+      "componentId": "COMP-FINGERPRINTS",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-test-vectors.json",
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-and-sanitization.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/fingerprint-projections.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/analysis-results.schema.json"
+      ],
+      "testStrategy": "RFC 8785 JCS, SHA-256, proyecciones separadas, sourceRefs y invariancia frente al reloj/precio"
+    },
+    {
+      "requirementId": "FR-027",
+      "statement": "fingerprints, timestamps de visualización y campos de reloj quedan excluidos de su propia proyección.",
+      "criterionIds": [
+        "AC-038",
+        "AC-041",
+        "AC-079"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-fingerprints",
+      "planSection": "Fingerprints y evidencia",
+      "componentId": "COMP-FINGERPRINTS",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-test-vectors.json",
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-and-sanitization.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/fingerprint-projections.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/analysis-results.schema.json"
+      ],
+      "testStrategy": "RFC 8785 JCS, SHA-256, proyecciones separadas, sourceRefs y invariancia frente al reloj/precio"
+    },
+    {
+      "requirementId": "FR-028",
+      "statement": "cambiar evidencia opcional o precio no cambia fingerprints fundamentales.",
+      "criterionIds": [
+        "AC-037",
+        "AC-038",
+        "AC-078"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-fingerprints",
+      "planSection": "Fingerprints y evidencia",
+      "componentId": "COMP-FINGERPRINTS",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-test-vectors.json",
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-and-sanitization.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/fingerprint-projections.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/analysis-results.schema.json"
+      ],
+      "testStrategy": "RFC 8785 JCS, SHA-256, proyecciones separadas, sourceRefs y invariancia frente al reloj/precio"
+    },
+    {
+      "requirementId": "FR-029",
+      "statement": "toda publicación valida fingerprints contra test vectors.",
+      "criterionIds": [
+        "AC-039",
+        "AC-040"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-fingerprints",
+      "planSection": "Fingerprints y evidencia",
+      "componentId": "COMP-FINGERPRINTS",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-test-vectors.json",
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-and-sanitization.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/fingerprint-projections.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/analysis-results.schema.json"
+      ],
+      "testStrategy": "RFC 8785 JCS, SHA-256, proyecciones separadas, sourceRefs y invariancia frente al reloj/precio"
+    },
+    {
+      "requirementId": "FR-030",
+      "statement": "apertura/reanudación usa snapshot local sin red cuando `refreshConsent=false`.",
+      "criterionIds": [
+        "AC-065"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-orchestration",
+      "planSection": "Actualización y máquina de estados",
+      "componentId": "COMP-ORCHESTRATION",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/cache-and-refresh-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/update-orchestration.md",
+        "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/cache-and-refresh-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/state-and-capability-catalog.schema.json"
+      ],
+      "testStrategy": "6 vectores de cache, 81 pares cartesianos, eventos/operationIds, cancelación y publicación atómica"
+    },
+    {
+      "requirementId": "FR-031",
+      "statement": "con `refreshConsent=true`, apertura/reanudación aplica cache determinística: `fresh <6h` sin red, `stale_revalidatable 6h–<7d` consulta Submissions primero, y `expired ≥7d` intenta actualizar preservando el último snapshot válido; Company Facts solo se solicita ante novedad, cache miss, cambio de autoridad dependiente o refresh manual.",
+      "criterionIds": [
+        "AC-004",
+        "AC-065"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-sec-gateway",
+      "planSection": "Gateway SEC y adquisición",
+      "componentId": "COMP-SEC-GATEWAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/sec-filing-fact-selection-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/security-and-input-limits.json",
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/sec-acquisition.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/sec-filing-fact-selection-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/security-and-input-limits.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/problem-details.schema.json"
+      ],
+      "testStrategy": "OpenAPI/ref checks, fixtures SEC congelados, selección determinística, límites, retry/backoff y variantes HTTP"
+    },
+    {
+      "requirementId": "FR-032",
+      "statement": "el usuario siempre dispone de **Actualizar fundamentales**, que fuerza una comprobación puntual; no existe scheduler ni actualización mientras la aplicación está cerrada.",
+      "criterionIds": [
+        "AC-066"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-sec-gateway",
+      "planSection": "Gateway SEC y adquisición",
+      "componentId": "COMP-SEC-GATEWAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/sec-filing-fact-selection-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/security-and-input-limits.json",
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/sec-acquisition.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/sec-filing-fact-selection-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/security-and-input-limits.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/problem-details.schema.json"
+      ],
+      "testStrategy": "OpenAPI/ref checks, fixtures SEC congelados, selección determinística, límites, retry/backoff y variantes HTTP"
+    },
+    {
+      "requirementId": "FR-033",
+      "statement": "cambios de mappings/métricas/reglas invalidan solo dependencias afectadas.",
+      "criterionIds": [
+        "AC-059",
+        "AC-060",
+        "AC-061",
+        "AC-062",
+        "AC-063",
+        "AC-064"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-orchestration",
+      "planSection": "Actualización y máquina de estados",
+      "componentId": "COMP-ORCHESTRATION",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/cache-and-refresh-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/update-orchestration.md",
+        "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/cache-and-refresh-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/state-and-capability-catalog.schema.json"
+      ],
+      "testStrategy": "6 vectores de cache, 81 pares cartesianos, eventos/operationIds, cancelación y publicación atómica"
+    },
+    {
+      "requirementId": "FR-034",
+      "statement": "IndexedDB publica candidatos mediante una única transacción atómica y compare-and-swap de pointer.",
+      "criterionIds": [
+        "AC-056",
+        "AC-057"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-storage",
+      "planSection": "Persistencia, exportación y restauración",
+      "componentId": "COMP-STORAGE",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+        "specs/001-fundamental-analysis-platform/contracts/local-export-restore-contract.json",
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/storage-records.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/local-export-restore-contract.schema.json"
+      ],
+      "testStrategy": "fixtures IndexedDB, preview, hashes, conflictos, transacción/rollback, borrado y privacidad local"
+    },
+    {
+      "requirementId": "FR-035",
+      "statement": "fallo/cancelación deja los pointers previos intactos y no crea huérfanos.",
+      "criterionIds": [
+        "AC-058",
+        "AC-073"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-storage",
+      "planSection": "Persistencia, exportación y restauración",
+      "componentId": "COMP-STORAGE",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+        "specs/001-fundamental-analysis-platform/contracts/local-export-restore-contract.json",
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/storage-records.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/local-export-restore-contract.schema.json"
+      ],
+      "testStrategy": "fixtures IndexedDB, preview, hashes, conflictos, transacción/rollback, borrado y privacidad local"
+    },
+    {
+      "requirementId": "FR-036",
+      "statement": "antes del borrado total existe exportación/restauración local versionada con preview; borrar precio preserva fundamentales y borrar todos los datos es atómico, confirmado y reversible mediante un backup válido.",
+      "criterionIds": [
+        "AC-076"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-storage",
+      "planSection": "Persistencia, exportación y restauración",
+      "componentId": "COMP-STORAGE",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+        "specs/001-fundamental-analysis-platform/contracts/local-export-restore-contract.json",
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/storage-records.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/local-export-restore-contract.schema.json"
+      ],
+      "testStrategy": "fixtures IndexedDB, preview, hashes, conflictos, transacción/rollback, borrado y privacidad local"
+    },
+    {
+      "requirementId": "FR-037",
+      "statement": "pipeline usa una única matriz de transiciones; toda transición no listada está prohibida.",
+      "criterionIds": [
+        "AC-048",
+        "AC-072",
+        "AC-073"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-orchestration",
+      "planSection": "Actualización y máquina de estados",
+      "componentId": "COMP-ORCHESTRATION",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/cache-and-refresh-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/update-orchestration.md",
+        "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/cache-and-refresh-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/state-and-capability-catalog.schema.json"
+      ],
+      "testStrategy": "6 vectores de cache, 81 pares cartesianos, eventos/operationIds, cancelación y publicación atómica"
+    },
+    {
+      "requirementId": "FR-038",
+      "statement": "states de facts, cobertura, métricas y pipeline son enums separados.",
+      "criterionIds": [
+        "AC-048"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-orchestration",
+      "planSection": "Actualización y máquina de estados",
+      "componentId": "COMP-ORCHESTRATION",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/cache-and-refresh-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/update-orchestration.md",
+        "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/cache-and-refresh-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/state-and-capability-catalog.schema.json"
+      ],
+      "testStrategy": "6 vectores de cache, 81 pares cartesianos, eventos/operationIds, cancelación y publicación atómica"
+    },
+    {
+      "requirementId": "FR-039",
+      "statement": "solo el gateway emite Problem Details; identidad ambigua, cancelación, quality gate y consentimiento son issues locales.",
+      "criterionIds": [
+        "AC-002",
+        "AC-018",
+        "AC-020",
+        "AC-046",
+        "AC-055",
+        "AC-073",
+        "AC-075",
+        "AC-082"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-sec-gateway",
+      "planSection": "Gateway SEC y adquisición",
+      "componentId": "COMP-SEC-GATEWAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/sec-filing-fact-selection-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/security-and-input-limits.json",
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/sec-acquisition.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/sec-filing-fact-selection-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/security-and-input-limits.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/problem-details.schema.json"
+      ],
+      "testStrategy": "OpenAPI/ref checks, fixtures SEC congelados, selección determinística, límites, retry/backoff y variantes HTTP"
+    },
+    {
+      "requirementId": "FR-040",
+      "statement": "OpenAPI expone exactamente la matriz operación×status×variant; 409 y 422 no forman parte de la superficie activa.",
+      "criterionIds": [
+        "AC-043",
+        "AC-044",
+        "AC-045",
+        "AC-046",
+        "AC-047",
+        "AC-082"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-sec-gateway",
+      "planSection": "Gateway SEC y adquisición",
+      "componentId": "COMP-SEC-GATEWAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/sec-filing-fact-selection-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/security-and-input-limits.json",
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/sec-acquisition.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/sec-filing-fact-selection-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/security-and-input-limits.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/problem-details.schema.json"
+      ],
+      "testStrategy": "OpenAPI/ref checks, fixtures SEC congelados, selección determinística, límites, retry/backoff y variantes HTTP"
+    },
+    {
+      "requirementId": "FR-041",
+      "statement": "cada estado/error preserva y bloquea capabilities explícitas y ofrece recuperación UI alcanzable.",
+      "criterionIds": [
+        "AC-002",
+        "AC-047",
+        "AC-048",
+        "AC-072",
+        "AC-073",
+        "AC-074",
+        "AC-075"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-ui-a11y",
+      "planSection": "Interacción, recuperación y accesibilidad",
+      "componentId": "COMP-UI-A11Y",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/wcag-2.2-aa-matrix.json",
+        "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/wcag-2.2-aa-matrix.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/acceptance-criteria-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/local-operation-issue.schema.json"
+      ],
+      "testStrategy": "inventario WCAG 2.2 A/AA completo, Playwright/axe futuro, teclado, foco, live regions y revisión manual"
+    },
+    {
+      "requirementId": "FR-042",
+      "statement": "cambios de estado, errores, limitaciones y confirmaciones destructivas cumplen los oráculos aplicables de `wcag-2.2-aa-matrix.json`, son anunciables, operables por teclado, con foco no obstruido y reduced motion.",
+      "criterionIds": [
+        "AC-067",
+        "AC-068",
+        "AC-069",
+        "AC-070",
+        "AC-071",
+        "AC-072",
+        "AC-074",
+        "AC-075"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-ui-a11y",
+      "planSection": "Interacción, recuperación y accesibilidad",
+      "componentId": "COMP-UI-A11Y",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/wcag-2.2-aa-matrix.json",
+        "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/wcag-2.2-aa-matrix.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/acceptance-criteria-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/local-operation-issue.schema.json"
+      ],
+      "testStrategy": "inventario WCAG 2.2 A/AA completo, Playwright/axe futuro, teclado, foco, live regions y revisión manual"
+    },
+    {
+      "requirementId": "NFR-001",
+      "statement": "mismos inputs/versiones producen mismos outputs/fingerprints.",
+      "criterionIds": [
+        "AC-008",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-019",
+        "AC-020",
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025",
+        "AC-026",
+        "AC-027",
+        "AC-029",
+        "AC-030",
+        "AC-031",
+        "AC-032",
+        "AC-035",
+        "AC-036",
+        "AC-037",
+        "AC-038",
+        "AC-039",
+        "AC-040",
+        "AC-041",
+        "AC-042",
+        "AC-059",
+        "AC-060",
+        "AC-061",
+        "AC-062",
+        "AC-063",
+        "AC-064",
+        "AC-078",
+        "AC-079",
+        "AC-080",
+        "AC-081"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-analytics",
+      "planSection": "Fórmulas, métricas, calidad y reglas",
+      "componentId": "COMP-ANALYTICS",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/formula-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/formula-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/formula-vectors.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/metric-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/quality-model-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/analysis-results.schema.json"
+      ],
+      "testStrategy": "36 oráculos de fórmula, 96 vectores métricos, 27 reglas, DecimalString, determinismo y quality gates"
+    },
+    {
+      "requirementId": "NFR-002",
+      "statement": "datos personales permanecen locales salvo requests SEC explícitos.",
+      "criterionIds": [
+        "AC-053",
+        "AC-054",
+        "AC-055",
+        "AC-056",
+        "AC-065",
+        "AC-076"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-storage",
+      "planSection": "Persistencia, exportación y restauración",
+      "componentId": "COMP-STORAGE",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+        "specs/001-fundamental-analysis-platform/contracts/local-export-restore-contract.json",
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/storage-records.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/local-export-restore-contract.schema.json"
+      ],
+      "testStrategy": "fixtures IndexedDB, preview, hashes, conflictos, transacción/rollback, borrado y privacidad local"
+    },
+    {
+      "requirementId": "NFR-003",
+      "statement": "User-Agent/contacto obligatorios, concurrencia 1, máximo 14 llamadas por operación, 3 intentos lógicos, backoff 1/2/4 s, request timeout 20 s, operación 120 s y respuesta máxima 64 MiB.",
+      "criterionIds": [
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-009",
+        "AC-053",
+        "AC-065",
+        "AC-066",
+        "AC-081"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-sec-gateway",
+      "planSection": "Gateway SEC y adquisición",
+      "componentId": "COMP-SEC-GATEWAY",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/sec-filing-fact-selection-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/security-and-input-limits.json",
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+        "specs/001-fundamental-analysis-platform/governance/cloudflare-free-budget.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/sec-acquisition.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/sec-filing-fact-selection-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/security-and-input-limits.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/problem-details.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/cloudflare-free-budget.schema.json"
+      ],
+      "testStrategy": "OpenAPI/ref checks, fixtures SEC congelados, selección determinística, límites, retry/backoff y variantes HTTP; validación de presupuesto Cloudflare Free, márgenes, canary y degradación"
+    },
+    {
+      "requirementId": "NFR-004",
+      "statement": "el último snapshot válido permanece utilizable ante fallos.",
+      "criterionIds": [
+        "AC-002",
+        "AC-010",
+        "AC-057",
+        "AC-058",
+        "AC-072",
+        "AC-073",
+        "AC-075",
+        "AC-076"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-storage",
+      "planSection": "Persistencia, exportación y restauración",
+      "componentId": "COMP-STORAGE",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+        "specs/001-fundamental-analysis-platform/contracts/local-export-restore-contract.json",
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/storage-records.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/local-export-restore-contract.schema.json"
+      ],
+      "testStrategy": "fixtures IndexedDB, preview, hashes, conflictos, transacción/rollback, borrado y privacidad local"
+    },
+    {
+      "requirementId": "NFR-005",
+      "statement": "JSON, schemas, OpenAPI, referencias, fixtures y crosswalk son validables sin código de producto.",
+      "criterionIds": [
+        "AC-028",
+        "AC-029",
+        "AC-033",
+        "AC-034",
+        "AC-039",
+        "AC-042",
+        "AC-043",
+        "AC-044",
+        "AC-045",
+        "AC-046",
+        "AC-048",
+        "AC-077",
+        "AC-082",
+        "AC-083",
+        "AC-084"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-governance",
+      "planSection": "Gobierno, autoridad y trazabilidad",
+      "componentId": "COMP-GOVERNANCE",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json",
+        "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+        "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json",
+        "V0.21_PHASE_STATUS.md",
+        "specs/001-fundamental-analysis-platform/governance/cloudflare-free-budget.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/requirements-acceptance-traceability.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/acceptance-criteria-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/cloudflare-free-budget.schema.json"
+      ],
+      "testStrategy": "resolución física exacta, forward/reverse, ausencia de huérfanos, gates y packaging reproducible; validación de presupuesto Cloudflare Free, márgenes, canary y degradación"
+    },
+    {
+      "requirementId": "NFR-006",
+      "statement": "cada dominio tiene autoridad primaria y consumidores bidireccionales.",
+      "criterionIds": [
+        "AC-001",
+        "AC-011",
+        "AC-016",
+        "AC-077",
+        "AC-080",
+        "AC-083",
+        "AC-084"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-governance",
+      "planSection": "Gobierno, autoridad y trazabilidad",
+      "componentId": "COMP-GOVERNANCE",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json",
+        "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+        "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json",
+        "V0.21_PHASE_STATUS.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/requirements-acceptance-traceability.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/acceptance-criteria-catalog.schema.json"
+      ],
+      "testStrategy": "resolución física exacta, forward/reverse, ausencia de huérfanos, gates y packaging reproducible"
+    },
+    {
+      "requirementId": "NFR-007",
+      "statement": "WCAG 2.2 AA es requisito verificable según 21 oráculos release-blocking; reduced motion se trata además como requisito de producto.",
+      "criterionIds": [
+        "AC-067",
+        "AC-068",
+        "AC-069",
+        "AC-070",
+        "AC-071",
+        "AC-072",
+        "AC-073",
+        "AC-074",
+        "AC-075"
+      ],
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-ui-a11y",
+      "planSection": "Interacción, recuperación y accesibilidad",
+      "componentId": "COMP-UI-A11Y",
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/wcag-2.2-aa-matrix.json",
+        "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/wcag-2.2-aa-matrix.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/acceptance-criteria-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/local-operation-issue.schema.json"
+      ],
+      "testStrategy": "inventario WCAG 2.2 A/AA completo, Playwright/axe futuro, teclado, foco, live regions y revisión manual"
+    }
+  ],
+  "criteria": [
+    {
+      "criterionId": "AC-001",
+      "requirementIds": [
+        "FR-001",
+        "NFR-006"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-001",
+      "authorityRef": "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+      "authorityId": "AUTH-003"
+    },
+    {
+      "criterionId": "AC-002",
+      "requirementIds": [
+        "FR-002",
+        "FR-039",
+        "FR-041",
+        "NFR-004"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-002",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/0",
+      "authorityId": "AUTH-020"
+    },
+    {
+      "criterionId": "AC-003",
+      "requirementIds": [
+        "FR-001",
+        "FR-003",
+        "NFR-003"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-003",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "authorityId": "AUTH-005"
+    },
+    {
+      "criterionId": "AC-004",
+      "requirementIds": [
+        "FR-031",
+        "NFR-003"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-004",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "authorityId": "AUTH-005"
+    },
+    {
+      "criterionId": "AC-005",
+      "requirementIds": [
+        "FR-004",
+        "NFR-003"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-005",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "authorityId": "AUTH-005"
+    },
+    {
+      "criterionId": "AC-006",
+      "requirementIds": [
+        "FR-004",
+        "FR-008",
+        "NFR-003"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-006",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "authorityId": "AUTH-005"
+    },
+    {
+      "criterionId": "AC-007",
+      "requirementIds": [
+        "FR-005",
+        "FR-007",
+        "NFR-003"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-007",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "authorityId": "AUTH-005"
+    },
+    {
+      "criterionId": "AC-008",
+      "requirementIds": [
+        "FR-006",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-008",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "authorityId": "AUTH-005"
+    },
+    {
+      "criterionId": "AC-009",
+      "requirementIds": [
+        "FR-003",
+        "FR-007",
+        "NFR-003"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-009",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "authorityId": "AUTH-005"
+    },
+    {
+      "criterionId": "AC-010",
+      "requirementIds": [
+        "FR-007",
+        "FR-009",
+        "FR-010",
+        "NFR-004"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-010",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "authorityId": "AUTH-005"
+    },
+    {
+      "criterionId": "AC-011",
+      "requirementIds": [
+        "FR-008",
+        "FR-010",
+        "FR-020",
+        "NFR-006"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-011",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+      "authorityId": "AUTH-007"
+    },
+    {
+      "criterionId": "AC-012",
+      "requirementIds": [
+        "FR-008",
+        "FR-011",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-012",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "authorityId": "AUTH-006"
+    },
+    {
+      "criterionId": "AC-013",
+      "requirementIds": [
+        "FR-006",
+        "FR-011",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-013",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "authorityId": "AUTH-006"
+    },
+    {
+      "criterionId": "AC-014",
+      "requirementIds": [
+        "FR-009",
+        "FR-011",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-014",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+      "authorityId": "AUTH-008"
+    },
+    {
+      "criterionId": "AC-015",
+      "requirementIds": [
+        "FR-008",
+        "FR-014",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-015",
+      "authorityRef": "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+      "authorityId": "AUTH-003"
+    },
+    {
+      "criterionId": "AC-016",
+      "requirementIds": [
+        "FR-011",
+        "FR-013",
+        "NFR-006"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-016",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "authorityId": "AUTH-006"
+    },
+    {
+      "criterionId": "AC-017",
+      "requirementIds": [
+        "FR-011",
+        "FR-012",
+        "FR-013"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-017",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "authorityId": "AUTH-006"
+    },
+    {
+      "criterionId": "AC-018",
+      "requirementIds": [
+        "FR-011",
+        "FR-012",
+        "FR-039"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-018",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles/5",
+      "authorityId": "AUTH-004"
+    },
+    {
+      "criterionId": "AC-019",
+      "requirementIds": [
+        "FR-008",
+        "FR-025",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-019",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+      "authorityId": "AUTH-014"
+    },
+    {
+      "criterionId": "AC-020",
+      "requirementIds": [
+        "FR-008",
+        "FR-009",
+        "FR-039",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-020",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/common.schema.json#/$defs/DecimalString",
+      "authorityId": "AUTH-026"
+    },
+    {
+      "criterionId": "AC-021",
+      "requirementIds": [
+        "FR-015",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-021",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "authorityId": "AUTH-006"
+    },
+    {
+      "criterionId": "AC-022",
+      "requirementIds": [
+        "FR-015",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-022",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "authorityId": "AUTH-006"
+    },
+    {
+      "criterionId": "AC-023",
+      "requirementIds": [
+        "FR-015",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-023",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/debtPolicy",
+      "authorityId": "AUTH-006"
+    },
+    {
+      "criterionId": "AC-024",
+      "requirementIds": [
+        "FR-015",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-024",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "authorityId": "AUTH-006"
+    },
+    {
+      "criterionId": "AC-025",
+      "requirementIds": [
+        "FR-015",
+        "FR-019",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-025",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+      "authorityId": "AUTH-011"
+    },
+    {
+      "criterionId": "AC-026",
+      "requirementIds": [
+        "FR-014",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-026",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "authorityId": "AUTH-006"
+    },
+    {
+      "criterionId": "AC-027",
+      "requirementIds": [
+        "FR-014",
+        "FR-019",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-027",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md",
+      "authorityId": "AUTH-006"
+    },
+    {
+      "criterionId": "AC-028",
+      "requirementIds": [
+        "FR-013",
+        "FR-014",
+        "NFR-005"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-028",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+      "authorityId": "AUTH-011"
+    },
+    {
+      "criterionId": "AC-029",
+      "requirementIds": [
+        "FR-016",
+        "NFR-001",
+        "NFR-005"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-029",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+      "authorityId": "AUTH-008"
+    },
+    {
+      "criterionId": "AC-030",
+      "requirementIds": [
+        "FR-016",
+        "FR-019",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-030",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+      "authorityId": "AUTH-008"
+    },
+    {
+      "criterionId": "AC-031",
+      "requirementIds": [
+        "FR-016",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-031",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+      "authorityId": "AUTH-008"
+    },
+    {
+      "criterionId": "AC-032",
+      "requirementIds": [
+        "FR-016",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-032",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+      "authorityId": "AUTH-008"
+    },
+    {
+      "criterionId": "AC-033",
+      "requirementIds": [
+        "FR-017",
+        "NFR-005"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-033",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json",
+      "authorityId": "AUTH-013"
+    },
+    {
+      "criterionId": "AC-034",
+      "requirementIds": [
+        "FR-017",
+        "FR-018",
+        "NFR-005"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-034",
+      "authorityRef": "specs/001-fundamental-analysis-platform/fixtures/rules/rule-test-vectors.json",
+      "authorityId": "AUTH-012"
+    },
+    {
+      "criterionId": "AC-035",
+      "requirementIds": [
+        "FR-017",
+        "FR-019",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-035",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json",
+      "authorityId": "AUTH-012"
+    },
+    {
+      "criterionId": "AC-036",
+      "requirementIds": [
+        "FR-017",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-036",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json",
+      "authorityId": "AUTH-012"
+    },
+    {
+      "criterionId": "AC-037",
+      "requirementIds": [
+        "FR-020",
+        "FR-023",
+        "FR-028",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-037",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json",
+      "authorityId": "AUTH-012"
+    },
+    {
+      "criterionId": "AC-038",
+      "requirementIds": [
+        "FR-027",
+        "FR-028",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-038",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections/1",
+      "authorityId": "AUTH-014"
+    },
+    {
+      "criterionId": "AC-039",
+      "requirementIds": [
+        "FR-025",
+        "FR-029",
+        "NFR-001",
+        "NFR-005"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-039",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/fingerprint-test-vectors.json",
+      "authorityId": "AUTH-014"
+    },
+    {
+      "criterionId": "AC-040",
+      "requirementIds": [
+        "FR-025",
+        "FR-029",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-040",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+      "authorityId": "AUTH-014"
+    },
+    {
+      "criterionId": "AC-041",
+      "requirementIds": [
+        "FR-025",
+        "FR-027",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-041",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+      "authorityId": "AUTH-014"
+    },
+    {
+      "criterionId": "AC-042",
+      "requirementIds": [
+        "FR-026",
+        "NFR-001",
+        "NFR-005"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-042",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+      "authorityId": "AUTH-014"
+    },
+    {
+      "criterionId": "AC-043",
+      "requirementIds": [
+        "FR-040",
+        "NFR-005"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-043",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+      "authorityId": "AUTH-018"
+    },
+    {
+      "criterionId": "AC-044",
+      "requirementIds": [
+        "FR-040",
+        "NFR-005"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-044",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+      "authorityId": "AUTH-018"
+    },
+    {
+      "criterionId": "AC-045",
+      "requirementIds": [
+        "FR-040",
+        "NFR-005"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-045",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+      "authorityId": "AUTH-018"
+    },
+    {
+      "criterionId": "AC-046",
+      "requirementIds": [
+        "FR-039",
+        "FR-040",
+        "NFR-005"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-046",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+      "authorityId": "AUTH-018"
+    },
+    {
+      "criterionId": "AC-047",
+      "requirementIds": [
+        "FR-040",
+        "FR-041"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-047",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/resourceNotFoundVariants",
+      "authorityId": "AUTH-019"
+    },
+    {
+      "criterionId": "AC-048",
+      "requirementIds": [
+        "FR-037",
+        "FR-038",
+        "FR-041",
+        "NFR-005"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-048",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json",
+      "authorityId": "AUTH-015"
+    },
+    {
+      "criterionId": "AC-049",
+      "requirementIds": [
+        "FR-020",
+        "FR-021",
+        "FR-023"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-049",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+      "authorityId": "AUTH-009"
+    },
+    {
+      "criterionId": "AC-050",
+      "requirementIds": [
+        "FR-021",
+        "FR-023"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-050",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+      "authorityId": "AUTH-009"
+    },
+    {
+      "criterionId": "AC-051",
+      "requirementIds": [
+        "FR-023",
+        "FR-024"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-051",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+      "authorityId": "AUTH-009"
+    },
+    {
+      "criterionId": "AC-052",
+      "requirementIds": [
+        "FR-023"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-052",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+      "authorityId": "AUTH-009"
+    },
+    {
+      "criterionId": "AC-053",
+      "requirementIds": [
+        "NFR-002",
+        "NFR-003"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-053",
+      "authorityRef": "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md",
+      "authorityId": "AUTH-022"
+    },
+    {
+      "criterionId": "AC-054",
+      "requirementIds": [
+        "FR-021",
+        "FR-022",
+        "NFR-002"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-054",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md#normative-flow",
+      "authorityId": "AUTH-009"
+    },
+    {
+      "criterionId": "AC-055",
+      "requirementIds": [
+        "FR-021",
+        "FR-022",
+        "FR-039",
+        "NFR-002"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-055",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md#normative-flow",
+      "authorityId": "AUTH-009"
+    },
+    {
+      "criterionId": "AC-056",
+      "requirementIds": [
+        "FR-034",
+        "NFR-002"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-056",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+      "authorityId": "AUTH-017"
+    },
+    {
+      "criterionId": "AC-057",
+      "requirementIds": [
+        "FR-034",
+        "NFR-004"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-057",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+      "authorityId": "AUTH-017"
+    },
+    {
+      "criterionId": "AC-058",
+      "requirementIds": [
+        "FR-035",
+        "NFR-004"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-058",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+      "authorityId": "AUTH-017"
+    },
+    {
+      "criterionId": "AC-059",
+      "requirementIds": [
+        "FR-033",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-059",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "authorityId": "AUTH-016"
+    },
+    {
+      "criterionId": "AC-060",
+      "requirementIds": [
+        "FR-033",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-060",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "authorityId": "AUTH-016"
+    },
+    {
+      "criterionId": "AC-061",
+      "requirementIds": [
+        "FR-033",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-061",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "authorityId": "AUTH-016"
+    },
+    {
+      "criterionId": "AC-062",
+      "requirementIds": [
+        "FR-033",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-062",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "authorityId": "AUTH-016"
+    },
+    {
+      "criterionId": "AC-063",
+      "requirementIds": [
+        "FR-021",
+        "FR-022",
+        "FR-033",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-063",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "authorityId": "AUTH-016"
+    },
+    {
+      "criterionId": "AC-064",
+      "requirementIds": [
+        "FR-024",
+        "FR-033",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-064",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "authorityId": "AUTH-016"
+    },
+    {
+      "criterionId": "AC-065",
+      "requirementIds": [
+        "FR-030",
+        "FR-031",
+        "NFR-002",
+        "NFR-003"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-065",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "authorityId": "AUTH-016"
+    },
+    {
+      "criterionId": "AC-066",
+      "requirementIds": [
+        "FR-032",
+        "NFR-003"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-066",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+      "authorityId": "AUTH-016"
+    },
+    {
+      "criterionId": "AC-067",
+      "requirementIds": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-067",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+      "authorityId": "AUTH-021"
+    },
+    {
+      "criterionId": "AC-068",
+      "requirementIds": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-068",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+      "authorityId": "AUTH-021"
+    },
+    {
+      "criterionId": "AC-069",
+      "requirementIds": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-069",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+      "authorityId": "AUTH-021"
+    },
+    {
+      "criterionId": "AC-070",
+      "requirementIds": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-070",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+      "authorityId": "AUTH-021"
+    },
+    {
+      "criterionId": "AC-071",
+      "requirementIds": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-071",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria/70",
+      "authorityId": "AUTH-021"
+    },
+    {
+      "criterionId": "AC-072",
+      "requirementIds": [
+        "FR-037",
+        "FR-041",
+        "FR-042",
+        "NFR-004",
+        "NFR-007"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-072",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+      "authorityId": "AUTH-021"
+    },
+    {
+      "criterionId": "AC-073",
+      "requirementIds": [
+        "FR-035",
+        "FR-037",
+        "FR-039",
+        "FR-041",
+        "NFR-004",
+        "NFR-007"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-073",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/1",
+      "authorityId": "AUTH-020"
+    },
+    {
+      "criterionId": "AC-074",
+      "requirementIds": [
+        "FR-041",
+        "FR-042",
+        "NFR-007"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-074",
+      "authorityRef": "specs/001-fundamental-analysis-platform/quickstart.md",
+      "authorityId": "AUTH-021"
+    },
+    {
+      "criterionId": "AC-075",
+      "requirementIds": [
+        "FR-039",
+        "FR-041",
+        "FR-042",
+        "NFR-004",
+        "NFR-007"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-075",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json",
+      "authorityId": "AUTH-019"
+    },
+    {
+      "criterionId": "AC-076",
+      "requirementIds": [
+        "FR-036",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-076",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions/3",
+      "authorityId": "AUTH-017"
+    },
+    {
+      "criterionId": "AC-077",
+      "requirementIds": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-077",
+      "authorityRef": "V0.21_PHASE_STATUS.md#gate",
+      "authorityId": "AUTH-025"
+    },
+    {
+      "criterionId": "AC-078",
+      "requirementIds": [
+        "FR-020",
+        "FR-022",
+        "FR-026",
+        "FR-028",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-078",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+      "authorityId": "AUTH-014"
+    },
+    {
+      "criterionId": "AC-079",
+      "requirementIds": [
+        "FR-024",
+        "FR-027",
+        "NFR-001"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-079",
+      "authorityRef": "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+      "authorityId": "AUTH-009"
+    },
+    {
+      "criterionId": "AC-080",
+      "requirementIds": [
+        "FR-011",
+        "NFR-001",
+        "NFR-006"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-080",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json",
+      "authorityId": "AUTH-004"
+    },
+    {
+      "criterionId": "AC-081",
+      "requirementIds": [
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-006",
+        "FR-007",
+        "NFR-001",
+        "NFR-003"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-081",
+      "authorityRef": "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+      "authorityId": "AUTH-005"
+    },
+    {
+      "criterionId": "AC-082",
+      "requirementIds": [
+        "FR-039",
+        "FR-040",
+        "NFR-005"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-082",
+      "authorityRef": "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+      "authorityId": "AUTH-019"
+    },
+    {
+      "criterionId": "AC-083",
+      "requirementIds": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-083",
+      "authorityRef": "specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json",
+      "authorityId": "AUTH-034"
+    },
+    {
+      "criterionId": "AC-084",
+      "requirementIds": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "fixtureRef": "fixtures/acceptance/core-scenarios.json#/scenarios/AC-084",
+      "authorityRef": "specs/001-fundamental-analysis-platform/reports/v0.16/09_V0.16_HISTORICAL_VALIDATION_ADDENDUM.md",
+      "authorityId": "AUTH-024"
+    }
+  ],
+  "planResolutionPolicy": {
+    "normativeRoot": "packageRoot",
+    "planAuthorityRef": "specs/001-fundamental-analysis-platform/plan.md",
+    "forwardInvariant": "every requirement has exactly one responsible component and one exact planRef",
+    "reverseInvariant": "each plan component lists exactly the requirementIds that point to it",
+    "physicalResolution": "all plan, contract and schema references resolve exactly from packageRoot",
+    "semanticInference": "PROHIBITED"
+  },
+  "planComponents": [
+    {
+      "componentId": "COMP-IDENTITY",
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-identity",
+      "planSection": "Identidad del emisor",
+      "requirementIds": [
+        "FR-001",
+        "FR-002"
+      ],
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/data-model.md",
+        "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/common.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/local-operation-issue.schema.json"
+      ],
+      "testStrategy": "fixtures de identidad, ambigüedad y resolución exacta por CIK; Vitest futuro y Playwright de selección",
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003"
+      ]
+    },
+    {
+      "componentId": "COMP-SEC-GATEWAY",
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-sec-gateway",
+      "planSection": "Gateway SEC y adquisición",
+      "requirementIds": [
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-006",
+        "FR-007",
+        "FR-031",
+        "FR-032",
+        "FR-039",
+        "FR-040",
+        "NFR-003"
+      ],
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/sec-filing-fact-selection-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/security-and-input-limits.json",
+        "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+        "specs/001-fundamental-analysis-platform/governance/cloudflare-free-budget.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/sec-acquisition.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/sec-filing-fact-selection-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/security-and-input-limits.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/problem-details.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/cloudflare-free-budget.schema.json"
+      ],
+      "testStrategy": "OpenAPI/ref checks, fixtures SEC congelados, selección determinística, límites, retry/backoff y variantes HTTP; presupuesto Cloudflare Free y comportamiento al alcanzar límites",
+      "criterionIds": [
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-013",
+        "AC-018",
+        "AC-020",
+        "AC-043",
+        "AC-044",
+        "AC-045",
+        "AC-046",
+        "AC-047",
+        "AC-053",
+        "AC-055",
+        "AC-065",
+        "AC-066",
+        "AC-073",
+        "AC-075",
+        "AC-081",
+        "AC-082"
+      ]
+    },
+    {
+      "componentId": "COMP-NORMALIZATION",
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-normalization",
+      "planSection": "Normalización XBRL y bundle fundamental",
+      "requirementIds": [
+        "FR-008",
+        "FR-009",
+        "FR-010",
+        "FR-011",
+        "FR-012",
+        "FR-015"
+      ],
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json",
+        "specs/001-fundamental-analysis-platform/contracts/fundamental-bundle.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/xbrl-mapping-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/accounting-profile-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/common.schema.json"
+      ],
+      "testStrategy": "fixtures XBRL exactos, perfiles, cobertura, deuda no solapada y bundles positivos/negativos",
+      "criterionIds": [
+        "AC-006",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-019",
+        "AC-020",
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025",
+        "AC-080"
+      ]
+    },
+    {
+      "componentId": "COMP-ANALYTICS",
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-analytics",
+      "planSection": "Fórmulas, métricas, calidad y reglas",
+      "requirementIds": [
+        "FR-013",
+        "FR-014",
+        "FR-016",
+        "FR-017",
+        "FR-018",
+        "FR-019",
+        "NFR-001"
+      ],
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/formula-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/formula-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/formula-vectors.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/metric-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/quality-model-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/analysis-results.schema.json"
+      ],
+      "testStrategy": "36 oráculos de fórmula, 96 vectores métricos, 27 reglas, DecimalString, determinismo y quality gates",
+      "criterionIds": [
+        "AC-008",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017",
+        "AC-019",
+        "AC-020",
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025",
+        "AC-026",
+        "AC-027",
+        "AC-028",
+        "AC-029",
+        "AC-030",
+        "AC-031",
+        "AC-032",
+        "AC-033",
+        "AC-034",
+        "AC-035",
+        "AC-036",
+        "AC-037",
+        "AC-038",
+        "AC-039",
+        "AC-040",
+        "AC-041",
+        "AC-042",
+        "AC-059",
+        "AC-060",
+        "AC-061",
+        "AC-062",
+        "AC-063",
+        "AC-064",
+        "AC-078",
+        "AC-079",
+        "AC-080",
+        "AC-081"
+      ]
+    },
+    {
+      "componentId": "COMP-PRICE-OVERLAY",
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-price-overlay",
+      "planSection": "Separación fundamental y overlay de precio",
+      "requirementIds": [
+        "FR-020",
+        "FR-021",
+        "FR-022",
+        "FR-023",
+        "FR-024"
+      ],
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md",
+        "specs/001-fundamental-analysis-platform/contracts/historical-price-overlay.md",
+        "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json"
+      ],
+      "testStrategy": "fixtures de overlay, aislamiento de dominio, importación CSV y rechazo de campos derivados del reloj",
+      "criterionIds": [
+        "AC-011",
+        "AC-037",
+        "AC-049",
+        "AC-050",
+        "AC-051",
+        "AC-052",
+        "AC-054",
+        "AC-055",
+        "AC-063",
+        "AC-064",
+        "AC-078",
+        "AC-079"
+      ]
+    },
+    {
+      "componentId": "COMP-FINGERPRINTS",
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-fingerprints",
+      "planSection": "Fingerprints y evidencia",
+      "requirementIds": [
+        "FR-025",
+        "FR-026",
+        "FR-027",
+        "FR-028",
+        "FR-029"
+      ],
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-test-vectors.json",
+        "specs/001-fundamental-analysis-platform/contracts/fingerprint-and-sanitization.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/fingerprint-projections.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/analysis-results.schema.json"
+      ],
+      "testStrategy": "RFC 8785 JCS, SHA-256, proyecciones separadas, sourceRefs y invariancia frente al reloj/precio",
+      "criterionIds": [
+        "AC-019",
+        "AC-037",
+        "AC-038",
+        "AC-039",
+        "AC-040",
+        "AC-041",
+        "AC-042",
+        "AC-078",
+        "AC-079"
+      ]
+    },
+    {
+      "componentId": "COMP-ORCHESTRATION",
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-orchestration",
+      "planSection": "Actualización y máquina de estados",
+      "requirementIds": [
+        "FR-030",
+        "FR-033",
+        "FR-037",
+        "FR-038"
+      ],
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/cache-and-refresh-policy.json",
+        "specs/001-fundamental-analysis-platform/contracts/update-orchestration.md",
+        "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/cache-and-refresh-policy.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/state-and-capability-catalog.schema.json"
+      ],
+      "testStrategy": "6 vectores de cache, 81 pares cartesianos, eventos/operationIds, cancelación y publicación atómica",
+      "criterionIds": [
+        "AC-048",
+        "AC-059",
+        "AC-060",
+        "AC-061",
+        "AC-062",
+        "AC-063",
+        "AC-064",
+        "AC-065",
+        "AC-072",
+        "AC-073"
+      ]
+    },
+    {
+      "componentId": "COMP-STORAGE",
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-storage",
+      "planSection": "Persistencia, exportación y restauración",
+      "requirementIds": [
+        "FR-034",
+        "FR-035",
+        "FR-036",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+        "specs/001-fundamental-analysis-platform/contracts/local-export-restore-contract.json",
+        "specs/001-fundamental-analysis-platform/contracts/browser-storage.md"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/storage-records.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/local-export-restore-contract.schema.json"
+      ],
+      "testStrategy": "fixtures IndexedDB, preview, hashes, conflictos, transacción/rollback, borrado y privacidad local",
+      "criterionIds": [
+        "AC-002",
+        "AC-010",
+        "AC-053",
+        "AC-054",
+        "AC-055",
+        "AC-056",
+        "AC-057",
+        "AC-058",
+        "AC-065",
+        "AC-072",
+        "AC-073",
+        "AC-075",
+        "AC-076"
+      ]
+    },
+    {
+      "componentId": "COMP-UI-A11Y",
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-ui-a11y",
+      "planSection": "Interacción, recuperación y accesibilidad",
+      "requirementIds": [
+        "FR-041",
+        "FR-042",
+        "NFR-007"
+      ],
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/definitions/wcag-2.2-aa-matrix.json",
+        "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json",
+        "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/wcag-2.2-aa-matrix.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/acceptance-criteria-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/local-operation-issue.schema.json"
+      ],
+      "testStrategy": "inventario WCAG 2.2 A/AA completo, Playwright/axe futuro, teclado, foco, live regions y revisión manual",
+      "criterionIds": [
+        "AC-002",
+        "AC-047",
+        "AC-048",
+        "AC-067",
+        "AC-068",
+        "AC-069",
+        "AC-070",
+        "AC-071",
+        "AC-072",
+        "AC-073",
+        "AC-074",
+        "AC-075"
+      ]
+    },
+    {
+      "componentId": "COMP-GOVERNANCE",
+      "planRef": "specs/001-fundamental-analysis-platform/plan.md#component-governance",
+      "planSection": "Gobierno, autoridad y trazabilidad",
+      "requirementIds": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "contractRefs": [
+        "specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json",
+        "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+        "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json",
+        "V0.21_PHASE_STATUS.md",
+        "specs/001-fundamental-analysis-platform/governance/cloudflare-free-budget.json"
+      ],
+      "schemaRefs": [
+        "specs/001-fundamental-analysis-platform/schemas/requirements-acceptance-traceability.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/acceptance-criteria-catalog.schema.json",
+        "specs/001-fundamental-analysis-platform/schemas/cloudflare-free-budget.schema.json"
+      ],
+      "testStrategy": "resolución física exacta, forward/reverse, ausencia de huérfanos, gates y packaging reproducible; presupuesto Cloudflare Free y comportamiento al alcanzar límites",
+      "criterionIds": [
+        "AC-001",
+        "AC-011",
+        "AC-016",
+        "AC-028",
+        "AC-029",
+        "AC-033",
+        "AC-034",
+        "AC-039",
+        "AC-042",
+        "AC-043",
+        "AC-044",
+        "AC-045",
+        "AC-046",
+        "AC-048",
+        "AC-077",
+        "AC-080",
+        "AC-082",
+        "AC-083",
+        "AC-084"
+      ]
+    }
+  ]
+}

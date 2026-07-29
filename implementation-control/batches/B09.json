@@ -1,0 +1,332 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B09",
+  "ordinal": 9,
+  "title": "Fórmulas, calidad y métricas fundamentales",
+  "domain": "fundamental-metrics",
+  "status": "COMPLETED",
+  "taskCount": 3,
+  "executionOrder": [
+    "T041",
+    "T043",
+    "T042"
+  ],
+  "externalDependencies": [
+    "T011",
+    "T012",
+    "T015",
+    "T039",
+    "T040"
+  ],
+  "requirements": [
+    "FR-013",
+    "FR-014",
+    "FR-015",
+    "FR-016",
+    "FR-019",
+    "NFR-001",
+    "NFR-005"
+  ],
+  "acceptanceCriteria": [
+    "AC-016",
+    "AC-017",
+    "AC-019",
+    "AC-025",
+    "AC-026",
+    "AC-027",
+    "AC-028",
+    "AC-029",
+    "AC-030",
+    "AC-031",
+    "AC-032"
+  ],
+  "authorityIds": [
+    "AUTH-003",
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-006",
+    "AUTH-008",
+    "AUTH-009",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-013",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-024",
+    "AUTH-025",
+    "AUTH-026",
+    "AUTH-034"
+  ],
+  "primaryAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+    "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json#/entries",
+    "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.md"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-016",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-017",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-019",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-025",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-026",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-027",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-028",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-029",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-030",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-031",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-032"
+  ],
+  "targetFiles": [
+    "src/domain/analytics/formula-engine.ts",
+    "src/domain/analytics/fundamental-metrics.ts",
+    "src/domain/analytics/quality-classifier.ts",
+    "tests/unit/analytics/formula-vectors.test.ts",
+    "tests/unit/analytics/fundamental-metric-vectors.test.ts",
+    "tests/unit/analytics/quality-cartesian.test.ts"
+  ],
+  "testFiles": [
+    "tests/unit/analytics/formula-vectors.test.ts",
+    "tests/unit/analytics/fundamental-metric-vectors.test.ts",
+    "tests/unit/analytics/quality-cartesian.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T041",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": false,
+      "dependencies": [
+        "T011",
+        "T012",
+        "T015"
+      ],
+      "requirementRefs": [
+        "FR-013",
+        "FR-014",
+        "NFR-001",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-019",
+        "AC-026",
+        "AC-027",
+        "AC-028"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-026",
+        "AUTH-034"
+      ],
+      "files": [
+        "src/domain/analytics/formula-engine.ts",
+        "tests/unit/analytics/formula-vectors.test.ts"
+      ],
+      "tests": [
+        "tests/unit/analytics/formula-vectors.test.ts"
+      ],
+      "doneWhen": "36 positive and all negative formula vectors pass exactly",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "183cce3509340130789adcad078a0de3b1f1e0b3f1e7aa71739ba7a86a8a6bf1"
+    },
+    {
+      "id": "T043",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": true,
+      "dependencies": [
+        "T012",
+        "T015"
+      ],
+      "requirementRefs": [
+        "FR-016",
+        "FR-019",
+        "NFR-001",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-029",
+        "AC-030",
+        "AC-031",
+        "AC-032"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-026",
+        "AUTH-034"
+      ],
+      "files": [
+        "src/domain/analytics/quality-classifier.ts",
+        "tests/unit/analytics/quality-cartesian.test.ts"
+      ],
+      "tests": [
+        "tests/unit/analytics/quality-cartesian.test.ts"
+      ],
+      "doneWhen": "all 144 combinations map once with no gaps/overlap",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "96c9494851dd1f00cc29913996e277281ba4bb934b5dabafd2dbb16ed2713ca6"
+    },
+    {
+      "id": "T042",
+      "phaseNo": 4,
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "story": "US2",
+      "parallel": false,
+      "dependencies": [
+        "T039",
+        "T040",
+        "T041",
+        "T043"
+      ],
+      "requirementRefs": [
+        "FR-013",
+        "FR-014",
+        "FR-015",
+        "FR-016",
+        "FR-019",
+        "NFR-001"
+      ],
+      "acceptanceRefs": [
+        "AC-016",
+        "AC-017",
+        "AC-025",
+        "AC-026",
+        "AC-027",
+        "AC-028",
+        "AC-029"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/domain/analytics/fundamental-metrics.ts",
+        "tests/unit/analytics/fundamental-metric-vectors.test.ts"
+      ],
+      "tests": [
+        "tests/unit/analytics/fundamental-metric-vectors.test.ts"
+      ],
+      "doneWhen": "72 fundamental metric vectors pass, formulas are not duplicated and no valuation metric exists",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "1a40deec9707f8f1daa64f9c4ff15b7c414a3a9a2d9596639e2ebe5cffc8823b"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": false,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-unit",
+        "category": "unit",
+        "command": "npm run test:unit -- tests/unit/analytics/formula-vectors.test.ts tests/unit/analytics/fundamental-metric-vectors.test.ts tests/unit/analytics/quality-cartesian.test.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B09_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

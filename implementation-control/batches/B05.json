@@ -1,0 +1,358 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B05",
+  "ordinal": 5,
+  "title": "IndexedDB base, primitivas UI y orquestador Worker",
+  "domain": "foundation-runtime",
+  "status": "COMPLETED",
+  "taskCount": 3,
+  "executionOrder": [
+    "T021",
+    "T022",
+    "T023"
+  ],
+  "externalDependencies": [
+    "T002",
+    "T004",
+    "T005",
+    "T006",
+    "T012",
+    "T015",
+    "T016",
+    "T017"
+  ],
+  "requirements": [
+    "FR-030",
+    "FR-034",
+    "FR-035",
+    "FR-037",
+    "FR-041",
+    "FR-042",
+    "NFR-001",
+    "NFR-002",
+    "NFR-004",
+    "NFR-007"
+  ],
+  "acceptanceCriteria": [
+    "AC-056",
+    "AC-057",
+    "AC-058",
+    "AC-065",
+    "AC-067",
+    "AC-068",
+    "AC-069",
+    "AC-070",
+    "AC-071",
+    "AC-072",
+    "AC-073",
+    "AC-076"
+  ],
+  "authorityIds": [
+    "AUTH-003",
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-006",
+    "AUTH-008",
+    "AUTH-009",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-017",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-022",
+    "AUTH-026",
+    "AUTH-027"
+  ],
+  "primaryAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/decisions/ui-framework.md",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md#active-source-policy",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions/3",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria/70",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/1",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-056",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-057",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-058",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-065",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-067",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-068",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-069",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-070",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-071",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-072",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-073",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-076"
+  ],
+  "targetFiles": [
+    "src/app/components/Button.svelte",
+    "src/app/components/Dialog.svelte",
+    "src/app/components/Field.svelte",
+    "src/app/components/ProgressStatus.svelte",
+    "src/persistence/consent-repository.ts",
+    "src/persistence/db-schema.ts",
+    "src/persistence/indexeddb.ts",
+    "src/worker/operation-registry.ts",
+    "src/worker/orchestrator.worker.ts",
+    "tests/accessibility/primitives.spec.ts",
+    "tests/e2e/consent.spec.ts",
+    "tests/integration/persistence/db-schema.test.ts",
+    "tests/integration/worker/operation-registry.test.ts"
+  ],
+  "testFiles": [
+    "tests/accessibility/primitives.spec.ts",
+    "tests/e2e/consent.spec.ts",
+    "tests/integration/persistence/db-schema.test.ts",
+    "tests/integration/worker/operation-registry.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T021",
+      "phaseNo": 2,
+      "phase": "Phase 2 — Foundational",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T002",
+        "T005",
+        "T006",
+        "T012"
+      ],
+      "requirementRefs": [
+        "FR-030",
+        "FR-034",
+        "FR-035",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "acceptanceRefs": [
+        "AC-056",
+        "AC-057",
+        "AC-058",
+        "AC-065",
+        "AC-076"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-009",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-022"
+      ],
+      "files": [
+        "src/persistence/db-schema.ts",
+        "src/persistence/indexeddb.ts",
+        "src/persistence/consent-repository.ts",
+        "tests/integration/persistence/db-schema.test.ts",
+        "tests/e2e/consent.spec.ts"
+      ],
+      "tests": [
+        "tests/integration/persistence/db-schema.test.ts",
+        "tests/e2e/consent.spec.ts"
+      ],
+      "doneWhen": "consent records are separate and available before lifecycle orchestration, storage remains optional, and no network occurs when refresh consent is false",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "17c9109bb511a0e71302d19bb0cb98c4243dafa0520461fe43515863516f00dc"
+    },
+    {
+      "id": "T022",
+      "phaseNo": 2,
+      "phase": "Phase 2 — Foundational",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T004",
+        "T006"
+      ],
+      "requirementRefs": [
+        "FR-041",
+        "FR-042",
+        "NFR-007"
+      ],
+      "acceptanceRefs": [
+        "AC-067",
+        "AC-068",
+        "AC-069",
+        "AC-070",
+        "AC-071"
+      ],
+      "authorityIds": [
+        "AUTH-015",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/components/Button.svelte",
+        "src/app/components/Field.svelte",
+        "src/app/components/Dialog.svelte",
+        "src/app/components/ProgressStatus.svelte",
+        "tests/accessibility/primitives.spec.ts"
+      ],
+      "tests": [
+        "tests/accessibility/primitives.spec.ts"
+      ],
+      "doneWhen": "keyboard, focus return, accessible name and live status tests pass",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "8a9e84722c47790ebe3d687a8cbc4c36b08baa45833783c8cf52a8594d4fb9c0"
+    },
+    {
+      "id": "T023",
+      "phaseNo": 2,
+      "phase": "Phase 2 — Foundational",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T015",
+        "T016",
+        "T017"
+      ],
+      "requirementRefs": [
+        "FR-035",
+        "FR-037",
+        "NFR-001",
+        "NFR-004"
+      ],
+      "acceptanceRefs": [
+        "AC-072",
+        "AC-073"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/worker/orchestrator.worker.ts",
+        "src/worker/operation-registry.ts",
+        "tests/integration/worker/operation-registry.test.ts"
+      ],
+      "tests": [
+        "tests/integration/worker/operation-registry.test.ts"
+      ],
+      "doneWhen": "duplicate actions coalesce and cancellation leaves prior state",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "0c8a8f8ce1bc1307812a4f01099a9e7b02602ef9fb8b52097caa7b5f516b938f"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": true,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-integration",
+        "category": "integration",
+        "command": "npm run test:integration -- tests/integration/persistence/db-schema.test.ts tests/integration/worker/operation-registry.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-e2e",
+        "category": "e2e",
+        "command": "npm run test:e2e -- tests/e2e/consent.spec.ts",
+        "required": true
+      },
+      {
+        "id": "test-accessibility",
+        "category": "accessibility",
+        "command": "npm run test:accessibility -- tests/accessibility/primitives.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B05_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

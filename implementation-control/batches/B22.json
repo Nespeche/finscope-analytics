@@ -1,0 +1,471 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B22",
+  "ordinal": 22,
+  "title": "Rendimiento browser, seguridad, supply chain y runbook",
+  "domain": "security-operations",
+  "status": "PENDING",
+  "taskCount": 4,
+  "executionOrder": [
+    "T096",
+    "T097",
+    "T098",
+    "T099"
+  ],
+  "externalDependencies": [
+    "T001",
+    "T005",
+    "T006",
+    "T009",
+    "T012",
+    "T018",
+    "T048",
+    "T060",
+    "T063",
+    "T067",
+    "T073",
+    "T074",
+    "T077",
+    "T078",
+    "T079",
+    "T080",
+    "T090",
+    "T091",
+    "T092",
+    "T093",
+    "T094",
+    "T095"
+  ],
+  "requirements": [
+    "FR-021",
+    "FR-037",
+    "FR-039",
+    "NFR-002",
+    "NFR-003",
+    "NFR-004",
+    "NFR-005",
+    "NFR-006"
+  ],
+  "acceptanceCriteria": [
+    "AC-003",
+    "AC-020",
+    "AC-046",
+    "AC-053",
+    "AC-054",
+    "AC-055",
+    "AC-057",
+    "AC-058",
+    "AC-065",
+    "AC-072",
+    "AC-075",
+    "AC-076",
+    "AC-077",
+    "AC-083",
+    "AC-084"
+  ],
+  "authorityIds": [
+    "AUTH-003",
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-006",
+    "AUTH-007",
+    "AUTH-008",
+    "AUTH-009",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-013",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-017",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-022",
+    "AUTH-024",
+    "AUTH-025",
+    "AUTH-026",
+    "AUTH-034"
+  ],
+  "primaryAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+    "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json#/entries",
+    "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md#active-source-policy",
+    "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions/3",
+    "specs/001-fundamental-analysis-platform/contracts/historical-price-import.md#normative-flow",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md",
+    "specs/001-fundamental-analysis-platform/reports/v0.16/09_V0.16_HISTORICAL_VALIDATION_ADDENDUM.md",
+    "specs/001-fundamental-analysis-platform/schemas/common.schema.json#/$defs/DecimalString"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-003",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-020",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-046",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-053",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-054",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-055",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-057",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-058",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-065",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-072",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-075",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-076",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-077",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-083",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-084"
+  ],
+  "targetFiles": [
+    "docs/dependency-inventory.md",
+    "docs/deployment-cloudflare-free.md",
+    "docs/quota-degradation.md",
+    "scripts/check-supply-chain.mjs",
+    "src/core/safe-object.ts",
+    "src/persistence/import-limits.ts",
+    "tests/contract/supply-chain.test.ts",
+    "tests/negative/security/security-vectors.test.ts",
+    "tests/performance/browser-performance.spec.ts",
+    "tests/performance/import-performance.spec.ts",
+    "workers/sec-gateway/src/security/headers.ts"
+  ],
+  "testFiles": [
+    "tests/contract/supply-chain.test.ts",
+    "tests/negative/security/security-vectors.test.ts",
+    "tests/performance/browser-performance.spec.ts",
+    "tests/performance/import-performance.spec.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T096",
+      "phaseNo": 9,
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T006",
+        "T048",
+        "T060",
+        "T063",
+        "T067",
+        "T073",
+        "T074",
+        "T077",
+        "T078",
+        "T079",
+        "T080"
+      ],
+      "requirementRefs": [
+        "FR-021",
+        "FR-037",
+        "NFR-004",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-054",
+        "AC-057",
+        "AC-072"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "tests/performance/browser-performance.spec.ts",
+        "tests/performance/import-performance.spec.ts"
+      ],
+      "tests": [
+        "tests/performance/browser-performance.spec.ts",
+        "tests/performance/import-performance.spec.ts"
+      ],
+      "doneWhen": "long tasks and memory stay within documented scenario budgets for the actual implementations measured",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "66fcfdc56520735c56fe025e791d4224922747d24c8b7a057776e5a9cf70c7c0"
+    },
+    {
+      "id": "T097",
+      "phaseNo": 9,
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T009",
+        "T012",
+        "T018"
+      ],
+      "requirementRefs": [
+        "FR-039",
+        "NFR-002",
+        "NFR-003",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-003",
+        "AC-020",
+        "AC-046",
+        "AC-053",
+        "AC-055",
+        "AC-076"
+      ],
+      "authorityIds": [
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-022",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-026",
+        "AUTH-034"
+      ],
+      "files": [
+        "workers/sec-gateway/src/security/headers.ts",
+        "src/core/safe-object.ts",
+        "src/persistence/import-limits.ts",
+        "tests/negative/security/security-vectors.test.ts"
+      ],
+      "tests": [
+        "tests/negative/security/security-vectors.test.ts"
+      ],
+      "doneWhen": "all security and import limit negative vectors fail closed",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "e8319db5f4b323233c1bed221ff0a217a0321c7f1d411cc01e658596766eeef3"
+    },
+    {
+      "id": "T098",
+      "phaseNo": 9,
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "story": null,
+      "parallel": false,
+      "dependencies": [
+        "T001",
+        "T005"
+      ],
+      "requirementRefs": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptanceRefs": [
+        "AC-077",
+        "AC-083",
+        "AC-084"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "scripts/check-supply-chain.mjs",
+        "docs/dependency-inventory.md",
+        "tests/contract/supply-chain.test.ts"
+      ],
+      "tests": [
+        "tests/contract/supply-chain.test.ts"
+      ],
+      "doneWhen": "only approved minimal dependencies remain and no secrets are present",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "7075abd818df00edcbb6116f304937e40a8684cbf1ba8b00df15c87fee166305"
+    },
+    {
+      "id": "T099",
+      "phaseNo": 9,
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "story": null,
+      "parallel": true,
+      "dependencies": [
+        "T090",
+        "T091",
+        "T092",
+        "T093",
+        "T094",
+        "T095",
+        "T096",
+        "T097",
+        "T098"
+      ],
+      "requirementRefs": [
+        "NFR-003",
+        "NFR-004",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-058",
+        "AC-065",
+        "AC-075",
+        "AC-077"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-008",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-022",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "docs/deployment-cloudflare-free.md",
+        "docs/quota-degradation.md"
+      ],
+      "tests": [],
+      "doneWhen": "the runbook uses Pages, Workers Free and D1 Free only and retains prior deployment/snapshot on failure",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "4e1d91f58eef5b93bdc21c68156abda996d614a136fa3e55489ee3a4fc979aa8"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": true,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-contract",
+        "category": "contract",
+        "command": "npm run test:contract -- tests/contract/supply-chain.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-negative",
+        "category": "negative",
+        "command": "npm run test:negative -- tests/negative/security/security-vectors.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-performance-e2e",
+        "category": "performance-e2e",
+        "command": "npm run test:performance:e2e -- tests/performance/browser-performance.spec.ts tests/performance/import-performance.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B22_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

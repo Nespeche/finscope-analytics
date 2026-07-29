@@ -1,0 +1,392 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B18",
+  "ordinal": 18,
+  "title": "Restore, borrado, cuarentena e interfaz de datos",
+  "domain": "storage-recovery",
+  "status": "PENDING",
+  "taskCount": 4,
+  "executionOrder": [
+    "T077",
+    "T078",
+    "T079",
+    "T080"
+  ],
+  "externalDependencies": [
+    "T021",
+    "T022",
+    "T072",
+    "T073",
+    "T074",
+    "T075",
+    "T076"
+  ],
+  "requirements": [
+    "FR-022",
+    "FR-034",
+    "FR-035",
+    "FR-036",
+    "FR-039",
+    "FR-041",
+    "FR-042",
+    "NFR-002",
+    "NFR-004"
+  ],
+  "acceptanceCriteria": [
+    "AC-049",
+    "AC-056",
+    "AC-057",
+    "AC-058",
+    "AC-068",
+    "AC-069",
+    "AC-070",
+    "AC-073",
+    "AC-075",
+    "AC-076"
+  ],
+  "authorityIds": [
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-009",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-017",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-022",
+    "AUTH-026",
+    "AUTH-027"
+  ],
+  "primaryAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/decisions/ui-framework.md",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md#active-source-policy",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json",
+    "specs/001-fundamental-analysis-platform/contracts/browser-storage-contract.json#/transactions/3",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.md",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/1",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-049",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-056",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-057",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-058",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-068",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-069",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-070",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-073",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-075",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-076"
+  ],
+  "targetFiles": [
+    "src/app/components/RestorePreview.svelte",
+    "src/app/views/DataManagementView.svelte",
+    "src/persistence/delete-service.ts",
+    "src/persistence/indexeddb.ts",
+    "src/persistence/price-repository.ts",
+    "src/persistence/restore-service.ts",
+    "src/persistence/snapshot-repository.ts",
+    "tests/e2e/data-management.spec.ts",
+    "tests/e2e/persistence-lifecycle.spec.ts",
+    "tests/integration/persistence/corruption-quarantine.test.ts",
+    "tests/integration/persistence/delete.test.ts",
+    "tests/integration/persistence/restore-rollback.test.ts"
+  ],
+  "testFiles": [
+    "tests/e2e/data-management.spec.ts",
+    "tests/e2e/persistence-lifecycle.spec.ts",
+    "tests/integration/persistence/corruption-quarantine.test.ts",
+    "tests/integration/persistence/delete.test.ts",
+    "tests/integration/persistence/restore-rollback.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T077",
+      "phaseNo": 7,
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "story": "US5",
+      "parallel": false,
+      "dependencies": [
+        "T021",
+        "T073",
+        "T074",
+        "T076"
+      ],
+      "requirementRefs": [
+        "FR-034",
+        "FR-035",
+        "FR-036",
+        "NFR-004"
+      ],
+      "acceptanceRefs": [
+        "AC-057",
+        "AC-058",
+        "AC-076"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-017",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021"
+      ],
+      "files": [
+        "src/persistence/restore-service.ts",
+        "tests/integration/persistence/restore-rollback.test.ts"
+      ],
+      "tests": [
+        "tests/integration/persistence/restore-rollback.test.ts"
+      ],
+      "doneWhen": "restore cannot bypass preview and any store failure restores the exact prior database state",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "0bc0257b4631739d8d18298628e64b955c5f098d25a2396277ac3b51d8b13196"
+    },
+    {
+      "id": "T078",
+      "phaseNo": 7,
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "story": "US5",
+      "parallel": false,
+      "dependencies": [
+        "T073",
+        "T074",
+        "T075"
+      ],
+      "requirementRefs": [
+        "FR-022",
+        "FR-036",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "acceptanceRefs": [
+        "AC-049",
+        "AC-076"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-009",
+        "AUTH-014",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-022"
+      ],
+      "files": [
+        "src/persistence/delete-service.ts",
+        "tests/integration/persistence/delete.test.ts"
+      ],
+      "tests": [
+        "tests/integration/persistence/delete.test.ts"
+      ],
+      "doneWhen": "delete all is atomic, pre-export is offered and delete price preserves fundamentals",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "446d759cb47b994a2f36e5c86967977f36b234228d105ab8a5fdca0563b06f10"
+    },
+    {
+      "id": "T079",
+      "phaseNo": 7,
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "story": "US5",
+      "parallel": false,
+      "dependencies": [
+        "T073",
+        "T074"
+      ],
+      "requirementRefs": [
+        "FR-034",
+        "FR-035",
+        "FR-036",
+        "FR-039",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "acceptanceRefs": [
+        "AC-057",
+        "AC-058",
+        "AC-073",
+        "AC-075",
+        "AC-076"
+      ],
+      "authorityIds": [
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-009",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-022",
+        "AUTH-026"
+      ],
+      "files": [
+        "src/persistence/snapshot-repository.ts",
+        "src/persistence/price-repository.ts",
+        "src/persistence/indexeddb.ts",
+        "tests/integration/persistence/corruption-quarantine.test.ts"
+      ],
+      "tests": [
+        "tests/integration/persistence/corruption-quarantine.test.ts"
+      ],
+      "doneWhen": "hash mismatch, schema mismatch and corrupt pointers are quarantined deterministically and never advance an active pointer",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "8fca1a90a89460617b44121c12d62f8f0577541f5d59fa8d23c2886a49cd7711"
+    },
+    {
+      "id": "T080",
+      "phaseNo": 7,
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "story": "US5",
+      "parallel": false,
+      "dependencies": [
+        "T022",
+        "T072",
+        "T073",
+        "T074",
+        "T075",
+        "T076",
+        "T077",
+        "T078",
+        "T079"
+      ],
+      "requirementRefs": [
+        "FR-034",
+        "FR-035",
+        "FR-036",
+        "FR-041",
+        "FR-042",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "acceptanceRefs": [
+        "AC-056",
+        "AC-057",
+        "AC-058",
+        "AC-068",
+        "AC-069",
+        "AC-070",
+        "AC-073",
+        "AC-075",
+        "AC-076"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-009",
+        "AUTH-015",
+        "AUTH-016",
+        "AUTH-017",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-022",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/views/DataManagementView.svelte",
+        "src/app/components/RestorePreview.svelte",
+        "tests/e2e/data-management.spec.ts",
+        "tests/e2e/persistence-lifecycle.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/data-management.spec.ts",
+        "tests/e2e/persistence-lifecycle.spec.ts"
+      ],
+      "doneWhen": "the view exports an AUTH-027 routeDefinition and preview, conflicts, allowed migration, rollback, corruption recovery, pre-export and deletion run through UI with no orphan records or pointers",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "e199cc77272686a868c07299707733025d7c6a27e9bbb2e43305a90aee5fce95"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": true,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-integration",
+        "category": "integration",
+        "command": "npm run test:integration -- tests/integration/persistence/corruption-quarantine.test.ts tests/integration/persistence/delete.test.ts tests/integration/persistence/restore-rollback.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-e2e",
+        "category": "e2e",
+        "command": "npm run test:e2e -- tests/e2e/data-management.spec.ts tests/e2e/persistence-lifecycle.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B18_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

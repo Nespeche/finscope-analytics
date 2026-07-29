@@ -1,0 +1,51 @@
+{
+  "fixtureSetId": "export-restore-test-vectors",
+  "version": "1.0.0",
+  "vectors": [
+    {
+      "vectorId": "round-trip",
+      "records": 7,
+      "hashesValid": true,
+      "schemasValid": true,
+      "expected": "atomic_restore_success"
+    },
+    {
+      "vectorId": "tampered-record",
+      "payloadSha256Valid": false,
+      "expected": "reject_before_write"
+    },
+    {
+      "vectorId": "unsupported-version",
+      "formatVersion": "2.0.0",
+      "expected": "reject_before_write"
+    },
+    {
+      "vectorId": "record-conflict-default",
+      "conflict": true,
+      "policy": "reject_on_conflict",
+      "expected": "reject_before_write"
+    },
+    {
+      "vectorId": "replace-after-preview",
+      "conflict": true,
+      "policy": "replace_matching_record_ids",
+      "previewAccepted": true,
+      "expected": "atomic_restore_success"
+    },
+    {
+      "vectorId": "write-failure",
+      "simulatedFailureAtStore": "priceAnalyses",
+      "expected": "rollback_all"
+    },
+    {
+      "vectorId": "no-storage-consent",
+      "storageConsent": false,
+      "expected": "local_issue_consent_required"
+    },
+    {
+      "vectorId": "network-disabled",
+      "networkAttempted": false,
+      "expected": "pass"
+    }
+  ]
+}

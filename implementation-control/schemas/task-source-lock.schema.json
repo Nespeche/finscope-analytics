@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://finscope.local/schemas/task-source-lock.schema.json",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "packageRevision",
+    "taskAuthority",
+    "tasksFileSha256",
+    "taskCount",
+    "tasks",
+    "batchCount",
+    "batches"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": "1.0.0" },
+    "packageRevision": { "type": "string", "minLength": 1 },
+    "generatedOn": { "type": "string" },
+    "taskAuthority": { "const": "specs/001-fundamental-analysis-platform/tasks.md" },
+    "tasksFileSha256": { "pattern": "^[0-9a-f]{64}$" },
+    "taskCount": { "const": 109 },
+    "tasks": {
+      "type": "array",
+      "minItems": 109,
+      "maxItems": 109,
+      "items": {
+        "type": "object",
+        "required": ["taskId", "lineNumber", "sourceTaskSha256"],
+        "properties": {
+          "taskId": { "pattern": "^T\\d{3}$" },
+          "lineNumber": { "type": "integer", "minimum": 1 },
+          "sourceTaskSha256": { "pattern": "^[0-9a-f]{64}$" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "batchCount": { "const": 25 },
+    "batches": {
+      "type": "array",
+      "minItems": 25,
+      "maxItems": 25,
+      "items": {
+        "type": "object",
+        "required": ["batchId", "path", "sha256"],
+        "properties": {
+          "batchId": { "pattern": "^B(?:0[1-9]|1[0-9]|2[0-5])$" },
+          "path": { "type": "string" },
+          "sha256": { "pattern": "^[0-9a-f]{64}$" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

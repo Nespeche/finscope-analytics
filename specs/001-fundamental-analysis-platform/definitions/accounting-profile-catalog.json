@@ -1,0 +1,177 @@
+{
+  "catalogId": "accounting-profile-catalog",
+  "invariants": [
+    "metricAllowlist and conceptAllowlist are exhaustive",
+    "no metric or concept may be inferred from profile name",
+    "unsupported_profile is a normal local outcome and never an HTTP 422 response"
+  ],
+  "profiles": [
+    {
+      "accountingStandard": "us_gaap",
+      "conceptAllowlist": [
+        "revenue",
+        "costOfRevenue",
+        "grossProfit",
+        "operatingIncome",
+        "netIncome",
+        "cashFlowFromOperations",
+        "capitalExpenditures",
+        "cashAndEquivalents",
+        "currentAssets",
+        "currentLiabilities",
+        "assets",
+        "equity",
+        "interestExpense",
+        "depreciationAndAmortization",
+        "depreciation",
+        "amortization",
+        "dilutedShares",
+        "shortTermBorrowings",
+        "currentPortionLongTermDebt",
+        "longTermDebtNoncurrent",
+        "commercialPaper",
+        "otherApprovedInterestBearingBorrowings"
+      ],
+      "metricAllowlist": [
+        "FND_REVENUE",
+        "FND_REVENUE_GROWTH_YOY",
+        "FND_REVENUE_GROWTH_QOQ_COMPATIBLE",
+        "FND_GROSS_MARGIN",
+        "FND_OPERATING_MARGIN",
+        "FND_NET_MARGIN",
+        "FND_CFO",
+        "FND_CAPEX",
+        "FND_FCF",
+        "FND_CASH",
+        "FND_BORROWINGS_DEBT",
+        "FND_NET_DEBT",
+        "FND_CURRENT_RATIO",
+        "FND_WORKING_CAPITAL",
+        "FND_EARNINGS_QUALITY",
+        "FND_DERIVED_EBITDA",
+        "FND_EBITDA_MARGIN",
+        "FND_DEBT_EQUITY",
+        "FND_INTEREST_COVERAGE",
+        "FND_ROA",
+        "FND_ROE",
+        "FND_CASH_CONVERSION",
+        "FND_CAPEX_REVENUE",
+        "FND_DILUTED_SHARES_EVOLUTION"
+      ],
+      "profileId": "general_operating_us_gaap",
+      "profilePriority": 10,
+      "status": "ACTIVE_FULL",
+      "unsupportedBehavior": "not_applicable_per_metric"
+    },
+    {
+      "accountingStandard": "ifrs",
+      "conceptAllowlist": [
+        "revenue",
+        "netIncome",
+        "cashFlowFromOperations",
+        "cashAndEquivalents",
+        "assets",
+        "equity",
+        "dilutedShares"
+      ],
+      "metricAllowlist": [
+        "FND_REVENUE",
+        "FND_REVENUE_GROWTH_YOY",
+        "FND_NET_MARGIN",
+        "FND_CFO",
+        "FND_CASH",
+        "FND_ROA",
+        "FND_ROE",
+        "FND_DILUTED_SHARES_EVOLUTION"
+      ],
+      "profileId": "general_operating_ifrs_limited",
+      "profilePriority": 20,
+      "status": "ACTIVE_LIMITED",
+      "unsupportedBehavior": "not_applicable_per_metric"
+    },
+    {
+      "accountingStandard": "us_gaap",
+      "conceptAllowlist": [
+        "cashAndEquivalents",
+        "netIncome",
+        "assets",
+        "equity",
+        "dilutedShares"
+      ],
+      "metricAllowlist": [
+        "FND_CASH",
+        "FND_ROA",
+        "FND_ROE",
+        "FND_DILUTED_SHARES_EVOLUTION"
+      ],
+      "profileId": "financial_institution_limited",
+      "profilePriority": 30,
+      "status": "ACTIVE_LIMITED",
+      "unsupportedBehavior": "not_applicable_per_metric"
+    },
+    {
+      "accountingStandard": "us_gaap",
+      "conceptAllowlist": [
+        "cashAndEquivalents",
+        "netIncome",
+        "assets",
+        "equity",
+        "dilutedShares"
+      ],
+      "metricAllowlist": [
+        "FND_CASH",
+        "FND_ROA",
+        "FND_ROE",
+        "FND_DILUTED_SHARES_EVOLUTION"
+      ],
+      "profileId": "insurance_limited",
+      "profilePriority": 40,
+      "status": "ACTIVE_LIMITED",
+      "unsupportedBehavior": "not_applicable_per_metric"
+    },
+    {
+      "accountingStandard": "us_gaap",
+      "conceptAllowlist": [
+        "revenue",
+        "cashFlowFromOperations",
+        "cashAndEquivalents",
+        "shortTermBorrowings",
+        "currentPortionLongTermDebt",
+        "longTermDebtNoncurrent",
+        "commercialPaper",
+        "otherApprovedInterestBearingBorrowings",
+        "netIncome",
+        "assets",
+        "equity",
+        "dilutedShares"
+      ],
+      "metricAllowlist": [
+        "FND_REVENUE",
+        "FND_REVENUE_GROWTH_YOY",
+        "FND_CFO",
+        "FND_CASH",
+        "FND_BORROWINGS_DEBT",
+        "FND_NET_DEBT",
+        "FND_DEBT_EQUITY",
+        "FND_ROA",
+        "FND_ROE",
+        "FND_DILUTED_SHARES_EVOLUTION"
+      ],
+      "profileId": "reit_limited",
+      "profilePriority": 50,
+      "status": "ACTIVE_LIMITED",
+      "unsupportedBehavior": "not_applicable_per_metric"
+    },
+    {
+      "accountingStandard": "unknown",
+      "conceptAllowlist": [],
+      "metricAllowlist": [],
+      "profileId": "unsupported_profile",
+      "profilePriority": 90,
+      "status": "ACTIVE_DEGRADED",
+      "unsupportedBehavior": "normal_local_outcome_with_identity_filings_evidence_and_synthesis_insufficient_information"
+    }
+  ],
+  "status": "ACTIVE_AUTHORITY",
+  "version": "5.0.0"
+}

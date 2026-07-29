@@ -1,0 +1,45 @@
+{
+  "manifestId": "frozen-sec-fixture-manifest",
+  "version": "1.0.0",
+  "status": "ACTIVE_TEST_AUTHORITY",
+  "capturePolicy": "bounded verbatim JSON field/value excerpts from official SEC public APIs; no secret, token or personal credential; live smoke tests remain optional",
+  "officialDocumentation": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+  "entries": [
+    {
+      "file": "apple-submissions-official-excerpt.json",
+      "sourceUrl": "https://data.sec.gov/submissions/CIK0000320193.json",
+      "sha256": "a87cf66f248fff33a57198a273adb300dca07fc1908ce82af9ce7155250e1728",
+      "capturedOn": "2026-07-21",
+      "cik": "0000320193",
+      "completePayload": false,
+      "expectedUse": "frozen deterministic official-response excerpt"
+    },
+    {
+      "file": "apple-companyfacts-official-excerpt.json",
+      "sourceUrl": "https://data.sec.gov/api/xbrl/companyfacts/CIK0000320193.json",
+      "sha256": "df4ea3fa76e2b965f47ede5fa438f66d1194b3faac3514feb833bb819afbf2de",
+      "capturedOn": "2026-07-21",
+      "cik": "0000320193",
+      "completePayload": false,
+      "expectedUse": "frozen deterministic official-response excerpt"
+    },
+    {
+      "file": "apple-companyconcept-revenues-official-excerpt.json",
+      "sourceUrl": "https://data.sec.gov/api/xbrl/companyconcept/CIK0000320193/us-gaap/Revenues.json",
+      "sha256": "3b1dcb9b491b0cf2880f96f02ece36ed38373ab9a4646a08b62b767b4b75fdea",
+      "capturedOn": "2026-07-21",
+      "cik": "0000320193",
+      "completePayload": false,
+      "expectedUse": "frozen deterministic official-response excerpt"
+    },
+    {
+      "file": "invalid-companyfacts-partial.json",
+      "sourceUrl": "derived negative fixture; no live URL",
+      "sha256": "00f8b3308e15bb978d2c5837259cdb7373e6177060dbaf5da2ed6be0bdf939de",
+      "capturedOn": "2026-07-21",
+      "cik": "0000320193",
+      "completePayload": false,
+      "expectedUse": "negative parser fixture"
+    }
+  ]
+}

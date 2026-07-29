@@ -1,0 +1,429 @@
+{
+  "fixtureSetId": "formula-test-vectors",
+  "version": "1.1.0",
+  "formulaCount": 15,
+  "vectorCount": 36,
+  "vectors": [
+    {
+      "vectorId": "identity-normal",
+      "formulaId": "identity",
+      "inputs": [
+        "12.34"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "12.34"
+      }
+    },
+    {
+      "vectorId": "identity-missing",
+      "formulaId": "identity",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "add-normal",
+      "formulaId": "add",
+      "inputs": [
+        "1.1",
+        "2.2"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "3.3"
+      }
+    },
+    {
+      "vectorId": "add-missing",
+      "formulaId": "add",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "subtract-normal",
+      "formulaId": "subtract",
+      "inputs": [
+        "5",
+        "2.75"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "2.25"
+      }
+    },
+    {
+      "vectorId": "subtract-missing",
+      "formulaId": "subtract",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "divide-normal",
+      "formulaId": "divide",
+      "inputs": [
+        "1",
+        "4"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "0.25"
+      }
+    },
+    {
+      "vectorId": "divide-missing",
+      "formulaId": "divide",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "ratio_change-normal",
+      "formulaId": "ratio_change",
+      "inputs": [
+        "120",
+        "100"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "0.2"
+      }
+    },
+    {
+      "vectorId": "ratio_change-missing",
+      "formulaId": "ratio_change",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "divide_average_balance-normal",
+      "formulaId": "divide_average_balance",
+      "inputs": [
+        "30",
+        "100",
+        "140"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "0.25"
+      }
+    },
+    {
+      "vectorId": "divide_average_balance-missing",
+      "formulaId": "divide_average_balance",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "debt_bucket_sum-normal",
+      "formulaId": "debt_bucket_sum",
+      "inputs": [
+        "10",
+        "20",
+        "5"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "35"
+      }
+    },
+    {
+      "vectorId": "debt_bucket_sum-missing",
+      "formulaId": "debt_bucket_sum",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "last-normal",
+      "formulaId": "last",
+      "inputs": [
+        "1",
+        "3",
+        "2"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "2"
+      }
+    },
+    {
+      "vectorId": "last-missing",
+      "formulaId": "last",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "min-normal",
+      "formulaId": "min",
+      "inputs": [
+        "2",
+        "-1",
+        "4"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "-1"
+      }
+    },
+    {
+      "vectorId": "min-missing",
+      "formulaId": "min",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "max-normal",
+      "formulaId": "max",
+      "inputs": [
+        "2",
+        "-1",
+        "4"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "4"
+      }
+    },
+    {
+      "vectorId": "max-missing",
+      "formulaId": "max",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "mean-normal",
+      "formulaId": "mean",
+      "inputs": [
+        "1",
+        "2",
+        "3"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "2"
+      }
+    },
+    {
+      "vectorId": "mean-missing",
+      "formulaId": "mean",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "median-normal",
+      "formulaId": "median",
+      "inputs": [
+        "4",
+        "1",
+        "3",
+        "2"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "2.5"
+      }
+    },
+    {
+      "vectorId": "median-missing",
+      "formulaId": "median",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "simple_return-normal",
+      "formulaId": "simple_return",
+      "inputs": [
+        "100",
+        "110"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "0.1"
+      }
+    },
+    {
+      "vectorId": "simple_return-missing",
+      "formulaId": "simple_return",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "max_drawdown-normal",
+      "formulaId": "max_drawdown",
+      "inputs": [
+        "100",
+        "120",
+        "90",
+        "105"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "-0.25"
+      }
+    },
+    {
+      "vectorId": "max_drawdown-missing",
+      "formulaId": "max_drawdown",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "normalized_ols_ordinal-normal",
+      "formulaId": "normalized_ols_ordinal",
+      "inputs": [
+        "100",
+        "110",
+        "120"
+      ],
+      "expected": {
+        "state": "available",
+        "value": "0.1"
+      }
+    },
+    {
+      "vectorId": "normalized_ols_ordinal-missing",
+      "formulaId": "normalized_ols_ordinal",
+      "inputs": [],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "divide-zero-denominator",
+      "formulaId": "divide",
+      "inputs": [
+        "1",
+        "0"
+      ],
+      "expected": {
+        "state": "not_meaningful",
+        "reasonCode": "zero_denominator",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "ratio_change-zero-denominator",
+      "formulaId": "ratio_change",
+      "inputs": [
+        "1",
+        "0"
+      ],
+      "expected": {
+        "state": "not_meaningful",
+        "reasonCode": "zero_denominator",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "divide_average_balance-zero-denominator",
+      "formulaId": "divide_average_balance",
+      "inputs": [
+        "1",
+        "-1",
+        "1"
+      ],
+      "expected": {
+        "state": "not_meaningful",
+        "reasonCode": "zero_denominator",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "debt-overlap",
+      "formulaId": "debt_bucket_sum",
+      "inputs": [
+        "10",
+        "20"
+      ],
+      "context": {
+        "overlap": true
+      },
+      "expected": {
+        "state": "partial",
+        "reasonCode": "overlapping_debt_buckets",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "price-nonpositive",
+      "formulaId": "simple_return",
+      "inputs": [
+        "0",
+        "10"
+      ],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_price_observation",
+        "valueAbsent": true
+      }
+    },
+    {
+      "vectorId": "ols-insufficient",
+      "formulaId": "normalized_ols_ordinal",
+      "inputs": [
+        "10"
+      ],
+      "expected": {
+        "state": "insufficient",
+        "reasonCode": "invalid_arity",
+        "valueAbsent": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.1.0",
+  "batchId": "B02",
+  "status": "COMPLETED",
+  "taskResults": [
+    {
+      "taskId": "T004",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T007",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T008",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T009",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T012",
+      "status": "COMPLETED"
+    }
+  ],
+  "testResults": [
+    {
+      "id": "npm-ci",
+      "command": "npm ci",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "playwright-chromium",
+      "command": "npm exec playwright install chromium",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "typecheck",
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-control-plane",
+      "command": "npm run test:contract -- tests/contract/test-discovery.test.ts tests/contract/schema-registry.test.ts",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-integration",
+      "command": "npm run test:integration -- tests/integration/cloudflare/d1-migration.test.ts",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-contract",
+      "command": "npm run test:contract -- tests/contract/app-composition.test.ts tests/contract/cloudflare/wrangler-bindings.test.ts tests/contract/schema-registry.test.ts tests/contract/security/static-headers.test.ts tests/contract/svelte-components.test.ts",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-e2e",
+      "command": "npm run test:e2e -- tests/e2e/app-shell.spec.ts",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "regression-vitest",
+      "command": "npm run test",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "regression-browser",
+      "command": "npm run test:browser",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "build",
+      "command": "npm run build",
+      "status": "PASS",
+      "exitCode": 0
+    }
+  ],
+  "filesCreated": [
+    "implementation-control/reports/B02_EVIDENCE_VERIFICATION_AND_CLOSURE.md",
+    "implementation-control/reports/B02_EVIDENCE_VERIFICATION_AND_CLOSURE.json"
+  ],
+  "filesModified": [
+    "closure-only checkboxes, state, lock/mirrors, active guidance, reports, metadata, inventory and manifest"
+  ],
+  "filesDeleted": [],
+  "localEvidence": {
+    "logicalName": "FinScope_local_evidence_B02_20260723-110819.zip",
+    "sha256": "81a40f36a2cdd1aec675ad622989165ce670ae245223b9af44313840897cb0ca",
+    "candidateSha256": "e784878578255b6a36fd67345b184a670b7633856a2fadee799ad34674bc30d6",
+    "schemaVersion": "1.1.0",
+    "status": "PASS"
+  },
+  "specifyTreeSha256Before": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "specifyTreeSha256After": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "openFindings": [
+    "AUD-R6-003",
+    "AUD-R6-004",
+    "CFG-R6-001",
+    "NPM-AUDIT-3-HIGH-DEFERRED-TO-T098"
+  ],
+  "nextBatchId": "B03"
+}

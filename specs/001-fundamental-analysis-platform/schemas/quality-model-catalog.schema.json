@@ -1,0 +1,99 @@
+{
+  "$id": "https://finscope.local/schemas/quality-model-catalog.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "catalogId": {
+      "const": "quality-model-catalog"
+    },
+    "fundamental": {
+      "additionalProperties": false,
+      "properties": {
+        "axes": {
+          "type": "object"
+        },
+        "cardinality": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "evaluationOrder": {
+          "items": {
+            "type": "object"
+          },
+          "minItems": 3,
+          "type": "array"
+        },
+        "expectedCounts": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "axes",
+        "cardinality",
+        "evaluationOrder",
+        "expectedCounts"
+      ],
+      "type": "object"
+    },
+    "historicalPrice": {
+      "additionalProperties": false,
+      "properties": {
+        "axes": {
+          "type": "object"
+        },
+        "cardinality": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "evaluationOrder": {
+          "items": {
+            "type": "object"
+          },
+          "minItems": 3,
+          "type": "array"
+        },
+        "expectedCounts": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "axes",
+        "cardinality",
+        "evaluationOrder",
+        "expectedCounts"
+      ],
+      "type": "object"
+    },
+    "invariants": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "ordinal": {
+      "const": [
+        "insufficient",
+        "usable_with_caveats",
+        "verified"
+      ]
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "version": {
+      "const": "5.0.0"
+    }
+  },
+  "required": [
+    "catalogId",
+    "version",
+    "status",
+    "ordinal",
+    "invariants",
+    "fundamental",
+    "historicalPrice"
+  ],
+  "title": "Quality catalog v5.0.0",
+  "type": "object"
+}

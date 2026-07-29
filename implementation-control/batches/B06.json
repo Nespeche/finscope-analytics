@@ -1,0 +1,545 @@
+{
+  "$schema": "../schemas/implementation-batch.schema.json",
+  "schemaVersion": "1.1.0",
+  "batchId": "B06",
+  "ordinal": 6,
+  "title": "Identidad y superficie inicial del gateway SEC",
+  "domain": "sec-identity-gateway",
+  "status": "COMPLETED",
+  "taskCount": 6,
+  "executionOrder": [
+    "T024",
+    "T025",
+    "T026",
+    "T027",
+    "T028",
+    "T030"
+  ],
+  "externalDependencies": [
+    "T007",
+    "T009",
+    "T012",
+    "T018",
+    "T019",
+    "T020",
+    "T022"
+  ],
+  "requirements": [
+    "FR-001",
+    "FR-002",
+    "FR-003",
+    "FR-004",
+    "FR-005",
+    "FR-006",
+    "FR-007",
+    "FR-039",
+    "FR-040",
+    "FR-041",
+    "NFR-003",
+    "NFR-005",
+    "NFR-006"
+  ],
+  "acceptanceCriteria": [
+    "AC-001",
+    "AC-002",
+    "AC-003",
+    "AC-004",
+    "AC-005",
+    "AC-007",
+    "AC-008",
+    "AC-009",
+    "AC-043",
+    "AC-044",
+    "AC-045",
+    "AC-046",
+    "AC-047",
+    "AC-053",
+    "AC-074",
+    "AC-075",
+    "AC-081",
+    "AC-082"
+  ],
+  "authorityIds": [
+    "AUTH-003",
+    "AUTH-004",
+    "AUTH-005",
+    "AUTH-006",
+    "AUTH-007",
+    "AUTH-008",
+    "AUTH-009",
+    "AUTH-011",
+    "AUTH-012",
+    "AUTH-013",
+    "AUTH-014",
+    "AUTH-015",
+    "AUTH-016",
+    "AUTH-018",
+    "AUTH-019",
+    "AUTH-020",
+    "AUTH-021",
+    "AUTH-022",
+    "AUTH-024",
+    "AUTH-025",
+    "AUTH-026",
+    "AUTH-027",
+    "AUTH-034"
+  ],
+  "primaryAuthorityRefs": [
+    "V0.21_PHASE_STATUS.md#gate",
+    "specs/001-fundamental-analysis-platform/contracts/fingerprint-projections.json#/projections",
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml#/paths",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json#/orderedSteps",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/decisions/decimal-library.md",
+    "specs/001-fundamental-analysis-platform/decisions/ui-framework.md",
+    "specs/001-fundamental-analysis-platform/definitions/acceptance-criteria-catalog.json#/criteria",
+    "specs/001-fundamental-analysis-platform/definitions/accounting-profile-catalog.json#/profiles",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/insight-rule-catalog.json#/rules",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues",
+    "specs/001-fundamental-analysis-platform/definitions/metric-catalog.json#/metrics",
+    "specs/001-fundamental-analysis-platform/definitions/quality-model-catalog.json#/fundamental",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/incrementalEvents",
+    "specs/001-fundamental-analysis-platform/definitions/state-and-capability-catalog.json#/transitions",
+    "specs/001-fundamental-analysis-platform/definitions/xbrl-mapping-catalog.json#/mappings",
+    "specs/001-fundamental-analysis-platform/governance/replacement-and-deferral-register.json#/entries",
+    "specs/001-fundamental-analysis-platform/governance/requirements-acceptance-traceability.json",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md#active-source-policy",
+    "specs/001-fundamental-analysis-platform/schemas/fundamental-bundle.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/historical-price-overlay.schema.json",
+    "specs/001-fundamental-analysis-platform/schemas/rule-node.schema.json"
+  ],
+  "acceptanceAuthorityRefs": [
+    "specs/001-fundamental-analysis-platform/contracts/openapi.yaml",
+    "specs/001-fundamental-analysis-platform/contracts/sec-acquisition-policy.json",
+    "specs/001-fundamental-analysis-platform/data-model.md#issueridentity",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/operationMatrix",
+    "specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json#/resourceNotFoundVariants",
+    "specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json#/issues/0",
+    "specs/001-fundamental-analysis-platform/governance/source-policy-matrix.md",
+    "specs/001-fundamental-analysis-platform/quickstart.md"
+  ],
+  "fixtureRefs": [
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-001",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-002",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-003",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-004",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-005",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-007",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-008",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-009",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-043",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-044",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-045",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-046",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-047",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-053",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-074",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-075",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-081",
+    "specs/001-fundamental-analysis-platform/fixtures/acceptance/core-scenarios.json#/scenarios/AC-082"
+  ],
+  "targetFiles": [
+    "src/app/components/IssuerCandidateList.svelte",
+    "src/app/views/IssuerSearchView.svelte",
+    "src/domain/identity/cik.ts",
+    "src/domain/identity/issuer-resolver.ts",
+    "src/gateway/sec-client.ts",
+    "src/gateway/sec-response.ts",
+    "tests/contract/cloudflare/wrangler-bindings.test.ts",
+    "tests/contract/worker/openapi-surface.test.ts",
+    "tests/contract/worker/request-guard.test.ts",
+    "tests/e2e/issuer-selection.spec.ts",
+    "tests/integration/gateway/sec-client.test.ts",
+    "tests/integration/worker/sec-stream.test.ts",
+    "tests/negative/sec/sec-negative.test.ts",
+    "tests/unit/identity/issuer-resolver.test.ts",
+    "workers/sec-gateway/src/index.ts",
+    "workers/sec-gateway/src/observability.ts",
+    "workers/sec-gateway/src/routes/company-concept.ts",
+    "workers/sec-gateway/src/routes/company-facts.ts",
+    "workers/sec-gateway/src/routes/submissions.ts",
+    "workers/sec-gateway/src/sec-stream.ts",
+    "workers/sec-gateway/src/security/allowlist.ts",
+    "workers/sec-gateway/src/security/request-guard.ts",
+    "workers/sec-gateway/wrangler.jsonc"
+  ],
+  "testFiles": [
+    "tests/contract/cloudflare/wrangler-bindings.test.ts",
+    "tests/contract/worker/openapi-surface.test.ts",
+    "tests/contract/worker/request-guard.test.ts",
+    "tests/e2e/issuer-selection.spec.ts",
+    "tests/integration/gateway/sec-client.test.ts",
+    "tests/integration/worker/sec-stream.test.ts",
+    "tests/negative/sec/sec-negative.test.ts",
+    "tests/unit/identity/issuer-resolver.test.ts"
+  ],
+  "contextPolicy": {
+    "readTaskEntriesFrom": "specs/001-fundamental-analysis-platform/tasks.md",
+    "readSpecPlanByIdsOnly": true,
+    "loadHistoricalReports": false,
+    "loadFutureTasks": false,
+    "inspectAllExistingTargetFiles": true
+  },
+  "tasks": [
+    {
+      "id": "T024",
+      "phaseNo": 3,
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "story": "US1",
+      "parallel": false,
+      "dependencies": [
+        "T012",
+        "T018",
+        "T020"
+      ],
+      "requirementRefs": [
+        "FR-001",
+        "FR-002",
+        "NFR-006"
+      ],
+      "acceptanceRefs": [
+        "AC-001",
+        "AC-002"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-007",
+        "AUTH-020",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-034"
+      ],
+      "files": [
+        "src/domain/identity/cik.ts",
+        "src/domain/identity/issuer-resolver.ts",
+        "tests/unit/identity/issuer-resolver.test.ts"
+      ],
+      "tests": [
+        "tests/unit/identity/issuer-resolver.test.ts"
+      ],
+      "doneWhen": "ambiguous aliases stop locally before network",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "dc1306d7bda9652c48217f4681d80c18f5964997237431039d6fb91ad0d0ec3c"
+    },
+    {
+      "id": "T025",
+      "phaseNo": 3,
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "story": "US1",
+      "parallel": false,
+      "dependencies": [
+        "T022",
+        "T024"
+      ],
+      "requirementRefs": [
+        "FR-001",
+        "FR-002",
+        "FR-041"
+      ],
+      "acceptanceRefs": [
+        "AC-001",
+        "AC-002",
+        "AC-074",
+        "AC-075"
+      ],
+      "authorityIds": [
+        "AUTH-003",
+        "AUTH-005",
+        "AUTH-015",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-021",
+        "AUTH-027"
+      ],
+      "files": [
+        "src/app/views/IssuerSearchView.svelte",
+        "src/app/components/IssuerCandidateList.svelte",
+        "tests/e2e/issuer-selection.spec.ts"
+      ],
+      "tests": [
+        "tests/e2e/issuer-selection.spec.ts"
+      ],
+      "doneWhen": "the view exports an AUTH-027 routeDefinition, selection is keyboard operable and context remains visible",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "f848e7f06a5ac12b54a613d61c2f3f88fdcf3095df6d395153e4eb1c24ae7db4"
+    },
+    {
+      "id": "T026",
+      "phaseNo": 3,
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "story": "US1",
+      "parallel": true,
+      "dependencies": [
+        "T007",
+        "T009",
+        "T018"
+      ],
+      "requirementRefs": [
+        "FR-003",
+        "FR-039",
+        "FR-040",
+        "NFR-003"
+      ],
+      "acceptanceRefs": [
+        "AC-003",
+        "AC-043",
+        "AC-082"
+      ],
+      "authorityIds": [
+        "AUTH-004",
+        "AUTH-005",
+        "AUTH-009",
+        "AUTH-016",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-022",
+        "AUTH-026"
+      ],
+      "files": [
+        "workers/sec-gateway/src/security/allowlist.ts",
+        "workers/sec-gateway/src/security/request-guard.ts",
+        "tests/contract/worker/request-guard.test.ts"
+      ],
+      "tests": [
+        "tests/contract/worker/request-guard.test.ts"
+      ],
+      "doneWhen": "invalid CIK/path/method performs zero upstream calls",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "1f1969759271d69337376c9c615b79188f6122f882b5b94f1202789106a5b6b0"
+    },
+    {
+      "id": "T027",
+      "phaseNo": 3,
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "story": "US1",
+      "parallel": false,
+      "dependencies": [
+        "T018",
+        "T026"
+      ],
+      "requirementRefs": [
+        "FR-039",
+        "FR-040",
+        "NFR-005"
+      ],
+      "acceptanceRefs": [
+        "AC-043",
+        "AC-044",
+        "AC-045",
+        "AC-046",
+        "AC-047",
+        "AC-082"
+      ],
+      "authorityIds": [
+        "AUTH-004",
+        "AUTH-008",
+        "AUTH-009",
+        "AUTH-011",
+        "AUTH-012",
+        "AUTH-013",
+        "AUTH-014",
+        "AUTH-015",
+        "AUTH-018",
+        "AUTH-019",
+        "AUTH-020",
+        "AUTH-024",
+        "AUTH-025",
+        "AUTH-026",
+        "AUTH-034"
+      ],
+      "files": [
+        "workers/sec-gateway/src/index.ts",
+        "workers/sec-gateway/src/routes/submissions.ts",
+        "workers/sec-gateway/src/routes/company-facts.ts",
+        "workers/sec-gateway/src/routes/company-concept.ts",
+        "tests/contract/worker/openapi-surface.test.ts"
+      ],
+      "tests": [
+        "tests/contract/worker/openapi-surface.test.ts"
+      ],
+      "doneWhen": "the explicit route table registers only OpenAPI matrix-listed routes/statuses and excludes 409/422",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "3333bd85f02f6ff6e805f53dfe2fd59eeba9c4a4134e9eb6491e1021262bc290"
+    },
+    {
+      "id": "T028",
+      "phaseNo": 3,
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "story": "US1",
+      "parallel": false,
+      "dependencies": [
+        "T007",
+        "T019",
+        "T026",
+        "T027"
+      ],
+      "requirementRefs": [
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-006",
+        "FR-007",
+        "NFR-003"
+      ],
+      "acceptanceRefs": [
+        "AC-003",
+        "AC-005",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-053",
+        "AC-081"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-006",
+        "AUTH-016",
+        "AUTH-022"
+      ],
+      "files": [
+        "workers/sec-gateway/wrangler.jsonc",
+        "workers/sec-gateway/src/security/allowlist.ts",
+        "workers/sec-gateway/src/sec-stream.ts",
+        "workers/sec-gateway/src/observability.ts",
+        "tests/contract/cloudflare/wrangler-bindings.test.ts",
+        "tests/integration/worker/sec-stream.test.ts",
+        "tests/negative/sec/sec-negative.test.ts"
+      ],
+      "tests": [
+        "tests/contract/cloudflare/wrangler-bindings.test.ts",
+        "tests/integration/worker/sec-stream.test.ts",
+        "tests/negative/sec/sec-negative.test.ts"
+      ],
+      "doneWhen": "missing bindings perform zero upstream calls, no contact value is logged or packaged, each redirect target is revalidated, and frozen positive/negative vectors pass",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "29e883b3cf18d5bc8bf615bef55345395d4a1b434b019a136b2e41218d32a840"
+    },
+    {
+      "id": "T030",
+      "phaseNo": 3,
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "story": "US1",
+      "parallel": false,
+      "dependencies": [
+        "T012",
+        "T027",
+        "T028"
+      ],
+      "requirementRefs": [
+        "FR-003",
+        "FR-004",
+        "NFR-003"
+      ],
+      "acceptanceRefs": [
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-081"
+      ],
+      "authorityIds": [
+        "AUTH-005",
+        "AUTH-016",
+        "AUTH-022"
+      ],
+      "files": [
+        "src/gateway/sec-client.ts",
+        "src/gateway/sec-response.ts",
+        "tests/integration/gateway/sec-client.test.ts"
+      ],
+      "tests": [
+        "tests/integration/gateway/sec-client.test.ts"
+      ],
+      "doneWhen": "Submissions and Company Facts are validated before domain use",
+      "executability": "EXECUTABLE",
+      "sourceTaskSha256": "09bd532630ed57be2b58f5f668092130bc8954d50c961c6d1234c4a53951c12e"
+    }
+  ],
+  "completionGate": {
+    "allTasksCompleted": true,
+    "allMandatoryTestsPass": true,
+    "specifyTreeUnchanged": true,
+    "packageValidationPass": true,
+    "doNotStartNextBatch": true
+  },
+  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "localValidation": {
+    "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
+    "browserRequired": true,
+    "commands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-unit",
+        "category": "unit",
+        "command": "npm run test:unit -- tests/unit/identity/issuer-resolver.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-integration",
+        "category": "integration",
+        "command": "npm run test:integration -- tests/integration/gateway/sec-client.test.ts tests/integration/worker/sec-stream.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-contract",
+        "category": "contract",
+        "command": "npm run test:contract -- tests/contract/cloudflare/wrangler-bindings.test.ts tests/contract/worker/openapi-surface.test.ts tests/contract/worker/request-guard.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-negative",
+        "category": "negative",
+        "command": "npm run test:negative -- tests/negative/sec/sec-negative.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-e2e",
+        "category": "e2e",
+        "command": "npm run test:browser -- tests/e2e/issuer-selection.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "evidenceOutput": "EXTERNAL_TO_CANDIDATE/FinScope_local_evidence_B06_<timestamp>.zip",
+    "closureRule": "Every required command must exit 0 and evidence hashes must match the candidate package before task or batch completion is recorded."
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "policyId": "security-and-input-limits",
+  "version": "1.1.0",
+  "status": "ACTIVE_AUTHORITY",
+  "secGateway": {
+    "allowedHosts": [
+      "data.sec.gov",
+      "www.sec.gov"
+    ],
+    "allowedMethods": [
+      "GET",
+      "HEAD"
+    ],
+    "crossHostRedirectsAllowed": false,
+    "maximumUncompressedResponseBytes": 67108864,
+    "requestTimeoutSeconds": 20,
+    "operationTimeoutSeconds": 120,
+    "maximumAttemptsPerLogicalRequest": 3,
+    "backoffSeconds": [
+      1,
+      2,
+      4
+    ],
+    "maximumJitterMilliseconds": 250,
+    "retryAfterPrecedence": true,
+    "maximumRetryAfterSeconds": 30,
+    "maximumExternalCallsPerOperation": 14,
+    "retriesCountAgainstOperationBudget": true,
+    "concurrencyPerClient": 1,
+    "requiredDeploymentVariables": [
+      "SEC_USER_AGENT",
+      "SEC_CONTACT_EMAIL"
+    ],
+    "secretsOrPersonalValuesPermittedInPackage": false
+  },
+  "priceCsv": {
+    "maximumBytes": 5242880,
+    "maximumRows": 50000,
+    "maximumColumns": 8,
+    "encoding": "UTF-8",
+    "bomAllowed": true,
+    "maximumCellCharacters": 128,
+    "processedSemanticFields": [
+      "date",
+      "close_price"
+    ],
+    "requiredDecimalPolicy": "positive canonical DecimalString",
+    "reject": [
+      "NUL bytes",
+      "binary content",
+      "spreadsheet formulas",
+      "non-positive prices",
+      "silent duplicate dates",
+      "unmapped required fields"
+    ],
+    "validateWholeFileBeforeIndexedDbWrite": true,
+    "mimeTypeIsAdvisoryOnly": true
+  },
+  "responseHeaders": {
+    "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
+    "Referrer-Policy": "no-referrer",
+    "X-Content-Type-Options": "nosniff",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()"
+  },
+  "sanitization": [
+    "treat all imported and upstream strings as data",
+    "render text with textContent or framework escaping",
+    "never evaluate imported formula text",
+    "validate against schema before persistence",
+    "never log payload contents or personal records by default"
+  ],
+  "threatModel": {
+    "trustBoundaries": [
+      "browser UI ↔ Web Worker",
+      "browser ↔ IndexedDB",
+      "browser ↔ Cloudflare Worker",
+      "Cloudflare Worker ↔ allowlisted SEC hosts",
+      "local import/export file ↔ application"
+    ],
+    "threatControls": [
+      "CSP is deny-by-default and forbids inline/eval execution",
+      "CORS is same-origin at the application boundary; the Worker never reflects arbitrary Origin values",
+      "XSS is prevented by framework escaping, textContent and schema validation",
+      "prototype pollution is rejected by allowlisted object shapes, own-property iteration and additionalProperties=false",
+      "path traversal is rejected; imported filenames never become filesystem paths",
+      "ZIP bomb and nested archive imports are prohibited and rejected before parsing",
+      "CSV injection is rejected by forbidding cells beginning with =, +, -, or @ after optional whitespace",
+      "untrusted redirect targets are rejected and only exact allowed host values are reachable",
+      "payload size, row count, column count and decompressed response size are bounded",
+      "sanitize all display strings as data and never execute imported content"
+    ]
+  },
+  "privacyLifecycle": {
+    "sensitiveData": "No account, authentication, health or payment data is required; local issuer analysis may reveal user interests and is treated as private local data.",
+    "secretAndCredentialPolicy": "Deployment secret and credential values are never committed, exported, logged or returned to the browser.",
+    "loggingPolicy": "Operational log events contain codes, durations and quotas only; payloads, issuer portfolios and personal records are excluded.",
+    "retentionPolicy": "Local records persist until user delete, restore replacement, schema migration cleanup or storage eviction; server responses are transient and not retained.",
+    "deletionPolicy": "Delete is explicit, transactional and verifiable; all dependent pointers and commit records are updated atomically.",
+    "corruptionRecovery": "IndexedDB corrupt or hash-mismatched records are quarantined, excluded from active pointers and recoverable only by validated restore.",
+    "exportPolicy": "Exports are local, checksummed and contain no deployment secrets, credentials or logs."
+  },
+  "supplyChain": {
+    "policy": "Supply chain dependencies are lockfile-pinned in implementation, license-reviewed, vulnerability-scanned and minimized.",
+    "prohibited": [
+      "runtime code download",
+      "remote eval",
+      "unverified CDN scripts",
+      "postinstall network fetches without review"
+    ],
+    "releaseEvidence": [
+      "dependency inventory",
+      "lockfile integrity",
+      "known-vulnerability review",
+      "reproducible build record"
+    ]
+  },
+  "importControls": {
+    "formats": [
+      "UTF-8 CSV for price overlay",
+      "canonical JSON local export"
+    ],
+    "archives": "ZIP and all archive formats are unsupported and rejected; no decompression occurs.",
+    "atomicity": "validate and sanitize the complete candidate before any IndexedDB transaction",
+    "negativeCases": [
+      "NUL",
+      "binary",
+      "oversize",
+      "unknown columns",
+      "duplicate dates",
+      "formula cells",
+      "prototype keys",
+      "invalid checksum",
+      "incompatible version"
+    ]
+  }
+}

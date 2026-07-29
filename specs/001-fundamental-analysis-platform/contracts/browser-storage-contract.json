@@ -1,0 +1,161 @@
+{
+  "contractId": "browser-storage-contract",
+  "databaseName": "finscope_personal_v1",
+  "persistence": "opt_in",
+  "prohibitions": [
+    "fundamental snapshots may not embed price overlay payloads",
+    "price import may not mutate a fundamental snapshot",
+    "orphan active pointers are forbidden",
+    "partial candidate publication is forbidden",
+    "restore may not grant refresh consent",
+    "export/restore may not perform network requests"
+  ],
+  "publicationProtocol": [
+    "write immutable candidate records",
+    "validate schemas and fingerprints",
+    "write commit record",
+    "compare-and-swap active pointer",
+    "commit transaction"
+  ],
+  "rollback": "any exception aborts all writes and leaves previous active pointers unchanged",
+  "status": "ACTIVE_AUTHORITY",
+  "stores": [
+    {
+      "immutable": true,
+      "keyPath": "snapshotId",
+      "storeId": "fundamentalSnapshots"
+    },
+    {
+      "immutable": true,
+      "keyPath": "bundleId",
+      "storeId": "fundamentalBundles"
+    },
+    {
+      "immutable": true,
+      "keyPath": "analysisId",
+      "storeId": "fundamentalAnalyses"
+    },
+    {
+      "immutable": true,
+      "keyPath": [
+        "overlayId",
+        "overlayVersion"
+      ],
+      "storeId": "priceOverlays"
+    },
+    {
+      "immutable": true,
+      "keyPath": "analysisId",
+      "storeId": "priceAnalyses"
+    },
+    {
+      "immutable": false,
+      "keyPath": [
+        "issuerCik",
+        "pointerKind"
+      ],
+      "mutationRule": "compare-and-swap generation inside same transaction",
+      "storeId": "activePointers"
+    },
+    {
+      "immutable": true,
+      "keyPath": "transactionId",
+      "storeId": "commitLog"
+    }
+  ],
+  "transactions": [
+    {
+      "atomic": true,
+      "mode": "readwrite",
+      "pointerKind": "fundamental_snapshot",
+      "stores": [
+        "fundamentalBundles",
+        "fundamentalAnalyses",
+        "fundamentalSnapshots",
+        "activePointers",
+        "commitLog"
+      ],
+      "transactionId": "commit_fundamental_snapshot"
+    },
+    {
+      "atomic": true,
+      "mode": "readwrite",
+      "pointerKind": "price_overlay",
+      "stores": [
+        "priceOverlays",
+        "priceAnalyses",
+        "activePointers",
+        "commitLog"
+      ],
+      "transactionId": "commit_price_overlay"
+    },
+    {
+      "atomic": true,
+      "mode": "readwrite",
+      "preserves": [
+        "fundamentalBundles",
+        "fundamentalAnalyses",
+        "fundamentalSnapshots",
+        "fundamental_snapshot pointer"
+      ],
+      "stores": [
+        "priceOverlays",
+        "priceAnalyses",
+        "activePointers",
+        "commitLog"
+      ],
+      "transactionId": "delete_price_history"
+    },
+    {
+      "transactionId": "export_personal_data",
+      "mode": "readonly",
+      "atomic": true,
+      "stores": [
+        "fundamentalSnapshots",
+        "fundamentalBundles",
+        "fundamentalAnalyses",
+        "priceOverlays",
+        "priceAnalyses",
+        "activePointers",
+        "commitLog"
+      ],
+      "output": "validated finscope-local-export package"
+    },
+    {
+      "transactionId": "restore_personal_data",
+      "mode": "readwrite",
+      "atomic": true,
+      "stores": [
+        "fundamentalSnapshots",
+        "fundamentalBundles",
+        "fundamentalAnalyses",
+        "priceOverlays",
+        "priceAnalyses",
+        "activePointers",
+        "commitLog"
+      ],
+      "preconditions": [
+        "storageConsent=true",
+        "preview accepted",
+        "all schemas/hashes/references valid"
+      ],
+      "rollback": "any failure aborts every imported record and pointer"
+    },
+    {
+      "atomic": true,
+      "mode": "readwrite",
+      "stores": [
+        "fundamentalSnapshots",
+        "fundamentalBundles",
+        "fundamentalAnalyses",
+        "priceOverlays",
+        "priceAnalyses",
+        "activePointers",
+        "commitLog"
+      ],
+      "transactionId": "delete_all_personal_data"
+    }
+  ],
+  "version": "5.0.1",
+  "exportRestoreContractRef": "contracts/local-export-restore-contract.json"
+}

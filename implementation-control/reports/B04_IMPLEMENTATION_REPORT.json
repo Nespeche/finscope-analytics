@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "1.1.0",
+  "batchId": "B04",
+  "status": "COMPLETED",
+  "taskResults": [
+    {
+      "taskId": "T017",
+      "status": "COMPLETED",
+      "doneWhen": "all 81 allowed/prohibited transition pairs match fixtures",
+      "evidence": "2-file targeted unit aggregate PASS; all 81 authoritative Cartesian pairs are asserted and unknown states/transitions fail closed."
+    },
+    {
+      "taskId": "T018",
+      "status": "COMPLETED",
+      "doneWhen": "local issues never serialize as HTTP responses and invalid variants fail",
+      "evidence": "problem-details contract PASS (1 file / 4 tests), including valid/invalid RFC 9457 variants and rejection of local issues at the HTTP boundary."
+    },
+    {
+      "taskId": "T019",
+      "status": "COMPLETED",
+      "doneWhen": "logs contain operation/status/reason only and pass secret/value scans",
+      "evidence": "negative telemetry suite PASS (1 file / 4 tests); only operation/status/reason are emitted and secret/contact/financial/issuer scans pass."
+    },
+    {
+      "taskId": "T020",
+      "status": "COMPLETED",
+      "doneWhen": "types prevent price fields in fundamental records and records are readonly",
+      "evidence": "targeted unit aggregate PASS; deep readonly/freeze behavior and bidirectional fundamental/price contamination rejection are covered."
+    }
+  ],
+  "testResults": [
+    {
+      "id": "npm-ci",
+      "command": "npm ci",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "typecheck",
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-unit",
+      "command": "npm run test:unit -- tests/unit/domain/immutability.test.ts tests/unit/orchestration/state-matrix.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "discovery": "2 files / 8 tests"
+    },
+    {
+      "id": "test-contract",
+      "command": "npm run test:contract -- tests/contract/problem-details.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "discovery": "1 file / 4 tests"
+    },
+    {
+      "id": "test-negative",
+      "command": "npm run test:negative -- tests/negative/telemetry-redaction.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "discovery": "1 file / 4 tests"
+    },
+    {
+      "id": "regression-vitest",
+      "command": "npm run test",
+      "status": "PASS",
+      "exitCode": 0,
+      "discovery": "20 files / 82 tests"
+    },
+    {
+      "id": "build",
+      "command": "npm run build",
+      "status": "PASS",
+      "exitCode": 0,
+      "result": "115 modules; 3 assets; deterministic bundle 500951 bytes"
+    }
+  ],
+  "filesCreated": [
+    "implementation-control/reports/B04_EVIDENCE_VERIFICATION_AND_CLOSURE.json",
+    "implementation-control/reports/B04_EVIDENCE_VERIFICATION_AND_CLOSURE.md"
+  ],
+  "filesModified": [
+    "DOCUMENTATION_INDEX.md",
+    "PACKAGE_METADATA.json",
+    "PROJECT_CONTEXT.md",
+    "README.md",
+    "START_HERE_CHATGPT.md",
+    "implementation-control/AUTHORITY_MATRIX.json",
+    "implementation-control/CHANGE_LEDGER.md",
+    "implementation-control/IMPLEMENTATION_BATCH_MAP.json",
+    "implementation-control/IMPLEMENTATION_BATCH_MAP.md",
+    "implementation-control/IMPLEMENTATION_STATE.json",
+    "implementation-control/RECOMMENDED_IMPROVEMENTS.md",
+    "implementation-control/TASK_SOURCE_LOCK.json",
+    "implementation-control/batches/B01.json",
+    "implementation-control/batches/B02.json",
+    "implementation-control/batches/B03.json",
+    "implementation-control/batches/B04.json",
+    "implementation-control/batches/B05.json",
+    "implementation-control/batches/B06.json",
+    "implementation-control/batches/B07.json",
+    "implementation-control/batches/B08.json",
+    "implementation-control/batches/B09.json",
+    "implementation-control/batches/B10.json",
+    "implementation-control/batches/B11.json",
+    "implementation-control/batches/B12.json",
+    "implementation-control/batches/B13.json",
+    "implementation-control/batches/B14.json",
+    "implementation-control/batches/B15.json",
+    "implementation-control/batches/B16.json",
+    "implementation-control/batches/B17.json",
+    "implementation-control/batches/B18.json",
+    "implementation-control/batches/B19.json",
+    "implementation-control/batches/B20.json",
+    "implementation-control/batches/B21.json",
+    "implementation-control/batches/B22.json",
+    "implementation-control/batches/B23.json",
+    "implementation-control/batches/B24.json",
+    "implementation-control/batches/B25.json",
+    "implementation-control/reports/B04_IMPLEMENTATION_REPORT.json",
+    "implementation-control/reports/B04_IMPLEMENTATION_REPORT.md",
+    "specs/001-fundamental-analysis-platform/tasks.md",
+    "PACKAGE_INVENTORY.json",
+    "FILE_MANIFEST.sha256"
+  ],
+  "filesDeleted": [],
+  "localEvidence": {
+    "logicalName": "FinScope_local_evidence_B04_20260725-115856.zip",
+    "sha256": "7477c4d05c983411245735ae77f25165c82dbe696e787e330c42fe111f065892",
+    "candidateLogicalName": "FS_B04_r2.zip",
+    "candidateSha256": "25382901dbd792c777d32eac7beab7c7bb6072578f576a7d09ac52a249a20501",
+    "schemaVersion": "1.1.0",
+    "status": "PASS"
+  },
+  "specifyTreeSha256Before": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "specifyTreeSha256After": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "openFindings": [
+    "IMP-001",
+    "AUD-R6-004",
+    "CFG-R6-001",
+    "NPM-AUDIT-3-HIGH-DEFERRED-TO-T098"
+  ],
+  "nextBatchId": "B05"
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://finscope.local/schemas/implementation-batch-report.schema.json",
+  "type": "object",
+  "required": [
+    "schemaVersion", "batchId", "status", "taskResults", "testResults",
+    "specifyTreeSha256Before", "specifyTreeSha256After", "nextBatchId"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.1.0" },
+    "batchId": { "type": "string" },
+    "status": { "enum": ["COMPLETED", "LOCAL_VALIDATION_REQUIRED", "PARTIAL", "BLOCKED"] },
+    "taskResults": { "type": "array", "items": { "type": "object" } },
+    "testResults": { "type": "array", "items": { "type": "object" } },
+    "filesCreated": { "type": "array", "items": { "type": "string" } },
+    "filesModified": { "type": "array", "items": { "type": "string" } },
+    "filesDeleted": { "type": "array", "items": { "type": "string" } },
+    "localEvidence": { "type": ["object", "null"] },
+    "specifyTreeSha256Before": { "pattern": "^[0-9a-f]{64}$" },
+    "specifyTreeSha256After": { "pattern": "^[0-9a-f]{64}$" },
+    "openFindings": { "type": "array" },
+    "nextBatchId": { "type": ["string", "null"] }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,53 @@
+{
+  "fixtureSetId": "security-and-import-limit-vectors",
+  "version": "1.0.0",
+  "vectors": [
+    {
+      "vectorId": "csv-max-valid",
+      "bytes": 5242880,
+      "rows": 50000,
+      "columns": 8,
+      "expected": "accepted_if_semantically_valid"
+    },
+    {
+      "vectorId": "csv-too-large",
+      "bytes": 5242881,
+      "expected": "rejected",
+      "reason": "maximum_bytes"
+    },
+    {
+      "vectorId": "csv-too-many-rows",
+      "rows": 50001,
+      "expected": "rejected",
+      "reason": "maximum_rows"
+    },
+    {
+      "vectorId": "csv-formula-cell",
+      "cell": "=WEBSERVICE(\"https://example.invalid\")",
+      "expected": "rejected",
+      "reason": "spreadsheet_formula"
+    },
+    {
+      "vectorId": "csv-nul",
+      "cell": "abc\\u0000def",
+      "expected": "rejected",
+      "reason": "NUL"
+    },
+    {
+      "vectorId": "sec-cross-host-redirect",
+      "from": "data.sec.gov",
+      "to": "example.invalid",
+      "expected": "blocked"
+    },
+    {
+      "vectorId": "sec-response-too-large",
+      "uncompressedBytes": 67108865,
+      "expected": "problem_413"
+    },
+    {
+      "vectorId": "sec-operation-timeout",
+      "elapsedSeconds": 121,
+      "expected": "problem_504"
+    }
+  ]
+}

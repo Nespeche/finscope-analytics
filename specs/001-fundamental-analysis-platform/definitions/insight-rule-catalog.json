@@ -1,0 +1,483 @@
+{
+  "catalogId": "insight-rule-catalog",
+  "deferredRuleIds": [
+    "INS-007",
+    "INS-008",
+    "INS-009",
+    "INS-010",
+    "INS-011",
+    "INS-012"
+  ],
+  "invariants": [
+    "every active rule contains schema-valid closed JSON AST",
+    "each rule has exactly three normative fixtures: triggered, not_triggered and not_evaluable",
+    "market metrics are not inputs to fundamental rules"
+  ],
+  "replacedRuleIds": [
+    "INS-001",
+    "INS-002",
+    "INS-003",
+    "INS-004",
+    "INS-005",
+    "INS-006"
+  ],
+  "ruleNodeSchema": "../schemas/rule-node.schema.json",
+  "rules": [
+    {
+      "ast": {
+        "children": [
+          {
+            "comparator": "gt",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_REVENUE_GROWTH_YOY",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "decimal",
+              "valueDecimal": "0"
+            }
+          },
+          {
+            "comparator": "lt",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_OPERATING_MARGIN",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "metric",
+              "metricId": "FND_OPERATING_MARGIN",
+              "periodSelector": "prior_year"
+            }
+          }
+        ],
+        "op": "all"
+      },
+      "consumers": [
+        "insight_panel",
+        "synthesis"
+      ],
+      "inputMetricIds": [
+        "FND_REVENUE_GROWTH_YOY",
+        "FND_OPERATING_MARGIN"
+      ],
+      "minimumQuality": "usable_with_caveats",
+      "polarity": "unfavorable",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "ruleId": "INS_GROWTH_MARGIN_DETERIORATION",
+      "version": "5.0.0"
+    },
+    {
+      "ast": {
+        "children": [
+          {
+            "comparator": "gt",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_NET_MARGIN",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "decimal",
+              "valueDecimal": "0"
+            }
+          },
+          {
+            "comparator": "lt",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_EARNINGS_QUALITY",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "decimal",
+              "valueDecimal": "0.75"
+            }
+          }
+        ],
+        "op": "all"
+      },
+      "consumers": [
+        "insight_panel",
+        "synthesis"
+      ],
+      "inputMetricIds": [
+        "FND_NET_MARGIN",
+        "FND_EARNINGS_QUALITY"
+      ],
+      "minimumQuality": "usable_with_caveats",
+      "polarity": "unfavorable",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "ruleId": "INS_EARNINGS_WITHOUT_CASH_CONVERSION",
+      "version": "5.0.0"
+    },
+    {
+      "ast": {
+        "children": [
+          {
+            "comparator": "gt",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_REVENUE_GROWTH_YOY",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "decimal",
+              "valueDecimal": "0"
+            }
+          },
+          {
+            "comparator": "gt",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_BORROWINGS_DEBT",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "metric",
+              "metricId": "FND_BORROWINGS_DEBT",
+              "periodSelector": "prior_year"
+            }
+          },
+          {
+            "comparator": "lte",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_CFO",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "metric",
+              "metricId": "FND_CFO",
+              "periodSelector": "prior_year"
+            }
+          }
+        ],
+        "op": "all"
+      },
+      "consumers": [
+        "insight_panel",
+        "synthesis"
+      ],
+      "inputMetricIds": [
+        "FND_REVENUE_GROWTH_YOY",
+        "FND_BORROWINGS_DEBT",
+        "FND_CFO"
+      ],
+      "minimumQuality": "usable_with_caveats",
+      "polarity": "unfavorable",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "ruleId": "INS_DEBT_FUNDED_GROWTH",
+      "version": "5.0.0"
+    },
+    {
+      "ast": {
+        "children": [
+          {
+            "comparator": "gt",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_CURRENT_RATIO",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "metric",
+              "metricId": "FND_CURRENT_RATIO",
+              "periodSelector": "prior_year"
+            }
+          },
+          {
+            "comparator": "gt",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_WORKING_CAPITAL",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "metric",
+              "metricId": "FND_WORKING_CAPITAL",
+              "periodSelector": "prior_year"
+            }
+          }
+        ],
+        "op": "all"
+      },
+      "consumers": [
+        "insight_panel",
+        "synthesis"
+      ],
+      "inputMetricIds": [
+        "FND_CURRENT_RATIO",
+        "FND_WORKING_CAPITAL"
+      ],
+      "minimumQuality": "usable_with_caveats",
+      "polarity": "favorable",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "ruleId": "INS_LIQUIDITY_IMPROVEMENT",
+      "version": "5.0.0"
+    },
+    {
+      "ast": {
+        "children": [
+          {
+            "comparator": "lt",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_BORROWINGS_DEBT",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "metric",
+              "metricId": "FND_BORROWINGS_DEBT",
+              "periodSelector": "prior_year"
+            }
+          },
+          {
+            "comparator": "lt",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_DEBT_EQUITY",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "metric",
+              "metricId": "FND_DEBT_EQUITY",
+              "periodSelector": "prior_year"
+            }
+          }
+        ],
+        "op": "any"
+      },
+      "consumers": [
+        "insight_panel",
+        "synthesis"
+      ],
+      "inputMetricIds": [
+        "FND_BORROWINGS_DEBT",
+        "FND_DEBT_EQUITY"
+      ],
+      "minimumQuality": "usable_with_caveats",
+      "polarity": "favorable",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "reit_limited"
+      ],
+      "ruleId": "INS_DELEVERAGING",
+      "version": "5.0.0"
+    },
+    {
+      "ast": {
+        "child": {
+          "comparator": "lt",
+          "left": {
+            "kind": "metric",
+            "metricId": "FND_FCF",
+            "periodSelector": "window_item"
+          },
+          "op": "comparison",
+          "right": {
+            "kind": "decimal",
+            "valueDecimal": "0"
+          }
+        },
+        "minimum": 3,
+        "op": "count_at_least",
+        "window": {
+          "count": 4,
+          "periodSet": "latest_annual"
+        }
+      },
+      "consumers": [
+        "insight_panel",
+        "synthesis"
+      ],
+      "inputMetricIds": [
+        "FND_FCF"
+      ],
+      "minimumQuality": "usable_with_caveats",
+      "polarity": "unfavorable",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "ruleId": "INS_PERSISTENT_NEGATIVE_FCF",
+      "version": "5.0.0"
+    },
+    {
+      "ast": {
+        "comparator": "gt",
+        "left": {
+          "kind": "metric",
+          "metricId": "FND_DILUTED_SHARES_EVOLUTION",
+          "periodSelector": "current"
+        },
+        "op": "comparison",
+        "right": {
+          "kind": "decimal",
+          "valueDecimal": "0.03"
+        }
+      },
+      "consumers": [
+        "insight_panel",
+        "synthesis"
+      ],
+      "inputMetricIds": [
+        "FND_DILUTED_SHARES_EVOLUTION"
+      ],
+      "minimumQuality": "usable_with_caveats",
+      "polarity": "unfavorable",
+      "profileAllowlist": [
+        "general_operating_us_gaap",
+        "general_operating_ifrs_limited",
+        "financial_institution_limited",
+        "insurance_limited",
+        "reit_limited"
+      ],
+      "ruleId": "INS_DILUTION",
+      "version": "5.0.0"
+    },
+    {
+      "ast": {
+        "children": [
+          {
+            "comparator": "lt",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_INTEREST_COVERAGE",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "metric",
+              "metricId": "FND_INTEREST_COVERAGE",
+              "periodSelector": "prior_year"
+            }
+          },
+          {
+            "comparator": "lt",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_INTEREST_COVERAGE",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "decimal",
+              "valueDecimal": "2"
+            }
+          }
+        ],
+        "op": "all"
+      },
+      "consumers": [
+        "insight_panel",
+        "synthesis"
+      ],
+      "inputMetricIds": [
+        "FND_INTEREST_COVERAGE"
+      ],
+      "minimumQuality": "usable_with_caveats",
+      "polarity": "unfavorable",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "ruleId": "INS_INTEREST_COVERAGE_DETERIORATION",
+      "version": "5.0.0"
+    },
+    {
+      "ast": {
+        "children": [
+          {
+            "comparator": "gt",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_DERIVED_EBITDA",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "metric",
+              "metricId": "FND_DERIVED_EBITDA",
+              "periodSelector": "prior_year"
+            }
+          },
+          {
+            "comparator": "lt",
+            "left": {
+              "kind": "metric",
+              "metricId": "FND_CFO",
+              "periodSelector": "current"
+            },
+            "op": "comparison",
+            "right": {
+              "kind": "metric",
+              "metricId": "FND_CFO",
+              "periodSelector": "prior_year"
+            }
+          }
+        ],
+        "op": "all"
+      },
+      "consumers": [
+        "insight_panel",
+        "synthesis"
+      ],
+      "inputMetricIds": [
+        "FND_DERIVED_EBITDA",
+        "FND_CFO"
+      ],
+      "minimumQuality": "usable_with_caveats",
+      "polarity": "unfavorable",
+      "profileAllowlist": [
+        "general_operating_us_gaap"
+      ],
+      "ruleId": "INS_EBITDA_CASH_DIVERGENCE",
+      "version": "5.0.0"
+    }
+  ],
+  "status": "ACTIVE_AUTHORITY",
+  "synthesisTable": [
+    {
+      "condition": "no evaluable rule",
+      "result": "insufficient_information"
+    },
+    {
+      "condition": "at least one evaluable and no triggered rule",
+      "result": "neutral"
+    },
+    {
+      "condition": "only favorable rules triggered",
+      "result": "favorable"
+    },
+    {
+      "condition": "only unfavorable rules triggered",
+      "result": "unfavorable"
+    },
+    {
+      "condition": "favorable and unfavorable rules triggered",
+      "result": "mixed"
+    }
+  ],
+  "version": "5.0.0"
+}

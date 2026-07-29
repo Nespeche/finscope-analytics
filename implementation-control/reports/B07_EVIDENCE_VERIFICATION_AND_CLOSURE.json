@@ -1,0 +1,188 @@
+{
+  "schemaVersion": "1.1.0",
+  "batchId": "B07",
+  "status": "COMPLETED",
+  "baseline": {
+    "logicalName": "FS_v0.21.7_B06_completed.zip",
+    "sha256": "45526daf30092888bdba5333526e6806d22c12d986ef51ab1c31a4f68b9a321d",
+    "sidecarMatch": true,
+    "crcValid": true,
+    "singleRoot": true,
+    "safeExtraction": true
+  },
+  "candidate": {
+    "logicalName": "FS_B07_r2.zip",
+    "sha256": "82ef0df6d4b935da6276926138ec00d8dd6f3a465a91d18701c2e375acf1c0f8",
+    "sidecarMatch": true,
+    "rootDirectory": "FinScope_v0.21.4",
+    "archiveFileCount": 603,
+    "crcValid": true,
+    "safePaths": true
+  },
+  "runner": {
+    "logicalName": "Run-FinScope-BatchValidation_B07_r2_v1.ps1",
+    "sha256": "c58960a5393a9f252c9fa9430542325b2402b5aaa4bf18bb467d453db8ffacaa",
+    "sidecarMatch": true,
+    "powerShellVersion": "7.6.4",
+    "powerShellEdition": "Core"
+  },
+  "localEvidence": {
+    "logicalName": "FinScope_local_evidence_B07_20260726-203511327.zip",
+    "sha256": "8f34fca7807b71f56d1879bada5fed1713a9f3eb3f3d042820a03351ce100059",
+    "sidecarMatch": true,
+    "candidateSha256": "82ef0df6d4b935da6276926138ec00d8dd6f3a465a91d18701c2e375acf1c0f8",
+    "runnerSha256": "c58960a5393a9f252c9fa9430542325b2402b5aaa4bf18bb467d453db8ffacaa",
+    "schemaVersion": "1.1.0",
+    "status": "PASS",
+    "entryCount": 44
+  },
+  "taskResults": [
+    {
+      "taskId": "T029",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T031",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T032",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T033",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T034",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T035",
+      "status": "COMPLETED"
+    }
+  ],
+  "testResults": [
+    {
+      "id": "npm-ci",
+      "command": "npm ci",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "playwright-chromium",
+      "command": "npm exec playwright install chromium",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "typecheck",
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-unit",
+      "command": "npm run test:unit -- tests/unit/acquisition/acquisition-plan.test.ts tests/unit/fundamental/filing-selection.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "testFilesPassed": 2,
+      "testsPassed": 6,
+      "testsFailed": 0,
+      "testsSkipped": 0
+    },
+    {
+      "id": "test-integration",
+      "command": "npm run test:integration -- tests/integration/worker/acquisition-cancel.test.ts tests/integration/worker/catalog-version.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "testFilesPassed": 2,
+      "testsPassed": 6,
+      "testsFailed": 0,
+      "testsSkipped": 0
+    },
+    {
+      "id": "test-contract",
+      "command": "npm run test:contract -- tests/contract/sec/sec-fixtures.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "testFilesPassed": 1,
+      "testsPassed": 4,
+      "testsFailed": 0,
+      "testsSkipped": 0
+    },
+    {
+      "id": "test-negative",
+      "command": "npm run test:negative -- tests/negative/sec/sec-negative.test.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "testFilesPassed": 1,
+      "testsPassed": 4,
+      "testsFailed": 0,
+      "testsSkipped": 0
+    },
+    {
+      "id": "test-e2e",
+      "command": "npm run test:e2e -- tests/e2e/acquisition-flow.spec.ts",
+      "status": "PASS",
+      "exitCode": 0,
+      "testsPassed": 10,
+      "testsFailed": 0,
+      "testsSkipped": 0
+    },
+    {
+      "id": "regression-vitest",
+      "command": "npm run test",
+      "status": "PASS",
+      "exitCode": 0,
+      "testFilesPassed": 33,
+      "testsPassed": 135,
+      "testsFailed": 0,
+      "testsSkipped": 0
+    },
+    {
+      "id": "regression-browser",
+      "command": "npm run test:browser",
+      "status": "PASS",
+      "exitCode": 0,
+      "testsPassed": 12,
+      "testsFailed": 0,
+      "testsSkipped": 0
+    },
+    {
+      "id": "build",
+      "command": "npm run build",
+      "status": "PASS",
+      "exitCode": 0,
+      "modulesTransformed": 250,
+      "assetCount": 3,
+      "assetBytes": 1440018
+    }
+  ],
+  "controlPlane": {
+    "initial": {
+      "status": "PASS",
+      "checkCount": 1027,
+      "passCount": 1027,
+      "failCount": 0
+    },
+    "final": {
+      "status": "PASS",
+      "checkCount": 1027,
+      "passCount": 1027,
+      "failCount": 0
+    }
+  },
+  "treeRestoredAfterCleanup": true,
+  "specifyTreeSha256Before": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "specifyTreeSha256After": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "sourceTasksSha256Before": "94d6983807f00ea7e1aacf960790c5df9ec93313dd2b5f5549acb2cb0f301978",
+  "sourceTasksSha256AfterClosure": "d65b86ca4e1a642c3ee5b938ee2bae0a85ef941c7c42b027ee03ab0fca971a17",
+  "promotion": {
+    "allowed": true,
+    "codeTestsRunnerScriptsSchemasDependenciesFixturesContractsUnchanged": true,
+    "npmRepeatedAfterClosure": false,
+    "nextBatchId": "B08",
+    "convergenceAuthorized": false
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "$id": "https://finscope.local/schemas/local-export-restore-contract.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Local export/restore contract 1.1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contractId",
+    "version",
+    "status",
+    "format",
+    "formatVersion",
+    "export",
+    "preview",
+    "restore",
+    "privacy",
+    "compatibilityAndIntegrity"
+  ],
+  "properties": {
+    "contractId": {
+      "const": "local-export-restore-contract"
+    },
+    "version": {
+      "const": "1.1.0"
+    },
+    "status": {
+      "const": "ACTIVE_AUTHORITY"
+    },
+    "format": {
+      "const": "finscope-local-export"
+    },
+    "formatVersion": {
+      "const": "1.1.0"
+    },
+    "export": {
+      "type": "object"
+    },
+    "preview": {
+      "type": "object"
+    },
+    "restore": {
+      "type": "object"
+    },
+    "privacy": {
+      "type": "string"
+    },
+    "compatibilityAndIntegrity": {
+      "type": "object",
+      "minProperties": 1
+    }
+  }
+}

@@ -1,0 +1,4303 @@
+{
+  "matrixId": "FinScope-v0.20-requirement-ac-task-matrix",
+  "version": "1.0.1",
+  "taskCount": 109,
+  "requirementCount": 49,
+  "acceptanceCriteriaCount": 84,
+  "requirements": {
+    "FR-001": [
+      "T024",
+      "T025",
+      "T049",
+      "T053",
+      "T103"
+    ],
+    "FR-002": [
+      "T024",
+      "T025"
+    ],
+    "FR-003": [
+      "T007",
+      "T026",
+      "T028",
+      "T030",
+      "T032",
+      "T035",
+      "T053",
+      "T095",
+      "T102"
+    ],
+    "FR-004": [
+      "T030",
+      "T031",
+      "T032",
+      "T035"
+    ],
+    "FR-005": [
+      "T032",
+      "T035"
+    ],
+    "FR-006": [
+      "T032",
+      "T035",
+      "T036"
+    ],
+    "FR-007": [
+      "T032",
+      "T033",
+      "T035",
+      "T048",
+      "T059"
+    ],
+    "FR-008": [
+      "T011",
+      "T020",
+      "T031",
+      "T038",
+      "T039",
+      "T047",
+      "T049",
+      "T050",
+      "T053",
+      "T100",
+      "T103",
+      "T106"
+    ],
+    "FR-009": [
+      "T038",
+      "T047",
+      "T050"
+    ],
+    "FR-010": [
+      "T047",
+      "T050",
+      "T106"
+    ],
+    "FR-011": [
+      "T036",
+      "T037"
+    ],
+    "FR-012": [
+      "T037"
+    ],
+    "FR-013": [
+      "T037",
+      "T041",
+      "T042",
+      "T051",
+      "T053",
+      "T067",
+      "T100",
+      "T103",
+      "T106"
+    ],
+    "FR-014": [
+      "T011",
+      "T039",
+      "T041",
+      "T042",
+      "T051",
+      "T100"
+    ],
+    "FR-015": [
+      "T040",
+      "T042"
+    ],
+    "FR-016": [
+      "T043",
+      "T051",
+      "T067",
+      "T100",
+      "T106"
+    ],
+    "FR-017": [
+      "T044",
+      "T045",
+      "T052",
+      "T053",
+      "T089",
+      "T100",
+      "T106"
+    ],
+    "FR-018": [
+      "T044",
+      "T052"
+    ],
+    "FR-019": [
+      "T040",
+      "T042",
+      "T043",
+      "T044",
+      "T045",
+      "T052"
+    ],
+    "FR-020": [
+      "T020",
+      "T047",
+      "T066",
+      "T071",
+      "T107"
+    ],
+    "FR-021": [
+      "T020",
+      "T063",
+      "T064",
+      "T065",
+      "T066",
+      "T068",
+      "T069",
+      "T071",
+      "T074",
+      "T096",
+      "T103"
+    ],
+    "FR-022": [
+      "T063",
+      "T064",
+      "T065",
+      "T066",
+      "T068",
+      "T069",
+      "T071",
+      "T074",
+      "T078"
+    ],
+    "FR-023": [
+      "T067",
+      "T068",
+      "T070",
+      "T071",
+      "T089",
+      "T106"
+    ],
+    "FR-024": [
+      "T014",
+      "T066",
+      "T070",
+      "T071"
+    ],
+    "FR-025": [
+      "T013",
+      "T046",
+      "T053",
+      "T100"
+    ],
+    "FR-026": [
+      "T020",
+      "T046",
+      "T066"
+    ],
+    "FR-027": [
+      "T014",
+      "T046"
+    ],
+    "FR-028": [
+      "T046",
+      "T066"
+    ],
+    "FR-029": [
+      "T013",
+      "T046"
+    ],
+    "FR-030": [
+      "T034",
+      "T054",
+      "T060",
+      "T062",
+      "T072",
+      "T102",
+      "T103",
+      "T107"
+    ],
+    "FR-031": [
+      "T054",
+      "T055",
+      "T056",
+      "T059",
+      "T060",
+      "T062",
+      "T090",
+      "T091",
+      "T100",
+      "T102",
+      "T105",
+      "T107"
+    ],
+    "FR-032": [
+      "T034",
+      "T056",
+      "T057",
+      "T061",
+      "T062",
+      "T091",
+      "T105",
+      "T107"
+    ],
+    "FR-033": [
+      "T029",
+      "T048",
+      "T055",
+      "T058",
+      "T062",
+      "T068"
+    ],
+    "FR-034": [
+      "T021",
+      "T072",
+      "T073",
+      "T074",
+      "T077",
+      "T080",
+      "T102",
+      "T103"
+    ],
+    "FR-035": [
+      "T021",
+      "T023",
+      "T033",
+      "T048",
+      "T057",
+      "T059",
+      "T062",
+      "T073",
+      "T077",
+      "T080",
+      "T102"
+    ],
+    "FR-036": [
+      "T075",
+      "T076",
+      "T077",
+      "T078",
+      "T079",
+      "T080"
+    ],
+    "FR-037": [
+      "T016",
+      "T017",
+      "T023",
+      "T033",
+      "T048",
+      "T057",
+      "T084",
+      "T096",
+      "T100"
+    ],
+    "FR-038": [
+      "T016",
+      "T017"
+    ],
+    "FR-039": [
+      "T009",
+      "T018",
+      "T026",
+      "T027",
+      "T038",
+      "T063",
+      "T076",
+      "T082",
+      "T097"
+    ],
+    "FR-040": [
+      "T007",
+      "T018",
+      "T026",
+      "T027"
+    ],
+    "FR-041": [
+      "T004",
+      "T009",
+      "T017",
+      "T022",
+      "T025",
+      "T034",
+      "T049",
+      "T050",
+      "T051",
+      "T052",
+      "T060",
+      "T061",
+      "T069",
+      "T070",
+      "T079",
+      "T081",
+      "T082",
+      "T084",
+      "T086",
+      "T089",
+      "T090",
+      "T091",
+      "T103",
+      "T106"
+    ],
+    "FR-042": [
+      "T004",
+      "T006",
+      "T022",
+      "T034",
+      "T049",
+      "T050",
+      "T051",
+      "T052",
+      "T061",
+      "T069",
+      "T070",
+      "T079",
+      "T081",
+      "T083",
+      "T084",
+      "T085",
+      "T086",
+      "T087",
+      "T088",
+      "T103",
+      "T104"
+    ],
+    "NFR-001": [
+      "T002",
+      "T005",
+      "T011",
+      "T013",
+      "T014",
+      "T016",
+      "T023",
+      "T032",
+      "T036",
+      "T038",
+      "T039",
+      "T040",
+      "T041",
+      "T042",
+      "T043",
+      "T044",
+      "T045",
+      "T046",
+      "T048",
+      "T053",
+      "T055",
+      "T058",
+      "T066",
+      "T067",
+      "T068",
+      "T100"
+    ],
+    "NFR-002": [
+      "T019",
+      "T021",
+      "T054",
+      "T063",
+      "T065",
+      "T072",
+      "T073",
+      "T074",
+      "T075",
+      "T076",
+      "T078",
+      "T079",
+      "T080",
+      "T097",
+      "T107",
+      "T108"
+    ],
+    "NFR-003": [
+      "T007",
+      "T019",
+      "T026",
+      "T028",
+      "T030",
+      "T031",
+      "T032",
+      "T035",
+      "T054",
+      "T056",
+      "T062",
+      "T090",
+      "T092",
+      "T095",
+      "T097",
+      "T099",
+      "T102",
+      "T105",
+      "T107"
+    ],
+    "NFR-004": [
+      "T021",
+      "T023",
+      "T029",
+      "T033",
+      "T048",
+      "T057",
+      "T059",
+      "T062",
+      "T073",
+      "T075",
+      "T076",
+      "T077",
+      "T078",
+      "T080",
+      "T082",
+      "T090",
+      "T091",
+      "T093",
+      "T096",
+      "T099",
+      "T102",
+      "T105"
+    ],
+    "NFR-005": [
+      "T001",
+      "T002",
+      "T003",
+      "T005",
+      "T006",
+      "T008",
+      "T010",
+      "T012",
+      "T015",
+      "T017",
+      "T018",
+      "T027",
+      "T029",
+      "T035",
+      "T041",
+      "T043",
+      "T044",
+      "T046",
+      "T087",
+      "T088",
+      "T090",
+      "T092",
+      "T093",
+      "T094",
+      "T095",
+      "T096",
+      "T097",
+      "T098",
+      "T099",
+      "T101",
+      "T105",
+      "T108",
+      "T109"
+    ],
+    "NFR-006": [
+      "T001",
+      "T008",
+      "T010",
+      "T012",
+      "T015",
+      "T024",
+      "T047",
+      "T098",
+      "T101",
+      "T107",
+      "T108",
+      "T109"
+    ],
+    "NFR-007": [
+      "T004",
+      "T006",
+      "T022",
+      "T083",
+      "T084",
+      "T085",
+      "T086",
+      "T087",
+      "T088",
+      "T104"
+    ]
+  },
+  "acceptanceCriteria": {
+    "AC-001": [
+      "T024",
+      "T025",
+      "T049",
+      "T053",
+      "T103"
+    ],
+    "AC-002": [
+      "T018",
+      "T024",
+      "T025",
+      "T082"
+    ],
+    "AC-003": [
+      "T026",
+      "T028",
+      "T030",
+      "T035",
+      "T092",
+      "T095",
+      "T097"
+    ],
+    "AC-004": [
+      "T030",
+      "T054",
+      "T055",
+      "T056",
+      "T060",
+      "T062",
+      "T090",
+      "T102",
+      "T105"
+    ],
+    "AC-005": [
+      "T030",
+      "T032",
+      "T035",
+      "T053"
+    ],
+    "AC-006": [
+      "T031",
+      "T035",
+      "T049"
+    ],
+    "AC-007": [
+      "T032",
+      "T035"
+    ],
+    "AC-008": [
+      "T032",
+      "T035"
+    ],
+    "AC-009": [
+      "T028",
+      "T032",
+      "T033",
+      "T035",
+      "T092",
+      "T095",
+      "T105"
+    ],
+    "AC-010": [
+      "T033",
+      "T047",
+      "T048",
+      "T059"
+    ],
+    "AC-011": [
+      "T020",
+      "T031",
+      "T047",
+      "T049",
+      "T050",
+      "T053",
+      "T103",
+      "T106"
+    ],
+    "AC-012": [
+      "T036",
+      "T050"
+    ],
+    "AC-013": [
+      "T036",
+      "T050"
+    ],
+    "AC-014": [
+      "T036",
+      "T047",
+      "T050",
+      "T106"
+    ],
+    "AC-015": [
+      "T039",
+      "T051"
+    ],
+    "AC-016": [
+      "T037",
+      "T039",
+      "T042",
+      "T051"
+    ],
+    "AC-017": [
+      "T037",
+      "T042",
+      "T051"
+    ],
+    "AC-018": [
+      "T037",
+      "T047"
+    ],
+    "AC-019": [
+      "T011",
+      "T038",
+      "T041",
+      "T050",
+      "T100"
+    ],
+    "AC-020": [
+      "T011",
+      "T038",
+      "T050",
+      "T097"
+    ],
+    "AC-021": [
+      "T040"
+    ],
+    "AC-022": [
+      "T040"
+    ],
+    "AC-023": [
+      "T040"
+    ],
+    "AC-024": [
+      "T040"
+    ],
+    "AC-025": [
+      "T040",
+      "T042",
+      "T051"
+    ],
+    "AC-026": [
+      "T011",
+      "T041",
+      "T042"
+    ],
+    "AC-027": [
+      "T011",
+      "T041",
+      "T042"
+    ],
+    "AC-028": [
+      "T012",
+      "T015",
+      "T041",
+      "T042",
+      "T051",
+      "T053",
+      "T067",
+      "T100",
+      "T101",
+      "T103",
+      "T106"
+    ],
+    "AC-029": [
+      "T043",
+      "T051",
+      "T100",
+      "T106"
+    ],
+    "AC-030": [
+      "T043",
+      "T051"
+    ],
+    "AC-031": [
+      "T043",
+      "T051"
+    ],
+    "AC-032": [
+      "T043",
+      "T051"
+    ],
+    "AC-033": [
+      "T012",
+      "T044",
+      "T052",
+      "T100"
+    ],
+    "AC-034": [
+      "T015",
+      "T044",
+      "T052",
+      "T101"
+    ],
+    "AC-035": [
+      "T044",
+      "T045",
+      "T052",
+      "T053",
+      "T106"
+    ],
+    "AC-036": [
+      "T045",
+      "T052",
+      "T089"
+    ],
+    "AC-037": [
+      "T046",
+      "T052",
+      "T068"
+    ],
+    "AC-038": [
+      "T046"
+    ],
+    "AC-039": [
+      "T002",
+      "T005",
+      "T013",
+      "T046",
+      "T053",
+      "T100"
+    ],
+    "AC-040": [
+      "T005",
+      "T013",
+      "T046"
+    ],
+    "AC-041": [
+      "T013",
+      "T046"
+    ],
+    "AC-042": [
+      "T015",
+      "T020",
+      "T046"
+    ],
+    "AC-043": [
+      "T007",
+      "T012",
+      "T026",
+      "T027",
+      "T101"
+    ],
+    "AC-044": [
+      "T027",
+      "T101"
+    ],
+    "AC-045": [
+      "T012",
+      "T027",
+      "T101"
+    ],
+    "AC-046": [
+      "T009",
+      "T018",
+      "T027",
+      "T097"
+    ],
+    "AC-047": [
+      "T009",
+      "T018",
+      "T027",
+      "T082",
+      "T090",
+      "T091"
+    ],
+    "AC-048": [
+      "T016",
+      "T017",
+      "T082",
+      "T100"
+    ],
+    "AC-049": [
+      "T020",
+      "T047",
+      "T066",
+      "T068",
+      "T070",
+      "T071",
+      "T074",
+      "T078",
+      "T103",
+      "T107"
+    ],
+    "AC-050": [
+      "T065",
+      "T066",
+      "T067",
+      "T070",
+      "T071"
+    ],
+    "AC-051": [
+      "T067",
+      "T070",
+      "T071",
+      "T106"
+    ],
+    "AC-052": [
+      "T067",
+      "T070",
+      "T071",
+      "T089"
+    ],
+    "AC-053": [
+      "T019",
+      "T066",
+      "T097",
+      "T107",
+      "T108"
+    ],
+    "AC-054": [
+      "T063",
+      "T064",
+      "T065",
+      "T069",
+      "T096",
+      "T103"
+    ],
+    "AC-055": [
+      "T063",
+      "T064",
+      "T065",
+      "T069",
+      "T097"
+    ],
+    "AC-056": [
+      "T021",
+      "T072",
+      "T080"
+    ],
+    "AC-057": [
+      "T021",
+      "T073",
+      "T074",
+      "T077",
+      "T080",
+      "T096",
+      "T102",
+      "T103"
+    ],
+    "AC-058": [
+      "T021",
+      "T059",
+      "T062",
+      "T073",
+      "T077",
+      "T080",
+      "T091",
+      "T099",
+      "T102",
+      "T105"
+    ],
+    "AC-059": [
+      "T029",
+      "T048",
+      "T055",
+      "T058",
+      "T062"
+    ],
+    "AC-060": [
+      "T048",
+      "T058",
+      "T062"
+    ],
+    "AC-061": [
+      "T029",
+      "T048",
+      "T055",
+      "T058",
+      "T062"
+    ],
+    "AC-062": [
+      "T048",
+      "T058",
+      "T062"
+    ],
+    "AC-063": [
+      "T058",
+      "T066",
+      "T068",
+      "T071",
+      "T074"
+    ],
+    "AC-064": [
+      "T014",
+      "T058"
+    ],
+    "AC-065": [
+      "T034",
+      "T054",
+      "T059",
+      "T060",
+      "T062",
+      "T072",
+      "T090",
+      "T091",
+      "T099",
+      "T100",
+      "T102",
+      "T103",
+      "T105",
+      "T107"
+    ],
+    "AC-066": [
+      "T034",
+      "T056",
+      "T057",
+      "T061",
+      "T062",
+      "T091",
+      "T105",
+      "T107"
+    ],
+    "AC-067": [
+      "T004",
+      "T006",
+      "T022",
+      "T069",
+      "T070",
+      "T083",
+      "T085",
+      "T087",
+      "T088",
+      "T103",
+      "T104"
+    ],
+    "AC-068": [
+      "T006",
+      "T022",
+      "T069",
+      "T079",
+      "T083",
+      "T087",
+      "T088",
+      "T104"
+    ],
+    "AC-069": [
+      "T004",
+      "T006",
+      "T022",
+      "T069",
+      "T070",
+      "T079",
+      "T085",
+      "T086",
+      "T087",
+      "T088",
+      "T104"
+    ],
+    "AC-070": [
+      "T004",
+      "T006",
+      "T022",
+      "T034",
+      "T061",
+      "T069",
+      "T079",
+      "T084",
+      "T086",
+      "T087",
+      "T088",
+      "T104"
+    ],
+    "AC-071": [
+      "T006",
+      "T017",
+      "T022",
+      "T034",
+      "T061",
+      "T084",
+      "T086",
+      "T087",
+      "T104"
+    ],
+    "AC-072": [
+      "T016",
+      "T017",
+      "T023",
+      "T034",
+      "T057",
+      "T060",
+      "T061",
+      "T062",
+      "T084",
+      "T087",
+      "T096",
+      "T102",
+      "T104"
+    ],
+    "AC-073": [
+      "T016",
+      "T017",
+      "T023",
+      "T033",
+      "T034",
+      "T048",
+      "T057",
+      "T059",
+      "T061",
+      "T062",
+      "T073",
+      "T080",
+      "T083",
+      "T084",
+      "T087",
+      "T102",
+      "T104"
+    ],
+    "AC-074": [
+      "T025",
+      "T049",
+      "T050",
+      "T051",
+      "T052",
+      "T070",
+      "T081",
+      "T085",
+      "T087",
+      "T088",
+      "T089",
+      "T104",
+      "T106"
+    ],
+    "AC-075": [
+      "T017",
+      "T025",
+      "T034",
+      "T059",
+      "T061",
+      "T076",
+      "T079",
+      "T082",
+      "T086",
+      "T087",
+      "T088",
+      "T090",
+      "T091",
+      "T099",
+      "T103",
+      "T104"
+    ],
+    "AC-076": [
+      "T019",
+      "T072",
+      "T075",
+      "T076",
+      "T077",
+      "T078",
+      "T079",
+      "T080",
+      "T097"
+    ],
+    "AC-077": [
+      "T001",
+      "T003",
+      "T008",
+      "T010",
+      "T090",
+      "T093",
+      "T094",
+      "T098",
+      "T099",
+      "T101",
+      "T105",
+      "T108",
+      "T109"
+    ],
+    "AC-078": [
+      "T020",
+      "T046",
+      "T066",
+      "T068",
+      "T071",
+      "T074"
+    ],
+    "AC-079": [
+      "T014",
+      "T046",
+      "T066",
+      "T071"
+    ],
+    "AC-080": [
+      "T036",
+      "T037"
+    ],
+    "AC-081": [
+      "T007",
+      "T028",
+      "T030",
+      "T032",
+      "T035",
+      "T056",
+      "T092",
+      "T095",
+      "T101",
+      "T102",
+      "T105"
+    ],
+    "AC-082": [
+      "T007",
+      "T018",
+      "T026",
+      "T027",
+      "T035",
+      "T101"
+    ],
+    "AC-083": [
+      "T001",
+      "T002",
+      "T003",
+      "T005",
+      "T008",
+      "T010",
+      "T012",
+      "T015",
+      "T029",
+      "T093",
+      "T094",
+      "T098",
+      "T101",
+      "T107",
+      "T108",
+      "T109"
+    ],
+    "AC-084": [
+      "T001",
+      "T010",
+      "T015",
+      "T098",
+      "T101",
+      "T107",
+      "T108",
+      "T109"
+    ]
+  },
+  "tasks": [
+    {
+      "id": "T001",
+      "phase": "Phase 1 — Setup",
+      "description": "Initialize the Svelte 5 SPA and pin the minimal runtime/development dependency set (Svelte, decimal.js, Ajv, Vite, TypeScript, Vitest, Playwright, @axe-core/playwright, Wrangler) with a committed lockfile",
+      "files": [
+        "package.json",
+        "package-lock.json",
+        "tests/contract/dependency-inventory.test.ts"
+      ],
+      "requirements": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptance": [
+        "AC-077",
+        "AC-083",
+        "AC-084"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [],
+      "done": "dependencies are exact, licenses recorded, no unused framework or paid SDK is present"
+    },
+    {
+      "id": "T002",
+      "phase": "Phase 1 — Setup",
+      "description": "Configure TypeScript strict mode with noUncheckedIndexedAccess and exactOptionalPropertyTypes for browser and Worker code",
+      "files": [
+        "tsconfig.json",
+        "workers/sec-gateway/tsconfig.json",
+        "tests/contract/typescript-strict-config.test.ts"
+      ],
+      "requirements": [
+        "NFR-001",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-039",
+        "AC-083"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [],
+      "done": "typecheck rejects any in domain boundaries and all external inputs begin as unknown"
+    },
+    {
+      "id": "T003",
+      "phase": "Phase 1 — Setup",
+      "description": "Configure Vite with the Svelte 5 plugin, deterministic JSON imports, build output and bundle reporting",
+      "files": [
+        "vite.config.ts",
+        "src/main.ts",
+        "index.html",
+        "tests/contract/vite-build-config.test.ts"
+      ],
+      "requirements": [
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-077",
+        "AC-083"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [],
+      "done": "SPA builds without SvelteKit and reports asset count/size"
+    },
+    {
+      "id": "T004",
+      "phase": "Phase 1 — Setup",
+      "description": "Create the application shell and semantic landmarks without implementing domain features",
+      "files": [
+        "src/app/App.svelte",
+        "src/app/views/HomeView.svelte",
+        "src/app/components/AppStatus.svelte",
+        "tests/e2e/app-shell.spec.ts"
+      ],
+      "requirements": [
+        "FR-041",
+        "FR-042",
+        "NFR-007"
+      ],
+      "acceptance": [
+        "AC-067",
+        "AC-069",
+        "AC-070"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T003"
+      ],
+      "done": "main, navigation and status regions are keyboard reachable"
+    },
+    {
+      "id": "T005",
+      "phase": "Phase 1 — Setup",
+      "description": "Configure Vitest projects for unit, integration, contract and negative suites with deterministic timezone/locale",
+      "files": [
+        "vitest.config.ts",
+        "tests/setup/deterministic-environment.ts"
+      ],
+      "requirements": [
+        "NFR-001",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-039",
+        "AC-040",
+        "AC-083"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [],
+      "done": "tests use frozen fixtures and no live SEC gate"
+    },
+    {
+      "id": "T006",
+      "phase": "Phase 1 — Setup",
+      "description": "Configure Playwright desktop/mobile projects and accessibility test integration",
+      "files": [
+        "playwright.config.ts",
+        "tests/e2e/global.setup.ts",
+        "tests/accessibility/axe.ts"
+      ],
+      "requirements": [
+        "FR-042",
+        "NFR-005",
+        "NFR-007"
+      ],
+      "acceptance": [
+        "AC-067",
+        "AC-068",
+        "AC-069",
+        "AC-070",
+        "AC-071"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [],
+      "done": "axe is supplemental and manual WCAG cases remain explicit"
+    },
+    {
+      "id": "T007",
+      "phase": "Phase 1 — Setup",
+      "description": "Configure the read-only SEC Worker and bind only the minimal D1 catalog database",
+      "files": [
+        "workers/sec-gateway/wrangler.jsonc",
+        "workers/sec-gateway/src/index.ts",
+        "tests/contract/cloudflare/wrangler-bindings.test.ts"
+      ],
+      "requirements": [
+        "FR-003",
+        "FR-040",
+        "NFR-003"
+      ],
+      "acceptance": [
+        "AC-043",
+        "AC-081",
+        "AC-082"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [],
+      "done": "no KV, R2, Queues, Durable Objects, Cron or paid usage model is declared"
+    },
+    {
+      "id": "T008",
+      "phase": "Phase 1 — Setup",
+      "description": "Create the minimal D1 schema for immutable catalog versions and active metadata pointers",
+      "files": [
+        "workers/sec-gateway/migrations/0001_catalog_metadata.sql",
+        "tests/integration/cloudflare/d1-migration.test.ts"
+      ],
+      "requirements": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptance": [
+        "AC-077",
+        "AC-083"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T007"
+      ],
+      "done": "schema stores no user or SEC payload data and indexes version lookups"
+    },
+    {
+      "id": "T009",
+      "phase": "Phase 1 — Setup",
+      "description": "Add static security headers and SPA fallback rules compatible with Cloudflare Pages",
+      "files": [
+        "public/_headers",
+        "public/_redirects",
+        "tests/contract/security/static-headers.test.ts"
+      ],
+      "requirements": [
+        "FR-039",
+        "FR-041"
+      ],
+      "acceptance": [
+        "AC-046",
+        "AC-047"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [],
+      "done": "CSP, frame, MIME and referrer policies are explicit without Pages Functions"
+    },
+    {
+      "id": "T010",
+      "phase": "Phase 1 — Setup",
+      "description": "Document implementation commands that require no agent or native Spec Kit command",
+      "files": [
+        "README.md",
+        "docs/development.md"
+      ],
+      "requirements": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptance": [
+        "AC-077",
+        "AC-083",
+        "AC-084"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [],
+      "done": "setup, test and build steps are executable in Windows/VS Code and do not require terminal use by end users"
+    },
+    {
+      "id": "T011",
+      "phase": "Phase 2 — Foundational",
+      "description": "Implement canonical DecimalString parsing and decimal.js ROUND_HALF_EVEN helpers",
+      "files": [
+        "src/core/decimal.ts",
+        "tests/unit/core/decimal.test.ts"
+      ],
+      "requirements": [
+        "FR-008",
+        "FR-014",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-019",
+        "AC-020",
+        "AC-026",
+        "AC-027"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T001",
+        "T002",
+        "T005"
+      ],
+      "done": "all formula decimal edge vectors pass without Number arithmetic"
+    },
+    {
+      "id": "T012",
+      "phase": "Phase 2 — Foundational",
+      "description": "Implement Draft 2020-12 schema registration and fail-closed Ajv validation for all active schemas",
+      "files": [
+        "src/core/schema-validator.ts",
+        "src/core/schema-registry.ts",
+        "tests/contract/schema-registry.test.ts"
+      ],
+      "requirements": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptance": [
+        "AC-028",
+        "AC-033",
+        "AC-043",
+        "AC-045",
+        "AC-083"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T001",
+        "T002",
+        "T005"
+      ],
+      "done": "26 active schemas compile once and invalid fixtures are rejected"
+    },
+    {
+      "id": "T013",
+      "phase": "Phase 2 — Foundational",
+      "description": "Implement RFC 8785 canonical JSON and SHA-256 helpers with exact prefix rules",
+      "files": [
+        "src/core/canonical-json.ts",
+        "src/core/sha256.ts",
+        "tests/unit/core/canonical-json.test.ts"
+      ],
+      "requirements": [
+        "FR-025",
+        "FR-029",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-039",
+        "AC-040",
+        "AC-041"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T002",
+        "T005"
+      ],
+      "done": "official package vectors produce exact bytes and digests"
+    },
+    {
+      "id": "T014",
+      "phase": "Phase 2 — Foundational",
+      "description": "Define injected clock, locale and timezone interfaces that cannot enter normative calculations",
+      "files": [
+        "src/core/clock.ts",
+        "src/core/presentation-time.ts",
+        "tests/unit/core/clock-boundary.test.ts"
+      ],
+      "requirements": [
+        "FR-024",
+        "FR-027",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-064",
+        "AC-079"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T002",
+        "T005"
+      ],
+      "done": "normative modules accept no ambient Date.now or locale dependency"
+    },
+    {
+      "id": "T015",
+      "phase": "Phase 2 — Foundational",
+      "description": "Load and type-check active authorities, catalogs and fixtures by exact package-root paths",
+      "files": [
+        "src/authority/loaders.ts",
+        "src/authority/types.ts",
+        "tests/contract/authority-loading.test.ts"
+      ],
+      "requirements": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptance": [
+        "AC-028",
+        "AC-034",
+        "AC-042",
+        "AC-083",
+        "AC-084"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T012"
+      ],
+      "done": "unknown authority IDs, missing pointers and heuristic paths fail closed"
+    },
+    {
+      "id": "T016",
+      "phase": "Phase 2 — Foundational",
+      "description": "Define discriminated UI↔Web Worker messages, operation IDs, progress events and cancellation messages",
+      "files": [
+        "src/types/messages.ts",
+        "tests/unit/types/messages.test.ts"
+      ],
+      "requirements": [
+        "FR-037",
+        "FR-038",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-048",
+        "AC-072",
+        "AC-073"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T002",
+        "T012"
+      ],
+      "done": "switches are exhaustive and duplicate operation IDs are detectable"
+    },
+    {
+      "id": "T017",
+      "phase": "Phase 2 — Foundational",
+      "description": "Implement the pipeline state machine and capability guards from the active catalog",
+      "files": [
+        "src/domain/orchestration/state-machine.ts",
+        "src/domain/orchestration/capabilities.ts",
+        "tests/unit/orchestration/state-matrix.test.ts"
+      ],
+      "requirements": [
+        "FR-037",
+        "FR-038",
+        "FR-041",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-048",
+        "AC-071",
+        "AC-072",
+        "AC-073",
+        "AC-075"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T015",
+        "T016"
+      ],
+      "done": "all 81 allowed/prohibited transition pairs match fixtures"
+    },
+    {
+      "id": "T018",
+      "phase": "Phase 2 — Foundational",
+      "description": "Implement local issue and RFC 9457 Problem Details type boundaries without cross-domain leakage",
+      "files": [
+        "src/domain/issues/local-issue.ts",
+        "src/gateway/problem-details.ts",
+        "tests/contract/problem-details.test.ts"
+      ],
+      "requirements": [
+        "FR-039",
+        "FR-040",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-002",
+        "AC-046",
+        "AC-047",
+        "AC-082"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T012"
+      ],
+      "done": "local issues never serialize as HTTP responses and invalid variants fail"
+    },
+    {
+      "id": "T019",
+      "phase": "Phase 2 — Foundational",
+      "description": "Implement structured, redacted client telemetry and correlation IDs without financial values or credentials",
+      "files": [
+        "src/core/telemetry.ts",
+        "workers/sec-gateway/src/observability.ts",
+        "tests/negative/telemetry-redaction.test.ts"
+      ],
+      "requirements": [
+        "NFR-002",
+        "NFR-003"
+      ],
+      "acceptance": [
+        "AC-053",
+        "AC-076"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T002"
+      ],
+      "done": "logs contain operation/status/reason only and pass secret/value scans"
+    },
+    {
+      "id": "T020",
+      "phase": "Phase 2 — Foundational",
+      "description": "Define immutable domain records for issuer, fundamental bundle/analysis, price overlay/analysis and snapshots",
+      "files": [
+        "src/domain/model.ts",
+        "src/domain/fundamental/types.ts",
+        "src/domain/price/types.ts",
+        "tests/unit/domain/immutability.test.ts"
+      ],
+      "requirements": [
+        "FR-008",
+        "FR-020",
+        "FR-021",
+        "FR-026"
+      ],
+      "acceptance": [
+        "AC-011",
+        "AC-042",
+        "AC-049",
+        "AC-078"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T011",
+        "T012"
+      ],
+      "done": "types prevent price fields in fundamental records and records are readonly"
+    },
+    {
+      "id": "T021",
+      "phase": "Phase 2 — Foundational",
+      "description": "Define native IndexedDB stores, keys, transaction helpers and schema version constants",
+      "files": [
+        "src/persistence/db-schema.ts",
+        "src/persistence/indexeddb.ts",
+        "tests/integration/persistence/db-schema.test.ts"
+      ],
+      "requirements": [
+        "FR-034",
+        "FR-035",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-056",
+        "AC-057",
+        "AC-058"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T002",
+        "T012"
+      ],
+      "done": "store names and keys exactly match browser-storage contract"
+    },
+    {
+      "id": "T022",
+      "phase": "Phase 2 — Foundational",
+      "description": "Create accessible primitive components for buttons, fields, dialogs, progress, status and destructive confirmation",
+      "files": [
+        "src/app/components/Button.svelte",
+        "src/app/components/Field.svelte",
+        "src/app/components/Dialog.svelte",
+        "src/app/components/ProgressStatus.svelte",
+        "tests/accessibility/primitives.spec.ts"
+      ],
+      "requirements": [
+        "FR-041",
+        "FR-042",
+        "NFR-007"
+      ],
+      "acceptance": [
+        "AC-067",
+        "AC-068",
+        "AC-069",
+        "AC-070",
+        "AC-071"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T004",
+        "T006"
+      ],
+      "done": "keyboard, focus return, accessible name and live status tests pass"
+    },
+    {
+      "id": "T023",
+      "phase": "Phase 2 — Foundational",
+      "description": "Implement a typed Web Worker host that enforces one active operation per issuer and atomic result publication messages",
+      "files": [
+        "src/worker/orchestrator.worker.ts",
+        "src/worker/operation-registry.ts",
+        "tests/integration/worker/operation-registry.test.ts"
+      ],
+      "requirements": [
+        "FR-035",
+        "FR-037",
+        "NFR-001",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-072",
+        "AC-073"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T015",
+        "T016",
+        "T017"
+      ],
+      "done": "duplicate actions coalesce and cancellation leaves prior state"
+    },
+    {
+      "id": "T024",
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "description": "Implement zero-padded CIK normalization and issuer identity resolution without ticker authority",
+      "files": [
+        "src/domain/identity/cik.ts",
+        "src/domain/identity/issuer-resolver.ts",
+        "tests/unit/identity/issuer-resolver.test.ts"
+      ],
+      "requirements": [
+        "FR-001",
+        "FR-002",
+        "NFR-006"
+      ],
+      "acceptance": [
+        "AC-001",
+        "AC-002"
+      ],
+      "parallel": false,
+      "story": "US1",
+      "dependencies": [
+        "T012",
+        "T018",
+        "T020"
+      ],
+      "done": "ambiguous aliases stop locally before network"
+    },
+    {
+      "id": "T025",
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "description": "Build the issuer selection UI with explicit CIK/legal-name evidence and ambiguity recovery",
+      "files": [
+        "src/app/views/IssuerSearchView.svelte",
+        "src/app/components/IssuerCandidateList.svelte",
+        "tests/e2e/issuer-selection.spec.ts"
+      ],
+      "requirements": [
+        "FR-001",
+        "FR-002",
+        "FR-041"
+      ],
+      "acceptance": [
+        "AC-001",
+        "AC-002",
+        "AC-074",
+        "AC-075"
+      ],
+      "parallel": false,
+      "story": "US1",
+      "dependencies": [
+        "T022",
+        "T024"
+      ],
+      "done": "selection is keyboard operable and context remains visible"
+    },
+    {
+      "id": "T026",
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "description": "Implement Worker host allowlist, method constraints, URL construction and request validation for SEC routes",
+      "files": [
+        "workers/sec-gateway/src/security/allowlist.ts",
+        "workers/sec-gateway/src/security/request-guard.ts",
+        "tests/contract/worker/request-guard.test.ts"
+      ],
+      "requirements": [
+        "FR-003",
+        "FR-039",
+        "FR-040",
+        "NFR-003"
+      ],
+      "acceptance": [
+        "AC-003",
+        "AC-043",
+        "AC-082"
+      ],
+      "parallel": true,
+      "story": "US1",
+      "dependencies": [
+        "T007",
+        "T009",
+        "T018"
+      ],
+      "done": "invalid CIK/path/method performs zero upstream calls"
+    },
+    {
+      "id": "T027",
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "description": "Implement OpenAPI-listed read-only gateway routes and operation-specific Problem Details",
+      "files": [
+        "workers/sec-gateway/src/routes/submissions.ts",
+        "workers/sec-gateway/src/routes/company-facts.ts",
+        "workers/sec-gateway/src/routes/company-concept.ts",
+        "tests/contract/worker/openapi-surface.test.ts"
+      ],
+      "requirements": [
+        "FR-039",
+        "FR-040",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-043",
+        "AC-044",
+        "AC-045",
+        "AC-046",
+        "AC-047",
+        "AC-082"
+      ],
+      "parallel": false,
+      "story": "US1",
+      "dependencies": [
+        "T018",
+        "T026"
+      ],
+      "done": "surface contains only matrix-listed statuses and excludes 409/422"
+    },
+    {
+      "id": "T028",
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "description": "Stream SEC responses with response-size guards, safe headers and no full-payload parsing",
+      "files": [
+        "workers/sec-gateway/src/sec-stream.ts",
+        "workers/sec-gateway/src/security/response-guard.ts",
+        "tests/integration/worker/sec-stream.test.ts"
+      ],
+      "requirements": [
+        "FR-003",
+        "NFR-003"
+      ],
+      "acceptance": [
+        "AC-003",
+        "AC-009",
+        "AC-081"
+      ],
+      "parallel": false,
+      "story": "US1",
+      "dependencies": [
+        "T026",
+        "T027"
+      ],
+      "done": "one upstream subrequest, bounded headers and explicit oversize error"
+    },
+    {
+      "id": "T029",
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "description": "Implement D1 catalog version reads with indexed queries and embedded-static fallback",
+      "files": [
+        "workers/sec-gateway/src/catalog/version-repository.ts",
+        "src/authority/catalog-version.ts",
+        "tests/integration/worker/catalog-version.test.ts"
+      ],
+      "requirements": [
+        "FR-033",
+        "NFR-004",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-059",
+        "AC-061",
+        "AC-083"
+      ],
+      "parallel": true,
+      "story": "US1",
+      "dependencies": [
+        "T008",
+        "T012"
+      ],
+      "done": "D1 failure marks metadata stale and never blocks embedded authorities"
+    },
+    {
+      "id": "T030",
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "description": "Implement browser SEC client with conditional headers, bounded body streaming and validated JSON",
+      "files": [
+        "src/gateway/sec-client.ts",
+        "src/gateway/sec-response.ts",
+        "tests/integration/gateway/sec-client.test.ts"
+      ],
+      "requirements": [
+        "FR-003",
+        "FR-004",
+        "NFR-003"
+      ],
+      "acceptance": [
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-081"
+      ],
+      "parallel": false,
+      "story": "US1",
+      "dependencies": [
+        "T012",
+        "T027",
+        "T028"
+      ],
+      "done": "Submissions and Company Facts are validated before domain use"
+    },
+    {
+      "id": "T031",
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "description": "Implement eligible filing/form selection and exact period/source reference extraction",
+      "files": [
+        "src/domain/fundamental/filing-selection.ts",
+        "tests/unit/fundamental/filing-selection.test.ts"
+      ],
+      "requirements": [
+        "FR-004",
+        "FR-008",
+        "NFR-003"
+      ],
+      "acceptance": [
+        "AC-006",
+        "AC-011"
+      ],
+      "parallel": true,
+      "story": "US1",
+      "dependencies": [
+        "T015",
+        "T020"
+      ],
+      "done": "8-K remains evidence only and amendments/restatements retain lineage"
+    },
+    {
+      "id": "T032",
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "description": "Implement deterministic 14-call acquisition plan with Company Facts before ordered Company Concept fallbacks",
+      "files": [
+        "src/domain/acquisition/acquisition-plan.ts",
+        "src/domain/acquisition/fallback-order.ts",
+        "tests/unit/acquisition/acquisition-plan.test.ts"
+      ],
+      "requirements": [
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-006",
+        "FR-007",
+        "NFR-001",
+        "NFR-003"
+      ],
+      "acceptance": [
+        "AC-005",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-081"
+      ],
+      "parallel": false,
+      "story": "US1",
+      "dependencies": [
+        "T015",
+        "T029",
+        "T030"
+      ],
+      "done": "no 15th call and fallback order is stable"
+    },
+    {
+      "id": "T033",
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "description": "Implement acquisition progress, cancellation and partial-result semantics in the Web Worker",
+      "files": [
+        "src/worker/acquisition-runner.ts",
+        "tests/integration/worker/acquisition-cancel.test.ts"
+      ],
+      "requirements": [
+        "FR-007",
+        "FR-035",
+        "FR-037",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-009",
+        "AC-010",
+        "AC-073"
+      ],
+      "parallel": false,
+      "story": "US1",
+      "dependencies": [
+        "T023",
+        "T031"
+      ],
+      "done": "cancelled/partial candidates never replace active pointers"
+    },
+    {
+      "id": "T034",
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "description": "Connect issuer UI to consent, acquisition progress, cancellation and retry actions",
+      "files": [
+        "src/app/views/AcquisitionView.svelte",
+        "src/app/components/NetworkConsent.svelte",
+        "tests/e2e/acquisition-flow.spec.ts"
+      ],
+      "requirements": [
+        "FR-030",
+        "FR-032",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptance": [
+        "AC-065",
+        "AC-066",
+        "AC-070",
+        "AC-071",
+        "AC-072",
+        "AC-073",
+        "AC-075"
+      ],
+      "parallel": false,
+      "story": "US1",
+      "dependencies": [
+        "T025",
+        "T032",
+        "T033"
+      ],
+      "done": "all actions are UI-reachable and announced"
+    },
+    {
+      "id": "T035",
+      "phase": "Phase 3 — User Story 1: Resolve issuer and acquire SEC data",
+      "description": "Run frozen SEC positive/negative schema and acquisition contract vectors as a release-blocking suite",
+      "files": [
+        "tests/contract/sec/sec-fixtures.test.ts",
+        "tests/negative/sec/sec-negative.test.ts"
+      ],
+      "requirements": [
+        "FR-003",
+        "FR-004",
+        "FR-005",
+        "FR-006",
+        "FR-007",
+        "NFR-003",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-003",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-081",
+        "AC-082"
+      ],
+      "parallel": true,
+      "story": "US1",
+      "dependencies": [
+        "T012",
+        "T027",
+        "T031"
+      ],
+      "done": "all frozen hashes and expected failures match"
+    },
+    {
+      "id": "T036",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Implement exact XBRL mapping resolution and reject fuzzy/taxonomy-wide inference",
+      "files": [
+        "src/domain/fundamental/mapping-resolver.ts",
+        "tests/unit/fundamental/mapping-resolver.test.ts"
+      ],
+      "requirements": [
+        "FR-006",
+        "FR-011",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-080"
+      ],
+      "parallel": false,
+      "story": "US2",
+      "dependencies": [
+        "T015",
+        "T020",
+        "T030"
+      ],
+      "done": "precedence and ambiguity vectors pass exactly"
+    },
+    {
+      "id": "T037",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Implement accounting-profile selection and allowlisted concept/metric capabilities",
+      "files": [
+        "src/domain/fundamental/profile-resolver.ts",
+        "tests/unit/fundamental/profile-resolver.test.ts"
+      ],
+      "requirements": [
+        "FR-011",
+        "FR-012",
+        "FR-013"
+      ],
+      "acceptance": [
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-080"
+      ],
+      "parallel": true,
+      "story": "US2",
+      "dependencies": [
+        "T015",
+        "T020"
+      ],
+      "done": "unsupported profile is a normal partial local result"
+    },
+    {
+      "id": "T038",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Implement fact sanitization preserving raw provenance, unit, scale, sign, dimensions and sourceRef",
+      "files": [
+        "src/domain/fundamental/fact-sanitizer.ts",
+        "tests/unit/fundamental/fact-sanitizer.test.ts"
+      ],
+      "requirements": [
+        "FR-008",
+        "FR-009",
+        "FR-039",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-019",
+        "AC-020"
+      ],
+      "parallel": true,
+      "story": "US2",
+      "dependencies": [
+        "T011",
+        "T018",
+        "T020"
+      ],
+      "done": "invalid decimals are excluded and never hashed"
+    },
+    {
+      "id": "T039",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Implement fiscal period classification for FY, quarter, comparable prior and TTM without calendar inference",
+      "files": [
+        "src/domain/fundamental/period-resolver.ts",
+        "tests/unit/fundamental/period-resolver.test.ts"
+      ],
+      "requirements": [
+        "FR-008",
+        "FR-014",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-015",
+        "AC-016"
+      ],
+      "parallel": false,
+      "story": "US2",
+      "dependencies": [
+        "T036",
+        "T038"
+      ],
+      "done": "incompatible durations yield insufficient, not fabricated sums"
+    },
+    {
+      "id": "T040",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Implement exact debt bucket policy with non-overlap and lease separation",
+      "files": [
+        "src/domain/fundamental/debt-resolver.ts",
+        "tests/unit/fundamental/debt-resolver.test.ts"
+      ],
+      "requirements": [
+        "FR-015",
+        "FR-019",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-021",
+        "AC-022",
+        "AC-023",
+        "AC-024",
+        "AC-025"
+      ],
+      "parallel": true,
+      "story": "US2",
+      "dependencies": [
+        "T035",
+        "T037"
+      ],
+      "done": "generic totals and partial buckets cannot create dependent ratios"
+    },
+    {
+      "id": "T041",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Implement the 15 formula definitions with canonical edge reason precedence",
+      "files": [
+        "src/domain/analytics/formula-engine.ts",
+        "tests/unit/analytics/formula-vectors.test.ts"
+      ],
+      "requirements": [
+        "FR-013",
+        "FR-014",
+        "NFR-001",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-019",
+        "AC-026",
+        "AC-027",
+        "AC-028"
+      ],
+      "parallel": false,
+      "story": "US2",
+      "dependencies": [
+        "T011",
+        "T012",
+        "T015"
+      ],
+      "done": "36 positive and all negative formula vectors pass exactly"
+    },
+    {
+      "id": "T042",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Implement all 24 fundamental metrics with profile, period, quality and reason-code gates",
+      "files": [
+        "src/domain/analytics/fundamental-metrics.ts",
+        "tests/unit/analytics/fundamental-metric-vectors.test.ts"
+      ],
+      "requirements": [
+        "FR-013",
+        "FR-014",
+        "FR-015",
+        "FR-019",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-016",
+        "AC-017",
+        "AC-025",
+        "AC-026",
+        "AC-027",
+        "AC-028"
+      ],
+      "parallel": false,
+      "story": "US2",
+      "dependencies": [
+        "T039",
+        "T040"
+      ],
+      "done": "72 fundamental metric vectors pass and no valuation metric exists"
+    },
+    {
+      "id": "T043",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Implement the categorical fundamental and price quality classifiers without numeric score",
+      "files": [
+        "src/domain/analytics/quality-classifier.ts",
+        "tests/unit/analytics/quality-cartesian.test.ts"
+      ],
+      "requirements": [
+        "FR-016",
+        "FR-019",
+        "NFR-001",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-029",
+        "AC-030",
+        "AC-031",
+        "AC-032"
+      ],
+      "parallel": true,
+      "story": "US2",
+      "dependencies": [
+        "T012",
+        "T015"
+      ],
+      "done": "all 144 combinations map once with no gaps/overlap"
+    },
+    {
+      "id": "T044",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Implement the closed insight AST validator and evaluator for nine active rules",
+      "files": [
+        "src/domain/analytics/rule-engine.ts",
+        "tests/unit/analytics/rule-vectors.test.ts"
+      ],
+      "requirements": [
+        "FR-017",
+        "FR-018",
+        "FR-019",
+        "NFR-001",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-033",
+        "AC-034",
+        "AC-035"
+      ],
+      "parallel": false,
+      "story": "US2",
+      "dependencies": [
+        "T012",
+        "T041",
+        "T042"
+      ],
+      "done": "27 rule vectors yield only three allowed states"
+    },
+    {
+      "id": "T045",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Implement deterministic five-state synthesis and descriptive limitation generation",
+      "files": [
+        "src/domain/analytics/synthesis.ts",
+        "tests/unit/analytics/synthesis.test.ts"
+      ],
+      "requirements": [
+        "FR-017",
+        "FR-019",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-035",
+        "AC-036"
+      ],
+      "parallel": true,
+      "story": "US2",
+      "dependencies": [
+        "T043"
+      ],
+      "done": "no recommendation, target price or confidence score is emitted"
+    },
+    {
+      "id": "T046",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Implement separated fingerprint projections for input, analysis, price and source evidence",
+      "files": [
+        "src/domain/fingerprints/projections.ts",
+        "src/domain/fingerprints/fingerprint-service.ts",
+        "tests/unit/fingerprints/fingerprint-vectors.test.ts"
+      ],
+      "requirements": [
+        "FR-025",
+        "FR-026",
+        "FR-027",
+        "FR-028",
+        "FR-029",
+        "NFR-001",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-037",
+        "AC-038",
+        "AC-039",
+        "AC-040",
+        "AC-041",
+        "AC-042",
+        "AC-078",
+        "AC-079"
+      ],
+      "parallel": false,
+      "story": "US2",
+      "dependencies": [
+        "T013",
+        "T014",
+        "T015",
+        "T020"
+      ],
+      "done": "all exact digest/invariance vectors pass and no self-reference exists"
+    },
+    {
+      "id": "T047",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Build immutable FundamentalBundle and FundamentalAnalysis candidates with lineage and limitations",
+      "files": [
+        "src/domain/fundamental/bundle-builder.ts",
+        "src/domain/fundamental/analysis-builder.ts",
+        "tests/unit/fundamental/bundle-vectors.test.ts"
+      ],
+      "requirements": [
+        "FR-008",
+        "FR-009",
+        "FR-010",
+        "FR-020",
+        "NFR-006"
+      ],
+      "acceptance": [
+        "AC-010",
+        "AC-011",
+        "AC-014",
+        "AC-018",
+        "AC-049"
+      ],
+      "parallel": false,
+      "story": "US2",
+      "dependencies": [
+        "T035",
+        "T036",
+        "T037",
+        "T038",
+        "T041",
+        "T042",
+        "T043",
+        "T044",
+        "T045"
+      ],
+      "done": "positive/negative bundle and analysis schemas pass"
+    },
+    {
+      "id": "T048",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Implement the normalization and analysis stages in the Web Worker with atomic candidate output",
+      "files": [
+        "src/worker/fundamental-pipeline.ts",
+        "tests/integration/worker/fundamental-pipeline.test.ts"
+      ],
+      "requirements": [
+        "FR-007",
+        "FR-033",
+        "FR-035",
+        "FR-037",
+        "NFR-001",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-010",
+        "AC-059",
+        "AC-060",
+        "AC-061",
+        "AC-062",
+        "AC-073"
+      ],
+      "parallel": false,
+      "story": "US2",
+      "dependencies": [
+        "T023",
+        "T046"
+      ],
+      "done": "pipeline publishes one complete/partial candidate or preserves previous state"
+    },
+    {
+      "id": "T049",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Create issuer and filing evidence views showing CIK, forms, accession, filed dates and source status",
+      "files": [
+        "src/app/views/IssuerEvidenceView.svelte",
+        "src/app/components/FilingTable.svelte",
+        "tests/e2e/evidence-view.spec.ts"
+      ],
+      "requirements": [
+        "FR-001",
+        "FR-008",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptance": [
+        "AC-001",
+        "AC-006",
+        "AC-011",
+        "AC-074"
+      ],
+      "parallel": true,
+      "story": "US2",
+      "dependencies": [
+        "T022",
+        "T030"
+      ],
+      "done": "identity and filing context remain visible and accessible"
+    },
+    {
+      "id": "T050",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Create raw-versus-normalized facts view with periods, units, scale, sign, mapping, lineage, confidence and quality",
+      "files": [
+        "src/app/views/FactsView.svelte",
+        "src/app/components/FactProvenance.svelte",
+        "tests/e2e/facts-view.spec.ts"
+      ],
+      "requirements": [
+        "FR-008",
+        "FR-009",
+        "FR-010",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptance": [
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-019",
+        "AC-020",
+        "AC-074"
+      ],
+      "parallel": true,
+      "story": "US2",
+      "dependencies": [
+        "T037",
+        "T046"
+      ],
+      "done": "raw, normalized and unavailable states are visually and semantically distinct"
+    },
+    {
+      "id": "T051",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Create the 24-metric dashboard with FY/quarter/TTM context, units, states and evidence links",
+      "files": [
+        "src/app/views/FundamentalMetricsView.svelte",
+        "src/app/components/MetricCard.svelte",
+        "tests/e2e/fundamental-metrics.spec.ts"
+      ],
+      "requirements": [
+        "FR-013",
+        "FR-014",
+        "FR-016",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptance": [
+        "AC-015",
+        "AC-016",
+        "AC-017",
+        "AC-025",
+        "AC-028",
+        "AC-029",
+        "AC-030",
+        "AC-031",
+        "AC-032",
+        "AC-074"
+      ],
+      "parallel": false,
+      "story": "US2",
+      "dependencies": [
+        "T041",
+        "T042",
+        "T046"
+      ],
+      "done": "all 24 metrics render state/reason without invented values"
+    },
+    {
+      "id": "T052",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Create the nine-rule insight and synthesis view with descriptive-only disclosure and limitations",
+      "files": [
+        "src/app/views/InsightsView.svelte",
+        "src/app/components/InsightRuleResult.svelte",
+        "tests/e2e/insights.spec.ts"
+      ],
+      "requirements": [
+        "FR-017",
+        "FR-018",
+        "FR-019",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptance": [
+        "AC-033",
+        "AC-034",
+        "AC-035",
+        "AC-036",
+        "AC-037",
+        "AC-074"
+      ],
+      "parallel": false,
+      "story": "US2",
+      "dependencies": [
+        "T043",
+        "T044",
+        "T046"
+      ],
+      "done": "insights are never framed as personalized investment advice"
+    },
+    {
+      "id": "T053",
+      "phase": "Phase 4 — User Story 2: Analyze fundamentals with evidence",
+      "description": "Run end-to-end first-analysis acceptance scenarios from CIK selection through visible fingerprints",
+      "files": [
+        "tests/e2e/first-analysis.spec.ts"
+      ],
+      "requirements": [
+        "FR-001",
+        "FR-003",
+        "FR-008",
+        "FR-013",
+        "FR-017",
+        "FR-025",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-001",
+        "AC-005",
+        "AC-011",
+        "AC-028",
+        "AC-035",
+        "AC-039"
+      ],
+      "parallel": false,
+      "story": "US2",
+      "dependencies": [
+        "T034",
+        "T047",
+        "T048",
+        "T049",
+        "T050"
+      ],
+      "done": "complete and partial scenarios are independently reproducible"
+    },
+    {
+      "id": "T054",
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "description": "Implement cache freshness bands and deterministic open/resume decision logic",
+      "files": [
+        "src/domain/orchestration/cache-policy.ts",
+        "tests/unit/orchestration/cache-vectors.test.ts"
+      ],
+      "requirements": [
+        "FR-030",
+        "FR-031",
+        "NFR-002",
+        "NFR-003"
+      ],
+      "acceptance": [
+        "AC-004",
+        "AC-065"
+      ],
+      "parallel": false,
+      "story": "US3",
+      "dependencies": [
+        "T014",
+        "T015",
+        "T017"
+      ],
+      "done": "fresh causes zero network and stale/expired query Submissions first"
+    },
+    {
+      "id": "T055",
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "description": "Implement submissions novelty fingerprint and Company Facts fetch decision",
+      "files": [
+        "src/domain/orchestration/novelty.ts",
+        "tests/unit/orchestration/novelty.test.ts"
+      ],
+      "requirements": [
+        "FR-031",
+        "FR-033",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-004",
+        "AC-059",
+        "AC-061"
+      ],
+      "parallel": true,
+      "story": "US3",
+      "dependencies": [
+        "T013",
+        "T030"
+      ],
+      "done": "unchanged submissions avoid Company Facts unless manual/dependency invalidation applies"
+    },
+    {
+      "id": "T056",
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "description": "Implement retry handling for Retry-After, 1/2/4 backoff, deterministic jitter injection and bounded attempts",
+      "files": [
+        "src/gateway/retry-policy.ts",
+        "tests/unit/gateway/retry-policy.test.ts"
+      ],
+      "requirements": [
+        "FR-031",
+        "FR-032",
+        "NFR-003"
+      ],
+      "acceptance": [
+        "AC-004",
+        "AC-066",
+        "AC-081"
+      ],
+      "parallel": true,
+      "story": "US3",
+      "dependencies": [
+        "T014",
+        "T029"
+      ],
+      "done": "three logical attempts and timeout budgets are enforced"
+    },
+    {
+      "id": "T057",
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "description": "Implement per-issuer locks and idempotency keys for open/resume and manual refresh",
+      "files": [
+        "src/domain/orchestration/idempotency.ts",
+        "tests/integration/orchestration/idempotency.test.ts"
+      ],
+      "requirements": [
+        "FR-032",
+        "FR-035",
+        "FR-037",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-066",
+        "AC-072",
+        "AC-073"
+      ],
+      "parallel": false,
+      "story": "US3",
+      "dependencies": [
+        "T023",
+        "T052"
+      ],
+      "done": "double activation starts one operation and one candidate"
+    },
+    {
+      "id": "T058",
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "description": "Implement dependency-directed invalidation for fact, mapping, metric, rule and visual-preference events",
+      "files": [
+        "src/domain/orchestration/invalidation-graph.ts",
+        "tests/unit/orchestration/invalidation-events.test.ts"
+      ],
+      "requirements": [
+        "FR-033",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-059",
+        "AC-060",
+        "AC-061",
+        "AC-062",
+        "AC-063",
+        "AC-064"
+      ],
+      "parallel": false,
+      "story": "US3",
+      "dependencies": [
+        "T015",
+        "T041",
+        "T043",
+        "T045"
+      ],
+      "done": "only affected stages rerun and visual changes start zero domain work"
+    },
+    {
+      "id": "T059",
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "description": "Implement stale/partial/error result handling that preserves the last valid snapshot and reason codes",
+      "files": [
+        "src/domain/orchestration/degradation.ts",
+        "tests/integration/orchestration/stale-partial.test.ts"
+      ],
+      "requirements": [
+        "FR-007",
+        "FR-031",
+        "FR-035",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-010",
+        "AC-058",
+        "AC-065",
+        "AC-073",
+        "AC-075"
+      ],
+      "parallel": false,
+      "story": "US3",
+      "dependencies": [
+        "T017",
+        "T047",
+        "T054"
+      ],
+      "done": "failed refresh never destroys the prior usable snapshot"
+    },
+    {
+      "id": "T060",
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "description": "Connect visibilitychange/pageshow/resume events to consent-aware refresh orchestration",
+      "files": [
+        "src/app/lifecycle/resume-refresh.ts",
+        "tests/e2e/open-resume.spec.ts"
+      ],
+      "requirements": [
+        "FR-030",
+        "FR-031",
+        "FR-041"
+      ],
+      "acceptance": [
+        "AC-004",
+        "AC-065",
+        "AC-072"
+      ],
+      "parallel": false,
+      "story": "US3",
+      "dependencies": [
+        "T051",
+        "T054",
+        "T055"
+      ],
+      "done": "closed app performs no work; resume honors consent and freshness"
+    },
+    {
+      "id": "T061",
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "description": "Implement the Update Fundamentals button, force-check disclosure and accessible busy/cancel states",
+      "files": [
+        "src/app/components/RefreshFundamentals.svelte",
+        "tests/e2e/manual-refresh.spec.ts"
+      ],
+      "requirements": [
+        "FR-032",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptance": [
+        "AC-066",
+        "AC-070",
+        "AC-071",
+        "AC-072",
+        "AC-073",
+        "AC-075"
+      ],
+      "parallel": false,
+      "story": "US3",
+      "dependencies": [
+        "T022",
+        "T053",
+        "T055"
+      ],
+      "done": "manual refresh never bypasses consent, fair access or quota guards"
+    },
+    {
+      "id": "T062",
+      "phase": "Phase 5 — User Story 3: Refresh and reanalyze safely",
+      "description": "Run cache, retry, idempotency, cancellation, stale and reanalysis E2E scenarios",
+      "files": [
+        "tests/e2e/refresh-resilience.spec.ts"
+      ],
+      "requirements": [
+        "FR-030",
+        "FR-031",
+        "FR-032",
+        "FR-033",
+        "FR-035",
+        "NFR-003",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-004",
+        "AC-058",
+        "AC-059",
+        "AC-060",
+        "AC-061",
+        "AC-062",
+        "AC-065",
+        "AC-066",
+        "AC-072",
+        "AC-073"
+      ],
+      "parallel": false,
+      "story": "US3",
+      "dependencies": [
+        "T051",
+        "T052",
+        "T053",
+        "T054",
+        "T055",
+        "T056",
+        "T057",
+        "T058"
+      ],
+      "done": "all recovery paths preserve exact capabilities and pointers"
+    },
+    {
+      "id": "T063",
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "description": "Implement bounded RFC 4180 CSV parsing in the Web Worker with formula/injection rejection",
+      "files": [
+        "src/domain/price/csv-parser.ts",
+        "tests/unit/price/csv-parser.test.ts",
+        "tests/negative/price/csv-security.test.ts"
+      ],
+      "requirements": [
+        "FR-021",
+        "FR-022",
+        "FR-039",
+        "NFR-002"
+      ],
+      "acceptance": [
+        "AC-054",
+        "AC-055"
+      ],
+      "parallel": false,
+      "story": "US4",
+      "dependencies": [
+        "T012",
+        "T018",
+        "T023"
+      ],
+      "done": "5 MiB, 50,000 rows and 8-column limits fail before persistence"
+    },
+    {
+      "id": "T064",
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "description": "Implement manual price entry using the same validation pipeline as CSV",
+      "files": [
+        "src/domain/price/manual-entry.ts",
+        "tests/unit/price/manual-entry.test.ts"
+      ],
+      "requirements": [
+        "FR-021",
+        "FR-022"
+      ],
+      "acceptance": [
+        "AC-054",
+        "AC-055"
+      ],
+      "parallel": true,
+      "story": "US4",
+      "dependencies": [
+        "T012",
+        "T020"
+      ],
+      "done": "manual and CSV data produce the same canonical observation model"
+    },
+    {
+      "id": "T065",
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "description": "Implement preview, duplicate/date/currency/frequency validation and explicit confirmation",
+      "files": [
+        "src/domain/price/import-preview.ts",
+        "tests/unit/price/import-preview.test.ts"
+      ],
+      "requirements": [
+        "FR-021",
+        "FR-022",
+        "NFR-002"
+      ],
+      "acceptance": [
+        "AC-050",
+        "AC-054",
+        "AC-055"
+      ],
+      "parallel": false,
+      "story": "US4",
+      "dependencies": [
+        "T060",
+        "T061"
+      ],
+      "done": "nothing is persisted on selection or invalid preview"
+    },
+    {
+      "id": "T066",
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "description": "Build immutable HistoricalPriceOverlay versions and separated price fingerprints",
+      "files": [
+        "src/domain/price/overlay-builder.ts",
+        "tests/unit/price/overlay-vectors.test.ts"
+      ],
+      "requirements": [
+        "FR-020",
+        "FR-021",
+        "FR-022",
+        "FR-024",
+        "FR-026",
+        "FR-028",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-049",
+        "AC-050",
+        "AC-053",
+        "AC-063",
+        "AC-078",
+        "AC-079"
+      ],
+      "parallel": false,
+      "story": "US4",
+      "dependencies": [
+        "T014",
+        "T045",
+        "T062"
+      ],
+      "done": "clock-derived fields are rejected and fundamental fingerprints stay identical"
+    },
+    {
+      "id": "T067",
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "description": "Implement the eight descriptive historical price metrics and price-quality classification",
+      "files": [
+        "src/domain/price/price-metrics.ts",
+        "tests/unit/price/price-metric-vectors.test.ts"
+      ],
+      "requirements": [
+        "FR-013",
+        "FR-016",
+        "FR-023",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-028",
+        "AC-050",
+        "AC-051",
+        "AC-052"
+      ],
+      "parallel": false,
+      "story": "US4",
+      "dependencies": [
+        "T040",
+        "T042",
+        "T063"
+      ],
+      "done": "last/min/max/mean/median/return/drawdown/trend pass 24 vectors"
+    },
+    {
+      "id": "T068",
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "description": "Implement import/replace/delete price events that update only the price pointer and price analysis",
+      "files": [
+        "src/domain/orchestration/price-events.ts",
+        "tests/integration/price/price-isolation.test.ts"
+      ],
+      "requirements": [
+        "FR-021",
+        "FR-022",
+        "FR-023",
+        "FR-033",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-037",
+        "AC-049",
+        "AC-063",
+        "AC-078"
+      ],
+      "parallel": false,
+      "story": "US4",
+      "dependencies": [
+        "T055",
+        "T063",
+        "T064"
+      ],
+      "done": "fundamental bundle, analysis and pointer never change"
+    },
+    {
+      "id": "T069",
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "description": "Create accessible CSV/manual import, preview and confirmation UI",
+      "files": [
+        "src/app/views/PriceImportView.svelte",
+        "src/app/components/PriceImportPreview.svelte",
+        "tests/e2e/price-import.spec.ts"
+      ],
+      "requirements": [
+        "FR-021",
+        "FR-022",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptance": [
+        "AC-054",
+        "AC-055",
+        "AC-067",
+        "AC-068",
+        "AC-069",
+        "AC-070"
+      ],
+      "parallel": false,
+      "story": "US4",
+      "dependencies": [
+        "T022",
+        "T062",
+        "T065"
+      ],
+      "done": "errors bind to fields and focus returns predictably"
+    },
+    {
+      "id": "T070",
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "description": "Create accessible price summary using native SVG plus an equivalent data table",
+      "files": [
+        "src/app/views/PriceAnalysisView.svelte",
+        "src/app/components/AccessiblePriceChart.svelte",
+        "tests/e2e/price-analysis.spec.ts"
+      ],
+      "requirements": [
+        "FR-023",
+        "FR-024",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptance": [
+        "AC-049",
+        "AC-050",
+        "AC-051",
+        "AC-052",
+        "AC-067",
+        "AC-069",
+        "AC-074"
+      ],
+      "parallel": false,
+      "story": "US4",
+      "dependencies": [
+        "T064",
+        "T066"
+      ],
+      "done": "as-of/range/frequency/count/age/use and all eight metrics are visible without chart-only meaning"
+    },
+    {
+      "id": "T071",
+      "phase": "Phase 6 — User Story 4: Manage optional historical price",
+      "description": "Run price absence, irregular frequency, replacement, deletion and isolation E2E scenarios",
+      "files": [
+        "tests/e2e/price-overlay-lifecycle.spec.ts"
+      ],
+      "requirements": [
+        "FR-020",
+        "FR-021",
+        "FR-022",
+        "FR-023",
+        "FR-024"
+      ],
+      "acceptance": [
+        "AC-049",
+        "AC-050",
+        "AC-051",
+        "AC-052",
+        "AC-063",
+        "AC-078",
+        "AC-079"
+      ],
+      "parallel": false,
+      "story": "US4",
+      "dependencies": [
+        "T063",
+        "T064",
+        "T065",
+        "T066",
+        "T067"
+      ],
+      "done": "fundamental-only operation remains complete and no valuation is produced"
+    },
+    {
+      "id": "T072",
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "description": "Implement separate refresh and storage consent records with revocation",
+      "files": [
+        "src/persistence/consent-repository.ts",
+        "src/app/views/PrivacySettingsView.svelte",
+        "tests/e2e/consent.spec.ts"
+      ],
+      "requirements": [
+        "FR-030",
+        "FR-034",
+        "NFR-002"
+      ],
+      "acceptance": [
+        "AC-056",
+        "AC-065",
+        "AC-076"
+      ],
+      "parallel": false,
+      "story": "US5",
+      "dependencies": [
+        "T021",
+        "T022"
+      ],
+      "done": "analysis works in memory without storage consent and no network without refresh consent"
+    },
+    {
+      "id": "T073",
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "description": "Implement immutable record writes, evidence index and compare-and-swap active pointers in one transaction",
+      "files": [
+        "src/persistence/snapshot-repository.ts",
+        "tests/integration/persistence/atomic-publication.test.ts"
+      ],
+      "requirements": [
+        "FR-034",
+        "FR-035",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-057",
+        "AC-058",
+        "AC-073"
+      ],
+      "parallel": false,
+      "story": "US5",
+      "dependencies": [
+        "T021",
+        "T046"
+      ],
+      "done": "candidate, evidence and pointer commit together or not at all"
+    },
+    {
+      "id": "T074",
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "description": "Implement separate immutable price version repository and independent active price pointer",
+      "files": [
+        "src/persistence/price-repository.ts",
+        "tests/integration/persistence/price-repository.test.ts"
+      ],
+      "requirements": [
+        "FR-021",
+        "FR-022",
+        "FR-034",
+        "NFR-002"
+      ],
+      "acceptance": [
+        "AC-049",
+        "AC-057",
+        "AC-063",
+        "AC-078"
+      ],
+      "parallel": true,
+      "story": "US5",
+      "dependencies": [
+        "T021",
+        "T063"
+      ],
+      "done": "price deletion cannot reference or delete fundamental records"
+    },
+    {
+      "id": "T075",
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "description": "Implement versioned local export manifest, per-record hashes and package checksum",
+      "files": [
+        "src/persistence/export-service.ts",
+        "tests/unit/persistence/export.test.ts"
+      ],
+      "requirements": [
+        "FR-036",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-076"
+      ],
+      "parallel": false,
+      "story": "US5",
+      "dependencies": [
+        "T013",
+        "T021",
+        "T069",
+        "T070"
+      ],
+      "done": "consents and deployment variables are excluded and hashes are reproducible"
+    },
+    {
+      "id": "T076",
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "description": "Implement restore parsing, schema/hash/version validation and conflict preview without writes",
+      "files": [
+        "src/persistence/restore-preview.ts",
+        "tests/negative/persistence/restore-validation.test.ts"
+      ],
+      "requirements": [
+        "FR-036",
+        "FR-039",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-075",
+        "AC-076"
+      ],
+      "parallel": true,
+      "story": "US5",
+      "dependencies": [
+        "T012",
+        "T018",
+        "T071"
+      ],
+      "done": "corrupt, oversized, unknown or duplicate records are rejected before transaction"
+    },
+    {
+      "id": "T077",
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "description": "Implement allowed restore migrations and one atomic multi-store restore transaction with rollback",
+      "files": [
+        "src/persistence/restore-service.ts",
+        "tests/integration/persistence/restore-rollback.test.ts"
+      ],
+      "requirements": [
+        "FR-034",
+        "FR-035",
+        "FR-036",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-057",
+        "AC-058",
+        "AC-076"
+      ],
+      "parallel": false,
+      "story": "US5",
+      "dependencies": [
+        "T021",
+        "T072"
+      ],
+      "done": "any store failure restores the exact prior database state"
+    },
+    {
+      "id": "T078",
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "description": "Implement delete-price and delete-all-personal-data transactions with pre-export option",
+      "files": [
+        "src/persistence/delete-service.ts",
+        "tests/integration/persistence/delete.test.ts"
+      ],
+      "requirements": [
+        "FR-022",
+        "FR-036",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-049",
+        "AC-076"
+      ],
+      "parallel": false,
+      "story": "US5",
+      "dependencies": [
+        "T069",
+        "T070",
+        "T071"
+      ],
+      "done": "delete all is atomic and delete price preserves fundamentals"
+    },
+    {
+      "id": "T079",
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "description": "Create export, restore preview/conflict and destructive-delete UI with accessible confirmations",
+      "files": [
+        "src/app/views/DataManagementView.svelte",
+        "src/app/components/RestorePreview.svelte",
+        "tests/e2e/data-management.spec.ts"
+      ],
+      "requirements": [
+        "FR-036",
+        "FR-041",
+        "FR-042",
+        "NFR-002"
+      ],
+      "acceptance": [
+        "AC-068",
+        "AC-069",
+        "AC-070",
+        "AC-075",
+        "AC-076"
+      ],
+      "parallel": false,
+      "story": "US5",
+      "dependencies": [
+        "T022",
+        "T071",
+        "T072",
+        "T073",
+        "T074"
+      ],
+      "done": "all operations are UI-only, announced and recoverable"
+    },
+    {
+      "id": "T080",
+      "phase": "Phase 7 — User Story 5: Persist, export, restore and delete local data",
+      "description": "Run IndexedDB atomicity, export/restore, corruption and delete E2E scenarios",
+      "files": [
+        "tests/e2e/persistence-lifecycle.spec.ts"
+      ],
+      "requirements": [
+        "FR-034",
+        "FR-035",
+        "FR-036",
+        "NFR-002",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-056",
+        "AC-057",
+        "AC-058",
+        "AC-073",
+        "AC-076"
+      ],
+      "parallel": false,
+      "story": "US5",
+      "dependencies": [
+        "T069",
+        "T070",
+        "T071",
+        "T072",
+        "T073",
+        "T074",
+        "T075"
+      ],
+      "done": "no orphan records or pointers remain across injected failures"
+    },
+    {
+      "id": "T081",
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "description": "Implement persistent issuer/period/profile/snapshot context header across all views",
+      "files": [
+        "src/app/components/AnalysisContext.svelte",
+        "tests/e2e/context-persistence.spec.ts"
+      ],
+      "requirements": [
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptance": [
+        "AC-074"
+      ],
+      "parallel": false,
+      "story": "US6",
+      "dependencies": [
+        "T004",
+        "T047"
+      ],
+      "done": "context never switches silently during refresh or navigation"
+    },
+    {
+      "id": "T082",
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "description": "Map every local issue and gateway Problem Details variant to one capability-preserving UI recovery action",
+      "files": [
+        "src/app/recovery/recovery-actions.ts",
+        "src/app/components/RecoveryPanel.svelte",
+        "tests/unit/recovery/recovery-map.test.ts"
+      ],
+      "requirements": [
+        "FR-039",
+        "FR-041",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-002",
+        "AC-047",
+        "AC-048",
+        "AC-075"
+      ],
+      "parallel": false,
+      "story": "US6",
+      "dependencies": [
+        "T017",
+        "T018",
+        "T022"
+      ],
+      "done": "no terminal-only recovery and each action maps to an active operation"
+    },
+    {
+      "id": "T083",
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "description": "Implement focus management for dialogs, errors, route changes, cancellation and destructive confirmations",
+      "files": [
+        "src/app/a11y/focus-manager.ts",
+        "tests/e2e/accessibility/focus.spec.ts"
+      ],
+      "requirements": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "acceptance": [
+        "AC-067",
+        "AC-068",
+        "AC-073"
+      ],
+      "parallel": true,
+      "story": "US6",
+      "dependencies": [
+        "T022"
+      ],
+      "done": "focus is visible, unobscured and returned to the invoker"
+    },
+    {
+      "id": "T084",
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "description": "Implement live-region announcements and exact busy/disabled semantics for pipeline states",
+      "files": [
+        "src/app/a11y/status-announcer.ts",
+        "tests/e2e/accessibility/status.spec.ts"
+      ],
+      "requirements": [
+        "FR-037",
+        "FR-041",
+        "FR-042",
+        "NFR-007"
+      ],
+      "acceptance": [
+        "AC-070",
+        "AC-071",
+        "AC-072",
+        "AC-073"
+      ],
+      "parallel": true,
+      "story": "US6",
+      "dependencies": [
+        "T017",
+        "T022"
+      ],
+      "done": "status changes are concise, non-duplicated and state-accurate"
+    },
+    {
+      "id": "T085",
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "description": "Implement responsive reflow, text spacing, contrast, target sizing and reduced-motion styles",
+      "files": [
+        "src/app/styles/tokens.css",
+        "src/app/styles/accessibility.css",
+        "tests/e2e/accessibility/visual-behavior.spec.ts"
+      ],
+      "requirements": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "acceptance": [
+        "AC-067",
+        "AC-069",
+        "AC-074"
+      ],
+      "parallel": true,
+      "story": "US6",
+      "dependencies": [
+        "T004"
+      ],
+      "done": "320 CSS px reflow and 200% text zoom have no two-dimensional scroll"
+    },
+    {
+      "id": "T086",
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "description": "Add accessible names, instructions, error associations and status semantics to all forms/actions",
+      "files": [
+        "tests/e2e/accessibility/names-errors.spec.ts"
+      ],
+      "requirements": [
+        "FR-041",
+        "FR-042",
+        "NFR-007"
+      ],
+      "acceptance": [
+        "AC-069",
+        "AC-070",
+        "AC-071",
+        "AC-075"
+      ],
+      "parallel": false,
+      "story": "US6",
+      "dependencies": [
+        "T024",
+        "T034",
+        "T047",
+        "T048",
+        "T049",
+        "T050",
+        "T057",
+        "T066",
+        "T075"
+      ],
+      "done": "no placeholder-only labels, duplicate names or silent errors"
+    },
+    {
+      "id": "T087",
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "description": "Automate all WCAG matrix criteria with deterministic Playwright/axe oracles where automation is valid",
+      "files": [
+        "tests/accessibility/wcag-automated.spec.ts",
+        "tests/accessibility/wcag-matrix-loader.ts"
+      ],
+      "requirements": [
+        "FR-042",
+        "NFR-005",
+        "NFR-007"
+      ],
+      "acceptance": [
+        "AC-067",
+        "AC-068",
+        "AC-069",
+        "AC-070",
+        "AC-071",
+        "AC-072",
+        "AC-073",
+        "AC-074",
+        "AC-075"
+      ],
+      "parallel": false,
+      "story": "US6",
+      "dependencies": [
+        "T006",
+        "T078",
+        "T079",
+        "T080",
+        "T081",
+        "T082"
+      ],
+      "done": "each applicable automated criterion links to matrix ID and AC"
+    },
+    {
+      "id": "T088",
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "description": "Create and execute the manual WCAG 2.2 A/AA verification protocol for criteria requiring human judgment",
+      "files": [
+        "tests/accessibility/manual-wcag-checklist.md",
+        "docs/accessibility-evidence.md"
+      ],
+      "requirements": [
+        "FR-042",
+        "NFR-005",
+        "NFR-007"
+      ],
+      "acceptance": [
+        "AC-067",
+        "AC-068",
+        "AC-069",
+        "AC-070",
+        "AC-074",
+        "AC-075"
+      ],
+      "parallel": false,
+      "story": "US6",
+      "dependencies": [
+        "T083"
+      ],
+      "done": "55/55 criteria have applicability, oracle, evidence and result with N/A triggers"
+    },
+    {
+      "id": "T089",
+      "phase": "Phase 8 — User Story 6: Operate accessibly and recover from failures",
+      "description": "Verify every user-facing insight, metric and price statement remains descriptive and includes limitations",
+      "files": [
+        "tests/e2e/no-investment-advice.spec.ts",
+        "src/app/components/AnalysisDisclaimer.svelte"
+      ],
+      "requirements": [
+        "FR-017",
+        "FR-023",
+        "FR-041"
+      ],
+      "acceptance": [
+        "AC-036",
+        "AC-052",
+        "AC-074"
+      ],
+      "parallel": false,
+      "story": "US6",
+      "dependencies": [
+        "T050",
+        "T067"
+      ],
+      "done": "no buy/sell/hold, target price, personalized recommendation or return promise appears"
+    },
+    {
+      "id": "T090",
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "description": "Implement quota budget constants and preflight guards from cloudflare-free-budget.json",
+      "files": [
+        "workers/sec-gateway/src/budget.ts",
+        "src/gateway/quota-state.ts",
+        "tests/contract/cloudflare/budget.test.ts"
+      ],
+      "requirements": [
+        "FR-031",
+        "FR-041",
+        "NFR-003",
+        "NFR-004",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-004",
+        "AC-047",
+        "AC-065",
+        "AC-075",
+        "AC-077"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T012",
+        "T007"
+      ],
+      "done": "limits match official authority and canary thresholds stop nonessential refresh"
+    },
+    {
+      "id": "T091",
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "description": "Implement fail-closed Worker quota/error degradation with Retry-After and local stale fallback",
+      "files": [
+        "workers/sec-gateway/src/quota-errors.ts",
+        "src/domain/orchestration/quota-degradation.ts",
+        "tests/integration/cloudflare/quota-degradation.test.ts"
+      ],
+      "requirements": [
+        "FR-031",
+        "FR-032",
+        "FR-041",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-047",
+        "AC-058",
+        "AC-065",
+        "AC-066",
+        "AC-075"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T018",
+        "T055",
+        "T086"
+      ],
+      "done": "no paid fallback or silent service substitution is possible"
+    },
+    {
+      "id": "T092",
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "description": "Instrument Worker request count, CPU duration, subrequest count, response size and error outcome",
+      "files": [
+        "workers/sec-gateway/src/observability.ts",
+        "tests/integration/cloudflare/worker-observability.test.ts"
+      ],
+      "requirements": [
+        "NFR-003",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-003",
+        "AC-009",
+        "AC-081"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T019",
+        "T027"
+      ],
+      "done": "telemetry proves one subrequest and p95 CPU target without personal data"
+    },
+    {
+      "id": "T093",
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "description": "Instrument D1 rows_read, rows_written, query count and storage canary checks",
+      "files": [
+        "workers/sec-gateway/src/catalog/d1-metrics.ts",
+        "tests/integration/cloudflare/d1-budget.test.ts"
+      ],
+      "requirements": [
+        "NFR-004",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-077",
+        "AC-083"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T008",
+        "T028"
+      ],
+      "done": "runtime reads <=2 queries and publication batches remain below documented margins"
+    },
+    {
+      "id": "T094",
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "description": "Add build-time asset count, maximum asset size and compressed Worker bundle budget checks",
+      "files": [
+        "scripts/check-cloudflare-budgets.mjs",
+        "tests/contract/cloudflare/build-budget.test.ts"
+      ],
+      "requirements": [
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-077",
+        "AC-083"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T003",
+        "T007",
+        "T086"
+      ],
+      "done": "deployment stops before upload above 500 assets, 5 MiB target or 0.5 MiB Worker gzip target"
+    },
+    {
+      "id": "T095",
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "description": "Add Worker CPU/memory streaming performance tests for Submissions, Company Facts and fallback payloads",
+      "files": [
+        "tests/performance/worker-streaming.test.ts",
+        "tests/performance/fixtures/sec-payload-sizes.ts"
+      ],
+      "requirements": [
+        "FR-003",
+        "NFR-003",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-003",
+        "AC-009",
+        "AC-081"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T027",
+        "T088"
+      ],
+      "done": "p95 CPU <=4 ms target, no buffering and memory remains bounded"
+    },
+    {
+      "id": "T096",
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "description": "Add browser main-thread, Web Worker, import and IndexedDB performance budgets",
+      "files": [
+        "tests/performance/browser-performance.spec.ts",
+        "tests/performance/import-performance.spec.ts"
+      ],
+      "requirements": [
+        "FR-021",
+        "FR-037",
+        "NFR-004",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-054",
+        "AC-057",
+        "AC-072"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T047",
+        "T060",
+        "T069"
+      ],
+      "done": "long tasks and memory stay within documented scenario budgets"
+    },
+    {
+      "id": "T097",
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "description": "Implement CSP/CORS/XSS/prototype-pollution/path-traversal/CSV-ZIP-bomb input defenses from the security contract",
+      "files": [
+        "workers/sec-gateway/src/security/headers.ts",
+        "src/core/safe-object.ts",
+        "src/persistence/import-limits.ts",
+        "tests/negative/security/security-vectors.test.ts"
+      ],
+      "requirements": [
+        "FR-039",
+        "NFR-002",
+        "NFR-003",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-003",
+        "AC-020",
+        "AC-046",
+        "AC-053",
+        "AC-055",
+        "AC-076"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T009",
+        "T012",
+        "T018"
+      ],
+      "done": "all security and import limit negative vectors fail closed"
+    },
+    {
+      "id": "T098",
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "description": "Add dependency license, vulnerability and lockfile integrity review as a release gate",
+      "files": [
+        "scripts/check-supply-chain.mjs",
+        "docs/dependency-inventory.md",
+        "tests/contract/supply-chain.test.ts"
+      ],
+      "requirements": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptance": [
+        "AC-077",
+        "AC-083",
+        "AC-084"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T001"
+      ],
+      "done": "only approved minimal dependencies remain and no secrets are present"
+    },
+    {
+      "id": "T099",
+      "phase": "Phase 9 — Cloudflare Free, security and observability",
+      "description": "Write Cloudflare Free deployment and rollback runbook with explicit no-upgrade controls",
+      "files": [
+        "docs/deployment-cloudflare-free.md",
+        "docs/quota-degradation.md"
+      ],
+      "requirements": [
+        "NFR-003",
+        "NFR-004",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-058",
+        "AC-065",
+        "AC-075",
+        "AC-077"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T086",
+        "T087",
+        "T089",
+        "T090"
+      ],
+      "done": "runbook uses Pages/Workers/D1 Free only and retains prior deployment/snapshot on failure"
+    },
+    {
+      "id": "T100",
+      "phase": "Phase 10 — Validation and documentation",
+      "description": "Run unit suites for decimal, formulas, metrics, quality, rules, fingerprints, state and cache vectors",
+      "files": [
+        "tests/unit/README.md"
+      ],
+      "requirements": [
+        "FR-008",
+        "FR-013",
+        "FR-014",
+        "FR-016",
+        "FR-017",
+        "FR-025",
+        "FR-031",
+        "FR-037",
+        "NFR-001"
+      ],
+      "acceptance": [
+        "AC-019",
+        "AC-028",
+        "AC-029",
+        "AC-033",
+        "AC-039",
+        "AC-048",
+        "AC-065"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T040",
+        "T041",
+        "T042",
+        "T043",
+        "T045",
+        "T051"
+      ],
+      "done": "all positive and negative normative vectors pass"
+    },
+    {
+      "id": "T101",
+      "phase": "Phase 10 — Validation and documentation",
+      "description": "Run contract suites for 49 requirements, 84 AC, authorities, schemas, OpenAPI and frozen fixtures",
+      "files": [
+        "tests/contract/requirements-ac-traceability.test.ts",
+        "tests/contract/acceptance-catalog.test.ts"
+      ],
+      "requirements": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptance": [
+        "AC-028",
+        "AC-034",
+        "AC-043",
+        "AC-044",
+        "AC-045",
+        "AC-077",
+        "AC-081",
+        "AC-082",
+        "AC-083",
+        "AC-084"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T012",
+        "T015",
+        "T034",
+        "T046"
+      ],
+      "done": "zero orphan requirement, AC, authority, fixture, schema or task reference"
+    },
+    {
+      "id": "T102",
+      "phase": "Phase 10 — Validation and documentation",
+      "description": "Run full integration suites for Worker, Web Worker, IndexedDB, cache, idempotency and rollback",
+      "files": [
+        "tests/integration/README.md"
+      ],
+      "requirements": [
+        "FR-003",
+        "FR-030",
+        "FR-031",
+        "FR-034",
+        "FR-035",
+        "NFR-003",
+        "NFR-004"
+      ],
+      "acceptance": [
+        "AC-004",
+        "AC-057",
+        "AC-058",
+        "AC-065",
+        "AC-072",
+        "AC-073",
+        "AC-081"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T032",
+        "T047",
+        "T054",
+        "T069",
+        "T073",
+        "T087"
+      ],
+      "done": "all injected partial/failure paths preserve valid state"
+    },
+    {
+      "id": "T103",
+      "phase": "Phase 10 — Validation and documentation",
+      "description": "Run end-to-end user stories independently in priority order and then as a full lifecycle",
+      "files": [
+        "tests/e2e/full-lifecycle.spec.ts"
+      ],
+      "requirements": [
+        "FR-001",
+        "FR-008",
+        "FR-013",
+        "FR-021",
+        "FR-030",
+        "FR-034",
+        "FR-041",
+        "FR-042"
+      ],
+      "acceptance": [
+        "AC-001",
+        "AC-011",
+        "AC-028",
+        "AC-049",
+        "AC-054",
+        "AC-057",
+        "AC-065",
+        "AC-067",
+        "AC-075"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T050",
+        "T059",
+        "T068",
+        "T076",
+        "T083"
+      ],
+      "done": "each story is independently testable and the combined lifecycle remains deterministic"
+    },
+    {
+      "id": "T104",
+      "phase": "Phase 10 — Validation and documentation",
+      "description": "Run WCAG automated and manual evidence review and close every applicable A/AA criterion",
+      "files": [
+        "docs/accessibility-conformance-report.md"
+      ],
+      "requirements": [
+        "FR-042",
+        "NFR-007"
+      ],
+      "acceptance": [
+        "AC-067",
+        "AC-068",
+        "AC-069",
+        "AC-070",
+        "AC-071",
+        "AC-072",
+        "AC-073",
+        "AC-074",
+        "AC-075"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T083",
+        "T084"
+      ],
+      "done": "55/55 criteria have result, evidence and N/A trigger where applicable"
+    },
+    {
+      "id": "T105",
+      "phase": "Phase 10 — Validation and documentation",
+      "description": "Run Cloudflare Free quota, build, CPU, memory, subrequest, D1 and degradation gates against current official limits",
+      "files": [
+        "docs/cloudflare-free-validation.md"
+      ],
+      "requirements": [
+        "FR-031",
+        "FR-032",
+        "NFR-003",
+        "NFR-004",
+        "NFR-005"
+      ],
+      "acceptance": [
+        "AC-004",
+        "AC-009",
+        "AC-058",
+        "AC-065",
+        "AC-066",
+        "AC-077",
+        "AC-081"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T086",
+        "T087",
+        "T088",
+        "T089",
+        "T090",
+        "T091",
+        "T092"
+      ],
+      "done": "all budgets retain documented safety margin and no paid path exists"
+    },
+    {
+      "id": "T106",
+      "phase": "Phase 10 — Validation and documentation",
+      "description": "Document the visible data dictionary separating raw, normalized, metric, quality, insight, limitation and price fields",
+      "files": [
+        "docs/user-data-dictionary.md",
+        "docs/user-guide.md"
+      ],
+      "requirements": [
+        "FR-008",
+        "FR-010",
+        "FR-013",
+        "FR-016",
+        "FR-017",
+        "FR-023",
+        "FR-041"
+      ],
+      "acceptance": [
+        "AC-011",
+        "AC-014",
+        "AC-028",
+        "AC-029",
+        "AC-035",
+        "AC-051",
+        "AC-074"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T048",
+        "T049",
+        "T050",
+        "T067"
+      ],
+      "done": "all user-visible categories and reason codes are explained without investment advice"
+    },
+    {
+      "id": "T107",
+      "phase": "Phase 10 — Validation and documentation",
+      "description": "Document architecture, data flow, automation classes, privacy boundaries and post-MVP deferrals",
+      "files": [
+        "docs/architecture.md",
+        "docs/automation.md",
+        "docs/privacy-security.md",
+        "docs/post-mvp.md"
+      ],
+      "requirements": [
+        "FR-020",
+        "FR-030",
+        "FR-031",
+        "FR-032",
+        "NFR-002",
+        "NFR-003",
+        "NFR-006"
+      ],
+      "acceptance": [
+        "AC-049",
+        "AC-053",
+        "AC-065",
+        "AC-066",
+        "AC-083",
+        "AC-084"
+      ],
+      "parallel": true,
+      "story": null,
+      "dependencies": [
+        "T087",
+        "T094"
+      ],
+      "done": "SEC-only scope and no-background-closed-app behavior are unambiguous"
+    },
+    {
+      "id": "T108",
+      "phase": "Phase 10 — Validation and documentation",
+      "description": "Verify the implementation tree contains no unauthorized service, provider, framework, generated secret or user-terminal dependency",
+      "files": [
+        "tests/contract/architecture-invariants.test.ts"
+      ],
+      "requirements": [
+        "NFR-002",
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptance": [
+        "AC-053",
+        "AC-077",
+        "AC-083",
+        "AC-084"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T095",
+        "T096"
+      ],
+      "done": "architecture invariants and deferred-scope scan pass"
+    },
+    {
+      "id": "T109",
+      "phase": "Phase 10 — Validation and documentation",
+      "description": "Produce the post-implementation analysis input report without opening implementation or convergence gates",
+      "files": [
+        "docs/analysis-input.md"
+      ],
+      "requirements": [
+        "NFR-005",
+        "NFR-006"
+      ],
+      "acceptance": [
+        "AC-077",
+        "AC-083",
+        "AC-084"
+      ],
+      "parallel": false,
+      "story": null,
+      "dependencies": [
+        "T097",
+        "T098",
+        "T099",
+        "T100",
+        "T101",
+        "T102",
+        "T103",
+        "T104"
+      ],
+      "done": "report lists exact test evidence, residual runtime risks and confirms gate remains closed pending separate analysis"
+    }
+  ]
+}

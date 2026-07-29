@@ -1,0 +1,38 @@
+{
+  "fixtureSetId": "authority-ref-negative-cases",
+  "version": "1.0.0",
+  "schemaRef": "schemas/acceptance-criteria-catalog.schema.json#/$defs/authorityRef",
+  "caseCount": 5,
+  "cases": [
+    {
+      "caseId": "AUTH-NEG-BASENAME",
+      "authorityRef": "xbrl-mapping-catalog.md",
+      "expectedValid": false,
+      "reason": "basename-only resolution is prohibited"
+    },
+    {
+      "caseId": "AUTH-NEG-SIBLING",
+      "authorityRef": "../definitions/xbrl-mapping-catalog.md",
+      "expectedValid": false,
+      "reason": "sibling traversal is prohibited"
+    },
+    {
+      "caseId": "AUTH-NEG-FALLBACK",
+      "authorityRef": "definitions/a.md|definitions/b.md",
+      "expectedValid": false,
+      "reason": "fallback/multiple paths are prohibited"
+    },
+    {
+      "caseId": "AUTH-NEG-IMPLICIT-ROOT",
+      "authorityRef": "definitions/acceptance-criteria-catalog.json",
+      "expectedValid": false,
+      "reason": "implicit feature root is prohibited"
+    },
+    {
+      "caseId": "AUTH-NEG-OLD-GATE",
+      "authorityRef": "V0.19.1_PHASE_STATUS.md#gate",
+      "expectedValid": false,
+      "reason": "superseded gate cannot resolve as active authority"
+    }
+  ]
+}
