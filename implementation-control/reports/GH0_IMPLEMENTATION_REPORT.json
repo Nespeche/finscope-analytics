@@ -1,30 +1,32 @@
 {
   "schemaVersion": "1.0.0",
   "operation": "GH0",
-  "status": "CANDIDATE_R2",
+  "status": "CANDIDATE_R3",
   "productChanges": false,
   "b12Implemented": false,
   "specifyModified": false,
-  "previousRun": {
-    "runId": "30539524454",
-    "headSha": "6bff8f76d3fef3bd9cd908d2859534b09b63d057",
-    "result": "FAIL",
-    "artifactId": "8758086286",
-    "artifactDigest": "sha256:934a19a13664a2324b6dbdfacf69207a00cbd28f2522e7e60ebaf3d5c62810c5",
-    "primaryFailure": "regression-vitest operational schema inventory mismatch"
+  "previousCandidate": {
+    "revision": "v0.21.13_GH0_candidate_r2",
+    "headSha": "7984cec6fa98efa7b56a78af1deb67aae0dad78e",
+    "localResult": "PASS",
+    "localEvidenceSha256": "59c1d5ffd2e65f4d9f311218c5d8605652d7ec470c3a2eb5d843cbb96b524759",
+    "githubValidationRunId": "30567190585",
+    "githubValidationResult": "FAIL",
+    "githubValidationArtifactId": "8769316879",
+    "githubValidationArtifactDigest": "sha256:d7c65200690a6985d380ea9b42824545b52079e4474708c50123fdaf3df91e3b",
+    "primaryFailure": "control-plane-integrity test used physical GitHub workspace root instead of FINSCOPE_PACKAGE_ROOT",
+    "githubClosureRunId": "30567190584",
+    "githubClosureResult": "NOT_APPLICABLE",
+    "githubClosureArtifactId": "8769293564",
+    "githubClosureArtifactDigest": "sha256:949edf7778515532f6a153364afe313c49f278a13cc8559c25f157d7be753024"
   },
   "activeBatchId": "B12",
   "browserRequired": true,
   "derivedCommandCount": 7,
   "remediation": [
-    "preserve repository bytes across Windows/Linux",
-    "checkout exact pull request head SHA",
-    "derive evidence identity from checked-out Git HEAD",
-    "execute exact active-batch localValidation commands",
-    "register ten operational schemas",
-    "defer closure workflow until GITHUB_HANDOFF changes",
-    "report premature closure as NOT_APPLICABLE",
-    "classify and manifest existing GH0 preflight and scope-guard reports"
+    "control-plane integrity contract resolves FINSCOPE_PACKAGE_ROOT before falling back to current directory",
+    "candidate-stage closure enforcement accepts NOT_APPLICABLE without converting it to a closure PASS",
+    "all B12 product tasks remain pending and no product file is modified"
   ],
-  "next": "QUALIFY_CANDIDATE_R2_IN_GITHUB_ACTIONS"
+  "next": "QUALIFY_CANDIDATE_R3_IN_GITHUB_ACTIONS"
 }

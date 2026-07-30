@@ -3,8 +3,8 @@
   "schemaVersion": "1.1.0",
   "project": "FinScope Analytics",
   "normativeBaseline": "v0.21",
-  "packageRevision": "v0.21.13_GH0_candidate_r2",
-  "activePackageLogicalName": "FS_v0.21.13_GH0_candidate_r2.zip",
+  "packageRevision": "v0.21.13_GH0_candidate_r3",
+  "activePackageLogicalName": "FS_v0.21.13_GH0_candidate_r3.zip",
   "sourceBaseline": {
     "logicalName": "FS_v0.21.12_B11_completed.zip",
     "sha256": "775a244ffd1e57ebee7a5144230312ca07598205c18f82a66a9669284bd9fc95",
@@ -596,7 +596,7 @@
   "productCodePresent": true,
   "dependenciesInstalled": false,
   "buildArtifactsPresent": false,
-  "updatedBy": "GH0 final candidate r2 authoring",
+  "updatedBy": "GH0 candidate r3 authoring",
   "updatedOn": "2026-07-30",
   "baselineRole": "CANDIDATE_AWAITING_LOCAL_VALIDATION",
   "normativeSourceBaseline": {

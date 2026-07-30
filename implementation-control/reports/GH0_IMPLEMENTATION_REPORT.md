@@ -1,10 +1,12 @@
 # GH0 — GitHub-first bootstrap implementation report
 
-## Estado candidato r2
+## Estado candidato r3
 
 GH0 incorpora infraestructura operacional GitHub sin implementar B12 ni modificar código funcional, fixtures, contratos de producto, dependencias, lockfile, tareas, batches o `.specify`.
 
-El run de PR `30539524454` del candidato r1 produjo evidencia autenticada `_FAILED` porque la prueba contractual enumeraba ocho schemas operativos cuando GH0 había incorporado diez. El candidato r2 corrige la identidad del SHA validado, ejecuta literalmente los comandos de `localValidation.commands` del batch activo, preserva bytes LF, separa cierre `NOT_APPLICABLE` de un cierre real, y reconcilia tres reportes GH0 versionados pero omitidos del inventario/manifiesto r1.
+El candidato r2 obtuvo evidencia local PASS y publicó el commit `7984cec6fa98efa7b56a78af1deb67aae0dad78e`. GitHub PR Validation ejecutó el checkout exacto, autenticó el Release B11 y produjo 53 pruebas PASS antes de fallar porque `control-plane-integrity.test.ts` invocó el validador con `.` desde el workspace físico `finscope-analytics`, en vez del alias normativo `FINSCOPE_PACKAGE_ROOT`. Closure produjo correctamente `NOT_APPLICABLE`, pero el paso final exigió únicamente `PASS`.
+
+El candidato r3 corrige exclusivamente esas dos incompatibilidades de entorno y repite toda la regresión obligatoria.
 
 ## Estado de producto preservado
 
@@ -12,4 +14,4 @@ B01–B11 y T001–T048 continúan `COMPLETED`. B12/T049–T053 continúan `PEND
 
 ## Cierre pendiente
 
-GH0 no se considera completed hasta que el candidato r2 obtenga validación PR PASS, se autentique su artifact, se aplique cierre documental allowlisted, el workflow de cierre produzca PASS real, el PR sea mergeado de forma autorizada y el Release completed publique ZIP/sidecar personalizados.
+GH0 no se considera completed hasta que el candidato r3 obtenga PR Validation PASS, se autentique su artifact, se aplique el cierre documental allowlisted, Closure produzca PASS real, el PR sea mergeado de forma autorizada y el Release completed publique ZIP/sidecar personalizados.

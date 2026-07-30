@@ -1,7 +1,7 @@
 {
   "$schema": "schemas/authority-matrix.schema.json",
   "schemaVersion": "1.0.0",
-  "packageRevision": "v0.21.13_GH0_candidate_r2",
+  "packageRevision": "v0.21.13_GH0_candidate_r3",
   "fieldAuthorities": [
     {
       "fieldId": "constitutional_rules",

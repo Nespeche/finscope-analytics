@@ -510,3 +510,11 @@
 - Restricted closure execution to `GITHUB_HANDOFF.json` changes and retained fail-closed `NOT_APPLICABLE` semantics before closure authorization.
 - Reconciled `GH0_PREFLIGHT_RELEASE_VERIFICATION.json`, its Markdown mirror and `GH0_SCOPE_GUARD.md` into inventory and manifest.
 - Preserved B12/T049–T053 as `PENDING` and `convergenceAuthorized=false`.
+
+## 2026-07-30 — GH0 candidate r3 GitHub workspace remediation
+
+- Preserved the authenticated local PASS and remote FAILURE evidence for candidate r2.
+- Changed only the control-plane contract root resolution and candidate-stage closure enforcement.
+- Required the contract to use `FINSCOPE_PACKAGE_ROOT` in GitHub Actions and `.` only as a local fallback.
+- Allowed `NOT_APPLICABLE` to complete the candidate-stage closure workflow without representing a real closure PASS.
+- Preserved B12/T049–T053 as `PENDING`, `convergenceAuthorized=false`, all product authorities and all 19 `.specify` files.

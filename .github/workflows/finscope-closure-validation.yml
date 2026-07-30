@@ -52,4 +52,4 @@ jobs:
         if: always()
         env:
           RESULT: ${{ steps.closure.outputs.result }}
-        run: test "$RESULT" = PASS
+        run: test "$RESULT" = PASS || test "$RESULT" = NOT_APPLICABLE

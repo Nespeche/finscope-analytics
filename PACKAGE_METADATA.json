@@ -1,15 +1,15 @@
 {
   "project": "FinScope Analytics",
-  "packageId": "FinScope-Analytics-v0.21.13-GH0-candidate-r2",
-  "packageVersion": "v0.21.13_GH0_candidate_r2",
-  "packageRevision": "v0.21.13_GH0_candidate_r2",
+  "packageId": "FinScope-Analytics-v0.21.13-GH0-candidate-r3",
+  "packageVersion": "v0.21.13_GH0_candidate_r3",
+  "packageRevision": "v0.21.13_GH0_candidate_r3",
   "generatedOn": "2026-07-30",
   "phase": "github_bootstrap_GH0_candidate",
   "result": "CANDIDATE",
   "implementationReadiness": "GH0_GITHUB_ACTIONS_QUALIFICATION_REQUIRED_B12_PENDING",
   "normativeBaseline": "v0.21",
-  "logicalZipName": "FS_v0.21.13_GH0_candidate_r2.zip",
-  "finalSha256Sidecar": "FS_v0.21.13_GH0_candidate_r2.zip.sha256",
+  "logicalZipName": "FS_v0.21.13_GH0_candidate_r3.zip",
+  "finalSha256Sidecar": "FS_v0.21.13_GH0_candidate_r3.zip.sha256",
   "rootDirectory": "FinScope_v0.21.4",
   "sourceBaseline": {
     "logicalName": "FS_v0.21.12_B11_completed.zip",
@@ -24,14 +24,14 @@
     "logicalName": "Git branch chore/github-bootstrap-gh0",
     "sha256": null,
     "sidecarMatch": null,
-    "disposition": "GITHUB_ACTIONS_QUALIFICATION_PENDING"
+    "disposition": "GITHUB_ACTIONS_REQUALIFICATION_PENDING"
   },
   "inputEvidence": {
-    "status": "GITHUB_ACTIONS_QUALIFICATION_PENDING",
-    "logicalName": null,
-    "sha256": null,
-    "sidecarMatch": null,
-    "effect": "NO_PRODUCT_STATUS_CHANGE"
+    "status": "LOCAL_R2_PASS_GITHUB_R2_FAILED",
+    "logicalName": "FinScope_GH0_CandidateR2_Evidence_Archive.zip",
+    "sha256": "7d6002a68f48095a992e56df7ec4d0a67fb034180d35bf15afb0d68ee9a2b952",
+    "sidecarMatch": true,
+    "effect": "GH0_R3_REMEDIATION_REQUIRED_NO_PRODUCT_STATUS_CHANGE"
   },
   "normativeSourceBaseline": {
     "logicalName": "FinScope_Analytics_SpecDev_ChatGPT_v0.21_post_analysis_remediated.zip",
@@ -178,7 +178,9 @@
     "Changed GH0 PR validation to execute the exact active-batch localValidation.commands and browserRequired authority.",
     "Restricted closure validation to GITHUB_HANDOFF changes and made premature candidate-stage closure explicitly NOT_APPLICABLE.",
     "Aligned the operational schema contract with the two GH0 evidence/handoff schemas.",
-    "Reconciled the GH0 Release preflight JSON/Markdown and scope-guard report omitted from candidate r1 inventory and manifest."
+    "Reconciled the GH0 Release preflight JSON/Markdown and scope-guard report omitted from candidate r1 inventory and manifest.",
+    "Bound the control-plane integrity contract to FINSCOPE_PACKAGE_ROOT when GitHub Actions runs from the physical finscope-analytics workspace.",
+    "Allowed the candidate-stage closure workflow to conclude successfully for NOT_APPLICABLE while preserving a real PASS requirement for authorized closure."
   ],
   "deferredFindings": [
     "IMP-001_OPEN_NON_NORMATIVE",
