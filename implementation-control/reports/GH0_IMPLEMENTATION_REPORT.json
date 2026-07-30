@@ -1,36 +1,34 @@
 {
   "schemaVersion": "1.0.0",
   "operation": "GH0",
-  "status": "CANDIDATE_R4",
+  "status": "CLOSURE_PENDING",
   "productChanges": false,
   "b12Implemented": false,
   "specifyModified": false,
-  "previousCandidate": {
-    "revision": "v0.21.13_GH0_candidate_r3",
-    "headSha": "5007cc25599e038f53e44a04b52a2c177bd2eefa",
-    "localCommandsResult": "PASS",
-    "localRunnerReportedResult": "FAIL",
-    "localEvidenceSha256": "14750c4de865ce8ae130a5a84838a147f328ce385515182b12827c833273d7d9",
-    "localRunnerFailure": "PR API returned stale head immediately after verified branch push",
-    "githubValidationRunId": "30571106298",
-    "githubValidationResult": "FAIL",
-    "githubValidationArtifactId": "8770823425",
-    "githubValidationArtifactDigest": "sha256:c5d5b4a0247eeb5ef5dcc166ffc82836ca55ce20cd17a50396aa44be75e09bb3",
-    "primaryFailure": "large control-plane JSON stdout truncated by immediate process.exit in a piped Linux child process",
-    "githubClosureRunId": "30571105327",
-    "githubClosureWorkflowResult": "SUCCESS",
-    "githubClosureSemanticResult": "NOT_APPLICABLE",
-    "githubClosureArtifactId": "8770806518",
-    "githubClosureArtifactDigest": "sha256:552d24dfb28c3290083292255516a1cf1d31c3347bd8d1ab74eb6b2f2b6f7c55"
+  "candidate": {
+    "revision": "v0.21.13_GH0_candidate_r4",
+    "sha": "98fb21313fe85f740d0398fc473b3e74b306a936",
+    "localEvidenceName": "FinScope_GH0_candidate_r4_20260730185824782_PASS.zip",
+    "localEvidenceSha256": "7699db51452e06f992c4f887cce1e798555dc0cc88fff8e1e54c731fe8e66cee",
+    "runId": "30572841974",
+    "artifactId": "8771517121",
+    "artifactName": "finscope-github-validation-98fb21313fe8-PASS",
+    "artifactDigest": "sha256:89885a0aed5ec8f7776abad82761d346ce02d9cf1fd3d8e86011e0afb7b5fdb6",
+    "result": "PASS_AUTHENTICATED"
+  },
+  "preliminaryClosure": {
+    "runId": "30572842244",
+    "artifactId": "8771486689",
+    "artifactDigest": "sha256:f9d121449e558fea5844711ef1b54d6b1868b4a446ad439658d6fce21f181017",
+    "semanticResult": "NOT_APPLICABLE"
   },
   "activeBatchId": "B12",
   "browserRequired": true,
   "derivedCommandCount": 7,
-  "remediation": [
-    "control-plane JSON and marker are written synchronously to stdout and stderr",
-    "validator sets process.exitCode instead of terminating before pipe buffers flush",
-    "candidate-stage closure and FINSCOPE_PACKAGE_ROOT remediations remain active",
-    "all B12 product tasks remain pending and no product file is modified"
-  ],
-  "next": "QUALIFY_CANDIDATE_R4_IN_GITHUB_ACTIONS"
+  "closure": {
+    "stage": "closure",
+    "status": "PENDING",
+    "releasePending": true
+  },
+  "next": "AWAIT_GITHUB_CLOSURE_PASS"
 }

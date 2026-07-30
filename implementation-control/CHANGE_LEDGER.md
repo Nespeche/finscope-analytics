@@ -526,3 +526,12 @@
 - Wrote the complete JSON and status marker synchronously before setting `process.exitCode`.
 - Added runner qualification for large piped JSON and PR-head eventual consistency.
 - Preserved B12/T049–T053 as `PENDING`, `convergenceAuthorized=false`, all product authorities and all 19 `.specify` files.
+
+## 2026-07-30 — GH0 candidate r4 authenticated and closure requested
+
+- Authenticated local PASS evidence `FinScope_GH0_candidate_r4_20260730185824782_PASS.zip` with SHA-256 `7699db51452e06f992c4f887cce1e798555dc0cc88fff8e1e54c731fe8e66cee`.
+- Authenticated GitHub PR Validation run `30572841974` and artifact `8771517121` with digest `sha256:89885a0aed5ec8f7776abad82761d346ce02d9cf1fd3d8e86011e0afb7b5fdb6`.
+- Registered the exact candidate SHA `98fb21313fe85f740d0398fc473b3e74b306a936` in `GITHUB_HANDOFF.json`.
+- Changed `bootstrap.stage` from `candidate` to `closure`, set closure status `PENDING` and set `release.pending=true` for the authorized post-closure merge.
+- Preserved B12/T049–T053 as `PENDING`, `convergenceAuthorized=false`, all product authorities and all 19 `.specify` files.
+- Did not rerun npm locally because the closure diff is limited to the post-evidence allowlist; GitHub workflows remain the independent remote gate.

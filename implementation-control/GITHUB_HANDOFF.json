@@ -13,7 +13,7 @@
   "bootstrap": {
     "id": "GH0",
     "branch": "chore/github-bootstrap-gh0",
-    "stage": "candidate",
+    "stage": "closure",
     "expectedFailure": null,
     "browserRequired": true,
     "qualificationCommands": [
@@ -56,13 +56,19 @@
     ],
     "expectedFailureTrigger": "commit-subject:[GH0_EXPECT_FAIL_HASH]"
   },
-  "candidate": null,
+  "candidate": {
+    "sha": "98fb21313fe85f740d0398fc473b3e74b306a936",
+    "runId": "30572841974",
+    "artifactId": 8771517121,
+    "artifactName": "finscope-github-validation-98fb21313fe8-PASS",
+    "artifactDigest": "sha256:89885a0aed5ec8f7776abad82761d346ce02d9cf1fd3d8e86011e0afb7b5fdb6"
+  },
   "closure": {
-    "status": "NOT_STARTED",
-    "candidateSha": null
+    "status": "PENDING",
+    "candidateSha": "98fb21313fe85f740d0398fc473b3e74b306a936"
   },
   "release": {
-    "pending": false,
+    "pending": true,
     "tag": "v0.21.13-GH0-completed",
     "packageRevision": "v0.21.13_GH0_completed",
     "zipName": "FS_v0.21.13_GH0_completed.zip",

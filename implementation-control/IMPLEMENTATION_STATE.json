@@ -596,7 +596,7 @@
   "productCodePresent": true,
   "dependenciesInstalled": false,
   "buildArtifactsPresent": false,
-  "updatedBy": "GH0 candidate r4 authoring",
+  "updatedBy": "GH0 closure authoring",
   "updatedOn": "2026-07-30",
   "baselineRole": "CANDIDATE_AWAITING_LOCAL_VALIDATION",
   "normativeSourceBaseline": {
@@ -606,7 +606,7 @@
   },
   "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
   "validationWorkflow": {
-    "candidatePromotionRule": "GitHub candidate and closure checks must PASS for the exact commit before Release; local validation is fallback only.",
+    "candidatePromotionRule": "Exact candidate r4 PR Validation PASS artifact is authenticated; an allowlisted Closure PASS for the closure commit is required before merge and Release.",
     "localProtocol": "implementation-control/LOCAL_VALIDATION_PROTOCOL.md",
     "evidenceSchema": "implementation-control/schemas/github-validation-evidence.schema.json",
     "pendingRuntimeValidationBatches": []
