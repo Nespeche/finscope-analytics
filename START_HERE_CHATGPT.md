@@ -13,3 +13,6 @@ El candidato r3 y su runner exacto quedaron autenticados por `FinScope_local_evi
 ## Continuidad
 
 Usar `implementation-control/IMPLEMENTATION_STATE.json` como autoridad entre chats. La siguiente conversación puede implementar exclusivamente B12: T049–T053. No iniciar B13 ni convergencia.
+## GitHub-first
+
+Después de GH0, reanudar desde `implementation-control/GITHUB_HANDOFF.json`, crear rama desde `main`, abrir PR draft y seguir los checks y el protocolo del operador. B12 continúa pendiente hasta un PR separado.

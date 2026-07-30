@@ -1,0 +1,111 @@
+name: FinScope Completed Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - implementation-control/GITHUB_HANDOFF.json
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout merged main
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+      - name: Configure Node from package authority
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: package.json
+          cache: npm
+      - name: Prepare normative package-root alias
+        shell: bash
+        run: |
+          set -euo pipefail
+          root_alias="$RUNNER_TEMP/FinScope_v0.21.4"
+          rm -rf "$root_alias"
+          ln -s "$GITHUB_WORKSPACE" "$root_alias"
+          echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
+      - name: Verify release gate and closure tree
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          pending=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.pending")
+          test "$pending" = true
+          test "$(git rev-list --parents -n 1 "$GITHUB_SHA" | awk '{print NF}')" -ge 3
+          closure=$(git rev-parse "$GITHUB_SHA^2")
+          git diff --quiet "$closure" "$GITHUB_SHA"
+          node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
+      - name: Install dependencies for schema and regression validation
+        run: npm ci
+      - name: Run full non-product regression and build
+        run: |
+          npm run typecheck
+          npm run test
+          npm run build
+      - name: Package completed baseline
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release
+      - name: Resolve successful closure run and artifact
+        id: closure
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          closure=$(git rev-parse "$GITHUB_SHA^2")
+          run_json=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/finscope-closure-validation.yml/runs?head_sha=${closure}&status=success&per_page=20")
+          run_id=$(printf '%s' "$run_json" | jq -r '.workflow_runs[0].id // empty')
+          test -n "$run_id"
+          artifact_json=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts")
+          artifact_id=$(printf '%s' "$artifact_json" | jq -r '.artifacts[] | select(.name|endswith("-PASS")) | .id' | head -1)
+          test -n "$artifact_id"
+          echo "closure_sha=$closure" >> "$GITHUB_OUTPUT"
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
+          echo "artifact_id=$artifact_id" >> "$GITHUB_OUTPUT"
+      - name: Create authenticated draft Release
+        id: draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.tag")
+          if gh release view "$tag" >/dev/null 2>&1; then
+            draft=$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${tag}" --jq .draft)
+            test "$draft" = true
+            gh release delete "$tag" --yes --cleanup-tag
+          fi
+          gh release create "$tag" --draft --target "$GITHUB_SHA" --title "FinScope GH0 completed" --notes "GitHub-first operational bootstrap completed. B12 remains pending."
+          release_id=$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${tag}" --jq .id)
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "release_id=$release_id" >> "$GITHUB_OUTPUT"
+      - name: Generate and validate Release handoff
+        run: node implementation-control/scripts/Finalize-GitHubReleaseHandoff.mjs .finscope-release "${{ steps.draft.outputs.release_id }}" "${{ steps.closure.outputs.closure_sha }}" "${{ steps.closure.outputs.run_id }}" "${{ steps.closure.outputs.artifact_id }}"
+      - name: Upload custom assets and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${{ steps.draft.outputs.tag }}"
+          gh release upload "$tag" .finscope-release/FS_v0.21.13_GH0_completed.zip .finscope-release/FS_v0.21.13_GH0_completed.zip.sha256 .finscope-release/FinScope_GH0_release_evidence_${GITHUB_RUN_ID}.json .finscope-release/GITHUB_RELEASE_HANDOFF.json .finscope-release/PROMPT_IMPLEMENTACION_B12.md --clobber
+          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/releases/${{ steps.draft.outputs.release_id }}" -F draft=false >/dev/null
+      - name: Upload Release workflow evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: finscope-gh0-completed-release-${{ github.sha }}
+          path: .finscope-release
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 90

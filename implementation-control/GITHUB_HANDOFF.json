@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0.0",
+  "repository": "Nespeche/finscope-analytics",
+  "baseline": {
+    "tag": "v0.21.12-B11-completed",
+    "commitSha": "ae756b882ac56dd6eaffa7dbc57933dd9add7ec5",
+    "zipName": "FS_v0.21.12_B11_completed.zip",
+    "sidecarName": "FS_v0.21.12_B11_completed.zip.sha256",
+    "zipSha256": "775a244ffd1e57ebee7a5144230312ca07598205c18f82a66a9669284bd9fc95",
+    "root": "FinScope_v0.21.4/",
+    "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
+  },
+  "bootstrap": {
+    "id": "GH0",
+    "branch": "chore/github-bootstrap-gh0",
+    "stage": "candidate",
+    "expectedFailure": null,
+    "browserRequired": true,
+    "qualificationCommands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install --with-deps chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      }
+    ],
+    "expectedFailureTrigger": "commit-subject:[GH0_EXPECT_FAIL_HASH]"
+  },
+  "candidate": null,
+  "closure": {
+    "status": "NOT_STARTED",
+    "candidateSha": null
+  },
+  "release": {
+    "pending": false,
+    "tag": "v0.21.13-GH0-completed",
+    "packageRevision": "v0.21.13_GH0_completed",
+    "zipName": "FS_v0.21.13_GH0_completed.zip",
+    "sidecarName": "FS_v0.21.13_GH0_completed.zip.sha256"
+  },
+  "productState": {
+    "activeBatchId": "B12",
+    "nextAuthorizedBatchId": "B12",
+    "completedTasksThrough": "T048",
+    "convergenceAuthorized": false
+  }
+}

@@ -88,3 +88,6 @@ Actualizar el contexto operativo:
 - antes de cualquier promoción a `completed`.
 
 En cada punto deben sincronizarse estado, mapa, lock, batch, ledger, reportes, metadata, inventario y manifiesto, manteniendo `convergenceAuthorized=false` hasta su transición formal.
+## Continuidad GitHub
+
+Cargar `GITHUB_HANDOFF.json` junto con `IMPLEMENTATION_STATE.json`. Registrar rama, PR, candidate SHA, run, artifact, cierre y Release. Toda devolución al usuario debe seguir `GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md`.

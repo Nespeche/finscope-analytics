@@ -3,12 +3,12 @@
   "schemaVersion": "1.1.0",
   "project": "FinScope Analytics",
   "normativeBaseline": "v0.21",
-  "packageRevision": "v0.21.12_B11_completed",
-  "activePackageLogicalName": "FS_v0.21.12_B11_completed.zip",
+  "packageRevision": "v0.21.13_GH0_candidate_r1",
+  "activePackageLogicalName": "FS_v0.21.13_GH0_candidate_r1.zip",
   "sourceBaseline": {
-    "logicalName": "FS_v0.21.11_B10_completed.zip",
-    "sha256": "8a73e0ebbb8bb4e56f3aeb1df7982ae8bbd9e4789060d830250985820d86c06e",
-    "role": "PREVIOUS_COMPLETED_BASELINE_REPLACED_BY_THIS_PACKAGE"
+    "logicalName": "FS_v0.21.12_B11_completed.zip",
+    "sha256": "775a244ffd1e57ebee7a5144230312ca07598205c18f82a66a9669284bd9fc95",
+    "role": "ACTIVE_COMPLETED_BASELINE_USED_FOR_GH0"
   },
   "phaseGate": {
     "tasksAuthorized": true,
@@ -596,9 +596,9 @@
   "productCodePresent": true,
   "dependenciesInstalled": false,
   "buildArtifactsPresent": false,
-  "updatedBy": "ChatGPT B11 evidence verifier and closure author",
-  "updatedOn": "2026-07-28",
-  "baselineRole": "ACTIVE_COMPLETED_BASELINE",
+  "updatedBy": "ChatGPT GH0 GitHub-first bootstrap author",
+  "updatedOn": "2026-07-29",
+  "baselineRole": "CANDIDATE_AWAITING_LOCAL_VALIDATION",
   "normativeSourceBaseline": {
     "logicalName": "FinScope_Analytics_SpecDev_ChatGPT_v0.21_post_analysis_remediated.zip",
     "sha256": "2e765125d2d3415f9804a0bd8c30f1d9073eb9ae2576ff573c58c4706065e425",
@@ -606,9 +606,9 @@
   },
   "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
   "validationWorkflow": {
-    "candidatePromotionRule": "A future batch candidate is promoted only after exact ZIP/sidecar binding, clean extraction, every required command exits 0, effective test discovery, and independent evidence verification.",
+    "candidatePromotionRule": "GitHub candidate and closure checks must PASS for the exact commit before Release; local validation is fallback only.",
     "localProtocol": "implementation-control/LOCAL_VALIDATION_PROTOCOL.md",
-    "evidenceSchema": "implementation-control/schemas/local-validation-evidence.schema.json",
+    "evidenceSchema": "implementation-control/schemas/github-validation-evidence.schema.json",
     "pendingRuntimeValidationBatches": []
   }
 }

@@ -41,3 +41,14 @@ El candidato exacto `FS_B11_r3.zip`, su runner r3 v1 y `FinScope_local_evidence_
 ## Integridad
 
 Paquete lógico `FS_v0.21.12_B11_completed.zip` con una sola raíz `FinScope_v0.21.4/`; sin dependencias instaladas, builds, caches, temporales ni ZIPs anidados; `.specify` byte-inmutable.
+## GitHub-first GH0
+
+Autoridades operativas activas:
+
+- `implementation-control/GITHUB_REPOSITORY_POLICY.md`;
+- `implementation-control/GITHUB_VALIDATION_PROTOCOL.md`;
+- `implementation-control/GITHUB_RELEASE_PROTOCOL.md`;
+- `implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md`;
+- `implementation-control/GITHUB_HANDOFF.json`.
+
+`GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md` es protocolo de método/comunicación operativa. GitHub runs y artifacts son evidencia, no autoridad de producto. `LOCAL_VALIDATION_PROTOCOL.md` queda como fallback cuando GitHub Actions no está disponible.

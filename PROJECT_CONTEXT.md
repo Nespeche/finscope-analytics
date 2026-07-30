@@ -23,3 +23,6 @@ B01–B11 y T001–T048 están `COMPLETED`. B12 está `PENDING`; `activeBatchId=
 ## Continuidad
 
 La próxima conversación debe implementar exclusivamente B12 conforme a `implementation-control/batches/B12.json`: T049, T050, T051, T052 y T053. No iniciar B13 ni ejecutar convergencia.
+## Migración operacional GH0
+
+La infraestructura GitHub-first se versiona sin implementar B12. `GITHUB_HANDOFF.json` conserva candidato/runs y `GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md` regula cada instrucción operativa. El Release GH0 será el siguiente baseline completed únicamente tras evidencia ejecutable.

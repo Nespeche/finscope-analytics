@@ -1,10 +1,10 @@
 {
-  "inventoryId": "FinScope-v0.21.12-B11-completed-package-inventory",
-  "packageVersion": "v0.21.12_B11_completed",
-  "generatedOn": "2026-07-28",
+  "inventoryId": "FinScope-v0.21.13-GH0-candidate-r1-package-inventory",
+  "packageVersion": "v0.21.13_GH0_candidate_r1",
+  "generatedOn": "2026-07-29",
   "root": "FinScope_v0.21.4",
   "resolutionBase": "packageRoot",
-  "itemCount": 684,
+  "itemCount": 704,
   "exclusions": [
     {
       "path": "PACKAGE_INVENTORY.json",
@@ -16,6 +16,46 @@
     }
   ],
   "files": [
+    {
+      "path": ".github/pull_request_template.md",
+      "sizeBytes": 705,
+      "sha256": "f9653c0d69d9d55e71b4c7b72be815cb0bd03def6007297e9d81e381c936b3d5",
+      "mediaType": "text/markdown",
+      "category": "github-operations",
+      "status": "ACTIVE"
+    },
+    {
+      "path": ".github/workflows/finscope-closure-validation.yml",
+      "sizeBytes": 1750,
+      "sha256": "41d8964a51df198ec59be6aa2ec48e6a3555c37f7253b271cce64dae2eceeb1d",
+      "mediaType": "application/yaml",
+      "category": "github-operations",
+      "status": "ACTIVE"
+    },
+    {
+      "path": ".github/workflows/finscope-completed-release.yml",
+      "sizeBytes": 5182,
+      "sha256": "db8040fcf00822df4ddac8448badf5bbc9a0308cc6987b46884341e626f74c93",
+      "mediaType": "application/yaml",
+      "category": "github-operations",
+      "status": "ACTIVE"
+    },
+    {
+      "path": ".github/workflows/finscope-pr-validation.yml",
+      "sizeBytes": 2328,
+      "sha256": "89c165c05e153cff87a4b6ad37550bbbf5b9ecd970971a7d3c219edba818ab36",
+      "mediaType": "application/yaml",
+      "category": "github-operations",
+      "status": "ACTIVE"
+    },
+    {
+      "path": ".gitignore",
+      "sizeBytes": 165,
+      "sha256": "0b17c73ef933164daa12c1697988b42a8831d784e5e18f7aabbc93d0292f5cb8",
+      "mediaType": "text/plain",
+      "category": "documentation",
+      "status": "ACTIVE"
+    },
     {
       "path": ".specify/feature.json",
       "sizeBytes": 69,
@@ -178,24 +218,24 @@
     },
     {
       "path": "DOCUMENTATION_INDEX.md",
-      "sizeBytes": 2236,
-      "sha256": "16804c901b98ca96f2294fb7fbcba6c43711b622027c9f9fd88938e304654375",
+      "sizeBytes": 2828,
+      "sha256": "f5265c5974ebda223f7c4e70c9bffc575385c769c2b7642d59a49ccbef6dfd0b",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "active-report",
       "status": "ACTIVE"
     },
     {
       "path": "PACKAGE_METADATA.json",
-      "sizeBytes": 35319,
-      "sha256": "573512711a8d670d4eaf74fdd815a52c60e01674e3b9467b437bef187dafa4c6",
+      "sizeBytes": 35244,
+      "sha256": "5847aa386a9341194d65b12d0e7c05538d5e4ae39d6f886b49dbaab6e809798a",
       "mediaType": "application/json",
       "category": "generated-derivative",
       "status": "GENERATED"
     },
     {
       "path": "PROJECT_CONTEXT.md",
-      "sizeBytes": 1536,
-      "sha256": "a27444f086422a549b5efd0389b35369a641bf86153e03acdd2ebee1c9d5a0cf",
+      "sizeBytes": 1851,
+      "sha256": "0444b3949310f7c11cbcc15e9e4cb9ca1af2f7ab6e5c3ca8765b758e33da6910",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "active-report",
       "status": "ACTIVE"
@@ -210,8 +250,8 @@
     },
     {
       "path": "START_HERE_CHATGPT.md",
-      "sizeBytes": 987,
-      "sha256": "0951472357f4e1f37c1348b4327b955d6b4e6adef12212b5eee0c1eb9320ded8",
+      "sizeBytes": 1217,
+      "sha256": "16319d2b0ff1675b14dbfd6c3b0798a408d644d6e6f1747a7011b54778762f75",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "active-report",
       "status": "ACTIVE"
@@ -346,16 +386,16 @@
     },
     {
       "path": "implementation-control/AUTHORITY_MATRIX.json",
-      "sizeBytes": 5046,
-      "sha256": "672dc0701a52934b0e2ec8290d4c8113fb5f404419b90359385c0f5b594f508e",
+      "sizeBytes": 5788,
+      "sha256": "da7522fb22b9d8aad70d0ba0690bb739285c49fe5e3885a152e90e62083a12d6",
       "mediaType": "application/json",
       "category": "active-operational",
       "status": "ACTIVE"
     },
     {
       "path": "implementation-control/BATCH_CHAT_PROMPT_TEMPLATE.md",
-      "sizeBytes": 1414,
-      "sha256": "ff4f6c4f1bd9b676c8ca329a22589ef75338d4a6b89e51b877b210fc1cc6189b",
+      "sizeBytes": 1793,
+      "sha256": "191c8734f91163cf5cad10815c399db8f206d76123b58b02e1bf1990a7a5b311",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "active-operational",
       "status": "ACTIVE"
@@ -370,26 +410,66 @@
     },
     {
       "path": "implementation-control/CHANGE_LEDGER.md",
-      "sizeBytes": 55053,
-      "sha256": "291137af66d20629abaeed64493b58eba03738b99c97d3a70454fc4296c723cb",
+      "sizeBytes": 55430,
+      "sha256": "5d146be7e4e62c8b11fca2f3cf0d5c88a110b7b4a5343a3b6705fa2d3bc4c8e5",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "active-operational",
       "status": "ACTIVE"
     },
     {
       "path": "implementation-control/CONTEXT_LOADING_POLICY.md",
-      "sizeBytes": 2486,
-      "sha256": "ec8a08f52ead3a704dad1907e3e7d2178dcc09d15b7dba2ae444c37ce6291352",
+      "sizeBytes": 2801,
+      "sha256": "b6c2d6bdcde419cf220db784ef6c7e2ff105a4bea804b087456f8d35e8100be9",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "active-operational",
       "status": "ACTIVE"
     },
     {
       "path": "implementation-control/CONTEXT_MAINTENANCE_MODEL.md",
-      "sizeBytes": 5094,
-      "sha256": "9d9c942a21d2554ae630115b9f97919246a053462fe515fc7becfda06c25ae1a",
+      "sizeBytes": 5337,
+      "sha256": "e3bf2028f1b949b024e5ee24bfe40ac7848dafcd299f07b040c4ca2248db8500",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/GITHUB_HANDOFF.json",
+      "sizeBytes": 2160,
+      "sha256": "dc8fc142bb0a35d9cf3d1eff857ff37c14928cbd6112a59ddad220de2a532aff",
+      "mediaType": "application/json",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md",
+      "sizeBytes": 3045,
+      "sha256": "51544ed944d8e1e0aaf026257a94fbdf27628a558e1cb39b9f8c6c41f2271de0",
+      "mediaType": "text/markdown",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/GITHUB_RELEASE_PROTOCOL.md",
+      "sizeBytes": 1446,
+      "sha256": "b3463631282a89de3b6bf50c3bc08fae0060629b24a4ecde4303141098853274",
+      "mediaType": "text/markdown",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/GITHUB_REPOSITORY_POLICY.md",
+      "sizeBytes": 1589,
+      "sha256": "bcbbe7d6949c0be8a0ae714d1fb3ffa47a399d9e9a6e444626b8a8f716516c1e",
+      "mediaType": "text/markdown",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/GITHUB_VALIDATION_PROTOCOL.md",
+      "sizeBytes": 1793,
+      "sha256": "547a0bbcc9f2349c8a008c2cbdbed66d3909c7bc8cd9fbfc608f660aee8f845d",
+      "mediaType": "text/markdown",
+      "category": "implementation-control",
       "status": "ACTIVE"
     },
     {
@@ -410,32 +490,32 @@
     },
     {
       "path": "implementation-control/IMPLEMENTATION_EXECUTION_PROTOCOL.md",
-      "sizeBytes": 7981,
-      "sha256": "34034bb0c9f5db2bcad1b04af174bd0ff5cdf9622d031720f13a37bf4966cc48",
+      "sizeBytes": 8427,
+      "sha256": "03d7a96ee35a5c576de7665ac723d8ecc473de1eadf4d05d1fcdf3f2b2225a97",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "active-operational",
       "status": "ACTIVE"
     },
     {
       "path": "implementation-control/IMPLEMENTATION_STATE.json",
-      "sizeBytes": 40861,
-      "sha256": "df3d01a5a2f891415c77c529cfbdf221d08c3bd5dcd6a9577253b38809337c30",
+      "sizeBytes": 40785,
+      "sha256": "7861f12e416f43dcc4eb859b1bf14e7a425b6767aaca0634b3f0967f10d06679",
       "mediaType": "application/json",
       "category": "active-operational",
       "status": "ACTIVE"
     },
     {
       "path": "implementation-control/LOCAL_VALIDATION_PROTOCOL.md",
-      "sizeBytes": 2572,
-      "sha256": "81138842123aa53b7ba56bc9222b466595218ef33ba55b201f776a49c4b6fd8d",
+      "sizeBytes": 2888,
+      "sha256": "d4650c30193a42806fba41acd955e5ab8c5dda627bd2bf3eef6717ced07c9403",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "active-operational",
       "status": "ACTIVE"
     },
     {
       "path": "implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt",
-      "sizeBytes": 8022,
-      "sha256": "0ff8d947f8761cd897c5faef0326c125e3ea017092f1b51ef2adc6309df92fa7",
+      "sizeBytes": 8108,
+      "sha256": "8b84ea253ede2e8b7fa1bb0455b241ef3a444332039fda7f27f127425798ed64",
       "mediaType": "text/plain; charset=utf-8",
       "category": "active-operational",
       "status": "ACTIVE"
@@ -450,8 +530,8 @@
     },
     {
       "path": "implementation-control/SDD_OPERATING_MODEL.md",
-      "sizeBytes": 6904,
-      "sha256": "2ac5e05bc8c6916c5f90016cde5ebdc0596b9e5a5ace5f1b8a2d4735f8dd85cf",
+      "sizeBytes": 7191,
+      "sha256": "afca52a4c65416e168a8e6a228ac8221a33b6aab2d0b7875a18fab92b14b2de6",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "active-operational",
       "status": "ACTIVE"
@@ -1409,6 +1489,22 @@
       "status": "ACTIVE"
     },
     {
+      "path": "implementation-control/reports/GH0_IMPLEMENTATION_REPORT.json",
+      "sizeBytes": 338,
+      "sha256": "475d9fba52ab85d4aa0de54f60ad84b7fdf40a25606dd4a6de314f919a0ddf18",
+      "mediaType": "application/json",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/reports/GH0_IMPLEMENTATION_REPORT.md",
+      "sizeBytes": 857,
+      "sha256": "498cd7f651cf7db1ba5ff8ba8ca975df2c53dc8aaa6b4bad256bbf6f4ced8e29",
+      "mediaType": "text/markdown",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
       "path": "implementation-control/schemas/authority-matrix.schema.json",
       "sizeBytes": 1594,
       "sha256": "1e24eaa1d3d62f60669e777fcc6b2cec982afc36516c8953650cca6a06eb8752",
@@ -1422,6 +1518,22 @@
       "sha256": "0bbe899ae3d81f3d3fbcc9b55119e46d1df13ec2eb293d8745a162f83af920db",
       "mediaType": "application/json",
       "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/schemas/github-release-handoff.schema.json",
+      "sizeBytes": 2417,
+      "sha256": "e7edc5f62fc0c4b36433e4a78faf16919c4902698e10ba20a036676b381c9430",
+      "mediaType": "application/json",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/schemas/github-validation-evidence.schema.json",
+      "sizeBytes": 8303,
+      "sha256": "145d84c3c04e7eccc3c5affaab78768e6ee3844acccfda4a7e9112fb674866ff",
+      "mediaType": "application/json",
+      "category": "implementation-control",
       "status": "ACTIVE"
     },
     {
@@ -1473,6 +1585,22 @@
       "status": "ACTIVE"
     },
     {
+      "path": "implementation-control/scripts/Finalize-GitHubReleaseHandoff.mjs",
+      "sizeBytes": 1956,
+      "sha256": "119353f59bedcd282ebb322a139d5771a32132be4219a5804dc59343ac5e329c",
+      "mediaType": "text/javascript",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/scripts/GitHub-Common.mjs",
+      "sizeBytes": 8218,
+      "sha256": "2a8fdf4ad2ef19da27e208c1be4f29d599f71f1a07b6d6b46ec18dcac7476392",
+      "mediaType": "text/javascript",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
       "path": "implementation-control/scripts/Invoke-FinScopeBatchValidation.ps1",
       "sizeBytes": 26736,
       "sha256": "895d671486c564531acd275baf228a92bf10b77deebf601f77a7e935e88573f4",
@@ -1486,6 +1614,14 @@
       "sha256": "2d5aa08fb6f683714727aef5b35d3212f7755b5cbac0ac47401495e3fd7ca7d4",
       "mediaType": "text/plain; charset=utf-8",
       "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/scripts/Package-GitHubCompletedRelease.mjs",
+      "sizeBytes": 7865,
+      "sha256": "af7a567dcdf1d204f289914493e84ec3ad4d53cf47880267a336f0c7dd86ff3c",
+      "mediaType": "text/javascript",
+      "category": "implementation-control",
       "status": "ACTIVE"
     },
     {
@@ -1537,6 +1673,14 @@
       "status": "ACTIVE"
     },
     {
+      "path": "implementation-control/scripts/Run-GitHubValidation.mjs",
+      "sizeBytes": 8425,
+      "sha256": "582ca758788859de936bc6ccdbce8e9a85e695b3fdc49614d45b2c1080bd8e84",
+      "mediaType": "text/javascript",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
       "path": "implementation-control/scripts/Validate-ControlPlaneEvidence.mjs",
       "sizeBytes": 885,
       "sha256": "7b08ef7cd6cee2cee043d619a97b3663eef33123533c1b3e6034d2cac0e0b9b5",
@@ -1550,6 +1694,22 @@
       "sha256": "91a7767e5cc59220ad6a6137e74bcbc8ecd26a848e41f2db96de7dd1b725ffe4",
       "mediaType": "text/javascript; charset=utf-8",
       "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/scripts/Verify-GitHubBaseline.mjs",
+      "sizeBytes": 4889,
+      "sha256": "b9fe2238e9fd2e4baf971aeaf0dbaae4e47f17ac23e9b5ac779febd7b27dadb2",
+      "mediaType": "text/javascript",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/scripts/Verify-GitHubClosure.mjs",
+      "sizeBytes": 5385,
+      "sha256": "ae1ec2468d06b72848f9997ebc429db9c09cd0c8bb6db7945bcacf2d8ce792df",
+      "mediaType": "text/javascript",
+      "category": "implementation-control",
       "status": "ACTIVE"
     },
     {
@@ -3721,6 +3881,70 @@
       "status": "HISTORICAL"
     },
     {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/00_V0.19_REPORT_INDEX.md",
+      "sizeBytes": 643,
+      "sha256": "11a80977a8a889728db428c42d5904e32ff65961f9338f447ce25022f4f21c05",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/01_V0.19_ALIGNMENT_REPORT.md",
+      "sizeBytes": 905,
+      "sha256": "e5239d73794bb95477d51f7db0d369365e6006595ada5998f563075327af868c",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/02_V0.19_FINDINGS_CLOSURE.md",
+      "sizeBytes": 2625,
+      "sha256": "a8d4bf73a3cbc3b1f4fbb0538c1df7de3a99499d877a25accc5267888a3e74e6",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/03_V0.19_VALIDATION_REPORT.md",
+      "sizeBytes": 1599,
+      "sha256": "7d94032243a519fc376dfe0ced6d357d29d0d93e9f788ff896a6703ca2ad6830",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/04_V0.19_PACKAGE_REPORT.md",
+      "sizeBytes": 1270,
+      "sha256": "25a6b1e681c674f9279f040129944a5b6314faa2cebe6635000e6ca026bbe9b0",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/05_V0.19_FILE_CHANGES.md",
+      "sizeBytes": 25884,
+      "sha256": "9e7ff53ce928d7d6e225ababd17f794c9e46e158b67d6a46ea1f140ec5bc3dc5",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/06_V0.19_INTERNAL_CHECKLIST.md",
+      "sizeBytes": 1025,
+      "sha256": "c135bac4fcd2ab14bb6dcb61a9effe2ae6abe4fe6bcc6abbde60c10291dff5c3",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/V0.18_TASKS_DRAFT_SUPERSEDED.md",
+      "sizeBytes": 16323,
+      "sha256": "97fb8e3a0a172b1b9e8596aea3d80ddb962a0f56ea1df83bf2c3bc95a45ab097",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
       "path": "specs/001-fundamental-analysis-platform/reports/v0.19.1/00_V0.19.1_REPORT_INDEX.md",
       "sizeBytes": 728,
       "sha256": "7e4bdf6bcae80ad2d75a2848046ece69321532f26578b060e15b12ea38b5e040",
@@ -3789,70 +4013,6 @@
       "sizeBytes": 26002,
       "sha256": "a62310ca735f5557341f7b1e5cb3ce494dba8eb3f6c328cded57ab3e6d2e0006",
       "mediaType": "application/json",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/00_V0.19_REPORT_INDEX.md",
-      "sizeBytes": 643,
-      "sha256": "11a80977a8a889728db428c42d5904e32ff65961f9338f447ce25022f4f21c05",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/01_V0.19_ALIGNMENT_REPORT.md",
-      "sizeBytes": 905,
-      "sha256": "e5239d73794bb95477d51f7db0d369365e6006595ada5998f563075327af868c",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/02_V0.19_FINDINGS_CLOSURE.md",
-      "sizeBytes": 2625,
-      "sha256": "a8d4bf73a3cbc3b1f4fbb0538c1df7de3a99499d877a25accc5267888a3e74e6",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/03_V0.19_VALIDATION_REPORT.md",
-      "sizeBytes": 1599,
-      "sha256": "7d94032243a519fc376dfe0ced6d357d29d0d93e9f788ff896a6703ca2ad6830",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/04_V0.19_PACKAGE_REPORT.md",
-      "sizeBytes": 1270,
-      "sha256": "25a6b1e681c674f9279f040129944a5b6314faa2cebe6635000e6ca026bbe9b0",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/05_V0.19_FILE_CHANGES.md",
-      "sizeBytes": 25884,
-      "sha256": "9e7ff53ce928d7d6e225ababd17f794c9e46e158b67d6a46ea1f140ec5bc3dc5",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/06_V0.19_INTERNAL_CHECKLIST.md",
-      "sizeBytes": 1025,
-      "sha256": "c135bac4fcd2ab14bb6dcb61a9effe2ae6abe4fe6bcc6abbde60c10291dff5c3",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.19/V0.18_TASKS_DRAFT_SUPERSEDED.md",
-      "sizeBytes": 16323,
-      "sha256": "97fb8e3a0a172b1b9e8596aea3d80ddb962a0f56ea1df83bf2c3bc95a45ab097",
-      "mediaType": "text/markdown; charset=utf-8",
       "category": "historical-evidence",
       "status": "HISTORICAL"
     },
@@ -3940,94 +4100,6 @@
       "path": "specs/001-fundamental-analysis-platform/reports/v0.20/external-post-tasks/FinScope_Analytics_v0.20_post_tasks_coverage_matrix.md",
       "sizeBytes": 55378,
       "sha256": "2a0ccc029c7da80299fa1f0b4123bd82493632bc7b75475be4dd4527a3e6b40c",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.1/00_REPORT_INDEX.md",
-      "sizeBytes": 459,
-      "sha256": "edd645afe0c6ecec893d3a60d1ca465a42a60f126368e4ca321b1d30cd3a2f45",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.1/01_IMPLEMENTATION_ORCHESTRATION_ADAPTATION.md",
-      "sizeBytes": 1052,
-      "sha256": "71dbe8cffda4cd92792a730eeb9ae85e8c64a4b159a15b565c9e6af367060a95",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.1/02_METRIC_COUNT_ERRATUM.md",
-      "sizeBytes": 527,
-      "sha256": "f8899b9c2385685be63f44c29031a69110674d0625cb10ed13011dbdbe4ba7bb",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.1/03_BATCH_MAP_VALIDATION.md",
-      "sizeBytes": 505,
-      "sha256": "08ab3ad74dac602f2cc770040397ed0738993edb6b3019abd42d63d80728f060",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.1/04_PACKAGE_VALIDATION.json",
-      "sizeBytes": 2194,
-      "sha256": "13d84e9b4d595cb9c44b368745cf4e6a745baf3dc0cd5121b6657ce0874aff01",
-      "mediaType": "application/json",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.2/00_REPORT_INDEX.md",
-      "sizeBytes": 802,
-      "sha256": "7f3061400b01231255386cf5a815e5958ef1bb31028c3489f2d24e8637d7605e",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.2/01_AUTHORITY_AND_EXECUTABILITY_DIAGNOSTIC.md",
-      "sizeBytes": 4917,
-      "sha256": "52a174b84b69fd1e860a3f0af1b29c3ca76334baa296afecee5260558807fc52",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.2/02_FINDINGS_CLOSURE_MATRIX.json",
-      "sizeBytes": 5394,
-      "sha256": "35d4283a9b30f8926545fdbc422cfec625c0348b69d44f1402fac220586bb21f",
-      "mediaType": "application/json",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.2/03_TASK_GRAPH_AND_COMPOSITION_REMEDIATION.md",
-      "sizeBytes": 1531,
-      "sha256": "576cf9291282d6ba512175befdd548bdc628fddfd98dc98cd52a56d0004022ab",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.2/04_PACKAGE_VALIDATION.json",
-      "sizeBytes": 1863,
-      "sha256": "62cfbc1cd7247a213a4f10ff7b39dd2b73b3ad476ff63ca550f9ef7d166dcf5e",
-      "mediaType": "application/json",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.2/05_MODIFIED_CREATED_FILES.md",
-      "sizeBytes": 4227,
-      "sha256": "4cf5a7ef59d1e144a99ad4e8c6ffef71a0dc837458643691935818ad7d8bf5b6",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "historical-evidence",
       "status": "HISTORICAL"
@@ -4124,6 +4196,94 @@
       "path": "specs/001-fundamental-analysis-platform/reports/v0.21/08_ANA_001_013_CLOSURE.md",
       "sizeBytes": 3483,
       "sha256": "287bc5403358a1aebbaae37f72811920c21c3946a0ab0440e9a227c147dc325a",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.1/00_REPORT_INDEX.md",
+      "sizeBytes": 459,
+      "sha256": "edd645afe0c6ecec893d3a60d1ca465a42a60f126368e4ca321b1d30cd3a2f45",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.1/01_IMPLEMENTATION_ORCHESTRATION_ADAPTATION.md",
+      "sizeBytes": 1052,
+      "sha256": "71dbe8cffda4cd92792a730eeb9ae85e8c64a4b159a15b565c9e6af367060a95",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.1/02_METRIC_COUNT_ERRATUM.md",
+      "sizeBytes": 527,
+      "sha256": "f8899b9c2385685be63f44c29031a69110674d0625cb10ed13011dbdbe4ba7bb",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.1/03_BATCH_MAP_VALIDATION.md",
+      "sizeBytes": 505,
+      "sha256": "08ab3ad74dac602f2cc770040397ed0738993edb6b3019abd42d63d80728f060",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.1/04_PACKAGE_VALIDATION.json",
+      "sizeBytes": 2194,
+      "sha256": "13d84e9b4d595cb9c44b368745cf4e6a745baf3dc0cd5121b6657ce0874aff01",
+      "mediaType": "application/json",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.2/00_REPORT_INDEX.md",
+      "sizeBytes": 802,
+      "sha256": "7f3061400b01231255386cf5a815e5958ef1bb31028c3489f2d24e8637d7605e",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.2/01_AUTHORITY_AND_EXECUTABILITY_DIAGNOSTIC.md",
+      "sizeBytes": 4917,
+      "sha256": "52a174b84b69fd1e860a3f0af1b29c3ca76334baa296afecee5260558807fc52",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.2/02_FINDINGS_CLOSURE_MATRIX.json",
+      "sizeBytes": 5394,
+      "sha256": "35d4283a9b30f8926545fdbc422cfec625c0348b69d44f1402fac220586bb21f",
+      "mediaType": "application/json",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.2/03_TASK_GRAPH_AND_COMPOSITION_REMEDIATION.md",
+      "sizeBytes": 1531,
+      "sha256": "576cf9291282d6ba512175befdd548bdc628fddfd98dc98cd52a56d0004022ab",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.2/04_PACKAGE_VALIDATION.json",
+      "sizeBytes": 1863,
+      "sha256": "62cfbc1cd7247a213a4f10ff7b39dd2b73b3ad476ff63ca550f9ef7d166dcf5e",
+      "mediaType": "application/json",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/reports/v0.21.2/05_MODIFIED_CREATED_FILES.md",
+      "sizeBytes": 4227,
+      "sha256": "4cf5a7ef59d1e144a99ad4e8c6ffef71a0dc837458643691935818ad7d8bf5b6",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "historical-evidence",
       "status": "HISTORICAL"

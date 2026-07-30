@@ -493,3 +493,9 @@
 - No se repitieron npm ni pruebas después de la evidencia porque no cambiaron código, tests, runners, scripts, schemas, dependencias, fixtures, contratos ni comportamiento.
 - `.specify`: 19/19 archivos byte-idénticos; hash `e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09`.
 - Estado de continuidad: `activeBatchId=B12`, `nextAuthorizedBatchId=B12`, B13 `PENDING`, `convergenceAuthorized=false`.
+
+## 2026-07-29 — GH0 GitHub-first candidate
+
+- Added pinned GitHub Actions workflows, operational protocols, evidence schemas, cross-platform Node scripts and stable handoff.
+- Preserved B12/T049–T053 PENDING and `.specify` byte-identical.
+- First PR run intentionally injects a hash mismatch through handoff configuration; workflows/scripts remain unchanged for recovery.
