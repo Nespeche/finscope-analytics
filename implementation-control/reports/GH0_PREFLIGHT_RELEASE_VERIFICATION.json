@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "status": "PASS",
+  "repository": "Nespeche/finscope-analytics",
+  "baseCommit": "ae756b882ac56dd6eaffa7dbc57933dd9add7ec5",
+  "tag": "v0.21.12-B11-completed",
+  "releaseId": 361444520,
+  "isDraft": false,
+  "isPrerelease": false,
+  "zip": {
+    "assetId": 493383605,
+    "name": "FS_v0.21.12_B11_completed.zip",
+    "size": 1666914,
+    "sha256": "775a244ffd1e57ebee7a5144230312ca07598205c18f82a66a9669284bd9fc95"
+  },
+  "sidecar": {
+    "assetId": 493383633,
+    "name": "FS_v0.21.12_B11_completed.zip.sha256",
+    "size": 96,
+    "sha256": "ce79f7c082a1c924a6ad59ded52ff1684766578f449d09e12a810c7b31fc724c"
+  },
+  "automaticSourceArchiveUsed": false
+}
