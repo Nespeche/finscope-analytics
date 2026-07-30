@@ -1,10 +1,10 @@
 {
-  "inventoryId": "FinScope-v0.21.12-B11-completed-package-inventory",
-  "packageVersion": "v0.21.12_B11_completed",
-  "generatedOn": "2026-07-28",
+  "inventoryId": "FinScope-v0.21.13-GH0-candidate-r4-package-inventory",
+  "packageVersion": "v0.21.13_GH0_candidate_r4",
+  "generatedOn": "2026-07-30",
   "root": "FinScope_v0.21.4",
   "resolutionBase": "packageRoot",
-  "itemCount": 684,
+  "itemCount": 708,
   "exclusions": [
     {
       "path": "PACKAGE_INVENTORY.json",
@@ -16,6 +16,54 @@
     }
   ],
   "files": [
+    {
+      "path": ".gitattributes",
+      "sizeBytes": 137,
+      "sha256": "408da3ccf44369efc58d14d58296c9c9002d055371a6fe8c90853d29409ac23e",
+      "mediaType": "text/plain",
+      "category": "github-operations",
+      "status": "ACTIVE"
+    },
+    {
+      "path": ".github/pull_request_template.md",
+      "sizeBytes": 705,
+      "sha256": "f9653c0d69d9d55e71b4c7b72be815cb0bd03def6007297e9d81e381c936b3d5",
+      "mediaType": "text/markdown",
+      "category": "github-operations",
+      "status": "ACTIVE"
+    },
+    {
+      "path": ".github/workflows/finscope-closure-validation.yml",
+      "sizeBytes": 1904,
+      "sha256": "1da560175654525178eb4de1d44dbcae5a0a4d60f1690af1c3c415391d202f4a",
+      "mediaType": "application/yaml",
+      "category": "github-operations",
+      "status": "ACTIVE"
+    },
+    {
+      "path": ".github/workflows/finscope-completed-release.yml",
+      "sizeBytes": 5182,
+      "sha256": "db8040fcf00822df4ddac8448badf5bbc9a0308cc6987b46884341e626f74c93",
+      "mediaType": "application/yaml",
+      "category": "github-operations",
+      "status": "ACTIVE"
+    },
+    {
+      "path": ".github/workflows/finscope-pr-validation.yml",
+      "sizeBytes": 2385,
+      "sha256": "8b6e4d86f6a084d2458b97f51e8da5ea1f4dd36b54b56a95aeb9161258c5a301",
+      "mediaType": "application/yaml",
+      "category": "github-operations",
+      "status": "ACTIVE"
+    },
+    {
+      "path": ".gitignore",
+      "sizeBytes": 165,
+      "sha256": "0b17c73ef933164daa12c1697988b42a8831d784e5e18f7aabbc93d0292f5cb8",
+      "mediaType": "text/plain",
+      "category": "documentation",
+      "status": "ACTIVE"
+    },
     {
       "path": ".specify/feature.json",
       "sizeBytes": 69,
@@ -177,166 +225,6 @@
       "status": "HISTORICAL"
     },
     {
-      "path": "DOCUMENTATION_INDEX.md",
-      "sizeBytes": 2236,
-      "sha256": "16804c901b98ca96f2294fb7fbcba6c43711b622027c9f9fd88938e304654375",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-report",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "PACKAGE_METADATA.json",
-      "sizeBytes": 35319,
-      "sha256": "573512711a8d670d4eaf74fdd815a52c60e01674e3b9467b437bef187dafa4c6",
-      "mediaType": "application/json",
-      "category": "generated-derivative",
-      "status": "GENERATED"
-    },
-    {
-      "path": "PROJECT_CONTEXT.md",
-      "sizeBytes": 1536,
-      "sha256": "a27444f086422a549b5efd0389b35369a641bf86153e03acdd2ebee1c9d5a0cf",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-report",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "README.md",
-      "sizeBytes": 780,
-      "sha256": "b8b4c6e816e4826d2fd1d7c70f35a35c427cbe4f60899c5695d8c03e807bfb49",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-report",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "START_HERE_CHATGPT.md",
-      "sizeBytes": 987,
-      "sha256": "0951472357f4e1f37c1348b4327b955d6b4e6adef12212b5eee0c1eb9320ded8",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-report",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "V0.10_PHASE_STATUS.md",
-      "sizeBytes": 576,
-      "sha256": "7921c689630bb74d6c35516da46add27ea1bd0b6ae39b16603294fcfaa01385c",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "V0.11_PHASE_STATUS.md",
-      "sizeBytes": 786,
-      "sha256": "7a7adb661aa4943fd807f7a789c37d1d3919a333508861146c12d76d5a458eef",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "V0.12_PHASE_STATUS.md",
-      "sizeBytes": 866,
-      "sha256": "bd9d5ebc3ac91129ee9b6aba4e53006d63d1bef567525ec74cf0ede0b2bdaeb6",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "V0.13_PHASE_STATUS.md",
-      "sizeBytes": 966,
-      "sha256": "08849aacde51d872d5873f7ab513115b966c788204d4cfae0271de8b3f65bbbd",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "V0.14_PHASE_STATUS.md",
-      "sizeBytes": 361,
-      "sha256": "6b87c9048b305b7da83034cb5583875f351d6df2017f68e837bb8317c2582d64",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "V0.15_PHASE_STATUS.md",
-      "sizeBytes": 769,
-      "sha256": "13b898162357b125c82bd523bb57fbc2c4dc2a98677ce0c7b954e0667b054f44",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "V0.16_PHASE_STATUS.md",
-      "sizeBytes": 675,
-      "sha256": "72aae57ae3ea2f5d57cf0cc42b6123d64f2022576f9253393fb5db5a911311c3",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "V0.18_PHASE_STATUS.md",
-      "sizeBytes": 1937,
-      "sha256": "914873c40ba81b6f465994f0beaf968caef20a6e2101602a74b3c437b9d6dd4f",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "V0.19.1_PHASE_STATUS.md",
-      "sizeBytes": 1884,
-      "sha256": "9aff099d2ec7d26f765516b221f55cf23bbb1fe2351839fd9ea95bc4a7af14dd",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "V0.19.2_PHASE_STATUS.md",
-      "sizeBytes": 2192,
-      "sha256": "ee854475f5f0f14b0327089fdd77f1bd3ae18aad0b699e8e6561753c4dcbe6e1",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "V0.19.3_PHASE_STATUS.md",
-      "sizeBytes": 1335,
-      "sha256": "eb49572797b790d19de0086fdd4cc94b9f0b6495fa05d6858d7eee1e6e32e8df",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "V0.19_PHASE_STATUS.md",
-      "sizeBytes": 1694,
-      "sha256": "7e67faafd468b77d8c2cfa348b42a3897a684abd02bd82bc0450200650e34b47",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "V0.20_PHASE_STATUS.md",
-      "sizeBytes": 1306,
-      "sha256": "ab410467b3445f8667f0b5475c9410156d5c1047156012e6d9de6f5be8bdce95",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
-      "path": "V0.21_PHASE_STATUS.md",
-      "sizeBytes": 806,
-      "sha256": "27c1ec78a395a7097daf23f8a786af3a29308a447ab54200aaed24ce161d7da3",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-gate",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "V0.9_PHASE_STATUS.md",
-      "sizeBytes": 427,
-      "sha256": "e164c52f28c7e39a5fafc7aa70e80d10c56745c198a2c34e1a65d65325281bd4",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "historical-evidence",
-      "status": "HISTORICAL"
-    },
-    {
       "path": "docs/development.md",
       "sizeBytes": 1345,
       "sha256": "af9e299ece8f4fbc818e2fa0774f5683fc3bcae040f2bd4077d9207e3a2f50d0",
@@ -345,17 +233,25 @@
       "status": "ACTIVE"
     },
     {
+      "path": "DOCUMENTATION_INDEX.md",
+      "sizeBytes": 2828,
+      "sha256": "f5265c5974ebda223f7c4e70c9bffc575385c769c2b7642d59a49ccbef6dfd0b",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "active-report",
+      "status": "ACTIVE"
+    },
+    {
       "path": "implementation-control/AUTHORITY_MATRIX.json",
-      "sizeBytes": 5046,
-      "sha256": "672dc0701a52934b0e2ec8290d4c8113fb5f404419b90359385c0f5b594f508e",
+      "sizeBytes": 5788,
+      "sha256": "95ccce59509b2212b0f710fdc2cdefde0edef9fe552bdc9f7d7a932f6b7586ee",
       "mediaType": "application/json",
       "category": "active-operational",
       "status": "ACTIVE"
     },
     {
       "path": "implementation-control/BATCH_CHAT_PROMPT_TEMPLATE.md",
-      "sizeBytes": 1414,
-      "sha256": "ff4f6c4f1bd9b676c8ca329a22589ef75338d4a6b89e51b877b210fc1cc6189b",
+      "sizeBytes": 1793,
+      "sha256": "191c8734f91163cf5cad10815c399db8f206d76123b58b02e1bf1990a7a5b311",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "active-operational",
       "status": "ACTIVE"
@@ -367,110 +263,6 @@
       "mediaType": "text/markdown; charset=utf-8",
       "category": "active-operational",
       "status": "ACTIVE"
-    },
-    {
-      "path": "implementation-control/CHANGE_LEDGER.md",
-      "sizeBytes": 55053,
-      "sha256": "291137af66d20629abaeed64493b58eba03738b99c97d3a70454fc4296c723cb",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-operational",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "implementation-control/CONTEXT_LOADING_POLICY.md",
-      "sizeBytes": 2486,
-      "sha256": "ec8a08f52ead3a704dad1907e3e7d2178dcc09d15b7dba2ae444c37ce6291352",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-operational",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "implementation-control/CONTEXT_MAINTENANCE_MODEL.md",
-      "sizeBytes": 5094,
-      "sha256": "9d9c942a21d2554ae630115b9f97919246a053462fe515fc7becfda06c25ae1a",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-operational",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "implementation-control/IMPLEMENTATION_BATCH_MAP.json",
-      "sizeBytes": 15684,
-      "sha256": "305aded6886b657ac372b0ca652987b005f51b0be9c5c190f5baa5a68f27f812",
-      "mediaType": "application/json",
-      "category": "generated-derivative",
-      "status": "GENERATED"
-    },
-    {
-      "path": "implementation-control/IMPLEMENTATION_BATCH_MAP.md",
-      "sizeBytes": 1672,
-      "sha256": "635b4ce1bd258ac19a461a564f79dfc5b09a75e0d20b94a929eb4681e5740f85",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "generated-derivative",
-      "status": "GENERATED"
-    },
-    {
-      "path": "implementation-control/IMPLEMENTATION_EXECUTION_PROTOCOL.md",
-      "sizeBytes": 7981,
-      "sha256": "34034bb0c9f5db2bcad1b04af174bd0ff5cdf9622d031720f13a37bf4966cc48",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-operational",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "implementation-control/IMPLEMENTATION_STATE.json",
-      "sizeBytes": 40861,
-      "sha256": "df3d01a5a2f891415c77c529cfbdf221d08c3bd5dcd6a9577253b38809337c30",
-      "mediaType": "application/json",
-      "category": "active-operational",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "implementation-control/LOCAL_VALIDATION_PROTOCOL.md",
-      "sizeBytes": 2572,
-      "sha256": "81138842123aa53b7ba56bc9222b466595218ef33ba55b201f776a49c4b6fd8d",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-operational",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt",
-      "sizeBytes": 8022,
-      "sha256": "0ff8d947f8761cd897c5faef0326c125e3ea017092f1b51ef2adc6309df92fa7",
-      "mediaType": "text/plain; charset=utf-8",
-      "category": "active-operational",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "implementation-control/RECOMMENDED_IMPROVEMENTS.md",
-      "sizeBytes": 11032,
-      "sha256": "fed24dbd64be3e2d9ad62d9589b54987c4388779af5b748544d7de045cc6f2f7",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-operational",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "implementation-control/SDD_OPERATING_MODEL.md",
-      "sizeBytes": 6904,
-      "sha256": "2ac5e05bc8c6916c5f90016cde5ebdc0596b9e5a5ace5f1b8a2d4735f8dd85cf",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-operational",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "implementation-control/SESSION_HANDOFF_TEMPLATE.md",
-      "sizeBytes": 1684,
-      "sha256": "35b0fa39e0abf3e1fce463b85044190ffa8ee7958e5c918e372308946152e54e",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-operational",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "implementation-control/TASK_SOURCE_LOCK.json",
-      "sizeBytes": 21665,
-      "sha256": "b6e7691ff22edc70d5a41a598b256629413b9ee63686946cde925b38426684ad",
-      "mediaType": "application/json",
-      "category": "generated-derivative",
-      "status": "GENERATED"
     },
     {
       "path": "implementation-control/batches/B01.json",
@@ -671,6 +463,126 @@
       "mediaType": "application/json",
       "category": "generated-derivative",
       "status": "GENERATED"
+    },
+    {
+      "path": "implementation-control/CHANGE_LEDGER.md",
+      "sizeBytes": 58373,
+      "sha256": "a569a76bed0b7550b9d05de73553815022fa25861d4ec676a78df6d954763d73",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/CONTEXT_LOADING_POLICY.md",
+      "sizeBytes": 2801,
+      "sha256": "b6c2d6bdcde419cf220db784ef6c7e2ff105a4bea804b087456f8d35e8100be9",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/CONTEXT_MAINTENANCE_MODEL.md",
+      "sizeBytes": 5337,
+      "sha256": "e3bf2028f1b949b024e5ee24bfe40ac7848dafcd299f07b040c4ca2248db8500",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/GITHUB_HANDOFF.json",
+      "sizeBytes": 2469,
+      "sha256": "45c58bc842b612983aff5a3c2f7a8beee39759060022c39f0c63b9462adcd1bf",
+      "mediaType": "application/json",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md",
+      "sizeBytes": 3045,
+      "sha256": "51544ed944d8e1e0aaf026257a94fbdf27628a558e1cb39b9f8c6c41f2271de0",
+      "mediaType": "text/markdown",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/GITHUB_RELEASE_PROTOCOL.md",
+      "sizeBytes": 1446,
+      "sha256": "b3463631282a89de3b6bf50c3bc08fae0060629b24a4ecde4303141098853274",
+      "mediaType": "text/markdown",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/GITHUB_REPOSITORY_POLICY.md",
+      "sizeBytes": 1589,
+      "sha256": "bcbbe7d6949c0be8a0ae714d1fb3ffa47a399d9e9a6e444626b8a8f716516c1e",
+      "mediaType": "text/markdown",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/GITHUB_VALIDATION_PROTOCOL.md",
+      "sizeBytes": 1793,
+      "sha256": "547a0bbcc9f2349c8a008c2cbdbed66d3909c7bc8cd9fbfc608f660aee8f845d",
+      "mediaType": "text/markdown",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/IMPLEMENTATION_BATCH_MAP.json",
+      "sizeBytes": 15684,
+      "sha256": "305aded6886b657ac372b0ca652987b005f51b0be9c5c190f5baa5a68f27f812",
+      "mediaType": "application/json",
+      "category": "generated-derivative",
+      "status": "GENERATED"
+    },
+    {
+      "path": "implementation-control/IMPLEMENTATION_BATCH_MAP.md",
+      "sizeBytes": 1672,
+      "sha256": "635b4ce1bd258ac19a461a564f79dfc5b09a75e0d20b94a929eb4681e5740f85",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "generated-derivative",
+      "status": "GENERATED"
+    },
+    {
+      "path": "implementation-control/IMPLEMENTATION_EXECUTION_PROTOCOL.md",
+      "sizeBytes": 8427,
+      "sha256": "03d7a96ee35a5c576de7665ac723d8ecc473de1eadf4d05d1fcdf3f2b2225a97",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/IMPLEMENTATION_STATE.json",
+      "sizeBytes": 40801,
+      "sha256": "f58314a167c3e7065a06f58f66847dd1e45e2534768968abd32936969c31693d",
+      "mediaType": "application/json",
+      "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/LOCAL_VALIDATION_PROTOCOL.md",
+      "sizeBytes": 2888,
+      "sha256": "d4650c30193a42806fba41acd955e5ab8c5dda627bd2bf3eef6717ced07c9403",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt",
+      "sizeBytes": 8108,
+      "sha256": "8b84ea253ede2e8b7fa1bb0455b241ef3a444332039fda7f27f127425798ed64",
+      "mediaType": "text/plain; charset=utf-8",
+      "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/RECOMMENDED_IMPROVEMENTS.md",
+      "sizeBytes": 11032,
+      "sha256": "fed24dbd64be3e2d9ad62d9589b54987c4388779af5b748544d7de045cc6f2f7",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "active-operational",
+      "status": "ACTIVE"
     },
     {
       "path": "implementation-control/reports/B01_IMPLEMENTATION_REPORT.md",
@@ -1409,6 +1321,46 @@
       "status": "ACTIVE"
     },
     {
+      "path": "implementation-control/reports/GH0_IMPLEMENTATION_REPORT.json",
+      "sizeBytes": 1167,
+      "sha256": "897dadbbc81ed1b9f2a0f8fbb0ec0148256a0f8745217bbf6b9b00cb24dfe73a",
+      "mediaType": "application/json",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/reports/GH0_IMPLEMENTATION_REPORT.md",
+      "sizeBytes": 1429,
+      "sha256": "1126e5f52b8da3cca63660655a2bd8472f6e7ca76c739b21f5ead247c69f82e9",
+      "mediaType": "text/markdown",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/reports/GH0_PREFLIGHT_RELEASE_VERIFICATION.json",
+      "sizeBytes": 687,
+      "sha256": "6e36043c9a4c7207854efb39e9e1cf18053280bc6f5c9ebdf175b62f352dd5dd",
+      "mediaType": "application/json",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/reports/GH0_PREFLIGHT_RELEASE_VERIFICATION.md",
+      "sizeBytes": 829,
+      "sha256": "84492827c5f1cd188d082d5a2c344661cc3a70e9e77d5451ea2efe2bd0cdba29",
+      "mediaType": "text/markdown",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/reports/GH0_SCOPE_GUARD.md",
+      "sizeBytes": 526,
+      "sha256": "2985a84c6b15be62fd0c2fbe06ad2376dca16554fa626920fee8891b7f65a716",
+      "mediaType": "text/markdown",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
       "path": "implementation-control/schemas/authority-matrix.schema.json",
       "sizeBytes": 1594,
       "sha256": "1e24eaa1d3d62f60669e777fcc6b2cec982afc36516c8953650cca6a06eb8752",
@@ -1422,6 +1374,22 @@
       "sha256": "0bbe899ae3d81f3d3fbcc9b55119e46d1df13ec2eb293d8745a162f83af920db",
       "mediaType": "application/json",
       "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/schemas/github-release-handoff.schema.json",
+      "sizeBytes": 2417,
+      "sha256": "e7edc5f62fc0c4b36433e4a78faf16919c4902698e10ba20a036676b381c9430",
+      "mediaType": "application/json",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/schemas/github-validation-evidence.schema.json",
+      "sizeBytes": 8303,
+      "sha256": "145d84c3c04e7eccc3c5affaab78768e6ee3844acccfda4a7e9112fb674866ff",
+      "mediaType": "application/json",
+      "category": "implementation-control",
       "status": "ACTIVE"
     },
     {
@@ -1473,6 +1441,22 @@
       "status": "ACTIVE"
     },
     {
+      "path": "implementation-control/scripts/Finalize-GitHubReleaseHandoff.mjs",
+      "sizeBytes": 1956,
+      "sha256": "119353f59bedcd282ebb322a139d5771a32132be4219a5804dc59343ac5e329c",
+      "mediaType": "text/javascript",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/scripts/GitHub-Common.mjs",
+      "sizeBytes": 8218,
+      "sha256": "2a8fdf4ad2ef19da27e208c1be4f29d599f71f1a07b6d6b46ec18dcac7476392",
+      "mediaType": "text/javascript",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
       "path": "implementation-control/scripts/Invoke-FinScopeBatchValidation.ps1",
       "sizeBytes": 26736,
       "sha256": "895d671486c564531acd275baf228a92bf10b77deebf601f77a7e935e88573f4",
@@ -1486,6 +1470,14 @@
       "sha256": "2d5aa08fb6f683714727aef5b35d3212f7755b5cbac0ac47401495e3fd7ca7d4",
       "mediaType": "text/plain; charset=utf-8",
       "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/scripts/Package-GitHubCompletedRelease.mjs",
+      "sizeBytes": 7865,
+      "sha256": "af7a567dcdf1d204f289914493e84ec3ad4d53cf47880267a336f0c7dd86ff3c",
+      "mediaType": "text/javascript",
+      "category": "implementation-control",
       "status": "ACTIVE"
     },
     {
@@ -1537,6 +1529,14 @@
       "status": "ACTIVE"
     },
     {
+      "path": "implementation-control/scripts/Run-GitHubValidation.mjs",
+      "sizeBytes": 8568,
+      "sha256": "ec8ecb98ee9df5ab80e33dd6edfc0ffd89b5dee8462a09414736bd6621948596",
+      "mediaType": "text/javascript",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
       "path": "implementation-control/scripts/Validate-ControlPlaneEvidence.mjs",
       "sizeBytes": 885,
       "sha256": "7b08ef7cd6cee2cee043d619a97b3663eef33123533c1b3e6034d2cac0e0b9b5",
@@ -1546,11 +1546,51 @@
     },
     {
       "path": "implementation-control/scripts/Validate-ControlPlaneState.mjs",
-      "sizeBytes": 18147,
-      "sha256": "91a7767e5cc59220ad6a6137e74bcbc8ecd26a848e41f2db96de7dd1b725ffe4",
+      "sizeBytes": 18306,
+      "sha256": "39c3d98e2e35a2efc41d2091b8365a5b1cff37f5ecce46168ca69e48fe7c9ddb",
       "mediaType": "text/javascript; charset=utf-8",
       "category": "active-operational",
       "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/scripts/Verify-GitHubBaseline.mjs",
+      "sizeBytes": 4889,
+      "sha256": "b9fe2238e9fd2e4baf971aeaf0dbaae4e47f17ac23e9b5ac779febd7b27dadb2",
+      "mediaType": "text/javascript",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/scripts/Verify-GitHubClosure.mjs",
+      "sizeBytes": 5681,
+      "sha256": "dea878ef3b4c8db02601b455783a8a9b02a9beaeb44043028a2267d4d95f8ac4",
+      "mediaType": "text/javascript",
+      "category": "implementation-control",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/SDD_OPERATING_MODEL.md",
+      "sizeBytes": 7191,
+      "sha256": "afca52a4c65416e168a8e6a228ac8221a33b6aab2d0b7875a18fab92b14b2de6",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/SESSION_HANDOFF_TEMPLATE.md",
+      "sizeBytes": 1684,
+      "sha256": "35b0fa39e0abf3e1fce463b85044190ffa8ee7958e5c918e372308946152e54e",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "active-operational",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "implementation-control/TASK_SOURCE_LOCK.json",
+      "sizeBytes": 21665,
+      "sha256": "b6e7691ff22edc70d5a41a598b256629413b9ee63686946cde925b38426684ad",
+      "mediaType": "application/json",
+      "category": "generated-derivative",
+      "status": "GENERATED"
     },
     {
       "path": "index.html",
@@ -1559,6 +1599,14 @@
       "mediaType": "text/html; charset=utf-8",
       "category": "active-build-config",
       "status": "ACTIVE"
+    },
+    {
+      "path": "PACKAGE_METADATA.json",
+      "sizeBytes": 37256,
+      "sha256": "527cdb9875b12a26ec045a42b977d2ea7a2679f225f602d727d8d965cfef5d1c",
+      "mediaType": "application/json",
+      "category": "generated-derivative",
+      "status": "GENERATED"
     },
     {
       "path": "package-lock.json",
@@ -1585,6 +1633,14 @@
       "status": "ACTIVE"
     },
     {
+      "path": "PROJECT_CONTEXT.md",
+      "sizeBytes": 1851,
+      "sha256": "0444b3949310f7c11cbcc15e9e4cb9ca1af2f7ab6e5c3ca8765b758e33da6910",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "active-report",
+      "status": "ACTIVE"
+    },
+    {
       "path": "public/_headers",
       "sizeBytes": 372,
       "sha256": "41aeeb3e4cd6219430da2b9cfb19673c043557c0e0e48c136ca9a0e5fad3b813",
@@ -1598,6 +1654,14 @@
       "sha256": "6036983e5fc00f0169c9e939b1816ed771eee00e27f2fcc517b819041460b9ef",
       "mediaType": "application/octet-stream",
       "category": "active-static-config",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "README.md",
+      "sizeBytes": 780,
+      "sha256": "b8b4c6e816e4826d2fd1d7c70f35a35c427cbe4f60899c5695d8c03e807bfb49",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "active-report",
       "status": "ACTIVE"
     },
     {
@@ -1708,14 +1772,6 @@
       "path": "specs/001-fundamental-analysis-platform/CHECKLIST_FINDINGS_MATRIX.md",
       "sizeBytes": 12123,
       "sha256": "ed0e9e89a93b581bfa283eaafdb3eefdd67acb4ea70e0df584666e3c2b580ba7",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-normative",
-      "status": "ACTIVE"
-    },
-    {
-      "path": "specs/001-fundamental-analysis-platform/GLOSSARY.md",
-      "sizeBytes": 1774,
-      "sha256": "3606d709a483d6386723c88b66adbe0c7a1e69d3d9d53c4cc396d7d2a8b7c171",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "active-normative",
       "status": "ACTIVE"
@@ -2409,14 +2465,6 @@
       "status": "ACTIVE"
     },
     {
-      "path": "specs/001-fundamental-analysis-platform/fixtures/sec/raw/README.md",
-      "sizeBytes": 611,
-      "sha256": "6c1acbdcc51afa36d552f7bc08f312a6ee25a1b7e28b95c0753ac6274b37fc64",
-      "mediaType": "text/markdown; charset=utf-8",
-      "category": "active-test-data",
-      "status": "ACTIVE"
-    },
-    {
       "path": "specs/001-fundamental-analysis-platform/fixtures/sec/raw/apple-companyconcept-revenues-official-excerpt.json",
       "sizeBytes": 3440,
       "sha256": "3b1dcb9b491b0cf2880f96f02ece36ed38373ab9a4646a08b62b767b4b75fdea",
@@ -2453,6 +2501,14 @@
       "sizeBytes": 1977,
       "sha256": "222f27a9009fd30ea0e40547b9dd9515220a7ce33a8a215e4e0ce4a531396522",
       "mediaType": "application/json",
+      "category": "active-test-data",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/fixtures/sec/raw/README.md",
+      "sizeBytes": 611,
+      "sha256": "6c1acbdcc51afa36d552f7bc08f312a6ee25a1b7e28b95c0753ac6274b37fc64",
+      "mediaType": "text/markdown; charset=utf-8",
       "category": "active-test-data",
       "status": "ACTIVE"
     },
@@ -2518,6 +2574,14 @@
       "sha256": "12503282c8f6694045600bb066eb72e0a39169833fa3730e0d7e2ae770a95d78",
       "mediaType": "application/json",
       "category": "active-test-data",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "specs/001-fundamental-analysis-platform/GLOSSARY.md",
+      "sizeBytes": 1774,
+      "sha256": "3606d709a483d6386723c88b66adbe0c7a1e69d3d9d53c4cc396d7d2a8b7c171",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "active-normative",
       "status": "ACTIVE"
     },
     {
@@ -4937,6 +5001,14 @@
       "status": "ACTIVE"
     },
     {
+      "path": "START_HERE_CHATGPT.md",
+      "sizeBytes": 1217,
+      "sha256": "16319d2b0ff1675b14dbfd6c3b0798a408d644d6e6f1747a7011b54778762f75",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "active-report",
+      "status": "ACTIVE"
+    },
+    {
       "path": "tests/accessibility/axe.ts",
       "sizeBytes": 1803,
       "sha256": "42d76e59d64c3d75bb27ee89de4a5097cdb282fb73a454b187e01946cbd47c52",
@@ -4978,8 +5050,8 @@
     },
     {
       "path": "tests/contract/control-plane-integrity.test.ts",
-      "sizeBytes": 1789,
-      "sha256": "c0c23cc19342bf1a6e801c824683793b7b2e50cc2c29bb621a1045d718d270cc",
+      "sizeBytes": 1863,
+      "sha256": "8b28bd87f6500b2b0b4134dcbe5ab04ad1fa7983c62363a67165b3e94845bf11",
       "mediaType": "text/typescript; charset=utf-8",
       "category": "active-test",
       "status": "ACTIVE"
@@ -5002,8 +5074,8 @@
     },
     {
       "path": "tests/contract/schema-registry.test.ts",
-      "sizeBytes": 24937,
-      "sha256": "697c394c9e4ce3c48e1e3edba187d99ca0cfaf1ea1bb7b6b2af87836b074d63d",
+      "sizeBytes": 25019,
+      "sha256": "587caf91899865e4aabe00f48834ece7155a3ecf28e4f2593cbcba3d502acaf9",
       "mediaType": "text/typescript; charset=utf-8",
       "category": "active-test",
       "status": "ACTIVE"
@@ -5375,6 +5447,126 @@
       "mediaType": "application/json",
       "category": "active-build-config",
       "status": "ACTIVE"
+    },
+    {
+      "path": "V0.10_PHASE_STATUS.md",
+      "sizeBytes": 576,
+      "sha256": "7921c689630bb74d6c35516da46add27ea1bd0b6ae39b16603294fcfaa01385c",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "V0.11_PHASE_STATUS.md",
+      "sizeBytes": 786,
+      "sha256": "7a7adb661aa4943fd807f7a789c37d1d3919a333508861146c12d76d5a458eef",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "V0.12_PHASE_STATUS.md",
+      "sizeBytes": 866,
+      "sha256": "bd9d5ebc3ac91129ee9b6aba4e53006d63d1bef567525ec74cf0ede0b2bdaeb6",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "V0.13_PHASE_STATUS.md",
+      "sizeBytes": 966,
+      "sha256": "08849aacde51d872d5873f7ab513115b966c788204d4cfae0271de8b3f65bbbd",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "V0.14_PHASE_STATUS.md",
+      "sizeBytes": 361,
+      "sha256": "6b87c9048b305b7da83034cb5583875f351d6df2017f68e837bb8317c2582d64",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "V0.15_PHASE_STATUS.md",
+      "sizeBytes": 769,
+      "sha256": "13b898162357b125c82bd523bb57fbc2c4dc2a98677ce0c7b954e0667b054f44",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "V0.16_PHASE_STATUS.md",
+      "sizeBytes": 675,
+      "sha256": "72aae57ae3ea2f5d57cf0cc42b6123d64f2022576f9253393fb5db5a911311c3",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "V0.18_PHASE_STATUS.md",
+      "sizeBytes": 1937,
+      "sha256": "914873c40ba81b6f465994f0beaf968caef20a6e2101602a74b3c437b9d6dd4f",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "V0.19_PHASE_STATUS.md",
+      "sizeBytes": 1694,
+      "sha256": "7e67faafd468b77d8c2cfa348b42a3897a684abd02bd82bc0450200650e34b47",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "V0.19.1_PHASE_STATUS.md",
+      "sizeBytes": 1884,
+      "sha256": "9aff099d2ec7d26f765516b221f55cf23bbb1fe2351839fd9ea95bc4a7af14dd",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "V0.19.2_PHASE_STATUS.md",
+      "sizeBytes": 2192,
+      "sha256": "ee854475f5f0f14b0327089fdd77f1bd3ae18aad0b699e8e6561753c4dcbe6e1",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "V0.19.3_PHASE_STATUS.md",
+      "sizeBytes": 1335,
+      "sha256": "eb49572797b790d19de0086fdd4cc94b9f0b6495fa05d6858d7eee1e6e32e8df",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "V0.20_PHASE_STATUS.md",
+      "sizeBytes": 1306,
+      "sha256": "ab410467b3445f8667f0b5475c9410156d5c1047156012e6d9de6f5be8bdce95",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
+    },
+    {
+      "path": "V0.21_PHASE_STATUS.md",
+      "sizeBytes": 806,
+      "sha256": "27c1ec78a395a7097daf23f8a786af3a29308a447ab54200aaed24ce161d7da3",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "active-gate",
+      "status": "ACTIVE"
+    },
+    {
+      "path": "V0.9_PHASE_STATUS.md",
+      "sizeBytes": 427,
+      "sha256": "e164c52f28c7e39a5fafc7aa70e80d10c56745c198a2c34e1a65d65325281bd4",
+      "mediaType": "text/markdown; charset=utf-8",
+      "category": "historical-evidence",
+      "status": "HISTORICAL"
     },
     {
       "path": "vite.config.ts",

@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+.wrangler/
+.vite/
+*.log
+*.zip
+*.zip.sha256
+.finscope-evidence/
+.finscope-release/
+.DS_Store
+Thumbs.db

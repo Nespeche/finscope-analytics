@@ -119,3 +119,6 @@ Toda mejora sigue esta secuencia:
 8. promover solo tras verificación independiente del bundle.
 
 Un hallazgo no bloqueante se conserva en el estado con dueño, condición de cierre y lote recomendado. Un hallazgo bloqueante detiene únicamente el alcance afectado.
+## 11. Integración GitHub-first
+
+GitHub automatiza ejecución y evidencia, pero no modifica el orden Spec-Driven ni las autoridades. Rama/PR/run/artifact/Release complementan el lote activo. El cierre conserva la excepción allowlist y nunca convierte evidencia en autoridad normativa.

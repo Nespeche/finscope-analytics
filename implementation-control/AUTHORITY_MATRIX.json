@@ -1,7 +1,7 @@
 {
   "$schema": "schemas/authority-matrix.schema.json",
   "schemaVersion": "1.0.0",
-  "packageRevision": "v0.21.12_B11_completed",
+  "packageRevision": "v0.21.13_GH0_candidate_r4",
   "fieldAuthorities": [
     {
       "fieldId": "constitutional_rules",
@@ -136,6 +136,22 @@
       "forbiddenOverrides": [
         "unverified chat claims",
         "file names alone"
+      ]
+    },
+    {
+      "fieldId": "github_operational_method",
+      "scope": "Rama, PR, workflows, evidencia, cierre, Release y comunicación paso a paso",
+      "authority": "implementation-control/GITHUB_REPOSITORY_POLICY.md + GITHUB_VALIDATION_PROTOCOL.md + GITHUB_RELEASE_PROTOCOL.md + GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md",
+      "mirrors": [
+        "implementation-control/GITHUB_HANDOFF.json",
+        ".github/workflows/finscope-pr-validation.yml",
+        ".github/workflows/finscope-closure-validation.yml",
+        ".github/workflows/finscope-completed-release.yml"
+      ],
+      "forbiddenOverrides": [
+        "conversation memory",
+        "GitHub artifacts as product authority",
+        "Source code zip/tar.gz"
       ]
     }
   ],

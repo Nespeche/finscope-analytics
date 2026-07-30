@@ -105,3 +105,6 @@ No modificar `.specify`. Una corrección de tarea/autoridad fuera de un lote req
 ## 8. Cierre
 
 B25 solo cierra después de B01–B24. T109 produce `docs/convergence-input.md`; luego `implementationStatus=COMPLETED`, `activeBatchId=null` y `convergenceAuthorized=false`. Convergencia requiere chat nuevo y transición formal del gate.
+## 9. GitHub-first
+
+El método primario para lotes posteriores a GH0 es rama temática → PR draft → `FinScope PR Validation` → candidato exacto → cierre allowlist → `FinScope Closure Validation` → merge autorizado → Release completed. Los comandos se derivan de `batches/Bxx.json`. `LOCAL_VALIDATION_PROTOCOL.md` se usa solo como fallback documentado. Toda instrucción al operador sigue `GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md`.

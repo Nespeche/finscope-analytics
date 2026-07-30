@@ -1,0 +1,55 @@
+name: FinScope Closure Validation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - implementation-control/GITHUB_HANDOFF.json
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  verify-closure:
+    name: verify-closure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact PR commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Configure Node from package authority
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: package.json
+      - name: Prepare normative package-root alias
+        shell: bash
+        run: |
+          set -euo pipefail
+          root_alias="$RUNNER_TEMP/FinScope_v0.21.4"
+          rm -rf "$root_alias"
+          ln -s "$GITHUB_WORKSPACE" "$root_alias"
+          echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
+      - name: Validate control plane
+        run: node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
+      - name: Verify candidate identity, artifact and closure allowlist
+        id: closure
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node implementation-control/scripts/Verify-GitHubClosure.mjs
+      - name: Upload closure evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ${{ steps.closure.outputs.artifact_name }}
+          path: ${{ steps.closure.outputs.evidence_dir }}
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 30
+      - name: Enforce closure result
+        if: always()
+        env:
+          RESULT: ${{ steps.closure.outputs.result }}
+        run: test "$RESULT" = PASS || test "$RESULT" = NOT_APPLICABLE

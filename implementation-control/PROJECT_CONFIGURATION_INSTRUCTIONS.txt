@@ -100,3 +100,4 @@ Mantener stack y límites del baseline. Sin servicios pagos, trials, créditos, 
 Toda modificación devuelve ZIP completo y autocontenido más sidecar: raíz corta única, manifiesto, inventario y metadata recalculados, sin secretos, temporales, `node_modules`, builds, caches ni ZIPs anidados; `.specify` intacto. Nunca entregar solo un diff.
 
 Indicar exactamente dónde guardar cada archivo, qué reemplaza, si va a Fuentes o al chat, su función y qué retirar. La implementación termina con T001–T109 `[X]`, gates y pruebas satisfechos, estado `COMPLETED` y T109. Convergencia requiere otra conversación y autorización expresa.
+GH0: usar GitHub-first y GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md; local es fallback.

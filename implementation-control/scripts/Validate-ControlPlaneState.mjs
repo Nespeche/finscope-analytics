@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { writeFileSync } from 'node:fs';
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { join, relative, resolve, sep } from 'node:path';
 
@@ -313,11 +314,18 @@ try {
     checks,
     issues,
   };
-  console.log(JSON.stringify(result, null, 2));
-  if (issues.length === 0) console.error('CONTROL_PLANE_STATE_VALID');
-  else console.error('CONTROL_PLANE_STATE_INVALID');
-  process.exit(issues.length === 0 ? 0 : 1);
+  writeFileSync(1, `${JSON.stringify(result, null, 2)}\n`, { encoding: 'utf8' });
+  writeFileSync(
+    2,
+    `${issues.length === 0 ? 'CONTROL_PLANE_STATE_VALID' : 'CONTROL_PLANE_STATE_INVALID'}\n`,
+    { encoding: 'utf8' },
+  );
+  process.exitCode = issues.length === 0 ? 0 : 1;
 } catch (error) {
-  console.error(error instanceof Error ? error.stack ?? error.message : String(error));
-  process.exit(2);
+  writeFileSync(
+    2,
+    `${error instanceof Error ? error.stack ?? error.message : String(error)}\n`,
+    { encoding: 'utf8' },
+  );
+  process.exitCode = 2;
 }

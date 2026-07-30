@@ -43,3 +43,6 @@ PASS y FAIL funcional generan evidencia completa con:
 - ZIP final y sidecar.
 
 Después de los comandos se eliminan dependencias, builds y caches regenerables, y el árbol estable debe volver al hash inicial. Un candidato o evidencia FAIL nunca reemplaza el último completed.
+## Condición de fallback desde GH0
+
+GitHub Actions es el método primario. Este runner local se utiliza únicamente cuando GitHub Actions está indisponible o una autoridad exige evidencia Windows específica. El fallback no reduce checks, no reemplaza un run GitHub fallido y debe quedar registrado en el handoff.

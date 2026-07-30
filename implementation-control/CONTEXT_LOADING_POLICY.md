@@ -56,3 +56,6 @@ Usar autoridad por campo, no una lista plana. Constitución gobierna reglas; el 
 ## Ciclo de vida y ruido histórico
 
 Clasificar archivos como activos, candidatos, derivados, históricos, infraestructura congelada o planificados antes de cargarlos semánticamente. Los históricos pueden inspeccionarse estructuralmente sin entrar en el contexto operativo salvo que una autoridad activa los referencie de forma expresa.
+## Contexto GitHub-first
+
+Para implementación por lote cargar también `GITHUB_REPOSITORY_POLICY.md`, `GITHUB_VALIDATION_PROTOCOL.md`, `GITHUB_RELEASE_PROTOCOL.md`, `GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md` y `GITHUB_HANDOFF.json`. No cargar artifacts históricos salvo que sean la evidencia exacta referenciada.

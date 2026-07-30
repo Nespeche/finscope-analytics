@@ -23,9 +23,10 @@ type ControlPlaneResult = {
 
 describe('control-plane integrity', () => {
   it('keeps task locks, batch mirrors, status and gates synchronized', async () => {
+    const projectRoot = process.env.FINSCOPE_PACKAGE_ROOT ?? '.';
     const { stdout, stderr } = await execFileAsync(
       process.execPath,
-      ['implementation-control/scripts/Validate-ControlPlaneState.mjs', '.'],
+      ['implementation-control/scripts/Validate-ControlPlaneState.mjs', projectRoot],
       { encoding: 'utf8', maxBuffer: 4 * 1024 * 1024 },
     );
 

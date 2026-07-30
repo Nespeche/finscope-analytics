@@ -1,0 +1,65 @@
+name: FinScope PR Validation
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact PR commit
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Configure Node from package authority
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: package.json
+          cache: npm
+      - name: Prepare normative package-root alias
+        shell: bash
+        run: |
+          set -euo pipefail
+          root_alias="$RUNNER_TEMP/FinScope_v0.21.4"
+          rm -rf "$root_alias"
+          ln -s "$GITHUB_WORKSPACE" "$root_alias"
+          echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
+      - name: Validate control plane first
+        shell: bash
+        run: |
+          mkdir -p .finscope-evidence/preflight
+          set +e
+          node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT" >.finscope-evidence/preflight/control-plane.stdout.log 2>.finscope-evidence/preflight/control-plane.stderr.log
+          code=$?
+          printf '%s\n' "$code" >.finscope-evidence/preflight/control-plane.exit-code
+          exit 0
+      - name: Authenticate completed Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-evidence/preflight/release-baseline.json
+      - name: Execute derived validation and build evidence
+        id: validation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node implementation-control/scripts/Run-GitHubValidation.mjs
+      - name: Upload PASS or FAILED evidence
+        if: always()
+        id: upload
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ${{ steps.validation.outputs.artifact_name }}
+          path: ${{ steps.validation.outputs.evidence_dir }}
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 30
+      - name: Enforce final result
+        if: always()
+        env:
+          RESULT: ${{ steps.validation.outputs.result }}
+        run: test "$RESULT" = PASS
