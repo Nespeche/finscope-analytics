@@ -5,11 +5,12 @@ import { get } from 'node:https';
 import { root, now, readJson, run, setOutput, shaFile, validateJsonFile, verifyManifest, writeJson, writeManifest } from './GitHub-Common.mjs';
 
 const out=join(root,'.finscope-evidence','closure'); await mkdir(out,{recursive:true}); const handoff=await readJson(join(root,'implementation-control/GITHUB_HANDOFF.json'));
-const branch=process.env.GITHUB_HEAD_REF||process.env.GITHUB_REF_NAME||'local'; const sha=(process.env.GITHUB_SHA||'0'.repeat(40)).toLowerCase(); let primaryFailure=null; const details=[];
+const branch=process.env.GITHUB_HEAD_REF||process.env.GITHUB_REF_NAME||'local'; const headResult=await run('git rev-parse HEAD',{cwd:root}); const sha=headResult.exitCode===0?headResult.stdout.toString('utf8').trim().toLowerCase():'0'.repeat(40); let primaryFailure=null; const details=[];
 const fail=(code,detail)=>{if(!primaryFailure)primaryFailure={code,detail};details.push({code,detail});};
+if(headResult.exitCode!==0||!/^[0-9a-f]{40}$/u.test(sha)) fail('CHECKED_OUT_SHA_INVALID',headResult.stderr.toString('utf8'));
 if(branch!==handoff.bootstrap.branch || handoff.bootstrap.stage!=='closure'){
-  const evidence={schemaVersion:'1.0.0',result:'PASS',mode:'NOT_APPLICABLE',repository:process.env.GITHUB_REPOSITORY||handoff.repository,branch,commitSha:sha,checkedAt:now(),primaryFailure:null,details:[{code:'CLOSURE_NOT_REQUESTED',detail:'Candidate qualification stage.'}]};
-  await writeJson(join(out,'github-closure-evidence.json'),evidence); await writeManifest(out); await setOutput('artifact_name',`finscope-closure-${sha.slice(0,12)}-PASS`); await setOutput('evidence_dir',relative(root,out).replaceAll('\\','/')); await setOutput('result','PASS'); process.exit(0);
+  const evidence={schemaVersion:'1.0.0',result:'NOT_APPLICABLE',mode:'NOT_APPLICABLE',repository:process.env.GITHUB_REPOSITORY||handoff.repository,branch,commitSha:sha,checkedAt:now(),primaryFailure:null,details:[{code:'CLOSURE_NOT_REQUESTED',detail:'Candidate qualification stage; closure authorization has not started.'}]};
+  await writeJson(join(out,'github-closure-evidence.json'),evidence); await writeManifest(out); await setOutput('artifact_name',`finscope-closure-${sha.slice(0,12)}-NOT_APPLICABLE`); await setOutput('evidence_dir',relative(root,out).replaceAll('\\','/')); await setOutput('result','NOT_APPLICABLE'); process.exit(0);
 }
 const candidate=handoff.candidate;
 if(!candidate?.sha||!candidate?.runId||!candidate?.artifactId||!candidate?.artifactDigest) fail('CANDIDATE_REFERENCE_INCOMPLETE',JSON.stringify(candidate));

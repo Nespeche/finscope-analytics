@@ -1,8 +1,10 @@
 # GH0 — GitHub-first bootstrap implementation report
 
-## Estado candidato
+## Estado candidato r2
 
-Se agregó infraestructura operacional GitHub sin modificar B12, código funcional, tests de producto, dependencias, lockfile, fixtures, contratos ni `.specify`. El primer run se identifica mediante el marcador `[GH0_EXPECT_FAIL_HASH]` en el asunto del commit para demostrar evidencia `_FAILED`; la recuperación usa un commit vacío con el mismo árbol y mantiene byte-idénticos workflows, scripts, schemas, dependencias, tests y checks.
+GH0 incorpora infraestructura operacional GitHub sin implementar B12 ni modificar código funcional, fixtures, contratos de producto, dependencias, lockfile, tareas, batches o `.specify`.
+
+El run de PR `30539524454` del candidato r1 produjo evidencia autenticada `_FAILED` porque la prueba contractual enumeraba ocho schemas operativos cuando GH0 había incorporado diez. El candidato r2 corrige la identidad del SHA validado, ejecuta literalmente los comandos de `localValidation.commands` del batch activo, preserva bytes LF, separa cierre `NOT_APPLICABLE` de un cierre real, y reconcilia tres reportes GH0 versionados pero omitidos del inventario/manifiesto r1.
 
 ## Estado de producto preservado
 
@@ -10,4 +12,4 @@ B01–B11 y T001–T048 continúan `COMPLETED`. B12/T049–T053 continúan `PEND
 
 ## Cierre pendiente
 
-GH0 no se considera completed hasta demostrar runs, artifacts, recuperación, allowlist, merge y Release completed.
+GH0 no se considera completed hasta que el candidato r2 obtenga validación PR PASS, se autentique su artifact, se aplique cierre documental allowlisted, el workflow de cierre produzca PASS real, el PR sea mergeado de forma autorizada y el Release completed publique ZIP/sidecar personalizados.

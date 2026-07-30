@@ -1,11 +1,30 @@
 {
   "schemaVersion": "1.0.0",
   "operation": "GH0",
-  "status": "CANDIDATE",
+  "status": "CANDIDATE_R2",
   "productChanges": false,
   "b12Implemented": false,
   "specifyModified": false,
-  "expectedFirstRun": "FAIL_HASH_INJECTION_FROM_COMMIT_SUBJECT",
-  "next": "RECOVER_TO_PASS_WITHOUT_WORKFLOW_OR_SCRIPT_CHANGES",
-  "recoveryMechanism": "EMPTY_COMMIT_SAME_TREE"
+  "previousRun": {
+    "runId": "30539524454",
+    "headSha": "6bff8f76d3fef3bd9cd908d2859534b09b63d057",
+    "result": "FAIL",
+    "artifactId": "8758086286",
+    "artifactDigest": "sha256:934a19a13664a2324b6dbdfacf69207a00cbd28f2522e7e60ebaf3d5c62810c5",
+    "primaryFailure": "regression-vitest operational schema inventory mismatch"
+  },
+  "activeBatchId": "B12",
+  "browserRequired": true,
+  "derivedCommandCount": 7,
+  "remediation": [
+    "preserve repository bytes across Windows/Linux",
+    "checkout exact pull request head SHA",
+    "derive evidence identity from checked-out Git HEAD",
+    "execute exact active-batch localValidation commands",
+    "register ten operational schemas",
+    "defer closure workflow until GITHUB_HANDOFF changes",
+    "report premature closure as NOT_APPLICABLE",
+    "classify and manifest existing GH0 preflight and scope-guard reports"
+  ],
+  "next": "QUALIFY_CANDIDATE_R2_IN_GITHUB_ACTIONS"
 }

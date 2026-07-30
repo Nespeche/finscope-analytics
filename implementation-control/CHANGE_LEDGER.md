@@ -499,3 +499,14 @@
 - Added pinned GitHub Actions workflows, operational protocols, evidence schemas, cross-platform Node scripts and stable handoff.
 - Preserved B12/T049–T053 PENDING and `.specify` byte-identical.
 - First PR run intentionally injects a hash mismatch through handoff configuration; workflows/scripts remain unchanged for recovery.
+
+## 2026-07-30 — GH0 final candidate r2 recovery
+
+- Preserved exact repository bytes across platforms with `.gitattributes`.
+- Corrected PR validation and closure checkout to the exact branch head SHA.
+- Bound validation and closure evidence to the checked-out Git HEAD.
+- Derived GH0 validation commands literally from the active batch instead of the handoff mirror.
+- Updated the operational schema contract from eight to ten schemas.
+- Restricted closure execution to `GITHUB_HANDOFF.json` changes and retained fail-closed `NOT_APPLICABLE` semantics before closure authorization.
+- Reconciled `GH0_PREFLIGHT_RELEASE_VERIFICATION.json`, its Markdown mirror and `GH0_SCOPE_GUARD.md` into inventory and manifest.
+- Preserved B12/T049–T053 as `PENDING` and `convergenceAuthorized=false`.
