@@ -1,12 +1,14 @@
 # GH0 — GitHub-first bootstrap implementation report
 
-## Estado candidato r3
+## Estado candidato r4
 
 GH0 incorpora infraestructura operacional GitHub sin implementar B12 ni modificar código funcional, fixtures, contratos de producto, dependencias, lockfile, tareas, batches o `.specify`.
 
-El candidato r2 obtuvo evidencia local PASS y publicó el commit `7984cec6fa98efa7b56a78af1deb67aae0dad78e`. GitHub PR Validation ejecutó el checkout exacto, autenticó el Release B11 y produjo 53 pruebas PASS antes de fallar porque `control-plane-integrity.test.ts` invocó el validador con `.` desde el workspace físico `finscope-analytics`, en vez del alias normativo `FINSCOPE_PACKAGE_ROOT`. Closure produjo correctamente `NOT_APPLICABLE`, pero el paso final exigió únicamente `PASS`.
+El candidato r3 creó y publicó el commit `5007cc25599e038f53e44a04b52a2c177bd2eefa`. Todos los comandos locales pasaron. El runner informó FAIL únicamente porque la API del PR devolvió temporalmente el SHA anterior después de que la rama remota ya había avanzado. GitHub Closure concluyó correctamente `NOT_APPLICABLE` con workflow SUCCESS.
 
-El candidato r3 corrige exclusivamente esas dos incompatibilidades de entorno y repite toda la regresión obligatoria.
+GitHub PR Validation autenticó el Release B11, pasó control plane, npm ci, Chromium, typecheck y diez E2E. Vitest descubrió 54 pruebas y 53 pasaron; `control-plane-integrity.test.ts` falló porque el validador escribió un JSON grande mediante `console.log` y llamó inmediatamente a `process.exit`. En stdout canalizado de Linux, el proceso terminó antes de vaciar por completo el buffer y produjo JSON truncado.
+
+El candidato r4 cambia exclusivamente la emisión final del validador a escritura síncrona en stdout/stderr y usa `process.exitCode`, luego repite toda la regresión obligatoria.
 
 ## Estado de producto preservado
 
@@ -14,4 +16,4 @@ B01–B11 y T001–T048 continúan `COMPLETED`. B12/T049–T053 continúan `PEND
 
 ## Cierre pendiente
 
-GH0 no se considera completed hasta que el candidato r3 obtenga PR Validation PASS, se autentique su artifact, se aplique el cierre documental allowlisted, Closure produzca PASS real, el PR sea mergeado de forma autorizada y el Release completed publique ZIP/sidecar personalizados.
+GH0 no se considera completed hasta que el candidato r4 obtenga PR Validation PASS, se autentique su artifact, se aplique el cierre documental allowlisted, Closure produzca PASS real, el PR sea mergeado de forma autorizada y el Release completed publique ZIP/sidecar personalizados.

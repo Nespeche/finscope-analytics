@@ -1,6 +1,6 @@
 {
-  "inventoryId": "FinScope-v0.21.13-GH0-candidate-r3-package-inventory",
-  "packageVersion": "v0.21.13_GH0_candidate_r3",
+  "inventoryId": "FinScope-v0.21.13-GH0-candidate-r4-package-inventory",
+  "packageVersion": "v0.21.13_GH0_candidate_r4",
   "generatedOn": "2026-07-30",
   "root": "FinScope_v0.21.4",
   "resolutionBase": "packageRoot",
@@ -243,7 +243,7 @@
     {
       "path": "implementation-control/AUTHORITY_MATRIX.json",
       "sizeBytes": 5788,
-      "sha256": "0199d70583fd769a7a2770b4509e26f33de5b4018cf64563a88f7c1b023cebd4",
+      "sha256": "95ccce59509b2212b0f710fdc2cdefde0edef9fe552bdc9f7d7a932f6b7586ee",
       "mediaType": "application/json",
       "category": "active-operational",
       "status": "ACTIVE"
@@ -466,8 +466,8 @@
     },
     {
       "path": "implementation-control/CHANGE_LEDGER.md",
-      "sizeBytes": 56824,
-      "sha256": "b08eb9ce85af2e28aa24168a3fd366dbf0530ff429fc8f1ea178923e2b4a1754",
+      "sizeBytes": 57421,
+      "sha256": "959412601037a9b513f5d66237158c4f9a8b0b2ff921d4c4c4fd16c22ebeefb9",
       "mediaType": "text/markdown; charset=utf-8",
       "category": "active-operational",
       "status": "ACTIVE"
@@ -555,7 +555,7 @@
     {
       "path": "implementation-control/IMPLEMENTATION_STATE.json",
       "sizeBytes": 40770,
-      "sha256": "8fdae10b999b02d0767257ee024f230d2fe0eacef434ecd80db7c531ba6e2863",
+      "sha256": "24957521116d4f0f9ce71d17699b3d2ade50676d75f17e276a2c2d210e94500e",
       "mediaType": "application/json",
       "category": "active-operational",
       "status": "ACTIVE"
@@ -1322,16 +1322,16 @@
     },
     {
       "path": "implementation-control/reports/GH0_IMPLEMENTATION_REPORT.json",
-      "sizeBytes": 1475,
-      "sha256": "fe0c6928686e84f2e37e23df21cc73abe8e18083823fd60a8ac9f7d3f099485a",
+      "sizeBytes": 1712,
+      "sha256": "6dea1fbaf43912efc2537bbc74aeca00a1b211ad1234f8cb7451d9e1587102a8",
       "mediaType": "application/json",
       "category": "implementation-control",
       "status": "ACTIVE"
     },
     {
       "path": "implementation-control/reports/GH0_IMPLEMENTATION_REPORT.md",
-      "sizeBytes": 1389,
-      "sha256": "70b31b62262132def08aac474b4cad7662a6cd0f698a790580fb4e5fb7040544",
+      "sizeBytes": 1725,
+      "sha256": "d33b3adc453fb665e773ff11f55deaf06787bf6af7694f29181511ea3e9bb12b",
       "mediaType": "text/markdown",
       "category": "implementation-control",
       "status": "ACTIVE"
@@ -1546,8 +1546,8 @@
     },
     {
       "path": "implementation-control/scripts/Validate-ControlPlaneState.mjs",
-      "sizeBytes": 18147,
-      "sha256": "91a7767e5cc59220ad6a6137e74bcbc8ecd26a848e41f2db96de7dd1b725ffe4",
+      "sizeBytes": 18306,
+      "sha256": "39c3d98e2e35a2efc41d2091b8365a5b1cff37f5ecce46168ca69e48fe7c9ddb",
       "mediaType": "text/javascript; charset=utf-8",
       "category": "active-operational",
       "status": "ACTIVE"
@@ -1602,8 +1602,8 @@
     },
     {
       "path": "PACKAGE_METADATA.json",
-      "sizeBytes": 36398,
-      "sha256": "a3756a65e4f6734ea3cf5924f68707c8d4e44f9b7a0fadcd734d697c30b922c7",
+      "sizeBytes": 36706,
+      "sha256": "b0da2631436972369d550e3d4f6764c9af21c24e8a3ca0fc6cf22c4172699f9d",
       "mediaType": "application/json",
       "category": "generated-derivative",
       "status": "GENERATED"

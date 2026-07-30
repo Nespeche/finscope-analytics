@@ -1,15 +1,15 @@
 {
   "project": "FinScope Analytics",
-  "packageId": "FinScope-Analytics-v0.21.13-GH0-candidate-r3",
-  "packageVersion": "v0.21.13_GH0_candidate_r3",
-  "packageRevision": "v0.21.13_GH0_candidate_r3",
+  "packageId": "FinScope-Analytics-v0.21.13-GH0-candidate-r4",
+  "packageVersion": "v0.21.13_GH0_candidate_r4",
+  "packageRevision": "v0.21.13_GH0_candidate_r4",
   "generatedOn": "2026-07-30",
   "phase": "github_bootstrap_GH0_candidate",
   "result": "CANDIDATE",
   "implementationReadiness": "GH0_GITHUB_ACTIONS_QUALIFICATION_REQUIRED_B12_PENDING",
   "normativeBaseline": "v0.21",
-  "logicalZipName": "FS_v0.21.13_GH0_candidate_r3.zip",
-  "finalSha256Sidecar": "FS_v0.21.13_GH0_candidate_r3.zip.sha256",
+  "logicalZipName": "FS_v0.21.13_GH0_candidate_r4.zip",
+  "finalSha256Sidecar": "FS_v0.21.13_GH0_candidate_r4.zip.sha256",
   "rootDirectory": "FinScope_v0.21.4",
   "sourceBaseline": {
     "logicalName": "FS_v0.21.12_B11_completed.zip",
@@ -27,11 +27,11 @@
     "disposition": "GITHUB_ACTIONS_REQUALIFICATION_PENDING"
   },
   "inputEvidence": {
-    "status": "LOCAL_R2_PASS_GITHUB_R2_FAILED",
-    "logicalName": "FinScope_GH0_CandidateR2_Evidence_Archive.zip",
-    "sha256": "7d6002a68f48095a992e56df7ec4d0a67fb034180d35bf15afb0d68ee9a2b952",
+    "status": "LOCAL_R3_COMMANDS_PASS_GITHUB_R3_FAILED",
+    "logicalName": "FinScope_GH0_R3_Evidence_Archive.zip",
+    "sha256": "130cf7037c63ce20ab16cee2f5987a5d48451aa2d0019723f34c534e0b96f390",
     "sidecarMatch": true,
-    "effect": "GH0_R3_REMEDIATION_REQUIRED_NO_PRODUCT_STATUS_CHANGE"
+    "effect": "GH0_R4_VALIDATOR_FLUSH_REMEDIATION_REQUIRED_NO_PRODUCT_STATUS_CHANGE"
   },
   "normativeSourceBaseline": {
     "logicalName": "FinScope_Analytics_SpecDev_ChatGPT_v0.21_post_analysis_remediated.zip",
@@ -180,7 +180,9 @@
     "Aligned the operational schema contract with the two GH0 evidence/handoff schemas.",
     "Reconciled the GH0 Release preflight JSON/Markdown and scope-guard report omitted from candidate r1 inventory and manifest.",
     "Bound the control-plane integrity contract to FINSCOPE_PACKAGE_ROOT when GitHub Actions runs from the physical finscope-analytics workspace.",
-    "Allowed the candidate-stage closure workflow to conclude successfully for NOT_APPLICABLE while preserving a real PASS requirement for authorized closure."
+    "Allowed the candidate-stage closure workflow to conclude successfully for NOT_APPLICABLE while preserving a real PASS requirement for authorized closure.",
+    "Changed the control-plane validator to write stdout/stderr synchronously and set process.exitCode so large piped JSON evidence is never truncated before process completion.",
+    "Retained candidate-stage closure NOT_APPLICABLE success and all candidate r3 workspace-root corrections."
   ],
   "deferredFindings": [
     "IMP-001_OPEN_NON_NORMATIVE",

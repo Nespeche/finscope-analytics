@@ -1,32 +1,36 @@
 {
   "schemaVersion": "1.0.0",
   "operation": "GH0",
-  "status": "CANDIDATE_R3",
+  "status": "CANDIDATE_R4",
   "productChanges": false,
   "b12Implemented": false,
   "specifyModified": false,
   "previousCandidate": {
-    "revision": "v0.21.13_GH0_candidate_r2",
-    "headSha": "7984cec6fa98efa7b56a78af1deb67aae0dad78e",
-    "localResult": "PASS",
-    "localEvidenceSha256": "59c1d5ffd2e65f4d9f311218c5d8605652d7ec470c3a2eb5d843cbb96b524759",
-    "githubValidationRunId": "30567190585",
+    "revision": "v0.21.13_GH0_candidate_r3",
+    "headSha": "5007cc25599e038f53e44a04b52a2c177bd2eefa",
+    "localCommandsResult": "PASS",
+    "localRunnerReportedResult": "FAIL",
+    "localEvidenceSha256": "14750c4de865ce8ae130a5a84838a147f328ce385515182b12827c833273d7d9",
+    "localRunnerFailure": "PR API returned stale head immediately after verified branch push",
+    "githubValidationRunId": "30571106298",
     "githubValidationResult": "FAIL",
-    "githubValidationArtifactId": "8769316879",
-    "githubValidationArtifactDigest": "sha256:d7c65200690a6985d380ea9b42824545b52079e4474708c50123fdaf3df91e3b",
-    "primaryFailure": "control-plane-integrity test used physical GitHub workspace root instead of FINSCOPE_PACKAGE_ROOT",
-    "githubClosureRunId": "30567190584",
-    "githubClosureResult": "NOT_APPLICABLE",
-    "githubClosureArtifactId": "8769293564",
-    "githubClosureArtifactDigest": "sha256:949edf7778515532f6a153364afe313c49f278a13cc8559c25f157d7be753024"
+    "githubValidationArtifactId": "8770823425",
+    "githubValidationArtifactDigest": "sha256:c5d5b4a0247eeb5ef5dcc166ffc82836ca55ce20cd17a50396aa44be75e09bb3",
+    "primaryFailure": "large control-plane JSON stdout truncated by immediate process.exit in a piped Linux child process",
+    "githubClosureRunId": "30571105327",
+    "githubClosureWorkflowResult": "SUCCESS",
+    "githubClosureSemanticResult": "NOT_APPLICABLE",
+    "githubClosureArtifactId": "8770806518",
+    "githubClosureArtifactDigest": "sha256:552d24dfb28c3290083292255516a1cf1d31c3347bd8d1ab74eb6b2f2b6f7c55"
   },
   "activeBatchId": "B12",
   "browserRequired": true,
   "derivedCommandCount": 7,
   "remediation": [
-    "control-plane integrity contract resolves FINSCOPE_PACKAGE_ROOT before falling back to current directory",
-    "candidate-stage closure enforcement accepts NOT_APPLICABLE without converting it to a closure PASS",
+    "control-plane JSON and marker are written synchronously to stdout and stderr",
+    "validator sets process.exitCode instead of terminating before pipe buffers flush",
+    "candidate-stage closure and FINSCOPE_PACKAGE_ROOT remediations remain active",
     "all B12 product tasks remain pending and no product file is modified"
   ],
-  "next": "QUALIFY_CANDIDATE_R3_IN_GITHUB_ACTIONS"
+  "next": "QUALIFY_CANDIDATE_R4_IN_GITHUB_ACTIONS"
 }

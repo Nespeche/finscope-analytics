@@ -518,3 +518,11 @@
 - Required the contract to use `FINSCOPE_PACKAGE_ROOT` in GitHub Actions and `.` only as a local fallback.
 - Allowed `NOT_APPLICABLE` to complete the candidate-stage closure workflow without representing a real closure PASS.
 - Preserved B12/T049–T053 as `PENDING`, `convergenceAuthorized=false`, all product authorities and all 19 `.specify` files.
+
+## 2026-07-30 — GH0 candidate r4 control-plane output flush remediation
+
+- Preserved candidate r3 local command PASS evidence, its verified remote commit and the GitHub artifacts.
+- Replaced asynchronous console output plus immediate process termination in `Validate-ControlPlaneState.mjs`.
+- Wrote the complete JSON and status marker synchronously before setting `process.exitCode`.
+- Added runner qualification for large piped JSON and PR-head eventual consistency.
+- Preserved B12/T049–T053 as `PENDING`, `convergenceAuthorized=false`, all product authorities and all 19 `.specify` files.
