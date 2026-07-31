@@ -2,7 +2,7 @@
   import type { AppPlacement } from '../composition';
 
   export const componentId = 'refresh-fundamentals';
-  export const appPlacement: AppPlacement = 'primary-action';
+  export const appPlacement: AppPlacement = 'recovery';
   export const order = 20;
 </script>
 
