@@ -5,12 +5,16 @@ on:
     branches: [agent/b13-package-metadata-remediation]
     paths:
       - .github/workflows/hydrate-b13-package-remediation.yml
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
 
 jobs:
   hydrate:
+    if: github.event_name == 'push' || github.head_ref == 'agent/b13-package-metadata-remediation'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
