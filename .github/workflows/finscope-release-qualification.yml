@@ -136,16 +136,24 @@ jobs:
           prompt=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.promptName")
           evidence="${prefix}_${GITHUB_RUN_ID}.json"
           files=(".finscope-release/$zip" ".finscope-release/$sidecar" ".finscope-release/$evidence" ".finscope-release/GITHUB_RELEASE_HANDOFF.json" ".finscope-release/$prompt")
-          for file in "${files[@]}"; do
-            name=$(basename "$file")
-            gh api --method POST \
-              -H "Content-Type: application/octet-stream" \
-              "repos/${GITHUB_REPOSITORY}/releases/${release_id}/assets?name=${name}" \
-              --input "$file" >/dev/null
-          done
           release_json=$(gh api "repos/${GITHUB_REPOSITORY}/releases/${release_id}")
+          upload_url=$(printf '%s' "$release_json" | jq -er '.upload_url | split("{")[0]')
           test "$(printf '%s' "$release_json" | jq -r .draft)" = true
           test "$(printf '%s' "$release_json" | jq -r .tag_name)" = "$QUAL_TAG"
+          for file in "${files[@]}"; do
+            name=$(basename "$file")
+            encoded_name=$(jq -rn --arg value "$name" '$value|@uri')
+            asset_response=$(curl --fail-with-body --silent --show-error \
+              --request POST \
+              --header "Authorization: Bearer $GH_TOKEN" \
+              --header "Accept: application/vnd.github+json" \
+              --header "X-GitHub-Api-Version: 2022-11-28" \
+              --header "Content-Type: application/octet-stream" \
+              --data-binary @"$file" \
+              "${upload_url}?name=${encoded_name}")
+            test "$(printf '%s' "$asset_response" | jq -r .name)" = "$name"
+            test "$(printf '%s' "$asset_response" | jq -r .state)" = uploaded
+          done
           assets_json=$(gh api "repos/${GITHUB_REPOSITORY}/releases/${release_id}/assets?per_page=100")
           test "$(printf '%s' "$assets_json" | jq 'length')" -eq 5
           test "$(printf '%s' "$assets_json" | jq -r '.[].name' | sort -u | wc -l)" -eq 5
@@ -155,7 +163,12 @@ jobs:
           for file in "${files[@]}"; do
             name=$(basename "$file")
             asset_id=$(printf '%s' "$assets_json" | jq -er --arg name "$name" '.[] | select(.name == $name) | .id')
-            gh api -H "Accept: application/octet-stream" "repos/${GITHUB_REPOSITORY}/releases/assets/${asset_id}" > "$download/$name"
+            curl --fail-with-body --silent --show-error --location \
+              --header "Authorization: Bearer $GH_TOKEN" \
+              --header "Accept: application/octet-stream" \
+              --header "X-GitHub-Api-Version: 2022-11-28" \
+              --output "$download/$name" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/assets/${asset_id}"
             cmp "$file" "$download/$name"
           done
           (cd "$download" && sha256sum -c "$sidecar")
