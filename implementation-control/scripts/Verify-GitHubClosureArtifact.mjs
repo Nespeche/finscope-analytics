@@ -1,6 +1,4 @@
-import { createWriteStream } from 'node:fs';
 import { mkdir, rm } from 'node:fs/promises';
-import { get } from 'node:https';
 import { join } from 'node:path';
 import {
   listFiles,
@@ -25,8 +23,8 @@ function assert(condition, code, detail = '') {
 function equal(actual, expected, code) {
   assert(actual === expected, code, JSON.stringify({ actual, expected }));
 }
-async function command(commandText, code) {
-  const result = await run(commandText, { cwd: root });
+async function command(commandText, code, options = {}) {
+  const result = await run(commandText, { cwd: root, ...options });
   assert(result.exitCode === 0, code, result.stderr.toString('utf8'));
   return result.stdout.toString('utf8').trim();
 }
@@ -35,32 +33,11 @@ async function api(path) {
 }
 async function download(url, destination) {
   assert(token, 'GITHUB_TOKEN_MISSING');
-  await new Promise((resolvePromise, reject) => {
-    const request = (target, authorized) => get(target, {
-      headers: {
-        ...(authorized ? { Authorization: `Bearer ${token}` } : {}),
-        Accept: 'application/octet-stream',
-        'User-Agent': 'FinScope-GitHub',
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
-    }, (response) => {
-      if ([301, 302, 307, 308].includes(response.statusCode) && response.headers.location) {
-        response.resume();
-        request(response.headers.location, false);
-        return;
-      }
-      if (response.statusCode !== 200) {
-        response.resume();
-        reject(new Error(`ARTIFACT_HTTP_${response.statusCode}`));
-        return;
-      }
-      const stream = createWriteStream(destination);
-      response.pipe(stream);
-      stream.on('finish', () => stream.close(resolvePromise));
-      stream.on('error', reject);
-    }).on('error', reject);
-    request(url, true);
-  });
+  await command(
+    `curl --fail-with-body --silent --show-error --location --header "Authorization: Bearer $GH_TOKEN" --header "Accept: application/octet-stream" --header "X-GitHub-Api-Version: 2022-11-28" --output "${destination}" "${url}"`,
+    'ARTIFACT_DOWNLOAD_FAILED',
+    { env: { GH_TOKEN: token } },
+  );
 }
 
 assert(handoff.operation?.id, 'OPERATION_ID_MISSING');
@@ -156,4 +133,10 @@ for (const expected of batch.localValidation.commands.filter((entry) => entry.re
 await setOutput('closure_sha', closure.commitSha);
 await setOutput('run_id', closure.runId);
 await setOutput('artifact_id', closure.artifactId);
-console.log(JSON.stringify({ result: 'PASS', closureSha: closure.commitSha, requestSha: runInfo.head_sha, artifactId: closure.artifactId }, null, 2));
+console.log(JSON.stringify({
+  result: 'PASS',
+  closureSha: closure.commitSha,
+  requestSha: runInfo.head_sha,
+  artifactId: closure.artifactId,
+  artifactSha256: closure.artifactDigest,
+}, null, 2));
