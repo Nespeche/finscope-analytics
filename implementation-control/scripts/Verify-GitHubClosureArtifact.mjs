@@ -34,7 +34,7 @@ async function api(path) {
 async function download(url, destination) {
   assert(token, 'GITHUB_TOKEN_MISSING');
   await command(
-    `curl --fail-with-body --silent --show-error --location --header "Authorization: Bearer $GH_TOKEN" --header "Accept: application/octet-stream" --header "X-GitHub-Api-Version: 2022-11-28" --output "${destination}" "${url}"`,
+    `curl --fail-with-body --silent --show-error --location --header "Authorization: Bearer $GH_TOKEN" --header "Accept: application/vnd.github+json" --header "X-GitHub-Api-Version: 2022-11-28" --output "${destination}" "${url}"`,
     'ARTIFACT_DOWNLOAD_FAILED',
     { env: { GH_TOKEN: token } },
   );
