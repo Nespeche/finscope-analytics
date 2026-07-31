@@ -1,127 +1,65 @@
-name: FinScope B14 Candidate Hydration
+name: FinScope PR Validation
 
 on:
   pull_request:
     branches: [main]
 
 permissions:
-  contents: write
-  pull-requests: read
+  contents: read
 
 jobs:
-  hydrate:
-    if: github.event.pull_request.head.ref == 'agent/b14-refresh-resilience' && github.event.pull_request.head.repo.full_name == github.repository
+  validate:
+    name: validate
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout exact transport head
+      - name: Checkout exact PR commit
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Authenticate payload bytes
+      - name: Configure Node from package authority
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: package.json
+          cache: npm
+      - name: Prepare normative package-root alias
         shell: bash
         run: |
           set -euo pipefail
-          base64 --decode .finscope-transport/B14_hydration.tar.gz.b64 > "$RUNNER_TEMP/B14_hydration.tar.gz"
-          printf '%s  %s\n' 'a62e033f68408cb2f27fb8b4830ae53c3d4af0b95f60fb8bfe2987c5e30a3f8a' "$RUNNER_TEMP/B14_hydration.tar.gz" | sha256sum -c -
-
-      - name: Verify archive allowlist and safety
+          root_alias="$RUNNER_TEMP/FinScope_v0.21.4"
+          rm -rf "$root_alias"
+          ln -s "$GITHUB_WORKSPACE" "$root_alias"
+          echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
+      - name: Validate control plane first
         shell: bash
         run: |
-          set -euo pipefail
-          mapfile -t entries < <(tar -tzf "$RUNNER_TEMP/B14_hydration.tar.gz")
-          expected=(
-            implementation-control/GITHUB_HANDOFF.json
-            src/app/components/RefreshFundamentals.svelte
-            src/app/lifecycle/resume-refresh.ts
-            tests/e2e/manual-refresh.spec.ts
-            tests/e2e/open-resume.spec.ts
-            tests/e2e/refresh-resilience.spec.ts
-          )
-          test "${#entries[@]}" -eq "${#expected[@]}"
-          printf '%s\n' "${entries[@]}" | sort > "$RUNNER_TEMP/actual.txt"
-          printf '%s\n' "${expected[@]}" | sort > "$RUNNER_TEMP/expected.txt"
-          diff -u "$RUNNER_TEMP/expected.txt" "$RUNNER_TEMP/actual.txt"
-          ! grep -Eq '(^/|(^|/)\.\.(/|$)|\\)' "$RUNNER_TEMP/actual.txt"
-
-      - name: Materialize and authenticate six candidate files
-        shell: bash
-        run: |
-          set -euo pipefail
-          tar -xzf "$RUNNER_TEMP/B14_hydration.tar.gz" -C .
-          printf '%s  %s\n' \
-            'f4619de5d19fc58a28698928f1b89f21aa013705a7d1af2e478c040216467c55' src/app/lifecycle/resume-refresh.ts \
-            '6ab8edb414da3d8b81c037a0d53445100aefcb74d5d6cac18e78b1cad861e64c' src/app/components/RefreshFundamentals.svelte \
-            'f25f8730a04bbc91d1940d4ca678d8e49a2c630ba809fd3c64a03c198ad4c7ac' tests/e2e/open-resume.spec.ts \
-            '335ae468047b085df8aaf356687778d8d91c67f64b59bb22f8e3621846605334' tests/e2e/manual-refresh.spec.ts \
-            '9335efe44ccf45736c91ff9238a0fd7444a5198e62e8f2b416bbb7fe5bdfe898' tests/e2e/refresh-resilience.spec.ts \
-            'fd3cebefc919f66871b1322b5bfe9684836d423b21067f4b170282bdd64fe193' implementation-control/GITHUB_HANDOFF.json | sha256sum -c -
-
-      - name: Remove transport and restore normative workflow
-        shell: bash
-        run: |
-          set -euo pipefail
-          git checkout bcb8034e37e0d109c121fe6321a8c60bbf6877c6 -- .github/workflows/finscope-pr-validation.yml
-          rm -f \
-            .finscope-transport/B14_hydration.tar.gz.b64 \
-            .github/workflows/b14-hydrate.yml \
-            .github/workflows/b14-diagnostic-hydrate.yml
-          rmdir .finscope-transport 2>/dev/null || true
-
-      - name: Validate active control plane
-        id: control_plane
-        shell: bash
-        run: |
+          mkdir -p .finscope-evidence/preflight
           set +e
-          node implementation-control/scripts/Validate-ControlPlaneState.mjs . > "$RUNNER_TEMP/control-validator.txt" 2>&1
-          rc=$?
-          set -e
-          cat "$RUNNER_TEMP/control-validator.txt"
-          echo "rc=$rc" >> "$GITHUB_OUTPUT"
-
-      - name: Persist first control-plane failure
-        if: steps.control_plane.outputs.rc != '0'
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p .finscope-transport
-          cp "$RUNNER_TEMP/control-validator.txt" .finscope-transport/control-validator.txt
-          git config user.name 'FinScope GitHub Operator'
-          git config user.email 'actions@users.noreply.github.com'
-          git add .finscope-transport/control-validator.txt
-          if ! git diff --cached --quiet; then
-            git commit -m 'diagnostic(b14): capture control-plane failure'
-            git push origin HEAD:agent/b14-refresh-resilience
-          fi
-          exit 1
-
-      - name: Verify immutable specification tree
-        if: steps.control_plane.outputs.rc == '0'
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -z "$(git diff --name-only bcb8034e37e0d109c121fe6321a8c60bbf6877c6 -- .specify)"
-
-      - name: Commit exact six-file candidate tree
-        if: steps.control_plane.outputs.rc == '0'
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name 'FinScope GitHub Operator'
-          git config user.email 'actions@users.noreply.github.com'
-          git add -A
-          mapfile -t changed < <(git diff --cached --name-only bcb8034e37e0d109c121fe6321a8c60bbf6877c6 | sort)
-          expected=(
-            implementation-control/GITHUB_HANDOFF.json
-            src/app/components/RefreshFundamentals.svelte
-            src/app/lifecycle/resume-refresh.ts
-            tests/e2e/manual-refresh.spec.ts
-            tests/e2e/open-resume.spec.ts
-            tests/e2e/refresh-resilience.spec.ts
-          )
-          printf '%s\n' "${changed[@]}" > "$RUNNER_TEMP/changed.txt"
-          printf '%s\n' "${expected[@]}" | sort > "$RUNNER_TEMP/expected-final.txt"
-          diff -u "$RUNNER_TEMP/expected-final.txt" "$RUNNER_TEMP/changed.txt"
-          git commit -m 'feat(b14): implement resilient refresh lifecycle'
-          git push origin HEAD:agent/b14-refresh-resilience
+          node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT" >.finscope-evidence/preflight/control-plane.stdout.log 2>.finscope-evidence/preflight/control-plane.stderr.log
+          code=$?
+          printf '%s\n' "$code" >.finscope-evidence/preflight/control-plane.exit-code
+          exit 0
+      - name: Authenticate completed Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-evidence/preflight/release-baseline.json
+      - name: Execute derived validation and build evidence
+        id: validation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node implementation-control/scripts/Run-GitHubValidation.mjs
+      - name: Upload PASS or FAILED evidence
+        if: always()
+        id: upload
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ${{ steps.validation.outputs.artifact_name }}
+          path: ${{ steps.validation.outputs.evidence_dir }}
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 30
+      - name: Enforce final result
+        if: always()
+        env:
+          RESULT: ${{ steps.validation.outputs.result }}
+        run: test "$RESULT" = PASS

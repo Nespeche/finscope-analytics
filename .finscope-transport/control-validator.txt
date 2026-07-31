@@ -1,0 +1,5162 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectRoot": "/home/runner/work/finscope-analytics/finscope-analytics",
+  "status": "FAIL",
+  "checkCount": 1027,
+  "passCount": 1026,
+  "failCount": 1,
+  "taskCount": 109,
+  "batchCount": 25,
+  "tasksSha256": "12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965",
+  "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "controlFileHashes": {
+    "implementation-control/TASK_SOURCE_LOCK.json": "3d555ba484b2d2ed9173e33fa9d6ba5662996d74db5ad5d9cb3e8811e414058b",
+    "implementation-control/IMPLEMENTATION_BATCH_MAP.json": "a350899b4a8d6af0a4b5bc4831a90d18d026684044773f5b5ed61b0eb7a17943",
+    "implementation-control/IMPLEMENTATION_STATE.json": "97003eaac4dcbcc70eee16f7d5da8d979c74363b62b74f0a6dc713e25bdec04e",
+    "implementation-control/AUTHORITY_MATRIX.json": "3b007057e4a1ad87251babe1e8643d91e6e434b66b3ecd2bbbb3dac229af74d4"
+  },
+  "checks": [
+    {
+      "id": "SCHEMA_SUBSET_SELF_TEST_VALID",
+      "status": "PASS",
+      "detail": "valid fixture accepted"
+    },
+    {
+      "id": "SCHEMA_SUBSET_SELF_TEST_UNKNOWN_PROPERTY",
+      "status": "PASS",
+      "detail": "$: additionalProperty=unexpected"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_AUTHORITY_MATRIX",
+      "status": "PASS",
+      "detail": "implementation-control/schemas/authority-matrix.schema.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_IMPLEMENTATION_BATCH_MAP",
+      "status": "PASS",
+      "detail": "implementation-control/schemas/implementation-batch-map.schema.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_IMPLEMENTATION_STATE",
+      "status": "PASS",
+      "detail": "implementation-control/schemas/implementation-state.schema.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_TASK_SOURCE_LOCK",
+      "status": "PASS",
+      "detail": "implementation-control/schemas/task-source-lock.schema.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B01",
+      "status": "PASS",
+      "detail": "B01.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B02",
+      "status": "PASS",
+      "detail": "B02.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B03",
+      "status": "PASS",
+      "detail": "B03.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B04",
+      "status": "PASS",
+      "detail": "B04.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B05",
+      "status": "PASS",
+      "detail": "B05.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B06",
+      "status": "PASS",
+      "detail": "B06.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B07",
+      "status": "PASS",
+      "detail": "B07.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B08",
+      "status": "PASS",
+      "detail": "B08.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B09",
+      "status": "PASS",
+      "detail": "B09.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B10",
+      "status": "PASS",
+      "detail": "B10.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B11",
+      "status": "PASS",
+      "detail": "B11.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B12",
+      "status": "PASS",
+      "detail": "B12.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B13",
+      "status": "PASS",
+      "detail": "B13.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B14",
+      "status": "PASS",
+      "detail": "B14.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B15",
+      "status": "PASS",
+      "detail": "B15.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B16",
+      "status": "PASS",
+      "detail": "B16.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B17",
+      "status": "PASS",
+      "detail": "B17.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B18",
+      "status": "PASS",
+      "detail": "B18.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B19",
+      "status": "PASS",
+      "detail": "B19.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B20",
+      "status": "PASS",
+      "detail": "B20.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B21",
+      "status": "PASS",
+      "detail": "B21.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B22",
+      "status": "PASS",
+      "detail": "B22.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B23",
+      "status": "PASS",
+      "detail": "B23.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B24",
+      "status": "PASS",
+      "detail": "B24.json"
+    },
+    {
+      "id": "SCHEMA_CONFORMANCE_B25",
+      "status": "PASS",
+      "detail": "B25.json"
+    },
+    {
+      "id": "TASKS_FILE_HASH",
+      "status": "PASS",
+      "detail": "specs/001-fundamental-analysis-platform/tasks.md: 12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "STATE_TASKS_HASH",
+      "status": "PASS",
+      "detail": "state=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "MAP_TASKS_HASH",
+      "status": "PASS",
+      "detail": "map=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "MAP_MARKDOWN_TASKS_HASH",
+      "status": "PASS",
+      "detail": "markdown=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "TASK_UNIQUE_T001",
+      "status": "PASS",
+      "detail": "T001"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T001",
+      "status": "PASS",
+      "detail": "line=24"
+    },
+    {
+      "id": "TASK_LINE_ID_T001",
+      "status": "PASS",
+      "detail": "- [X] T001 Initialize the Svelte 5 SPA and pin the minimal runtime/development dependency set (Svelte, decimal.js, Ajv, Vite, TypeScript, Vitest, Playwright, @axe-core/playwright, Wrangler) with a committed lockfile in package.json; package-lock.json; tests/contract/dependency-inventory.test.ts. [Refs: NFR-005, NFR-006; AC-077, AC-083, AC-084] Done when: dependencies are exact, licenses recorded, no unused framework or paid SDK is present"
+    },
+    {
+      "id": "TASK_LINE_HASH_T001",
+      "status": "PASS",
+      "detail": "line=24"
+    },
+    {
+      "id": "TASK_UNIQUE_T002",
+      "status": "PASS",
+      "detail": "T002"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T002",
+      "status": "PASS",
+      "detail": "line=25"
+    },
+    {
+      "id": "TASK_LINE_ID_T002",
+      "status": "PASS",
+      "detail": "- [X] T002 [P] Configure TypeScript strict mode with noUncheckedIndexedAccess and exactOptionalPropertyTypes for browser and Worker code in tsconfig.json; workers/sec-gateway/tsconfig.json; tests/contract/typescript-strict-config.test.ts. Depends on T001. [Refs: NFR-001, NFR-005; AC-039, AC-083] Done when: typecheck rejects any in domain boundaries and all external inputs begin as unknown"
+    },
+    {
+      "id": "TASK_LINE_HASH_T002",
+      "status": "PASS",
+      "detail": "line=25"
+    },
+    {
+      "id": "TASK_UNIQUE_T003",
+      "status": "PASS",
+      "detail": "T003"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T003",
+      "status": "PASS",
+      "detail": "line=26"
+    },
+    {
+      "id": "TASK_LINE_ID_T003",
+      "status": "PASS",
+      "detail": "- [X] T003 Configure Vite with the Svelte 5 plugin, deterministic JSON imports, build output and bundle reporting in vite.config.ts; src/main.ts; index.html; tests/contract/vite-build-config.test.ts. Depends on T001, T002. [Refs: NFR-005; AC-077, AC-083] Done when: SPA builds without SvelteKit and reports asset count/size"
+    },
+    {
+      "id": "TASK_LINE_HASH_T003",
+      "status": "PASS",
+      "detail": "line=26"
+    },
+    {
+      "id": "TASK_UNIQUE_T004",
+      "status": "PASS",
+      "detail": "T004"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T004",
+      "status": "PASS",
+      "detail": "line=27"
+    },
+    {
+      "id": "TASK_LINE_ID_T004",
+      "status": "PASS",
+      "detail": "- [X] T004 Create and wire the application shell and semantic landmarks without implementing domain features in src/main.ts; src/app/App.svelte; src/app/composition.ts; src/app/views/HomeView.svelte; src/app/components/AppStatus.svelte; tests/contract/app-composition.test.ts; tests/contract/svelte-components.test.ts; tests/e2e/app-shell.spec.ts. Depends on T003, T005, T006. [Refs: FR-041, FR-042, NFR-007; AC-067, AC-069, AC-070] Done when: src/main.ts mounts App.svelte, the deterministic composition registry exposes the home route, Svelte compiler diagnostics are clean, and main, navigation and status regions are keyboard reachable"
+    },
+    {
+      "id": "TASK_LINE_HASH_T004",
+      "status": "PASS",
+      "detail": "line=27"
+    },
+    {
+      "id": "TASK_UNIQUE_T005",
+      "status": "PASS",
+      "detail": "T005"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T005",
+      "status": "PASS",
+      "detail": "line=28"
+    },
+    {
+      "id": "TASK_LINE_ID_T005",
+      "status": "PASS",
+      "detail": "- [X] T005 [P] Configure Vitest projects for unit, integration, contract and negative suites with deterministic timezone/locale in vitest.config.ts; tests/setup/deterministic-environment.ts. Depends on T001, T002. [Refs: NFR-001, NFR-005; AC-039, AC-040, AC-083] Done when: tests use frozen fixtures and no live SEC gate"
+    },
+    {
+      "id": "TASK_LINE_HASH_T005",
+      "status": "PASS",
+      "detail": "line=28"
+    },
+    {
+      "id": "TASK_UNIQUE_T006",
+      "status": "PASS",
+      "detail": "T006"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T006",
+      "status": "PASS",
+      "detail": "line=29"
+    },
+    {
+      "id": "TASK_LINE_ID_T006",
+      "status": "PASS",
+      "detail": "- [X] T006 Configure Playwright desktop/mobile projects and accessibility test integration in playwright.config.ts; tests/e2e/global.setup.ts; tests/accessibility/axe.ts. Depends on T001, T002, T005. [Refs: FR-042, NFR-005, NFR-007; AC-067, AC-068, AC-069, AC-070, AC-071] Done when: e2e, accessibility and performance browser suites are discoverable, axe is supplemental and manual WCAG cases remain explicit"
+    },
+    {
+      "id": "TASK_LINE_HASH_T006",
+      "status": "PASS",
+      "detail": "line=29"
+    },
+    {
+      "id": "TASK_UNIQUE_T007",
+      "status": "PASS",
+      "detail": "T007"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T007",
+      "status": "PASS",
+      "detail": "line=30"
+    },
+    {
+      "id": "TASK_LINE_ID_T007",
+      "status": "PASS",
+      "detail": "- [X] T007 [P] Configure the read-only SEC Worker, declare only the non-secret binding names `SEC_USER_AGENT` and `SEC_CONTACT_EMAIL` without values, and bind the minimal D1 catalog database in workers/sec-gateway/wrangler.jsonc; workers/sec-gateway/src/index.ts; tests/contract/cloudflare/wrangler-bindings.test.ts. Depends on T001, T002, T005. [Refs: FR-003, FR-040, NFR-003; AC-043, AC-081, AC-082] Done when: required binding names exist, their values are absent from the package, and no KV, R2, Queues, Durable Objects, Cron or paid usage model is declared"
+    },
+    {
+      "id": "TASK_LINE_HASH_T007",
+      "status": "PASS",
+      "detail": "line=30"
+    },
+    {
+      "id": "TASK_UNIQUE_T008",
+      "status": "PASS",
+      "detail": "T008"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T008",
+      "status": "PASS",
+      "detail": "line=31"
+    },
+    {
+      "id": "TASK_LINE_ID_T008",
+      "status": "PASS",
+      "detail": "- [X] T008 Create the minimal D1 schema for immutable catalog versions and active metadata pointers in workers/sec-gateway/migrations/0001_catalog_metadata.sql; tests/integration/cloudflare/d1-migration.test.ts. Depends on T007. [Refs: NFR-005, NFR-006; AC-077, AC-083] Done when: schema stores no user or SEC payload data and indexes version lookups"
+    },
+    {
+      "id": "TASK_LINE_HASH_T008",
+      "status": "PASS",
+      "detail": "line=31"
+    },
+    {
+      "id": "TASK_UNIQUE_T009",
+      "status": "PASS",
+      "detail": "T009"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T009",
+      "status": "PASS",
+      "detail": "line=32"
+    },
+    {
+      "id": "TASK_LINE_ID_T009",
+      "status": "PASS",
+      "detail": "- [X] T009 [P] Add static security headers and SPA fallback rules compatible with Cloudflare Pages in public/_headers; public/_redirects; tests/contract/security/static-headers.test.ts. Depends on T003, T005. [Refs: FR-039, FR-041; AC-046, AC-047] Done when: CSP, frame, MIME and referrer policies are explicit without Pages Functions"
+    },
+    {
+      "id": "TASK_LINE_HASH_T009",
+      "status": "PASS",
+      "detail": "line=32"
+    },
+    {
+      "id": "TASK_UNIQUE_T010",
+      "status": "PASS",
+      "detail": "T010"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T010",
+      "status": "PASS",
+      "detail": "line=33"
+    },
+    {
+      "id": "TASK_LINE_ID_T010",
+      "status": "PASS",
+      "detail": "- [X] T010 Document implementation commands that require no agent or native Spec Kit command in README.md; docs/development.md. Depends on T001, T002, T003, T005, T006. [Refs: NFR-005, NFR-006; AC-077, AC-083, AC-084] Done when: setup, category-specific test, local-validation and build steps are executable in Windows/VS Code and do not require terminal use by end users"
+    },
+    {
+      "id": "TASK_LINE_HASH_T010",
+      "status": "PASS",
+      "detail": "line=33"
+    },
+    {
+      "id": "TASK_UNIQUE_T011",
+      "status": "PASS",
+      "detail": "T011"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T011",
+      "status": "PASS",
+      "detail": "line=39"
+    },
+    {
+      "id": "TASK_LINE_ID_T011",
+      "status": "PASS",
+      "detail": "- [X] T011 Implement canonical DecimalString parsing and decimal.js ROUND_HALF_EVEN helpers in src/core/decimal.ts; tests/unit/core/decimal.test.ts. Depends on T001, T002, T005. [Refs: FR-008, FR-014, NFR-001; AC-019, AC-020, AC-026, AC-027] Done when: all formula decimal edge vectors pass without Number arithmetic"
+    },
+    {
+      "id": "TASK_LINE_HASH_T011",
+      "status": "PASS",
+      "detail": "line=39"
+    },
+    {
+      "id": "TASK_UNIQUE_T012",
+      "status": "PASS",
+      "detail": "T012"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T012",
+      "status": "PASS",
+      "detail": "line=40"
+    },
+    {
+      "id": "TASK_LINE_ID_T012",
+      "status": "PASS",
+      "detail": "- [X] T012 [P] Implement Draft 2020-12 schema registration and fail-closed Ajv validation for all active schemas under the runtime policy in specs/001-fundamental-analysis-platform/contracts/schema-validation-runtime.md in src/core/schema-validator.ts; src/core/schema-registry.ts; tests/contract/schema-registry.test.ts. Depends on T001, T002, T005. [Refs: NFR-005, NFR-006; AC-028, AC-033, AC-043, AC-045, AC-083] Done when: all 26 active schemas compile once with the authorized Ajv2020 policy and every invalid fixture is rejected without coercion, defaults or inferred formats"
+    },
+    {
+      "id": "TASK_LINE_HASH_T012",
+      "status": "PASS",
+      "detail": "line=40"
+    },
+    {
+      "id": "TASK_UNIQUE_T013",
+      "status": "PASS",
+      "detail": "T013"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T013",
+      "status": "PASS",
+      "detail": "line=41"
+    },
+    {
+      "id": "TASK_LINE_ID_T013",
+      "status": "PASS",
+      "detail": "- [X] T013 [P] Implement RFC 8785 canonical JSON and SHA-256 helpers with exact prefix rules in src/core/canonical-json.ts; src/core/sha256.ts; tests/unit/core/canonical-json.test.ts. Depends on T002, T005. [Refs: FR-025, FR-029, NFR-001; AC-039, AC-040, AC-041] Done when: official package vectors produce exact bytes and digests"
+    },
+    {
+      "id": "TASK_LINE_HASH_T013",
+      "status": "PASS",
+      "detail": "line=41"
+    },
+    {
+      "id": "TASK_UNIQUE_T014",
+      "status": "PASS",
+      "detail": "T014"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T014",
+      "status": "PASS",
+      "detail": "line=42"
+    },
+    {
+      "id": "TASK_LINE_ID_T014",
+      "status": "PASS",
+      "detail": "- [X] T014 [P] Define injected clock, locale and timezone interfaces that cannot enter normative calculations in src/core/clock.ts; src/core/presentation-time.ts; tests/unit/core/clock-boundary.test.ts. Depends on T002, T005. [Refs: FR-024, FR-027, NFR-001; AC-064, AC-079] Done when: normative modules accept no ambient Date.now or locale dependency"
+    },
+    {
+      "id": "TASK_LINE_HASH_T014",
+      "status": "PASS",
+      "detail": "line=42"
+    },
+    {
+      "id": "TASK_UNIQUE_T015",
+      "status": "PASS",
+      "detail": "T015"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T015",
+      "status": "PASS",
+      "detail": "line=43"
+    },
+    {
+      "id": "TASK_LINE_ID_T015",
+      "status": "PASS",
+      "detail": "- [X] T015 Load and type-check active authorities, catalogs and fixtures by exact package-root paths in src/authority/loaders.ts; src/authority/types.ts; tests/contract/authority-loading.test.ts. Depends on T012. [Refs: NFR-005, NFR-006; AC-028, AC-034, AC-042, AC-083, AC-084] Done when: unknown authority IDs, missing pointers and heuristic paths fail closed"
+    },
+    {
+      "id": "TASK_LINE_HASH_T015",
+      "status": "PASS",
+      "detail": "line=43"
+    },
+    {
+      "id": "TASK_UNIQUE_T016",
+      "status": "PASS",
+      "detail": "T016"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T016",
+      "status": "PASS",
+      "detail": "line=44"
+    },
+    {
+      "id": "TASK_LINE_ID_T016",
+      "status": "PASS",
+      "detail": "- [X] T016 [P] Define discriminated UI↔Web Worker messages, operation IDs, progress events and cancellation messages in src/types/messages.ts; tests/unit/types/messages.test.ts. Depends on T002, T012. [Refs: FR-037, FR-038, NFR-001; AC-048, AC-072, AC-073] Done when: switches are exhaustive and duplicate operation IDs are detectable"
+    },
+    {
+      "id": "TASK_LINE_HASH_T016",
+      "status": "PASS",
+      "detail": "line=44"
+    },
+    {
+      "id": "TASK_UNIQUE_T017",
+      "status": "PASS",
+      "detail": "T017"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T017",
+      "status": "PASS",
+      "detail": "line=45"
+    },
+    {
+      "id": "TASK_LINE_ID_T017",
+      "status": "PASS",
+      "detail": "- [X] T017 Implement the pipeline state machine and capability guards from the active catalog in src/domain/orchestration/state-machine.ts; src/domain/orchestration/capabilities.ts; tests/unit/orchestration/state-matrix.test.ts. Depends on T015, T016. [Refs: FR-037, FR-038, FR-041, NFR-005; AC-048, AC-071, AC-072, AC-073, AC-075] Done when: all 81 allowed/prohibited transition pairs match fixtures"
+    },
+    {
+      "id": "TASK_LINE_HASH_T017",
+      "status": "PASS",
+      "detail": "line=45"
+    },
+    {
+      "id": "TASK_UNIQUE_T018",
+      "status": "PASS",
+      "detail": "T018"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T018",
+      "status": "PASS",
+      "detail": "line=46"
+    },
+    {
+      "id": "TASK_LINE_ID_T018",
+      "status": "PASS",
+      "detail": "- [X] T018 [P] Implement local issue and RFC 9457 Problem Details type boundaries without cross-domain leakage in src/domain/issues/local-issue.ts; src/gateway/problem-details.ts; tests/contract/problem-details.test.ts. Depends on T012. [Refs: FR-039, FR-040, NFR-005; AC-002, AC-046, AC-047, AC-082] Done when: local issues never serialize as HTTP responses and invalid variants fail"
+    },
+    {
+      "id": "TASK_LINE_HASH_T018",
+      "status": "PASS",
+      "detail": "line=46"
+    },
+    {
+      "id": "TASK_UNIQUE_T019",
+      "status": "PASS",
+      "detail": "T019"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T019",
+      "status": "PASS",
+      "detail": "line=47"
+    },
+    {
+      "id": "TASK_LINE_ID_T019",
+      "status": "PASS",
+      "detail": "- [X] T019 [P] Implement structured, redacted client telemetry and correlation IDs without financial values or credentials in src/core/telemetry.ts; workers/sec-gateway/src/observability.ts; tests/negative/telemetry-redaction.test.ts. Depends on T002, T005. [Refs: NFR-002, NFR-003; AC-053, AC-076] Done when: logs contain operation/status/reason only and pass secret/value scans"
+    },
+    {
+      "id": "TASK_LINE_HASH_T019",
+      "status": "PASS",
+      "detail": "line=47"
+    },
+    {
+      "id": "TASK_UNIQUE_T020",
+      "status": "PASS",
+      "detail": "T020"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T020",
+      "status": "PASS",
+      "detail": "line=48"
+    },
+    {
+      "id": "TASK_LINE_ID_T020",
+      "status": "PASS",
+      "detail": "- [X] T020 Define immutable domain records for issuer, fundamental bundle/analysis, price overlay/analysis and snapshots in src/domain/model.ts; src/domain/fundamental/types.ts; src/domain/price/types.ts; tests/unit/domain/immutability.test.ts. Depends on T011, T012. [Refs: FR-008, FR-020, FR-021, FR-026; AC-011, AC-042, AC-049, AC-078] Done when: types prevent price fields in fundamental records and records are readonly"
+    },
+    {
+      "id": "TASK_LINE_HASH_T020",
+      "status": "PASS",
+      "detail": "line=48"
+    },
+    {
+      "id": "TASK_UNIQUE_T021",
+      "status": "PASS",
+      "detail": "T021"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T021",
+      "status": "PASS",
+      "detail": "line=49"
+    },
+    {
+      "id": "TASK_LINE_ID_T021",
+      "status": "PASS",
+      "detail": "- [X] T021 [P] Define native IndexedDB stores, keys, transaction helpers and schema version constants, and implement distinct `refreshConsent` and `storageConsent` records with false-by-default in-memory behavior and revocation helpers in src/persistence/db-schema.ts; src/persistence/indexeddb.ts; src/persistence/consent-repository.ts; tests/integration/persistence/db-schema.test.ts; tests/e2e/consent.spec.ts. Depends on T002, T005, T006, T012. [Refs: FR-030, FR-034, FR-035, NFR-002, NFR-004; AC-056, AC-057, AC-058, AC-065, AC-076] Done when: consent records are separate and available before lifecycle orchestration, storage remains optional, and no network occurs when refresh consent is false"
+    },
+    {
+      "id": "TASK_LINE_HASH_T021",
+      "status": "PASS",
+      "detail": "line=49"
+    },
+    {
+      "id": "TASK_UNIQUE_T022",
+      "status": "PASS",
+      "detail": "T022"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T022",
+      "status": "PASS",
+      "detail": "line=50"
+    },
+    {
+      "id": "TASK_LINE_ID_T022",
+      "status": "PASS",
+      "detail": "- [X] T022 [P] Create accessible primitive components for buttons, fields, dialogs, progress, status and destructive confirmation in src/app/components/Button.svelte; src/app/components/Field.svelte; src/app/components/Dialog.svelte; src/app/components/ProgressStatus.svelte; tests/accessibility/primitives.spec.ts. Depends on T004, T006. [Refs: FR-041, FR-042, NFR-007; AC-067, AC-068, AC-069, AC-070, AC-071] Done when: keyboard, focus return, accessible name and live status tests pass"
+    },
+    {
+      "id": "TASK_LINE_HASH_T022",
+      "status": "PASS",
+      "detail": "line=50"
+    },
+    {
+      "id": "TASK_UNIQUE_T023",
+      "status": "PASS",
+      "detail": "T023"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T023",
+      "status": "PASS",
+      "detail": "line=51"
+    },
+    {
+      "id": "TASK_LINE_ID_T023",
+      "status": "PASS",
+      "detail": "- [X] T023 Implement a typed Web Worker host that enforces one active operation per issuer and atomic result publication messages in src/worker/orchestrator.worker.ts; src/worker/operation-registry.ts; tests/integration/worker/operation-registry.test.ts. Depends on T015, T016, T017. [Refs: FR-035, FR-037, NFR-001, NFR-004; AC-072, AC-073] Done when: duplicate actions coalesce and cancellation leaves prior state"
+    },
+    {
+      "id": "TASK_LINE_HASH_T023",
+      "status": "PASS",
+      "detail": "line=51"
+    },
+    {
+      "id": "TASK_UNIQUE_T024",
+      "status": "PASS",
+      "detail": "T024"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T024",
+      "status": "PASS",
+      "detail": "line=59"
+    },
+    {
+      "id": "TASK_LINE_ID_T024",
+      "status": "PASS",
+      "detail": "- [X] T024 [US1] Implement zero-padded CIK normalization and issuer identity resolution without ticker authority in src/domain/identity/cik.ts; src/domain/identity/issuer-resolver.ts; tests/unit/identity/issuer-resolver.test.ts. Depends on T012, T018, T020. [Refs: FR-001, FR-002, NFR-006; AC-001, AC-002] Done when: ambiguous aliases stop locally before network"
+    },
+    {
+      "id": "TASK_LINE_HASH_T024",
+      "status": "PASS",
+      "detail": "line=59"
+    },
+    {
+      "id": "TASK_UNIQUE_T025",
+      "status": "PASS",
+      "detail": "T025"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T025",
+      "status": "PASS",
+      "detail": "line=60"
+    },
+    {
+      "id": "TASK_LINE_ID_T025",
+      "status": "PASS",
+      "detail": "- [X] T025 [US1] Build the issuer selection UI with explicit CIK/legal-name evidence and ambiguity recovery in src/app/views/IssuerSearchView.svelte; src/app/components/IssuerCandidateList.svelte; tests/e2e/issuer-selection.spec.ts. Depends on T022, T024. [Refs: FR-001, FR-002, FR-041; AC-001, AC-002, AC-074, AC-075] Done when: the view exports an AUTH-027 routeDefinition, selection is keyboard operable and context remains visible"
+    },
+    {
+      "id": "TASK_LINE_HASH_T025",
+      "status": "PASS",
+      "detail": "line=60"
+    },
+    {
+      "id": "TASK_UNIQUE_T026",
+      "status": "PASS",
+      "detail": "T026"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T026",
+      "status": "PASS",
+      "detail": "line=61"
+    },
+    {
+      "id": "TASK_LINE_ID_T026",
+      "status": "PASS",
+      "detail": "- [X] T026 [P] [US1] Implement Worker host allowlist, method constraints, URL construction and request validation for SEC routes in workers/sec-gateway/src/security/allowlist.ts; workers/sec-gateway/src/security/request-guard.ts; tests/contract/worker/request-guard.test.ts. Depends on T007, T009, T018. [Refs: FR-003, FR-039, FR-040, NFR-003; AC-003, AC-043, AC-082] Done when: invalid CIK/path/method performs zero upstream calls"
+    },
+    {
+      "id": "TASK_LINE_HASH_T026",
+      "status": "PASS",
+      "detail": "line=61"
+    },
+    {
+      "id": "TASK_UNIQUE_T027",
+      "status": "PASS",
+      "detail": "T027"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T027",
+      "status": "PASS",
+      "detail": "line=62"
+    },
+    {
+      "id": "TASK_LINE_ID_T027",
+      "status": "PASS",
+      "detail": "- [X] T027 [US1] Implement and register OpenAPI-listed read-only gateway routes and operation-specific Problem Details in workers/sec-gateway/src/index.ts; workers/sec-gateway/src/routes/submissions.ts; workers/sec-gateway/src/routes/company-facts.ts; workers/sec-gateway/src/routes/company-concept.ts; tests/contract/worker/openapi-surface.test.ts. Depends on T018, T026. [Refs: FR-039, FR-040, NFR-005; AC-043, AC-044, AC-045, AC-046, AC-047, AC-082] Done when: the explicit route table registers only OpenAPI matrix-listed routes/statuses and excludes 409/422"
+    },
+    {
+      "id": "TASK_LINE_HASH_T027",
+      "status": "PASS",
+      "detail": "line=62"
+    },
+    {
+      "id": "TASK_UNIQUE_T028",
+      "status": "PASS",
+      "detail": "T028"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T028",
+      "status": "PASS",
+      "detail": "line=63"
+    },
+    {
+      "id": "TASK_LINE_ID_T028",
+      "status": "PASS",
+      "detail": "- [X] T028 [US1] Implement the SEC upstream fetch boundary with fail-closed `SEC_USER_AGENT`/`SEC_CONTACT_EMAIL` validation, declared request headers, redacted telemetry, `redirect: manual`, validation of every `Location`, exact allowlisting of `data.sec.gov` and `www.sec.gov`, rejection of cross-host redirects, response streaming and size guards in workers/sec-gateway/wrangler.jsonc; workers/sec-gateway/src/security/allowlist.ts; workers/sec-gateway/src/sec-stream.ts; workers/sec-gateway/src/observability.ts; tests/contract/cloudflare/wrangler-bindings.test.ts; tests/integration/worker/sec-stream.test.ts; tests/negative/sec/sec-negative.test.ts. Depends on T007, T019, T026, T027. [Refs: FR-003, FR-004, FR-005, FR-006, FR-007, NFR-003; AC-003, AC-005, AC-007, AC-008, AC-009, AC-053, AC-081] Done when: missing bindings perform zero upstream calls, no contact value is logged or packaged, each redirect target is revalidated, and frozen positive/negative vectors pass"
+    },
+    {
+      "id": "TASK_LINE_HASH_T028",
+      "status": "PASS",
+      "detail": "line=63"
+    },
+    {
+      "id": "TASK_UNIQUE_T029",
+      "status": "PASS",
+      "detail": "T029"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T029",
+      "status": "PASS",
+      "detail": "line=64"
+    },
+    {
+      "id": "TASK_LINE_ID_T029",
+      "status": "PASS",
+      "detail": "- [X] T029 [P] [US1] Implement D1 catalog version reads with indexed queries and embedded-static fallback in workers/sec-gateway/src/catalog/version-repository.ts; src/authority/catalog-version.ts; tests/integration/worker/catalog-version.test.ts. Depends on T008, T012. [Refs: FR-033, NFR-004, NFR-005; AC-059, AC-061, AC-083] Done when: D1 failure marks metadata stale and never blocks embedded authorities"
+    },
+    {
+      "id": "TASK_LINE_HASH_T029",
+      "status": "PASS",
+      "detail": "line=64"
+    },
+    {
+      "id": "TASK_UNIQUE_T030",
+      "status": "PASS",
+      "detail": "T030"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T030",
+      "status": "PASS",
+      "detail": "line=65"
+    },
+    {
+      "id": "TASK_LINE_ID_T030",
+      "status": "PASS",
+      "detail": "- [X] T030 [US1] Implement browser SEC client with conditional headers, bounded body streaming and validated JSON in src/gateway/sec-client.ts; src/gateway/sec-response.ts; tests/integration/gateway/sec-client.test.ts. Depends on T012, T027, T028. [Refs: FR-003, FR-004, NFR-003; AC-003, AC-004, AC-005, AC-081] Done when: Submissions and Company Facts are validated before domain use"
+    },
+    {
+      "id": "TASK_LINE_HASH_T030",
+      "status": "PASS",
+      "detail": "line=65"
+    },
+    {
+      "id": "TASK_UNIQUE_T031",
+      "status": "PASS",
+      "detail": "T031"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T031",
+      "status": "PASS",
+      "detail": "line=66"
+    },
+    {
+      "id": "TASK_LINE_ID_T031",
+      "status": "PASS",
+      "detail": "- [X] T031 [P] [US1] Implement eligible filing/form selection and exact period/source reference extraction in src/domain/fundamental/filing-selection.ts; tests/unit/fundamental/filing-selection.test.ts. Depends on T015, T020. [Refs: FR-004, FR-008, NFR-003; AC-006, AC-011] Done when: 8-K remains evidence only and amendments/restatements retain lineage"
+    },
+    {
+      "id": "TASK_LINE_HASH_T031",
+      "status": "PASS",
+      "detail": "line=66"
+    },
+    {
+      "id": "TASK_UNIQUE_T032",
+      "status": "PASS",
+      "detail": "T032"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T032",
+      "status": "PASS",
+      "detail": "line=67"
+    },
+    {
+      "id": "TASK_LINE_ID_T032",
+      "status": "PASS",
+      "detail": "- [X] T032 [US1] Implement deterministic 14-call acquisition plan with Company Facts before ordered Company Concept fallbacks in src/domain/acquisition/acquisition-plan.ts; src/domain/acquisition/fallback-order.ts; tests/unit/acquisition/acquisition-plan.test.ts. Depends on T015, T029, T030. [Refs: FR-003, FR-004, FR-005, FR-006, FR-007, NFR-001, NFR-003; AC-005, AC-007, AC-008, AC-009, AC-081] Done when: no 15th call and fallback order is stable"
+    },
+    {
+      "id": "TASK_LINE_HASH_T032",
+      "status": "PASS",
+      "detail": "line=67"
+    },
+    {
+      "id": "TASK_UNIQUE_T033",
+      "status": "PASS",
+      "detail": "T033"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T033",
+      "status": "PASS",
+      "detail": "line=68"
+    },
+    {
+      "id": "TASK_LINE_ID_T033",
+      "status": "PASS",
+      "detail": "- [X] T033 [US1] Implement acquisition progress, cancellation and partial-result semantics and register its typed operation descriptor with the Web Worker composition root in src/worker/acquisition-runner.ts; src/worker/operation-registry.ts; tests/integration/worker/acquisition-cancel.test.ts. Depends on T023, T031. [Refs: FR-007, FR-035, FR-037, NFR-004; AC-009, AC-010, AC-073] Done when: the acquisition operation is dispatchable through the registry, cancelled/partial candidates never replace active pointers"
+    },
+    {
+      "id": "TASK_LINE_HASH_T033",
+      "status": "PASS",
+      "detail": "line=68"
+    },
+    {
+      "id": "TASK_UNIQUE_T034",
+      "status": "PASS",
+      "detail": "T034"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T034",
+      "status": "PASS",
+      "detail": "line=69"
+    },
+    {
+      "id": "TASK_LINE_ID_T034",
+      "status": "PASS",
+      "detail": "- [X] T034 [US1] Connect issuer UI to consent, acquisition progress, cancellation and retry actions in src/app/views/AcquisitionView.svelte; src/app/components/NetworkConsent.svelte; tests/e2e/acquisition-flow.spec.ts. Depends on T025, T032, T033. [Refs: FR-030, FR-032, FR-041, FR-042; AC-065, AC-066, AC-070, AC-071, AC-072, AC-073, AC-075] Done when: the view exports an AUTH-027 routeDefinition and all actions are UI-reachable and announced"
+    },
+    {
+      "id": "TASK_LINE_HASH_T034",
+      "status": "PASS",
+      "detail": "line=69"
+    },
+    {
+      "id": "TASK_UNIQUE_T035",
+      "status": "PASS",
+      "detail": "T035"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T035",
+      "status": "PASS",
+      "detail": "line=70"
+    },
+    {
+      "id": "TASK_LINE_ID_T035",
+      "status": "PASS",
+      "detail": "- [X] T035 [P] [US1] Run frozen SEC positive/negative schema, acquisition, missing-binding and redirect contract vectors as a release-blocking suite in tests/contract/sec/sec-fixtures.test.ts; tests/negative/sec/sec-negative.test.ts. Depends on T012, T027, T028, T031. [Refs: FR-003, FR-004, FR-005, FR-006, FR-007, NFR-003, NFR-005; AC-003, AC-005, AC-006, AC-007, AC-008, AC-009, AC-081, AC-082] Done when: all frozen hashes, same-host redirects, cross-host rejections and fail-closed binding cases match exact oracles"
+    },
+    {
+      "id": "TASK_LINE_HASH_T035",
+      "status": "PASS",
+      "detail": "line=70"
+    },
+    {
+      "id": "TASK_UNIQUE_T036",
+      "status": "PASS",
+      "detail": "T036"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T036",
+      "status": "PASS",
+      "detail": "line=78"
+    },
+    {
+      "id": "TASK_LINE_ID_T036",
+      "status": "PASS",
+      "detail": "- [X] T036 [US2] Implement exact XBRL mapping resolution and reject fuzzy/taxonomy-wide inference in src/domain/fundamental/mapping-resolver.ts; tests/unit/fundamental/mapping-resolver.test.ts. Depends on T015, T020, T030. [Refs: FR-006, FR-011, NFR-001; AC-012, AC-013, AC-014, AC-080] Done when: precedence and ambiguity vectors pass exactly"
+    },
+    {
+      "id": "TASK_LINE_HASH_T036",
+      "status": "PASS",
+      "detail": "line=78"
+    },
+    {
+      "id": "TASK_UNIQUE_T037",
+      "status": "PASS",
+      "detail": "T037"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T037",
+      "status": "PASS",
+      "detail": "line=79"
+    },
+    {
+      "id": "TASK_LINE_ID_T037",
+      "status": "PASS",
+      "detail": "- [X] T037 [P] [US2] Implement accounting-profile selection and allowlisted concept/metric capabilities in src/domain/fundamental/profile-resolver.ts; tests/unit/fundamental/profile-resolver.test.ts. Depends on T015, T020. [Refs: FR-011, FR-012, FR-013; AC-016, AC-017, AC-018, AC-080] Done when: unsupported profile is a normal partial local result"
+    },
+    {
+      "id": "TASK_LINE_HASH_T037",
+      "status": "PASS",
+      "detail": "line=79"
+    },
+    {
+      "id": "TASK_UNIQUE_T038",
+      "status": "PASS",
+      "detail": "T038"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T038",
+      "status": "PASS",
+      "detail": "line=80"
+    },
+    {
+      "id": "TASK_LINE_ID_T038",
+      "status": "PASS",
+      "detail": "- [X] T038 [P] [US2] Implement fact sanitization preserving raw provenance, unit, scale, sign, dimensions and sourceRef in src/domain/fundamental/fact-sanitizer.ts; tests/unit/fundamental/fact-sanitizer.test.ts. Depends on T011, T018, T020. [Refs: FR-008, FR-009, FR-039, NFR-001; AC-019, AC-020] Done when: invalid decimals are excluded and never hashed"
+    },
+    {
+      "id": "TASK_LINE_HASH_T038",
+      "status": "PASS",
+      "detail": "line=80"
+    },
+    {
+      "id": "TASK_UNIQUE_T039",
+      "status": "PASS",
+      "detail": "T039"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T039",
+      "status": "PASS",
+      "detail": "line=81"
+    },
+    {
+      "id": "TASK_LINE_ID_T039",
+      "status": "PASS",
+      "detail": "- [X] T039 [US2] Implement fiscal period classification for FY, quarter, comparable prior and TTM without calendar inference in src/domain/fundamental/period-resolver.ts; tests/unit/fundamental/period-resolver.test.ts. Depends on T036, T038. [Refs: FR-008, FR-014, NFR-001; AC-015, AC-016] Done when: incompatible durations yield insufficient, not fabricated sums"
+    },
+    {
+      "id": "TASK_LINE_HASH_T039",
+      "status": "PASS",
+      "detail": "line=81"
+    },
+    {
+      "id": "TASK_UNIQUE_T040",
+      "status": "PASS",
+      "detail": "T040"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T040",
+      "status": "PASS",
+      "detail": "line=82"
+    },
+    {
+      "id": "TASK_LINE_ID_T040",
+      "status": "PASS",
+      "detail": "- [X] T040 [P] [US2] Implement exact debt bucket policy with non-overlap and lease separation in src/domain/fundamental/debt-resolver.ts; tests/unit/fundamental/debt-resolver.test.ts. Depends on T035, T037. [Refs: FR-015, FR-019, NFR-001; AC-021, AC-022, AC-023, AC-024, AC-025] Done when: generic totals and partial buckets cannot create dependent ratios"
+    },
+    {
+      "id": "TASK_LINE_HASH_T040",
+      "status": "PASS",
+      "detail": "line=82"
+    },
+    {
+      "id": "TASK_UNIQUE_T041",
+      "status": "PASS",
+      "detail": "T041"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T041",
+      "status": "PASS",
+      "detail": "line=83"
+    },
+    {
+      "id": "TASK_LINE_ID_T041",
+      "status": "PASS",
+      "detail": "- [X] T041 [US2] Implement the 15 formula definitions with canonical edge reason precedence in src/domain/analytics/formula-engine.ts; tests/unit/analytics/formula-vectors.test.ts. Depends on T011, T012, T015. [Refs: FR-013, FR-014, NFR-001, NFR-005; AC-019, AC-026, AC-027, AC-028] Done when: 36 positive and all negative formula vectors pass exactly"
+    },
+    {
+      "id": "TASK_LINE_HASH_T041",
+      "status": "PASS",
+      "detail": "line=83"
+    },
+    {
+      "id": "TASK_UNIQUE_T042",
+      "status": "PASS",
+      "detail": "T042"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T042",
+      "status": "PASS",
+      "detail": "line=85"
+    },
+    {
+      "id": "TASK_LINE_ID_T042",
+      "status": "PASS",
+      "detail": "- [X] T042 [US2] Implement all 24 fundamental metrics by consuming the single formula engine and categorical quality classifier, using `decimal.js`, `ROUND_HALF_EVEN`, canonical DecimalString, profile/period gates and reason-code precedence in src/domain/analytics/fundamental-metrics.ts; tests/unit/analytics/fundamental-metric-vectors.test.ts. Depends on T039, T040, T041, T043. [Refs: FR-013, FR-014, FR-015, FR-016, FR-019, NFR-001; AC-016, AC-017, AC-025, AC-026, AC-027, AC-028, AC-029] Done when: 72 fundamental metric vectors pass, formulas are not duplicated and no valuation metric exists"
+    },
+    {
+      "id": "TASK_LINE_HASH_T042",
+      "status": "PASS",
+      "detail": "line=85"
+    },
+    {
+      "id": "TASK_UNIQUE_T043",
+      "status": "PASS",
+      "detail": "T043"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T043",
+      "status": "PASS",
+      "detail": "line=84"
+    },
+    {
+      "id": "TASK_LINE_ID_T043",
+      "status": "PASS",
+      "detail": "- [X] T043 [P] [US2] Implement the categorical fundamental and price quality classifiers without numeric score in src/domain/analytics/quality-classifier.ts; tests/unit/analytics/quality-cartesian.test.ts. Depends on T012, T015. [Refs: FR-016, FR-019, NFR-001, NFR-005; AC-029, AC-030, AC-031, AC-032] Done when: all 144 combinations map once with no gaps/overlap"
+    },
+    {
+      "id": "TASK_LINE_HASH_T043",
+      "status": "PASS",
+      "detail": "line=84"
+    },
+    {
+      "id": "TASK_UNIQUE_T044",
+      "status": "PASS",
+      "detail": "T044"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T044",
+      "status": "PASS",
+      "detail": "line=86"
+    },
+    {
+      "id": "TASK_LINE_ID_T044",
+      "status": "PASS",
+      "detail": "- [X] T044 [US2] Implement the closed insight AST validator and evaluator for nine active rules in src/domain/analytics/rule-engine.ts; tests/unit/analytics/rule-vectors.test.ts. Depends on T012, T041, T042. [Refs: FR-017, FR-018, FR-019, NFR-001, NFR-005; AC-033, AC-034, AC-035] Done when: 27 rule vectors yield only three allowed states"
+    },
+    {
+      "id": "TASK_LINE_HASH_T044",
+      "status": "PASS",
+      "detail": "line=86"
+    },
+    {
+      "id": "TASK_UNIQUE_T045",
+      "status": "PASS",
+      "detail": "T045"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T045",
+      "status": "PASS",
+      "detail": "line=87"
+    },
+    {
+      "id": "TASK_LINE_ID_T045",
+      "status": "PASS",
+      "detail": "- [X] T045 [P] [US2] Implement deterministic five-state synthesis and descriptive limitation generation from completed rule outcomes in src/domain/analytics/synthesis.ts; tests/unit/analytics/synthesis.test.ts. Depends on T043, T044. [Refs: FR-017, FR-019, NFR-001; AC-035, AC-036] Done when: synthesis consumes rule results, preserves not-evaluable reasons, and emits no recommendation, target price or confidence score"
+    },
+    {
+      "id": "TASK_LINE_HASH_T045",
+      "status": "PASS",
+      "detail": "line=87"
+    },
+    {
+      "id": "TASK_UNIQUE_T046",
+      "status": "PASS",
+      "detail": "T046"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T046",
+      "status": "PASS",
+      "detail": "line=88"
+    },
+    {
+      "id": "TASK_LINE_ID_T046",
+      "status": "PASS",
+      "detail": "- [X] T046 [US2] Implement separated fingerprint projections for input, analysis, price and source evidence in src/domain/fingerprints/projections.ts; src/domain/fingerprints/fingerprint-service.ts; tests/unit/fingerprints/fingerprint-vectors.test.ts. Depends on T013, T014, T015, T020. [Refs: FR-025, FR-026, FR-027, FR-028, FR-029, NFR-001, NFR-005; AC-037, AC-038, AC-039, AC-040, AC-041, AC-042, AC-078, AC-079] Done when: all exact digest/invariance vectors pass and no self-reference exists"
+    },
+    {
+      "id": "TASK_LINE_HASH_T046",
+      "status": "PASS",
+      "detail": "line=88"
+    },
+    {
+      "id": "TASK_UNIQUE_T047",
+      "status": "PASS",
+      "detail": "T047"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T047",
+      "status": "PASS",
+      "detail": "line=89"
+    },
+    {
+      "id": "TASK_LINE_ID_T047",
+      "status": "PASS",
+      "detail": "- [X] T047 [US2] Build immutable FundamentalBundle and FundamentalAnalysis candidates with lineage and limitations in src/domain/fundamental/bundle-builder.ts; src/domain/fundamental/analysis-builder.ts; tests/unit/fundamental/bundle-vectors.test.ts. Depends on T035, T036, T037, T038, T041, T042, T043, T044, T045. [Refs: FR-008, FR-009, FR-010, FR-020, NFR-006; AC-010, AC-011, AC-014, AC-018, AC-049] Done when: positive/negative bundle and analysis schemas pass"
+    },
+    {
+      "id": "TASK_LINE_HASH_T047",
+      "status": "PASS",
+      "detail": "line=89"
+    },
+    {
+      "id": "TASK_UNIQUE_T048",
+      "status": "PASS",
+      "detail": "T048"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T048",
+      "status": "PASS",
+      "detail": "line=90"
+    },
+    {
+      "id": "TASK_LINE_ID_T048",
+      "status": "PASS",
+      "detail": "- [X] T048 [US2] Implement normalization and analysis stages in the Web Worker by consuming the acquisition runner, immutable candidate builders and fingerprint service, register its typed operation descriptor, and emit one atomic candidate output in src/worker/fundamental-pipeline.ts; src/worker/operation-registry.ts; tests/integration/worker/fundamental-pipeline.test.ts. Depends on T023, T033, T046, T047. [Refs: FR-007, FR-033, FR-035, FR-037, NFR-001, NFR-004; AC-010, AC-059, AC-060, AC-061, AC-062, AC-073] Done when: the fundamental operation is dispatchable through the registry and publishes exactly the bundle/analysis candidate built by domain producers or preserves previous state"
+    },
+    {
+      "id": "TASK_LINE_HASH_T048",
+      "status": "PASS",
+      "detail": "line=90"
+    },
+    {
+      "id": "TASK_UNIQUE_T049",
+      "status": "PASS",
+      "detail": "T049"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T049",
+      "status": "PASS",
+      "detail": "line=91"
+    },
+    {
+      "id": "TASK_LINE_ID_T049",
+      "status": "PASS",
+      "detail": "- [X] T049 [P] [US2] Create issuer and filing evidence views showing CIK, forms, accession, filed dates and source status in src/app/views/IssuerEvidenceView.svelte; src/app/components/FilingTable.svelte; tests/e2e/evidence-view.spec.ts. Depends on T022, T030. [Refs: FR-001, FR-008, FR-041, FR-042; AC-001, AC-006, AC-011, AC-074] Done when: the view exports an AUTH-027 routeDefinition and identity and filing context remain visible and accessible"
+    },
+    {
+      "id": "TASK_LINE_HASH_T049",
+      "status": "PASS",
+      "detail": "line=91"
+    },
+    {
+      "id": "TASK_UNIQUE_T050",
+      "status": "PASS",
+      "detail": "T050"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T050",
+      "status": "PASS",
+      "detail": "line=92"
+    },
+    {
+      "id": "TASK_LINE_ID_T050",
+      "status": "PASS",
+      "detail": "- [X] T050 [P] [US2] Create raw-versus-normalized facts view with periods, units, scale, sign, mapping, lineage, confidence and quality in src/app/views/FactsView.svelte; src/app/components/FactProvenance.svelte; tests/e2e/facts-view.spec.ts. Depends on T022, T037, T046. [Refs: FR-008, FR-009, FR-010, FR-041, FR-042; AC-011, AC-012, AC-013, AC-014, AC-019, AC-020, AC-074] Done when: the view exports an AUTH-027 routeDefinition and raw, normalized and unavailable states are visually and semantically distinct"
+    },
+    {
+      "id": "TASK_LINE_HASH_T050",
+      "status": "PASS",
+      "detail": "line=92"
+    },
+    {
+      "id": "TASK_UNIQUE_T051",
+      "status": "PASS",
+      "detail": "T051"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T051",
+      "status": "PASS",
+      "detail": "line=93"
+    },
+    {
+      "id": "TASK_LINE_ID_T051",
+      "status": "PASS",
+      "detail": "- [X] T051 [US2] Create the 24-metric dashboard with FY/quarter/TTM context, units, states and evidence links in src/app/views/FundamentalMetricsView.svelte; src/app/components/MetricCard.svelte; tests/e2e/fundamental-metrics.spec.ts. Depends on T022, T041, T042, T046. [Refs: FR-013, FR-014, FR-016, FR-041, FR-042; AC-015, AC-016, AC-017, AC-025, AC-028, AC-029, AC-030, AC-031, AC-032, AC-074] Done when: the view exports an AUTH-027 routeDefinition and all 24 metrics render state/reason without invented values"
+    },
+    {
+      "id": "TASK_LINE_HASH_T051",
+      "status": "PASS",
+      "detail": "line=93"
+    },
+    {
+      "id": "TASK_UNIQUE_T052",
+      "status": "PASS",
+      "detail": "T052"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T052",
+      "status": "PASS",
+      "detail": "line=94"
+    },
+    {
+      "id": "TASK_LINE_ID_T052",
+      "status": "PASS",
+      "detail": "- [X] T052 [US2] Create the nine-rule insight and synthesis view with descriptive-only disclosure and limitations in src/app/views/InsightsView.svelte; src/app/components/InsightRuleResult.svelte; tests/e2e/insights.spec.ts. Depends on T022, T043, T044, T045, T046. [Refs: FR-017, FR-018, FR-019, FR-041, FR-042; AC-033, AC-034, AC-035, AC-036, AC-037, AC-074] Done when: the view exports an AUTH-027 routeDefinition, visible rule outcomes and synthesis match the same analysis fingerprint and are never framed as personalized investment advice"
+    },
+    {
+      "id": "TASK_LINE_HASH_T052",
+      "status": "PASS",
+      "detail": "line=94"
+    },
+    {
+      "id": "TASK_UNIQUE_T053",
+      "status": "PASS",
+      "detail": "T053"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T053",
+      "status": "PASS",
+      "detail": "line=95"
+    },
+    {
+      "id": "TASK_LINE_ID_T053",
+      "status": "PASS",
+      "detail": "- [X] T053 [US2] Run end-to-end first-analysis acceptance scenarios from CIK selection through visible metrics, rule outcomes, synthesis, evidence and fingerprints in tests/e2e/first-analysis.spec.ts. Depends on T034, T047, T048, T049, T050, T051, T052. [Refs: FR-001, FR-003, FR-008, FR-013, FR-017, FR-025, NFR-001; AC-001, AC-005, AC-011, AC-028, AC-035, AC-039] Done when: complete and partial scenarios expose all cited outputs and are independently reproducible without price"
+    },
+    {
+      "id": "TASK_LINE_HASH_T053",
+      "status": "PASS",
+      "detail": "line=95"
+    },
+    {
+      "id": "TASK_UNIQUE_T054",
+      "status": "PASS",
+      "detail": "T054"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T054",
+      "status": "PASS",
+      "detail": "line=103"
+    },
+    {
+      "id": "TASK_LINE_ID_T054",
+      "status": "PASS",
+      "detail": "- [X] T054 [US3] Implement cache freshness bands and deterministic open/resume decision logic in src/domain/orchestration/cache-policy.ts; tests/unit/orchestration/cache-vectors.test.ts. Depends on T014, T015, T017. [Refs: FR-030, FR-031, NFR-002, NFR-003; AC-004, AC-065] Done when: fresh causes zero network and stale/expired query Submissions first"
+    },
+    {
+      "id": "TASK_LINE_HASH_T054",
+      "status": "PASS",
+      "detail": "line=103"
+    },
+    {
+      "id": "TASK_UNIQUE_T055",
+      "status": "PASS",
+      "detail": "T055"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T055",
+      "status": "PASS",
+      "detail": "line=104"
+    },
+    {
+      "id": "TASK_LINE_ID_T055",
+      "status": "PASS",
+      "detail": "- [X] T055 [P] [US3] Implement submissions novelty fingerprint and Company Facts fetch decision in src/domain/orchestration/novelty.ts; tests/unit/orchestration/novelty.test.ts. Depends on T013, T030. [Refs: FR-031, FR-033, NFR-001; AC-004, AC-059, AC-061] Done when: unchanged submissions avoid Company Facts unless manual/dependency invalidation applies"
+    },
+    {
+      "id": "TASK_LINE_HASH_T055",
+      "status": "PASS",
+      "detail": "line=104"
+    },
+    {
+      "id": "TASK_UNIQUE_T056",
+      "status": "PASS",
+      "detail": "T056"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T056",
+      "status": "PASS",
+      "detail": "line=105"
+    },
+    {
+      "id": "TASK_LINE_ID_T056",
+      "status": "PASS",
+      "detail": "- [X] T056 [P] [US3] Implement retry handling and the shared per-operation fair-access/quota preflight guard for open/resume and manual refresh, including Retry-After, 1/2/4 backoff, deterministic jitter injection and bounded attempts in src/gateway/retry-policy.ts; src/gateway/quota-state.ts; tests/unit/gateway/retry-policy.test.ts. Depends on T014, T029. [Refs: FR-003, FR-031, FR-032, NFR-003; AC-004, AC-009, AC-066, AC-081] Done when: three logical attempts, timeouts, the 14-call budget and nonessential-refresh stops are enforced by one shared guard"
+    },
+    {
+      "id": "TASK_LINE_HASH_T056",
+      "status": "PASS",
+      "detail": "line=105"
+    },
+    {
+      "id": "TASK_UNIQUE_T057",
+      "status": "PASS",
+      "detail": "T057"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T057",
+      "status": "PASS",
+      "detail": "line=106"
+    },
+    {
+      "id": "TASK_LINE_ID_T057",
+      "status": "PASS",
+      "detail": "- [X] T057 [US3] Implement per-issuer locks and idempotency keys for open/resume and manual refresh in src/domain/orchestration/idempotency.ts; tests/integration/orchestration/idempotency.test.ts. Depends on T023, T032. [Refs: FR-032, FR-035, FR-037, NFR-004; AC-066, AC-072, AC-073] Done when: double activation starts one operation and one candidate without depending on any presentation task"
+    },
+    {
+      "id": "TASK_LINE_HASH_T057",
+      "status": "PASS",
+      "detail": "line=106"
+    },
+    {
+      "id": "TASK_UNIQUE_T058",
+      "status": "PASS",
+      "detail": "T058"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T058",
+      "status": "PASS",
+      "detail": "line=107"
+    },
+    {
+      "id": "TASK_LINE_ID_T058",
+      "status": "PASS",
+      "detail": "- [X] T058 [US3] Implement dependency-directed invalidation for fact, mapping, metric, rule and visual-preference events in src/domain/orchestration/invalidation-graph.ts; tests/unit/orchestration/invalidation-events.test.ts. Depends on T015, T041, T043, T045. [Refs: FR-033, NFR-001; AC-059, AC-060, AC-061, AC-062, AC-063, AC-064] Done when: only affected stages rerun and visual changes start zero domain work"
+    },
+    {
+      "id": "TASK_LINE_HASH_T058",
+      "status": "PASS",
+      "detail": "line=107"
+    },
+    {
+      "id": "TASK_UNIQUE_T059",
+      "status": "PASS",
+      "detail": "T059"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T059",
+      "status": "PASS",
+      "detail": "line=108"
+    },
+    {
+      "id": "TASK_LINE_ID_T059",
+      "status": "PASS",
+      "detail": "- [X] T059 [US3] Implement stale/partial/error and quota/retry-exhaustion degradation that preserves the last valid snapshot and exact reason codes in src/domain/orchestration/degradation.ts; tests/integration/orchestration/stale-partial.test.ts. Depends on T017, T047, T054, T056. [Refs: FR-007, FR-031, FR-035, NFR-004; AC-010, AC-058, AC-065, AC-073, AC-075] Done when: failed, cancelled or quota-blocked refresh never destroys the prior usable snapshot"
+    },
+    {
+      "id": "TASK_LINE_HASH_T059",
+      "status": "PASS",
+      "detail": "line=108"
+    },
+    {
+      "id": "TASK_UNIQUE_T060",
+      "status": "PASS",
+      "detail": "T060"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T060",
+      "status": "PASS",
+      "detail": "line=109"
+    },
+    {
+      "id": "TASK_LINE_ID_T060",
+      "status": "PASS",
+      "detail": "- [ ] T060 [US3] Connect visibilitychange/pageshow/resume events to the foundational consent repository, cache, retry/quota guard, per-issuer lock and degradation services and export an idempotent AUTH-027 app plugin in src/app/lifecycle/resume-refresh.ts; tests/e2e/open-resume.spec.ts. Depends on T021, T053, T054, T055, T056, T057, T059. [Refs: FR-030, FR-031, FR-041; AC-004, AC-065, AC-072] Done when: the plugin installs once, opening or resuming with `refreshConsent=false` performs zero calls, consented flows preserve one active operation, and a closed app performs no work"
+    },
+    {
+      "id": "TASK_LINE_HASH_T060",
+      "status": "PASS",
+      "detail": "line=109"
+    },
+    {
+      "id": "TASK_UNIQUE_T061",
+      "status": "PASS",
+      "detail": "T061"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T061",
+      "status": "PASS",
+      "detail": "line=110"
+    },
+    {
+      "id": "TASK_LINE_ID_T061",
+      "status": "PASS",
+      "detail": "- [ ] T061 [US3] Implement the Update Fundamentals button using the foundational consent, retry/quota, idempotency, cancellation and degradation services, with force-check disclosure, accessible busy/cancel states and an AUTH-027 global app placement in src/app/components/RefreshFundamentals.svelte; tests/e2e/manual-refresh.spec.ts. Depends on T021, T022, T053, T055, T056, T057, T059. [Refs: FR-032, FR-041, FR-042; AC-066, AC-070, AC-071, AC-072, AC-073, AC-075] Done when: the control is mounted through composition and never bypasses consent, fair access, retry, locks, cancellation, quota guards or the previous snapshot"
+    },
+    {
+      "id": "TASK_LINE_HASH_T061",
+      "status": "PASS",
+      "detail": "line=110"
+    },
+    {
+      "id": "TASK_UNIQUE_T062",
+      "status": "PASS",
+      "detail": "T062"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T062",
+      "status": "PASS",
+      "detail": "line=111"
+    },
+    {
+      "id": "TASK_LINE_ID_T062",
+      "status": "PASS",
+      "detail": "- [ ] T062 [US3] Run open/resume, manual refresh, cache, retry, idempotency, cancellation, stale, partial, error and reanalysis E2E scenarios in tests/e2e/refresh-resilience.spec.ts. Depends on T053, T054, T055, T056, T057, T058, T059, T060, T061. [Refs: FR-030, FR-031, FR-032, FR-033, FR-035, NFR-003, NFR-004; AC-004, AC-058, AC-059, AC-060, AC-061, AC-062, AC-065, AC-066, AC-072, AC-073] Done when: no-consent open/resume makes zero calls, all recovery paths preserve exact capabilities and pointers, and no scenario assumes work while closed"
+    },
+    {
+      "id": "TASK_LINE_HASH_T062",
+      "status": "PASS",
+      "detail": "line=111"
+    },
+    {
+      "id": "TASK_UNIQUE_T063",
+      "status": "PASS",
+      "detail": "T063"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T063",
+      "status": "PASS",
+      "detail": "line=119"
+    },
+    {
+      "id": "TASK_LINE_ID_T063",
+      "status": "PASS",
+      "detail": "- [ ] T063 [US4] Implement bounded RFC 4180 CSV parsing in the Web Worker with formula/injection rejection in src/domain/price/csv-parser.ts; tests/unit/price/csv-parser.test.ts; tests/negative/price/csv-security.test.ts. Depends on T012, T018, T023. [Refs: FR-021, FR-022, FR-039, NFR-002; AC-054, AC-055] Done when: 5 MiB, 50,000 rows and 8-column limits fail before persistence"
+    },
+    {
+      "id": "TASK_LINE_HASH_T063",
+      "status": "PASS",
+      "detail": "line=119"
+    },
+    {
+      "id": "TASK_UNIQUE_T064",
+      "status": "PASS",
+      "detail": "T064"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T064",
+      "status": "PASS",
+      "detail": "line=120"
+    },
+    {
+      "id": "TASK_LINE_ID_T064",
+      "status": "PASS",
+      "detail": "- [ ] T064 [P] [US4] Implement manual price entry using the same validation pipeline as CSV in src/domain/price/manual-entry.ts; tests/unit/price/manual-entry.test.ts. Depends on T012, T020. [Refs: FR-021, FR-022; AC-054, AC-055] Done when: manual and CSV data produce the same canonical observation model"
+    },
+    {
+      "id": "TASK_LINE_HASH_T064",
+      "status": "PASS",
+      "detail": "line=120"
+    },
+    {
+      "id": "TASK_UNIQUE_T065",
+      "status": "PASS",
+      "detail": "T065"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T065",
+      "status": "PASS",
+      "detail": "line=121"
+    },
+    {
+      "id": "TASK_LINE_ID_T065",
+      "status": "PASS",
+      "detail": "- [ ] T065 [US4] Implement preview, duplicate/date/currency/frequency validation and explicit confirmation over the canonical CSV/manual observation model in src/domain/price/import-preview.ts; tests/unit/price/import-preview.test.ts. Depends on T063, T064. [Refs: FR-021, FR-022, NFR-002; AC-050, AC-054, AC-055] Done when: nothing is persisted on selection, invalid preview or missing confirmation"
+    },
+    {
+      "id": "TASK_LINE_HASH_T065",
+      "status": "PASS",
+      "detail": "line=121"
+    },
+    {
+      "id": "TASK_UNIQUE_T066",
+      "status": "PASS",
+      "detail": "T066"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T066",
+      "status": "PASS",
+      "detail": "line=122"
+    },
+    {
+      "id": "TASK_LINE_ID_T066",
+      "status": "PASS",
+      "detail": "- [ ] T066 [US4] Build immutable HistoricalPriceOverlay versions and separated price fingerprints from confirmed preview data using the shared fingerprint service in src/domain/price/overlay-builder.ts; tests/unit/price/overlay-vectors.test.ts. Depends on T014, T020, T046, T065. [Refs: FR-020, FR-021, FR-022, FR-024, FR-026, FR-028, NFR-001; AC-049, AC-050, AC-053, AC-063, AC-078, AC-079] Done when: clock-derived fields are rejected, overlay versions are immutable and fundamental fingerprints stay identical"
+    },
+    {
+      "id": "TASK_LINE_HASH_T066",
+      "status": "PASS",
+      "detail": "line=122"
+    },
+    {
+      "id": "TASK_UNIQUE_T067",
+      "status": "PASS",
+      "detail": "T067"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T067",
+      "status": "PASS",
+      "detail": "line=123"
+    },
+    {
+      "id": "TASK_LINE_ID_T067",
+      "status": "PASS",
+      "detail": "- [ ] T067 [US4] Implement the eight descriptive historical price metrics by consuming the single formula engine, confirmed immutable overlay and authorized price-quality classifier with `decimal.js`, `ROUND_HALF_EVEN` and DecimalString in src/domain/price/price-metrics.ts; tests/unit/price/price-metric-vectors.test.ts. Depends on T041, T043, T066. [Refs: FR-013, FR-016, FR-023, NFR-001; AC-028, AC-050, AC-051, AC-052] Done when: last/min/max/mean/median/return/drawdown/trend pass 24 vectors without duplicated formulas or fundamental-domain prerequisites"
+    },
+    {
+      "id": "TASK_LINE_HASH_T067",
+      "status": "PASS",
+      "detail": "line=123"
+    },
+    {
+      "id": "TASK_UNIQUE_T068",
+      "status": "PASS",
+      "detail": "T068"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T068",
+      "status": "PASS",
+      "detail": "line=124"
+    },
+    {
+      "id": "TASK_LINE_ID_T068",
+      "status": "PASS",
+      "detail": "- [ ] T068 [US4] Implement import/replace/delete price events that consume immutable overlays and price metrics, update only the independent price pointer and price analysis, and never alter fundamental records in src/domain/orchestration/price-events.ts; tests/integration/price/price-isolation.test.ts. Depends on T066, T067. [Refs: FR-021, FR-022, FR-023, FR-033, NFR-001; AC-037, AC-049, AC-063, AC-078] Done when: fundamental bundle, analysis, snapshot, pointer and fingerprints never change"
+    },
+    {
+      "id": "TASK_LINE_HASH_T068",
+      "status": "PASS",
+      "detail": "line=124"
+    },
+    {
+      "id": "TASK_UNIQUE_T069",
+      "status": "PASS",
+      "detail": "T069"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T069",
+      "status": "PASS",
+      "detail": "line=125"
+    },
+    {
+      "id": "TASK_LINE_ID_T069",
+      "status": "PASS",
+      "detail": "- [ ] T069 [US4] Create accessible CSV/manual import, preview, confirmation, replace and delete UI by consuming the preview and price-event services in src/app/views/PriceImportView.svelte; src/app/components/PriceImportPreview.svelte; tests/e2e/price-import.spec.ts. Depends on T022, T065, T068. [Refs: FR-021, FR-022, FR-041, FR-042; AC-054, AC-055, AC-067, AC-068, AC-069, AC-070] Done when: the view exports an AUTH-027 routeDefinition, errors bind to fields, confirmation gates every mutation and focus returns predictably"
+    },
+    {
+      "id": "TASK_LINE_HASH_T069",
+      "status": "PASS",
+      "detail": "line=125"
+    },
+    {
+      "id": "TASK_UNIQUE_T070",
+      "status": "PASS",
+      "detail": "T070"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T070",
+      "status": "PASS",
+      "detail": "line=126"
+    },
+    {
+      "id": "TASK_LINE_ID_T070",
+      "status": "PASS",
+      "detail": "- [ ] T070 [US4] Create accessible price summary by consuming the eight-metric result and independent price pointer, using native SVG plus an equivalent data table in src/app/views/PriceAnalysisView.svelte; src/app/components/AccessiblePriceChart.svelte; tests/e2e/price-analysis.spec.ts. Depends on T022, T067, T068. [Refs: FR-023, FR-024, FR-041, FR-042; AC-049, AC-050, AC-051, AC-052, AC-067, AC-069, AC-074] Done when: the view exports an AUTH-027 routeDefinition and as-of/range/frequency/count/age/use and all eight metrics are visible without chart-only meaning"
+    },
+    {
+      "id": "TASK_LINE_HASH_T070",
+      "status": "PASS",
+      "detail": "line=126"
+    },
+    {
+      "id": "TASK_UNIQUE_T071",
+      "status": "PASS",
+      "detail": "T071"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T071",
+      "status": "PASS",
+      "detail": "line=127"
+    },
+    {
+      "id": "TASK_LINE_ID_T071",
+      "status": "PASS",
+      "detail": "- [ ] T071 [US4] Run CSV/manual validation, preview, confirmation, immutable overlay, eight metrics, import/replace/delete events, independent pointer, UI, irregular frequency and fundamental-isolation E2E scenarios in tests/e2e/price-overlay-lifecycle.spec.ts. Depends on T063, T064, T065, T066, T067, T068, T069, T070. [Refs: FR-020, FR-021, FR-022, FR-023, FR-024; AC-049, AC-050, AC-051, AC-052, AC-063, AC-078, AC-079] Done when: fundamental-only operation remains complete, price mutations never alter fundamental artifacts and no valuation is produced"
+    },
+    {
+      "id": "TASK_LINE_HASH_T071",
+      "status": "PASS",
+      "detail": "line=127"
+    },
+    {
+      "id": "TASK_UNIQUE_T072",
+      "status": "PASS",
+      "detail": "T072"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T072",
+      "status": "PASS",
+      "detail": "line=135"
+    },
+    {
+      "id": "TASK_LINE_ID_T072",
+      "status": "PASS",
+      "detail": "- [ ] T072 [US5] Create the Privacy Settings UI and verify consent grant/revocation against the distinct foundational `refreshConsent` and `storageConsent` records in src/app/views/PrivacySettingsView.svelte; tests/e2e/consent.spec.ts. Depends on T021, T022. [Refs: FR-030, FR-034, NFR-002; AC-056, AC-065, AC-076] Done when: the view exports an AUTH-027 routeDefinition, analysis works in memory without storage consent, no network occurs without refresh consent and revocation is visible and effective"
+    },
+    {
+      "id": "TASK_LINE_HASH_T072",
+      "status": "PASS",
+      "detail": "line=135"
+    },
+    {
+      "id": "TASK_UNIQUE_T073",
+      "status": "PASS",
+      "detail": "T073"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T073",
+      "status": "PASS",
+      "detail": "line=136"
+    },
+    {
+      "id": "TASK_LINE_ID_T073",
+      "status": "PASS",
+      "detail": "- [ ] T073 [US5] Implement immutable record writes, evidence index and compare-and-swap active pointers in one transaction in src/persistence/snapshot-repository.ts; tests/integration/persistence/atomic-publication.test.ts. Depends on T021, T046. [Refs: FR-034, FR-035, NFR-002, NFR-004; AC-057, AC-058, AC-073] Done when: candidate, evidence and pointer commit together or not at all"
+    },
+    {
+      "id": "TASK_LINE_HASH_T073",
+      "status": "PASS",
+      "detail": "line=136"
+    },
+    {
+      "id": "TASK_UNIQUE_T074",
+      "status": "PASS",
+      "detail": "T074"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T074",
+      "status": "PASS",
+      "detail": "line=137"
+    },
+    {
+      "id": "TASK_LINE_ID_T074",
+      "status": "PASS",
+      "detail": "- [ ] T074 [P] [US5] Implement a separate immutable price version repository and persisted active price pointer that consume only confirmed price events in src/persistence/price-repository.ts; tests/integration/persistence/price-repository.test.ts. Depends on T021, T066, T068. [Refs: FR-021, FR-022, FR-034, NFR-002; AC-049, AC-057, AC-063, AC-078] Done when: price deletion cannot reference, update or delete fundamental records or pointers"
+    },
+    {
+      "id": "TASK_LINE_HASH_T074",
+      "status": "PASS",
+      "detail": "line=137"
+    },
+    {
+      "id": "TASK_UNIQUE_T075",
+      "status": "PASS",
+      "detail": "T075"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T075",
+      "status": "PASS",
+      "detail": "line=138"
+    },
+    {
+      "id": "TASK_LINE_ID_T075",
+      "status": "PASS",
+      "detail": "- [ ] T075 [US5] Implement versioned local export from the actual fundamental and price repositories with a manifest, per-record hashes and package checksum in src/persistence/export-service.ts; tests/unit/persistence/export.test.ts. Depends on T013, T073, T074. [Refs: FR-036, NFR-002, NFR-004; AC-076] Done when: exported records come from repository reads, quarantined/invalid records, consents and deployment variables are excluded, and hashes are reproducible"
+    },
+    {
+      "id": "TASK_LINE_HASH_T075",
+      "status": "PASS",
+      "detail": "line=138"
+    },
+    {
+      "id": "TASK_UNIQUE_T076",
+      "status": "PASS",
+      "detail": "T076"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T076",
+      "status": "PASS",
+      "detail": "line=139"
+    },
+    {
+      "id": "TASK_LINE_ID_T076",
+      "status": "PASS",
+      "detail": "- [ ] T076 [P] [US5] Implement restore parsing, schema/hash/version validation and repository-aware conflict/migration preview without writes in src/persistence/restore-preview.ts; tests/negative/persistence/restore-validation.test.ts. Depends on T012, T018, T073, T074, T075. [Refs: FR-036, FR-039, NFR-002, NFR-004; AC-075, AC-076] Done when: corrupt, oversized, unknown, duplicate or incompatible records are rejected and permitted migrations/conflicts are fully previewed before transaction"
+    },
+    {
+      "id": "TASK_LINE_HASH_T076",
+      "status": "PASS",
+      "detail": "line=139"
+    },
+    {
+      "id": "TASK_UNIQUE_T077",
+      "status": "PASS",
+      "detail": "T077"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T077",
+      "status": "PASS",
+      "detail": "line=140"
+    },
+    {
+      "id": "TASK_LINE_ID_T077",
+      "status": "PASS",
+      "detail": "- [ ] T077 [US5] Implement allowed restore migrations and one atomic multi-store restore transaction with rollback over the affected repositories in src/persistence/restore-service.ts; tests/integration/persistence/restore-rollback.test.ts. Depends on T021, T073, T074, T076. [Refs: FR-034, FR-035, FR-036, NFR-004; AC-057, AC-058, AC-076] Done when: restore cannot bypass preview and any store failure restores the exact prior database state"
+    },
+    {
+      "id": "TASK_LINE_HASH_T077",
+      "status": "PASS",
+      "detail": "line=140"
+    },
+    {
+      "id": "TASK_UNIQUE_T078",
+      "status": "PASS",
+      "detail": "T078"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T078",
+      "status": "PASS",
+      "detail": "line=141"
+    },
+    {
+      "id": "TASK_LINE_ID_T078",
+      "status": "PASS",
+      "detail": "- [ ] T078 [US5] Implement delete-price and delete-all-personal-data transactions over the actual repositories, including a pre-export option, in src/persistence/delete-service.ts; tests/integration/persistence/delete.test.ts. Depends on T073, T074, T075. [Refs: FR-022, FR-036, NFR-002, NFR-004; AC-049, AC-076] Done when: delete all is atomic, pre-export is offered and delete price preserves fundamentals"
+    },
+    {
+      "id": "TASK_LINE_HASH_T078",
+      "status": "PASS",
+      "detail": "line=141"
+    },
+    {
+      "id": "TASK_UNIQUE_T079",
+      "status": "PASS",
+      "detail": "T079"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T079",
+      "status": "PASS",
+      "detail": "line=142"
+    },
+    {
+      "id": "TASK_LINE_ID_T079",
+      "status": "PASS",
+      "detail": "- [ ] T079 [US5] Implement repository read-path integrity checks that validate schema and record hash, quarantine invalid records without silent deletion, exclude corrupt records and pointers from active resolution, preserve the last valid snapshot and allow recovery only through validated restore in src/persistence/snapshot-repository.ts; src/persistence/price-repository.ts; src/persistence/indexeddb.ts; tests/integration/persistence/corruption-quarantine.test.ts. Depends on T073, T074. [Refs: FR-034, FR-035, FR-036, FR-039, NFR-002, NFR-004; AC-057, AC-058, AC-073, AC-075, AC-076] Done when: hash mismatch, schema mismatch and corrupt pointers are quarantined deterministically and never advance an active pointer"
+    },
+    {
+      "id": "TASK_LINE_HASH_T079",
+      "status": "PASS",
+      "detail": "line=142"
+    },
+    {
+      "id": "TASK_UNIQUE_T080",
+      "status": "PASS",
+      "detail": "T080"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T080",
+      "status": "PASS",
+      "detail": "line=143"
+    },
+    {
+      "id": "TASK_LINE_ID_T080",
+      "status": "PASS",
+      "detail": "- [ ] T080 [US5] Create export, restore preview/conflict, corruption-recovery and destructive-delete UI, then run the complete IndexedDB lifecycle E2E in src/app/views/DataManagementView.svelte; src/app/components/RestorePreview.svelte; tests/e2e/data-management.spec.ts; tests/e2e/persistence-lifecycle.spec.ts. Depends on T022, T072, T073, T074, T075, T076, T077, T078, T079. [Refs: FR-034, FR-035, FR-036, FR-041, FR-042, NFR-002, NFR-004; AC-056, AC-057, AC-058, AC-068, AC-069, AC-070, AC-073, AC-075, AC-076] Done when: the view exports an AUTH-027 routeDefinition and preview, conflicts, allowed migration, rollback, corruption recovery, pre-export and deletion run through UI with no orphan records or pointers"
+    },
+    {
+      "id": "TASK_LINE_HASH_T080",
+      "status": "PASS",
+      "detail": "line=143"
+    },
+    {
+      "id": "TASK_UNIQUE_T081",
+      "status": "PASS",
+      "detail": "T081"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T081",
+      "status": "PASS",
+      "detail": "line=151"
+    },
+    {
+      "id": "TASK_LINE_ID_T081",
+      "status": "PASS",
+      "detail": "- [ ] T081 [US6] Implement persistent issuer/period/profile/snapshot context header across all views and expose its AUTH-027 global app placement in src/app/components/AnalysisContext.svelte; tests/e2e/context-persistence.spec.ts. Depends on T004, T022, T047. [Refs: FR-041, FR-042; AC-074] Done when: the context header is mounted through composition and context never switches silently during refresh or navigation"
+    },
+    {
+      "id": "TASK_LINE_HASH_T081",
+      "status": "PASS",
+      "detail": "line=151"
+    },
+    {
+      "id": "TASK_UNIQUE_T082",
+      "status": "PASS",
+      "detail": "T082"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T082",
+      "status": "PASS",
+      "detail": "line=152"
+    },
+    {
+      "id": "TASK_LINE_ID_T082",
+      "status": "PASS",
+      "detail": "- [ ] T082 [US6] Map every local issue, repository corruption state and gateway Problem Details variant to one capability-preserving UI recovery action in src/app/recovery/recovery-actions.ts; src/app/components/RecoveryPanel.svelte; tests/unit/recovery/recovery-map.test.ts. Depends on T017, T018, T022, T079. [Refs: FR-039, FR-041, NFR-004; AC-002, AC-047, AC-048, AC-075] Done when: no terminal-only recovery exists, quarantined data offers validated restore, and each action maps to an active operation"
+    },
+    {
+      "id": "TASK_LINE_HASH_T082",
+      "status": "PASS",
+      "detail": "line=152"
+    },
+    {
+      "id": "TASK_UNIQUE_T083",
+      "status": "PASS",
+      "detail": "T083"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T083",
+      "status": "PASS",
+      "detail": "line=154"
+    },
+    {
+      "id": "TASK_LINE_ID_T083",
+      "status": "PASS",
+      "detail": "- [ ] T083 [P] [US6] Implement focus management for dialogs, errors, route changes, cancellation and destructive confirmations and export an idempotent AUTH-027 app plugin in src/app/a11y/focus-manager.ts; tests/e2e/accessibility/focus.spec.ts. Depends on T022. [Refs: FR-042, NFR-007; AC-067, AC-068, AC-073] Done when: the plugin installs once and focus is visible, unobscured and returned to the invoker"
+    },
+    {
+      "id": "TASK_LINE_HASH_T083",
+      "status": "PASS",
+      "detail": "line=154"
+    },
+    {
+      "id": "TASK_UNIQUE_T084",
+      "status": "PASS",
+      "detail": "T084"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T084",
+      "status": "PASS",
+      "detail": "line=155"
+    },
+    {
+      "id": "TASK_LINE_ID_T084",
+      "status": "PASS",
+      "detail": "- [ ] T084 [P] [US6] Implement live-region announcements and exact busy/disabled semantics for pipeline states and export an idempotent AUTH-027 app plugin in src/app/a11y/status-announcer.ts; tests/e2e/accessibility/status.spec.ts. Depends on T017, T022. [Refs: FR-037, FR-041, FR-042, NFR-007; AC-070, AC-071, AC-072, AC-073] Done when: the plugin installs once and status changes are concise, non-duplicated and state-accurate"
+    },
+    {
+      "id": "TASK_LINE_HASH_T084",
+      "status": "PASS",
+      "detail": "line=155"
+    },
+    {
+      "id": "TASK_UNIQUE_T085",
+      "status": "PASS",
+      "detail": "T085"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T085",
+      "status": "PASS",
+      "detail": "line=156"
+    },
+    {
+      "id": "TASK_LINE_ID_T085",
+      "status": "PASS",
+      "detail": "- [ ] T085 [P] [US6] Implement responsive reflow, text spacing, contrast, target sizing and reduced-motion styles that are auto-discovered by the AUTH-027 composition root in src/app/styles/tokens.css; src/app/styles/accessibility.css; tests/e2e/accessibility/visual-behavior.spec.ts. Depends on T004. [Refs: FR-042, NFR-007; AC-067, AC-069, AC-074] Done when: styles are loaded without later App.svelte edits and 320 CSS px reflow and 200% text zoom have no two-dimensional scroll"
+    },
+    {
+      "id": "TASK_LINE_HASH_T085",
+      "status": "PASS",
+      "detail": "line=156"
+    },
+    {
+      "id": "TASK_UNIQUE_T086",
+      "status": "PASS",
+      "detail": "T086"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T086",
+      "status": "PASS",
+      "detail": "line=157"
+    },
+    {
+      "id": "TASK_LINE_ID_T086",
+      "status": "PASS",
+      "detail": "- [ ] T086 [US6] Add accessible names, instructions, error associations, table/chart alternatives and status semantics to all functional views and actions in src/app/views/IssuerSearchView.svelte; src/app/views/AcquisitionView.svelte; src/app/views/IssuerEvidenceView.svelte; src/app/views/FactsView.svelte; src/app/views/FundamentalMetricsView.svelte; src/app/views/InsightsView.svelte; src/app/views/PriceImportView.svelte; src/app/views/PriceAnalysisView.svelte; src/app/views/PrivacySettingsView.svelte; src/app/views/DataManagementView.svelte; src/app/components/RecoveryPanel.svelte; tests/e2e/accessibility/names-errors.spec.ts. Depends on T025, T034, T049, T050, T051, T052, T061, T069, T070, T072, T080, T082. [Refs: FR-041, FR-042, NFR-007; AC-069, AC-070, AC-071, AC-074, AC-075] Done when: no placeholder-only label, duplicate name, chart-only meaning, unassociated error or silent status remains"
+    },
+    {
+      "id": "TASK_LINE_HASH_T086",
+      "status": "PASS",
+      "detail": "line=157"
+    },
+    {
+      "id": "TASK_UNIQUE_T087",
+      "status": "PASS",
+      "detail": "T087"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T087",
+      "status": "PASS",
+      "detail": "line=158"
+    },
+    {
+      "id": "TASK_LINE_ID_T087",
+      "status": "PASS",
+      "detail": "- [ ] T087 [US6] Automate every WCAG matrix criterion for which deterministic Playwright/axe evidence is valid after all functional views, focus, live-region, visual, recovery and lifecycle work is complete in tests/accessibility/wcag-automated.spec.ts; tests/accessibility/wcag-matrix-loader.ts. Depends on T006, T053, T062, T071, T080, T081, T082, T083, T084, T085, T086, T089. [Refs: FR-042, NFR-005, NFR-007; AC-067, AC-068, AC-069, AC-070, AC-071, AC-072, AC-073, AC-074, AC-075] Done when: every applicable automated criterion links to its matrix ID, AC and exact UI evidence while axe remains supplemental"
+    },
+    {
+      "id": "TASK_LINE_HASH_T087",
+      "status": "PASS",
+      "detail": "line=158"
+    },
+    {
+      "id": "TASK_UNIQUE_T088",
+      "status": "PASS",
+      "detail": "T088"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T088",
+      "status": "PASS",
+      "detail": "line=159"
+    },
+    {
+      "id": "TASK_LINE_ID_T088",
+      "status": "PASS",
+      "detail": "- [ ] T088 [US6] Execute the manual WCAG 2.2 A/AA protocol only after all functional views and automated evidence are complete, covering focus, live regions, busy/disabled, errors, dialogs, tables, graphics, names, reflow, contrast, text spacing, target size, reduced motion, persistent context and recovery in tests/accessibility/manual-wcag-checklist.md; docs/accessibility-evidence.md. Depends on T053, T062, T071, T080, T081, T082, T083, T084, T085, T086, T087, T089. [Refs: FR-042, NFR-005, NFR-007; AC-067, AC-068, AC-069, AC-070, AC-071, AC-072, AC-073, AC-074, AC-075] Done when: 55/55 criteria retain applicability, 12 justified N/A items with reopen triggers, oracle, evidence and result"
+    },
+    {
+      "id": "TASK_LINE_HASH_T088",
+      "status": "PASS",
+      "detail": "line=159"
+    },
+    {
+      "id": "TASK_UNIQUE_T089",
+      "status": "PASS",
+      "detail": "T089"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T089",
+      "status": "PASS",
+      "detail": "line=153"
+    },
+    {
+      "id": "TASK_LINE_ID_T089",
+      "status": "PASS",
+      "detail": "- [ ] T089 [US6] Verify every user-facing insight, metric and price statement remains descriptive and includes limitations, and expose the disclaimer through an AUTH-027 global app placement in tests/e2e/no-investment-advice.spec.ts; src/app/components/AnalysisDisclaimer.svelte. Depends on T022, T050, T067. [Refs: FR-017, FR-023, FR-041; AC-036, AC-052, AC-074] Done when: the disclaimer is mounted through composition and no buy/sell/hold, target price, personalized recommendation or return promise appears"
+    },
+    {
+      "id": "TASK_LINE_HASH_T089",
+      "status": "PASS",
+      "detail": "line=153"
+    },
+    {
+      "id": "TASK_UNIQUE_T090",
+      "status": "PASS",
+      "detail": "T090"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T090",
+      "status": "PASS",
+      "detail": "line=165"
+    },
+    {
+      "id": "TASK_LINE_ID_T090",
+      "status": "PASS",
+      "detail": "- [ ] T090 Implement current Cloudflare Free budget constants and Worker preflight guards by reusing the shared operation quota guard from T056 in workers/sec-gateway/src/budget.ts; tests/contract/cloudflare/budget.test.ts. Depends on T007, T012, T056. [Refs: FR-031, FR-041, NFR-003, NFR-004, NFR-005; AC-004, AC-047, AC-065, AC-075, AC-077] Done when: official limits and internal safety margins are exact, nonessential refresh fails closed and no paid fallback is present"
+    },
+    {
+      "id": "TASK_LINE_HASH_T090",
+      "status": "PASS",
+      "detail": "line=165"
+    },
+    {
+      "id": "TASK_UNIQUE_T091",
+      "status": "PASS",
+      "detail": "T091"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T091",
+      "status": "PASS",
+      "detail": "line=166"
+    },
+    {
+      "id": "TASK_LINE_ID_T091",
+      "status": "PASS",
+      "detail": "- [ ] T091 Implement fail-closed Worker quota/error degradation with Retry-After and local stale fallback by consuming the gateway client, shared degradation policy and Cloudflare budget guard in workers/sec-gateway/src/quota-errors.ts; src/domain/orchestration/quota-degradation.ts; tests/integration/cloudflare/quota-degradation.test.ts. Depends on T018, T030, T059, T090. [Refs: FR-031, FR-032, FR-041, NFR-004; AC-047, AC-058, AC-065, AC-066, AC-075] Done when: quota exhaustion preserves the prior snapshot and no paid fallback or silent service substitution is possible"
+    },
+    {
+      "id": "TASK_LINE_HASH_T091",
+      "status": "PASS",
+      "detail": "line=166"
+    },
+    {
+      "id": "TASK_UNIQUE_T092",
+      "status": "PASS",
+      "detail": "T092"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T092",
+      "status": "PASS",
+      "detail": "line=167"
+    },
+    {
+      "id": "TASK_LINE_ID_T092",
+      "status": "PASS",
+      "detail": "- [ ] T092 [P] Instrument Worker request count, CPU duration, subrequest count, response size and error outcome around the implemented upstream streaming boundary in workers/sec-gateway/src/observability.ts; tests/integration/cloudflare/worker-observability.test.ts. Depends on T019, T027, T028. [Refs: NFR-003, NFR-005; AC-003, AC-009, AC-081] Done when: telemetry proves one upstream subrequest, captures p95 CPU targets and contains no personal data or contact values"
+    },
+    {
+      "id": "TASK_LINE_HASH_T092",
+      "status": "PASS",
+      "detail": "line=167"
+    },
+    {
+      "id": "TASK_UNIQUE_T093",
+      "status": "PASS",
+      "detail": "T093"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T093",
+      "status": "PASS",
+      "detail": "line=168"
+    },
+    {
+      "id": "TASK_LINE_ID_T093",
+      "status": "PASS",
+      "detail": "- [ ] T093 [P] Instrument D1 rows_read, rows_written, query count and storage canary checks over the implemented catalog repository in workers/sec-gateway/src/catalog/d1-metrics.ts; tests/integration/cloudflare/d1-budget.test.ts. Depends on T008, T029. [Refs: NFR-004, NFR-005; AC-077, AC-083] Done when: runtime reads stay within two queries and publication batches retain documented Free margins"
+    },
+    {
+      "id": "TASK_LINE_HASH_T093",
+      "status": "PASS",
+      "detail": "line=168"
+    },
+    {
+      "id": "TASK_UNIQUE_T094",
+      "status": "PASS",
+      "detail": "T094"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T094",
+      "status": "PASS",
+      "detail": "line=169"
+    },
+    {
+      "id": "TASK_LINE_ID_T094",
+      "status": "PASS",
+      "detail": "- [ ] T094 [P] Add build-time Pages asset count, maximum asset size and compressed Worker bundle budget checks in scripts/check-cloudflare-budgets.mjs; tests/contract/cloudflare/build-budget.test.ts. Depends on T003, T007. [Refs: NFR-005; AC-077, AC-083] Done when: deployment stops before internal targets or current Free platform limits are exceeded"
+    },
+    {
+      "id": "TASK_LINE_HASH_T094",
+      "status": "PASS",
+      "detail": "line=169"
+    },
+    {
+      "id": "TASK_UNIQUE_T095",
+      "status": "PASS",
+      "detail": "T095"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T095",
+      "status": "PASS",
+      "detail": "line=170"
+    },
+    {
+      "id": "TASK_LINE_ID_T095",
+      "status": "PASS",
+      "detail": "- [ ] T095 Add Worker CPU/memory/subrequest streaming performance tests for the implemented Submissions, Company Facts and fallback paths in tests/performance/worker-streaming.test.ts; tests/performance/fixtures/sec-payload-sizes.ts. Depends on T005, T028, T030, T092. [Refs: FR-003, NFR-003, NFR-005; AC-003, AC-009, AC-081] Done when: p95 CPU remains within the internal target, no body is fully buffered, memory is bounded and redirect chains cannot inflate subrequests silently"
+    },
+    {
+      "id": "TASK_LINE_HASH_T095",
+      "status": "PASS",
+      "detail": "line=170"
+    },
+    {
+      "id": "TASK_UNIQUE_T096",
+      "status": "PASS",
+      "detail": "T096"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T096",
+      "status": "PASS",
+      "detail": "line=171"
+    },
+    {
+      "id": "TASK_LINE_ID_T096",
+      "status": "PASS",
+      "detail": "- [ ] T096 [P] Add browser main-thread, Web Worker, CSV/manual import, immutable overlay and IndexedDB repository/restore/delete/corruption performance budgets in tests/performance/browser-performance.spec.ts; tests/performance/import-performance.spec.ts. Depends on T006, T048, T060, T063, T067, T073, T074, T077, T078, T079, T080. [Refs: FR-021, FR-037, NFR-004, NFR-005; AC-054, AC-057, AC-072] Done when: long tasks and memory stay within documented scenario budgets for the actual implementations measured"
+    },
+    {
+      "id": "TASK_LINE_HASH_T096",
+      "status": "PASS",
+      "detail": "line=171"
+    },
+    {
+      "id": "TASK_UNIQUE_T097",
+      "status": "PASS",
+      "detail": "T097"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T097",
+      "status": "PASS",
+      "detail": "line=172"
+    },
+    {
+      "id": "TASK_LINE_ID_T097",
+      "status": "PASS",
+      "detail": "- [ ] T097 Implement CSP/CORS/XSS/prototype-pollution/path-traversal/CSV-ZIP-bomb input defenses from the security contract in workers/sec-gateway/src/security/headers.ts; src/core/safe-object.ts; src/persistence/import-limits.ts; tests/negative/security/security-vectors.test.ts. Depends on T009, T012, T018. [Refs: FR-039, NFR-002, NFR-003, NFR-005; AC-003, AC-020, AC-046, AC-053, AC-055, AC-076] Done when: all security and import limit negative vectors fail closed"
+    },
+    {
+      "id": "TASK_LINE_HASH_T097",
+      "status": "PASS",
+      "detail": "line=172"
+    },
+    {
+      "id": "TASK_UNIQUE_T098",
+      "status": "PASS",
+      "detail": "T098"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T098",
+      "status": "PASS",
+      "detail": "line=173"
+    },
+    {
+      "id": "TASK_LINE_ID_T098",
+      "status": "PASS",
+      "detail": "- [ ] T098 Add dependency license, vulnerability and lockfile integrity review as a release gate in scripts/check-supply-chain.mjs; docs/dependency-inventory.md; tests/contract/supply-chain.test.ts. Depends on T001, T005. [Refs: NFR-005, NFR-006; AC-077, AC-083, AC-084] Done when: only approved minimal dependencies remain and no secrets are present"
+    },
+    {
+      "id": "TASK_LINE_HASH_T098",
+      "status": "PASS",
+      "detail": "line=173"
+    },
+    {
+      "id": "TASK_UNIQUE_T099",
+      "status": "PASS",
+      "detail": "T099"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T099",
+      "status": "PASS",
+      "detail": "line=174"
+    },
+    {
+      "id": "TASK_LINE_ID_T099",
+      "status": "PASS",
+      "detail": "- [ ] T099 [P] Write the Cloudflare Free deployment, degradation and rollback runbook after budget guards, telemetry, D1 metrics, build limits, performance, security and supply-chain evidence exist in docs/deployment-cloudflare-free.md; docs/quota-degradation.md. Depends on T090, T091, T092, T093, T094, T095, T096, T097, T098. [Refs: NFR-003, NFR-004, NFR-005; AC-058, AC-065, AC-075, AC-077] Done when: the runbook uses Pages, Workers Free and D1 Free only and retains prior deployment/snapshot on failure"
+    },
+    {
+      "id": "TASK_LINE_HASH_T099",
+      "status": "PASS",
+      "detail": "line=174"
+    },
+    {
+      "id": "TASK_UNIQUE_T100",
+      "status": "PASS",
+      "detail": "T100"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T100",
+      "status": "PASS",
+      "detail": "line=180"
+    },
+    {
+      "id": "TASK_LINE_ID_T100",
+      "status": "PASS",
+      "detail": "- [ ] T100 Run the explicit unit aggregate for DecimalString/decimal.js, canonical JSON, clock boundaries, state, formulas, 24 fundamental metrics, eight price metrics, quality, rules, synthesis, fingerprints, cache, novelty, retry/quota, invalidation and recovery in tests/unit/README.md. Depends on T011, T013, T014, T017, T040, T041, T042, T043, T044, T045, T046, T054, T055, T056, T058, T063, T064, T065, T066, T067, T082. [Refs: FR-008, FR-013, FR-014, FR-016, FR-017, FR-025, FR-031, FR-037, NFR-001; AC-019, AC-028, AC-029, AC-033, AC-039, AC-048, AC-065] Done when: the aggregate membership is enumerated and all positive/negative normative vectors pass"
+    },
+    {
+      "id": "TASK_LINE_HASH_T100",
+      "status": "PASS",
+      "detail": "line=180"
+    },
+    {
+      "id": "TASK_UNIQUE_T101",
+      "status": "PASS",
+      "detail": "T101"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T101",
+      "status": "PASS",
+      "detail": "line=181"
+    },
+    {
+      "id": "TASK_LINE_ID_T101",
+      "status": "PASS",
+      "detail": "- [ ] T101 Run the explicit contract aggregate for 49 requirements, 84 AC, authorities, schemas, OpenAPI, SEC frozen fixtures, binding/redirect policy, security headers, Cloudflare budgets, build limits and supply chain in tests/contract/requirements-ac-traceability.test.ts; tests/contract/acceptance-catalog.test.ts. Depends on T007, T009, T012, T015, T018, T026, T027, T028, T035, T090, T094, T097, T098. [Refs: NFR-005, NFR-006; AC-028, AC-034, AC-043, AC-044, AC-045, AC-077, AC-081, AC-082, AC-083, AC-084] Done when: aggregate membership is enumerated and zero requirement, AC, authority, fixture, schema, task, binding or redirect oracle is orphaned"
+    },
+    {
+      "id": "TASK_LINE_HASH_T101",
+      "status": "PASS",
+      "detail": "line=181"
+    },
+    {
+      "id": "TASK_UNIQUE_T102",
+      "status": "PASS",
+      "detail": "T102"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T102",
+      "status": "PASS",
+      "detail": "line=182"
+    },
+    {
+      "id": "TASK_LINE_ID_T102",
+      "status": "PASS",
+      "detail": "- [ ] T102 Run the explicit integration aggregate for Worker routes/streaming/telemetry, browser gateway, Web Worker acquisition/analysis, cache, retry/quota, idempotency, cancellation, invalidation, degradation, price isolation, IndexedDB repositories, restore rollback, delete, corruption quarantine, D1 and performance integration in tests/integration/README.md. Depends on T028, T029, T030, T032, T033, T047, T048, T054, T055, T056, T057, T058, T059, T060, T061, T068, T073, T074, T076, T077, T078, T079, T091, T092, T093, T096. [Refs: FR-003, FR-030, FR-031, FR-034, FR-035, NFR-003, NFR-004; AC-004, AC-057, AC-058, AC-065, AC-072, AC-073, AC-081] Done when: membership is enumerated and every partial, rollback, corruption and failure path preserves valid state"
+    },
+    {
+      "id": "TASK_LINE_HASH_T102",
+      "status": "PASS",
+      "detail": "line=182"
+    },
+    {
+      "id": "TASK_UNIQUE_T103",
+      "status": "PASS",
+      "detail": "T103"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T103",
+      "status": "PASS",
+      "detail": "line=183"
+    },
+    {
+      "id": "TASK_LINE_ID_T103",
+      "status": "PASS",
+      "detail": "- [ ] T103 Run the independent E2E suites for US1/US2 first analysis, US3 refresh, US4 price, US5 persistence and US6 accessibility/recovery, then the combined lifecycle in tests/e2e/full-lifecycle.spec.ts. Depends on T053, T062, T071, T080, T087, T088, T089. [Refs: FR-001, FR-008, FR-013, FR-021, FR-030, FR-034, FR-041, FR-042; AC-001, AC-011, AC-028, AC-049, AC-054, AC-057, AC-065, AC-067, AC-075] Done when: each user story has an independently passing E2E and the combined lifecycle remains deterministic"
+    },
+    {
+      "id": "TASK_LINE_HASH_T103",
+      "status": "PASS",
+      "detail": "line=183"
+    },
+    {
+      "id": "TASK_UNIQUE_T104",
+      "status": "PASS",
+      "detail": "T104"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T104",
+      "status": "PASS",
+      "detail": "line=184"
+    },
+    {
+      "id": "TASK_LINE_ID_T104",
+      "status": "PASS",
+      "detail": "- [ ] T104 Run the final WCAG automated and manual evidence review after both evidence producers complete and close every applicable A/AA criterion in docs/accessibility-conformance-report.md. Depends on T087, T088. [Refs: FR-042, NFR-007; AC-067, AC-068, AC-069, AC-070, AC-071, AC-072, AC-073, AC-074, AC-075] Done when: all 55 criteria have result/evidence, all 12 N/A retain triggers and axe is identified as supplemental"
+    },
+    {
+      "id": "TASK_LINE_HASH_T104",
+      "status": "PASS",
+      "detail": "line=184"
+    },
+    {
+      "id": "TASK_UNIQUE_T105",
+      "status": "PASS",
+      "detail": "T105"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T105",
+      "status": "PASS",
+      "detail": "line=185"
+    },
+    {
+      "id": "TASK_LINE_ID_T105",
+      "status": "PASS",
+      "detail": "- [ ] T105 Run the final Cloudflare Free gate over shared/Worker budget guards, degradation, Worker telemetry, D1 metrics, Pages/Worker build limits, CPU, memory, subrequests, browser/Web Worker/IndexedDB performance, security, supply chain, runbook and rollback in docs/cloudflare-free-validation.md. Depends on T090, T091, T092, T093, T094, T095, T096, T097, T098, T099. [Refs: FR-031, FR-032, NFR-003, NFR-004, NFR-005; AC-004, AC-009, AC-058, AC-065, AC-066, AC-077, AC-081] Done when: current official limits retain documented safety margins and only Pages, Workers Free and D1 Free are used"
+    },
+    {
+      "id": "TASK_LINE_HASH_T105",
+      "status": "PASS",
+      "detail": "line=185"
+    },
+    {
+      "id": "TASK_UNIQUE_T106",
+      "status": "PASS",
+      "detail": "T106"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T106",
+      "status": "PASS",
+      "detail": "line=186"
+    },
+    {
+      "id": "TASK_LINE_ID_T106",
+      "status": "PASS",
+      "detail": "- [ ] T106 [P] Document the visible data dictionary separating raw, normalized, metric, quality, rule, synthesis, limitation and price fields after all corresponding views exist in docs/user-data-dictionary.md; docs/user-guide.md. Depends on T048, T049, T050, T051, T052, T067, T070, T089. [Refs: FR-008, FR-010, FR-013, FR-016, FR-017, FR-023, FR-041; AC-011, AC-014, AC-028, AC-029, AC-035, AC-051, AC-074] Done when: all user-visible categories and reason codes are explained without investment advice"
+    },
+    {
+      "id": "TASK_LINE_HASH_T106",
+      "status": "PASS",
+      "detail": "line=186"
+    },
+    {
+      "id": "TASK_UNIQUE_T107",
+      "status": "PASS",
+      "detail": "T107"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T107",
+      "status": "PASS",
+      "detail": "line=187"
+    },
+    {
+      "id": "TASK_LINE_ID_T107",
+      "status": "PASS",
+      "detail": "- [ ] T107 [P] Document the implemented architecture, data flow, open/resume and manual automation classes, persistence/export/restore/delete/corruption lifecycle, privacy boundaries, Cloudflare Free operation and post-MVP deferrals in docs/architecture.md; docs/automation.md; docs/privacy-security.md; docs/post-mvp.md. Depends on T060, T061, T068, T073, T074, T075, T076, T077, T078, T079, T080, T099, T104, T105. [Refs: FR-020, FR-030, FR-031, FR-032, NFR-002, NFR-003, NFR-006; AC-049, AC-053, AC-065, AC-066, AC-083, AC-084] Done when: SEC-only scope, no-background-closed-app behavior, local recovery and Free-only constraints are unambiguous"
+    },
+    {
+      "id": "TASK_LINE_HASH_T107",
+      "status": "PASS",
+      "detail": "line=187"
+    },
+    {
+      "id": "TASK_UNIQUE_T108",
+      "status": "PASS",
+      "detail": "T108"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T108",
+      "status": "PASS",
+      "detail": "line=188"
+    },
+    {
+      "id": "TASK_LINE_ID_T108",
+      "status": "PASS",
+      "detail": "- [ ] T108 Verify the complete implementation tree contains no unauthorized service, provider, framework, generated secret, unredacted SEC contact, paid fallback or user-terminal dependency in tests/contract/architecture-invariants.test.ts. Depends on T094, T095, T096, T097, T098, T105, T107. [Refs: NFR-002, NFR-005, NFR-006; AC-053, AC-077, AC-083, AC-084] Done when: architecture, secret, scope, performance and deferred-service invariants pass"
+    },
+    {
+      "id": "TASK_LINE_HASH_T108",
+      "status": "PASS",
+      "detail": "line=188"
+    },
+    {
+      "id": "TASK_UNIQUE_T109",
+      "status": "PASS",
+      "detail": "T109"
+    },
+    {
+      "id": "TASK_LINE_EXISTS_T109",
+      "status": "PASS",
+      "detail": "line=189"
+    },
+    {
+      "id": "TASK_LINE_ID_T109",
+      "status": "PASS",
+      "detail": "- [ ] T109 Produce the complete post-implementation convergence-input report in docs/convergence-input.md. Depends on T010, T019, T099, T100, T101, T102, T103, T104, T105, T106, T107, T108. [Refs: NFR-005, NFR-006; AC-077, AC-083, AC-084] Done when: the report links exact unit, contract, integration, E2E, security, WCAG, Cloudflare, restore, D1, performance, documentation and architecture evidence, lists residual runtime risks, reaches every mandatory task transitively and is explicitly an input to the future convergence phase without opening any gate itself"
+    },
+    {
+      "id": "TASK_LINE_HASH_T109",
+      "status": "PASS",
+      "detail": "line=189"
+    },
+    {
+      "id": "TASK_COUNT",
+      "status": "PASS",
+      "detail": "count=109"
+    },
+    {
+      "id": "BATCH_UNIQUE_B01",
+      "status": "PASS",
+      "detail": "B01"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B01",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B01.json: 038cdfca1d0a44043bb8438a95b6ded247288eb1b08fc287821b44c544ce3f5b"
+    },
+    {
+      "id": "BATCH_ID_B01",
+      "status": "PASS",
+      "detail": "document=B01"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B01",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B01",
+      "status": "PASS",
+      "detail": "declared=6; actual=6"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B01",
+      "status": "PASS",
+      "detail": "[\"T001\",\"T002\",\"T003\",\"T005\",\"T006\",\"T010\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B01_T001",
+      "status": "PASS",
+      "detail": "T001"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B01_T001",
+      "status": "PASS",
+      "detail": "T001"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B01_T002",
+      "status": "PASS",
+      "detail": "T002"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B01_T002",
+      "status": "PASS",
+      "detail": "T002"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B01_T003",
+      "status": "PASS",
+      "detail": "T003"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B01_T003",
+      "status": "PASS",
+      "detail": "T003"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B01_T005",
+      "status": "PASS",
+      "detail": "T005"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B01_T005",
+      "status": "PASS",
+      "detail": "T005"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B01_T006",
+      "status": "PASS",
+      "detail": "T006"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B01_T006",
+      "status": "PASS",
+      "detail": "T006"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B01_T010",
+      "status": "PASS",
+      "detail": "T010"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B01_T010",
+      "status": "PASS",
+      "detail": "T010"
+    },
+    {
+      "id": "MAP_ENTRY_B01",
+      "status": "PASS",
+      "detail": "B01"
+    },
+    {
+      "id": "MAP_PATH_B01",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B01.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B01",
+      "status": "PASS",
+      "detail": "[\"T001\",\"T002\",\"T003\",\"T005\",\"T006\",\"T010\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B01",
+      "status": "PASS",
+      "detail": "6"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B01",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B01",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_UNIQUE_B02",
+      "status": "PASS",
+      "detail": "B02"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B02",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B02.json: 9e2dd3e03844152f52acbe483f2455e58cb76881a4d6580122eadf66f09c3a2a"
+    },
+    {
+      "id": "BATCH_ID_B02",
+      "status": "PASS",
+      "detail": "document=B02"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B02",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B02",
+      "status": "PASS",
+      "detail": "declared=5; actual=5"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B02",
+      "status": "PASS",
+      "detail": "[\"T004\",\"T007\",\"T008\",\"T009\",\"T012\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B02_T004",
+      "status": "PASS",
+      "detail": "T004"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B02_T004",
+      "status": "PASS",
+      "detail": "T004"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B02_T007",
+      "status": "PASS",
+      "detail": "T007"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B02_T007",
+      "status": "PASS",
+      "detail": "T007"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B02_T008",
+      "status": "PASS",
+      "detail": "T008"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B02_T008",
+      "status": "PASS",
+      "detail": "T008"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B02_T009",
+      "status": "PASS",
+      "detail": "T009"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B02_T009",
+      "status": "PASS",
+      "detail": "T009"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B02_T012",
+      "status": "PASS",
+      "detail": "T012"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B02_T012",
+      "status": "PASS",
+      "detail": "T012"
+    },
+    {
+      "id": "MAP_ENTRY_B02",
+      "status": "PASS",
+      "detail": "B02"
+    },
+    {
+      "id": "MAP_PATH_B02",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B02.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B02",
+      "status": "PASS",
+      "detail": "[\"T004\",\"T007\",\"T008\",\"T009\",\"T012\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B02",
+      "status": "PASS",
+      "detail": "5"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B02",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B02",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_UNIQUE_B03",
+      "status": "PASS",
+      "detail": "B03"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B03",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B03.json: 9cd389a81541a5235533f5e5a519dab80063d77e4b8b19d634f820021e395df0"
+    },
+    {
+      "id": "BATCH_ID_B03",
+      "status": "PASS",
+      "detail": "document=B03"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B03",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B03",
+      "status": "PASS",
+      "detail": "declared=5; actual=5"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B03",
+      "status": "PASS",
+      "detail": "[\"T011\",\"T013\",\"T014\",\"T015\",\"T016\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B03_T011",
+      "status": "PASS",
+      "detail": "T011"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B03_T011",
+      "status": "PASS",
+      "detail": "T011"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B03_T013",
+      "status": "PASS",
+      "detail": "T013"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B03_T013",
+      "status": "PASS",
+      "detail": "T013"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B03_T014",
+      "status": "PASS",
+      "detail": "T014"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B03_T014",
+      "status": "PASS",
+      "detail": "T014"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B03_T015",
+      "status": "PASS",
+      "detail": "T015"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B03_T015",
+      "status": "PASS",
+      "detail": "T015"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B03_T016",
+      "status": "PASS",
+      "detail": "T016"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B03_T016",
+      "status": "PASS",
+      "detail": "T016"
+    },
+    {
+      "id": "MAP_ENTRY_B03",
+      "status": "PASS",
+      "detail": "B03"
+    },
+    {
+      "id": "MAP_PATH_B03",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B03.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B03",
+      "status": "PASS",
+      "detail": "[\"T011\",\"T013\",\"T014\",\"T015\",\"T016\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B03",
+      "status": "PASS",
+      "detail": "5"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B03",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B03",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_UNIQUE_B04",
+      "status": "PASS",
+      "detail": "B04"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B04",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B04.json: 1e483e68428d1b6771caedf62c563586dc51ba739664c2c1b0b85a9ea07a7f47"
+    },
+    {
+      "id": "BATCH_ID_B04",
+      "status": "PASS",
+      "detail": "document=B04"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B04",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B04",
+      "status": "PASS",
+      "detail": "declared=4; actual=4"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B04",
+      "status": "PASS",
+      "detail": "[\"T017\",\"T018\",\"T019\",\"T020\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B04_T017",
+      "status": "PASS",
+      "detail": "T017"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B04_T017",
+      "status": "PASS",
+      "detail": "T017"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B04_T018",
+      "status": "PASS",
+      "detail": "T018"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B04_T018",
+      "status": "PASS",
+      "detail": "T018"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B04_T019",
+      "status": "PASS",
+      "detail": "T019"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B04_T019",
+      "status": "PASS",
+      "detail": "T019"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B04_T020",
+      "status": "PASS",
+      "detail": "T020"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B04_T020",
+      "status": "PASS",
+      "detail": "T020"
+    },
+    {
+      "id": "MAP_ENTRY_B04",
+      "status": "PASS",
+      "detail": "B04"
+    },
+    {
+      "id": "MAP_PATH_B04",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B04.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B04",
+      "status": "PASS",
+      "detail": "[\"T017\",\"T018\",\"T019\",\"T020\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B04",
+      "status": "PASS",
+      "detail": "4"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B04",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B04",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_UNIQUE_B05",
+      "status": "PASS",
+      "detail": "B05"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B05",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B05.json: 76a8994a66a016147dae8e1b6bd59df20c5f933c26d9e7a2c6840c137b2398b8"
+    },
+    {
+      "id": "BATCH_ID_B05",
+      "status": "PASS",
+      "detail": "document=B05"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B05",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B05",
+      "status": "PASS",
+      "detail": "declared=3; actual=3"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B05",
+      "status": "PASS",
+      "detail": "[\"T021\",\"T022\",\"T023\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B05_T021",
+      "status": "PASS",
+      "detail": "T021"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B05_T021",
+      "status": "PASS",
+      "detail": "T021"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B05_T022",
+      "status": "PASS",
+      "detail": "T022"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B05_T022",
+      "status": "PASS",
+      "detail": "T022"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B05_T023",
+      "status": "PASS",
+      "detail": "T023"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B05_T023",
+      "status": "PASS",
+      "detail": "T023"
+    },
+    {
+      "id": "MAP_ENTRY_B05",
+      "status": "PASS",
+      "detail": "B05"
+    },
+    {
+      "id": "MAP_PATH_B05",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B05.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B05",
+      "status": "PASS",
+      "detail": "[\"T021\",\"T022\",\"T023\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B05",
+      "status": "PASS",
+      "detail": "3"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B05",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B05",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_UNIQUE_B06",
+      "status": "PASS",
+      "detail": "B06"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B06",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B06.json: 46139a09c7fc79d7d10406bf403a24416a9cd2e92362f6d4d6a46aa30578169e"
+    },
+    {
+      "id": "BATCH_ID_B06",
+      "status": "PASS",
+      "detail": "document=B06"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B06",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B06",
+      "status": "PASS",
+      "detail": "declared=6; actual=6"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B06",
+      "status": "PASS",
+      "detail": "[\"T024\",\"T025\",\"T026\",\"T027\",\"T028\",\"T030\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B06_T024",
+      "status": "PASS",
+      "detail": "T024"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B06_T024",
+      "status": "PASS",
+      "detail": "T024"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B06_T025",
+      "status": "PASS",
+      "detail": "T025"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B06_T025",
+      "status": "PASS",
+      "detail": "T025"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B06_T026",
+      "status": "PASS",
+      "detail": "T026"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B06_T026",
+      "status": "PASS",
+      "detail": "T026"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B06_T027",
+      "status": "PASS",
+      "detail": "T027"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B06_T027",
+      "status": "PASS",
+      "detail": "T027"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B06_T028",
+      "status": "PASS",
+      "detail": "T028"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B06_T028",
+      "status": "PASS",
+      "detail": "T028"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B06_T030",
+      "status": "PASS",
+      "detail": "T030"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B06_T030",
+      "status": "PASS",
+      "detail": "T030"
+    },
+    {
+      "id": "MAP_ENTRY_B06",
+      "status": "PASS",
+      "detail": "B06"
+    },
+    {
+      "id": "MAP_PATH_B06",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B06.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B06",
+      "status": "PASS",
+      "detail": "[\"T024\",\"T025\",\"T026\",\"T027\",\"T028\",\"T030\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B06",
+      "status": "PASS",
+      "detail": "6"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B06",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B06",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_UNIQUE_B07",
+      "status": "PASS",
+      "detail": "B07"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B07",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B07.json: 2044cb16dcabd0d6735d519f27aed47e05b9fe2a31c9bb932a013e430c915033"
+    },
+    {
+      "id": "BATCH_ID_B07",
+      "status": "PASS",
+      "detail": "document=B07"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B07",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B07",
+      "status": "PASS",
+      "detail": "declared=6; actual=6"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B07",
+      "status": "PASS",
+      "detail": "[\"T029\",\"T031\",\"T032\",\"T033\",\"T034\",\"T035\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B07_T029",
+      "status": "PASS",
+      "detail": "T029"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B07_T029",
+      "status": "PASS",
+      "detail": "T029"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B07_T031",
+      "status": "PASS",
+      "detail": "T031"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B07_T031",
+      "status": "PASS",
+      "detail": "T031"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B07_T032",
+      "status": "PASS",
+      "detail": "T032"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B07_T032",
+      "status": "PASS",
+      "detail": "T032"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B07_T033",
+      "status": "PASS",
+      "detail": "T033"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B07_T033",
+      "status": "PASS",
+      "detail": "T033"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B07_T034",
+      "status": "PASS",
+      "detail": "T034"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B07_T034",
+      "status": "PASS",
+      "detail": "T034"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B07_T035",
+      "status": "PASS",
+      "detail": "T035"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B07_T035",
+      "status": "PASS",
+      "detail": "T035"
+    },
+    {
+      "id": "MAP_ENTRY_B07",
+      "status": "PASS",
+      "detail": "B07"
+    },
+    {
+      "id": "MAP_PATH_B07",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B07.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B07",
+      "status": "PASS",
+      "detail": "[\"T029\",\"T031\",\"T032\",\"T033\",\"T034\",\"T035\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B07",
+      "status": "PASS",
+      "detail": "6"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B07",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B07",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_UNIQUE_B08",
+      "status": "PASS",
+      "detail": "B08"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B08",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B08.json: 619223565f508f8a9fe3b0bf3ba2ba46167312ec08ab7ce2e9ba6d54eb56c94a"
+    },
+    {
+      "id": "BATCH_ID_B08",
+      "status": "PASS",
+      "detail": "document=B08"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B08",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B08",
+      "status": "PASS",
+      "detail": "declared=5; actual=5"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B08",
+      "status": "PASS",
+      "detail": "[\"T036\",\"T037\",\"T038\",\"T039\",\"T040\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B08_T036",
+      "status": "PASS",
+      "detail": "T036"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B08_T036",
+      "status": "PASS",
+      "detail": "T036"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B08_T037",
+      "status": "PASS",
+      "detail": "T037"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B08_T037",
+      "status": "PASS",
+      "detail": "T037"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B08_T038",
+      "status": "PASS",
+      "detail": "T038"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B08_T038",
+      "status": "PASS",
+      "detail": "T038"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B08_T039",
+      "status": "PASS",
+      "detail": "T039"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B08_T039",
+      "status": "PASS",
+      "detail": "T039"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B08_T040",
+      "status": "PASS",
+      "detail": "T040"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B08_T040",
+      "status": "PASS",
+      "detail": "T040"
+    },
+    {
+      "id": "MAP_ENTRY_B08",
+      "status": "PASS",
+      "detail": "B08"
+    },
+    {
+      "id": "MAP_PATH_B08",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B08.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B08",
+      "status": "PASS",
+      "detail": "[\"T036\",\"T037\",\"T038\",\"T039\",\"T040\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B08",
+      "status": "PASS",
+      "detail": "5"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B08",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B08",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_UNIQUE_B09",
+      "status": "PASS",
+      "detail": "B09"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B09",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B09.json: f0b601120e59e0546f53de14646fd6aac84d798e060d5572bea2115ae1bd4e95"
+    },
+    {
+      "id": "BATCH_ID_B09",
+      "status": "PASS",
+      "detail": "document=B09"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B09",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B09",
+      "status": "PASS",
+      "detail": "declared=3; actual=3"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B09",
+      "status": "PASS",
+      "detail": "[\"T041\",\"T043\",\"T042\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B09_T041",
+      "status": "PASS",
+      "detail": "T041"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B09_T041",
+      "status": "PASS",
+      "detail": "T041"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B09_T043",
+      "status": "PASS",
+      "detail": "T043"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B09_T043",
+      "status": "PASS",
+      "detail": "T043"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B09_T042",
+      "status": "PASS",
+      "detail": "T042"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B09_T042",
+      "status": "PASS",
+      "detail": "T042"
+    },
+    {
+      "id": "MAP_ENTRY_B09",
+      "status": "PASS",
+      "detail": "B09"
+    },
+    {
+      "id": "MAP_PATH_B09",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B09.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B09",
+      "status": "PASS",
+      "detail": "[\"T041\",\"T043\",\"T042\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B09",
+      "status": "PASS",
+      "detail": "3"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B09",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B09",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_UNIQUE_B10",
+      "status": "PASS",
+      "detail": "B10"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B10",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B10.json: e9179a8950f50f59fff5829795c7a7cb3ae422481f21ac13672eb7aa44728c7c"
+    },
+    {
+      "id": "BATCH_ID_B10",
+      "status": "PASS",
+      "detail": "document=B10"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B10",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B10",
+      "status": "PASS",
+      "detail": "declared=3; actual=3"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B10",
+      "status": "PASS",
+      "detail": "[\"T044\",\"T045\",\"T046\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B10_T044",
+      "status": "PASS",
+      "detail": "T044"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B10_T044",
+      "status": "PASS",
+      "detail": "T044"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B10_T045",
+      "status": "PASS",
+      "detail": "T045"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B10_T045",
+      "status": "PASS",
+      "detail": "T045"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B10_T046",
+      "status": "PASS",
+      "detail": "T046"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B10_T046",
+      "status": "PASS",
+      "detail": "T046"
+    },
+    {
+      "id": "MAP_ENTRY_B10",
+      "status": "PASS",
+      "detail": "B10"
+    },
+    {
+      "id": "MAP_PATH_B10",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B10.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B10",
+      "status": "PASS",
+      "detail": "[\"T044\",\"T045\",\"T046\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B10",
+      "status": "PASS",
+      "detail": "3"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B10",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B10",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_UNIQUE_B11",
+      "status": "PASS",
+      "detail": "B11"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B11",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B11.json: 9bb7ef51266c555d1651fc08a60aef376a9163a777fd9dea69ea76e734c44501"
+    },
+    {
+      "id": "BATCH_ID_B11",
+      "status": "PASS",
+      "detail": "document=B11"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B11",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B11",
+      "status": "PASS",
+      "detail": "declared=2; actual=2"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B11",
+      "status": "PASS",
+      "detail": "[\"T047\",\"T048\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B11_T047",
+      "status": "PASS",
+      "detail": "T047"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B11_T047",
+      "status": "PASS",
+      "detail": "T047"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B11_T048",
+      "status": "PASS",
+      "detail": "T048"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B11_T048",
+      "status": "PASS",
+      "detail": "T048"
+    },
+    {
+      "id": "MAP_ENTRY_B11",
+      "status": "PASS",
+      "detail": "B11"
+    },
+    {
+      "id": "MAP_PATH_B11",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B11.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B11",
+      "status": "PASS",
+      "detail": "[\"T047\",\"T048\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B11",
+      "status": "PASS",
+      "detail": "2"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B11",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B11",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_UNIQUE_B12",
+      "status": "PASS",
+      "detail": "B12"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B12",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B12.json: 7ebcf5558fa3a83c54e81a11a5452252f839bd06e87c6e26c7f918b584a36ab7"
+    },
+    {
+      "id": "BATCH_ID_B12",
+      "status": "PASS",
+      "detail": "document=B12"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B12",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B12",
+      "status": "PASS",
+      "detail": "declared=5; actual=5"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B12",
+      "status": "PASS",
+      "detail": "[\"T049\",\"T050\",\"T051\",\"T052\",\"T053\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B12_T049",
+      "status": "PASS",
+      "detail": "T049"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B12_T049",
+      "status": "PASS",
+      "detail": "T049"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B12_T050",
+      "status": "PASS",
+      "detail": "T050"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B12_T050",
+      "status": "PASS",
+      "detail": "T050"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B12_T051",
+      "status": "PASS",
+      "detail": "T051"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B12_T051",
+      "status": "PASS",
+      "detail": "T051"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B12_T052",
+      "status": "PASS",
+      "detail": "T052"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B12_T052",
+      "status": "PASS",
+      "detail": "T052"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B12_T053",
+      "status": "PASS",
+      "detail": "T053"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B12_T053",
+      "status": "PASS",
+      "detail": "T053"
+    },
+    {
+      "id": "MAP_ENTRY_B12",
+      "status": "PASS",
+      "detail": "B12"
+    },
+    {
+      "id": "MAP_PATH_B12",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B12.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B12",
+      "status": "PASS",
+      "detail": "[\"T049\",\"T050\",\"T051\",\"T052\",\"T053\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B12",
+      "status": "PASS",
+      "detail": "5"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B12",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B12",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_UNIQUE_B13",
+      "status": "PASS",
+      "detail": "B13"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B13",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B13.json: e6dc9c0e7ce808d36bb82245bbbecef5129a8d0aa89e845dfd5a1b3e8feff613"
+    },
+    {
+      "id": "BATCH_ID_B13",
+      "status": "PASS",
+      "detail": "document=B13"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B13",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B13",
+      "status": "PASS",
+      "detail": "declared=6; actual=6"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B13",
+      "status": "PASS",
+      "detail": "[\"T054\",\"T055\",\"T056\",\"T057\",\"T058\",\"T059\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B13_T054",
+      "status": "PASS",
+      "detail": "T054"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B13_T054",
+      "status": "PASS",
+      "detail": "T054"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B13_T055",
+      "status": "PASS",
+      "detail": "T055"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B13_T055",
+      "status": "PASS",
+      "detail": "T055"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B13_T056",
+      "status": "PASS",
+      "detail": "T056"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B13_T056",
+      "status": "PASS",
+      "detail": "T056"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B13_T057",
+      "status": "PASS",
+      "detail": "T057"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B13_T057",
+      "status": "PASS",
+      "detail": "T057"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B13_T058",
+      "status": "PASS",
+      "detail": "T058"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B13_T058",
+      "status": "PASS",
+      "detail": "T058"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B13_T059",
+      "status": "PASS",
+      "detail": "T059"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B13_T059",
+      "status": "PASS",
+      "detail": "T059"
+    },
+    {
+      "id": "MAP_ENTRY_B13",
+      "status": "PASS",
+      "detail": "B13"
+    },
+    {
+      "id": "MAP_PATH_B13",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B13.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B13",
+      "status": "PASS",
+      "detail": "[\"T054\",\"T055\",\"T056\",\"T057\",\"T058\",\"T059\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B13",
+      "status": "PASS",
+      "detail": "6"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B13",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B13",
+      "status": "PASS",
+      "detail": "COMPLETED/COMPLETED"
+    },
+    {
+      "id": "BATCH_UNIQUE_B14",
+      "status": "PASS",
+      "detail": "B14"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B14",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B14.json: e07c500e2d5e0e3ed1a765722f03a2eb6abf36233bb37d92893305341dac27e8"
+    },
+    {
+      "id": "BATCH_ID_B14",
+      "status": "PASS",
+      "detail": "document=B14"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B14",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B14",
+      "status": "PASS",
+      "detail": "declared=3; actual=3"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B14",
+      "status": "PASS",
+      "detail": "[\"T060\",\"T061\",\"T062\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B14_T060",
+      "status": "PASS",
+      "detail": "T060"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B14_T060",
+      "status": "PASS",
+      "detail": "T060"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B14_T061",
+      "status": "PASS",
+      "detail": "T061"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B14_T061",
+      "status": "PASS",
+      "detail": "T061"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B14_T062",
+      "status": "PASS",
+      "detail": "T062"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B14_T062",
+      "status": "PASS",
+      "detail": "T062"
+    },
+    {
+      "id": "MAP_ENTRY_B14",
+      "status": "PASS",
+      "detail": "B14"
+    },
+    {
+      "id": "MAP_PATH_B14",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B14.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B14",
+      "status": "PASS",
+      "detail": "[\"T060\",\"T061\",\"T062\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B14",
+      "status": "PASS",
+      "detail": "3"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B14",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B14",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_UNIQUE_B15",
+      "status": "PASS",
+      "detail": "B15"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B15",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B15.json: 2442b1857693b38c39143a6ccf64019d423cb5f350678d35e446f383f16e42c6"
+    },
+    {
+      "id": "BATCH_ID_B15",
+      "status": "PASS",
+      "detail": "document=B15"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B15",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B15",
+      "status": "PASS",
+      "detail": "declared=6; actual=6"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B15",
+      "status": "PASS",
+      "detail": "[\"T063\",\"T064\",\"T065\",\"T066\",\"T067\",\"T068\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B15_T063",
+      "status": "PASS",
+      "detail": "T063"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B15_T063",
+      "status": "PASS",
+      "detail": "T063"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B15_T064",
+      "status": "PASS",
+      "detail": "T064"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B15_T064",
+      "status": "PASS",
+      "detail": "T064"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B15_T065",
+      "status": "PASS",
+      "detail": "T065"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B15_T065",
+      "status": "PASS",
+      "detail": "T065"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B15_T066",
+      "status": "PASS",
+      "detail": "T066"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B15_T066",
+      "status": "PASS",
+      "detail": "T066"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B15_T067",
+      "status": "PASS",
+      "detail": "T067"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B15_T067",
+      "status": "PASS",
+      "detail": "T067"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B15_T068",
+      "status": "PASS",
+      "detail": "T068"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B15_T068",
+      "status": "PASS",
+      "detail": "T068"
+    },
+    {
+      "id": "MAP_ENTRY_B15",
+      "status": "PASS",
+      "detail": "B15"
+    },
+    {
+      "id": "MAP_PATH_B15",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B15.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B15",
+      "status": "PASS",
+      "detail": "[\"T063\",\"T064\",\"T065\",\"T066\",\"T067\",\"T068\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B15",
+      "status": "PASS",
+      "detail": "6"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B15",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B15",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_UNIQUE_B16",
+      "status": "PASS",
+      "detail": "B16"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B16",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B16.json: 0aff55a90851c9aba7d243c3f2ffdabdada0ad5b2fb579a2bf632e27015c35eb"
+    },
+    {
+      "id": "BATCH_ID_B16",
+      "status": "PASS",
+      "detail": "document=B16"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B16",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B16",
+      "status": "PASS",
+      "detail": "declared=3; actual=3"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B16",
+      "status": "PASS",
+      "detail": "[\"T069\",\"T070\",\"T071\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B16_T069",
+      "status": "PASS",
+      "detail": "T069"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B16_T069",
+      "status": "PASS",
+      "detail": "T069"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B16_T070",
+      "status": "PASS",
+      "detail": "T070"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B16_T070",
+      "status": "PASS",
+      "detail": "T070"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B16_T071",
+      "status": "PASS",
+      "detail": "T071"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B16_T071",
+      "status": "PASS",
+      "detail": "T071"
+    },
+    {
+      "id": "MAP_ENTRY_B16",
+      "status": "PASS",
+      "detail": "B16"
+    },
+    {
+      "id": "MAP_PATH_B16",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B16.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B16",
+      "status": "PASS",
+      "detail": "[\"T069\",\"T070\",\"T071\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B16",
+      "status": "PASS",
+      "detail": "3"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B16",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B16",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_UNIQUE_B17",
+      "status": "PASS",
+      "detail": "B17"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B17",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B17.json: eb4ca912dbf7157a3585d8f9fe30017723545194cc4e8c7227b8be74b5780010"
+    },
+    {
+      "id": "BATCH_ID_B17",
+      "status": "PASS",
+      "detail": "document=B17"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B17",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B17",
+      "status": "PASS",
+      "detail": "declared=5; actual=5"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B17",
+      "status": "PASS",
+      "detail": "[\"T072\",\"T073\",\"T074\",\"T075\",\"T076\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B17_T072",
+      "status": "PASS",
+      "detail": "T072"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B17_T072",
+      "status": "PASS",
+      "detail": "T072"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B17_T073",
+      "status": "PASS",
+      "detail": "T073"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B17_T073",
+      "status": "PASS",
+      "detail": "T073"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B17_T074",
+      "status": "PASS",
+      "detail": "T074"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B17_T074",
+      "status": "PASS",
+      "detail": "T074"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B17_T075",
+      "status": "PASS",
+      "detail": "T075"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B17_T075",
+      "status": "PASS",
+      "detail": "T075"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B17_T076",
+      "status": "PASS",
+      "detail": "T076"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B17_T076",
+      "status": "PASS",
+      "detail": "T076"
+    },
+    {
+      "id": "MAP_ENTRY_B17",
+      "status": "PASS",
+      "detail": "B17"
+    },
+    {
+      "id": "MAP_PATH_B17",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B17.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B17",
+      "status": "PASS",
+      "detail": "[\"T072\",\"T073\",\"T074\",\"T075\",\"T076\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B17",
+      "status": "PASS",
+      "detail": "5"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B17",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B17",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_UNIQUE_B18",
+      "status": "PASS",
+      "detail": "B18"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B18",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B18.json: fe28474c7ec98a81c142664aacdb513828adb8fc23029322384c269b43bd2da8"
+    },
+    {
+      "id": "BATCH_ID_B18",
+      "status": "PASS",
+      "detail": "document=B18"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B18",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B18",
+      "status": "PASS",
+      "detail": "declared=4; actual=4"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B18",
+      "status": "PASS",
+      "detail": "[\"T077\",\"T078\",\"T079\",\"T080\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B18_T077",
+      "status": "PASS",
+      "detail": "T077"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B18_T077",
+      "status": "PASS",
+      "detail": "T077"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B18_T078",
+      "status": "PASS",
+      "detail": "T078"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B18_T078",
+      "status": "PASS",
+      "detail": "T078"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B18_T079",
+      "status": "PASS",
+      "detail": "T079"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B18_T079",
+      "status": "PASS",
+      "detail": "T079"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B18_T080",
+      "status": "PASS",
+      "detail": "T080"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B18_T080",
+      "status": "PASS",
+      "detail": "T080"
+    },
+    {
+      "id": "MAP_ENTRY_B18",
+      "status": "PASS",
+      "detail": "B18"
+    },
+    {
+      "id": "MAP_PATH_B18",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B18.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B18",
+      "status": "PASS",
+      "detail": "[\"T077\",\"T078\",\"T079\",\"T080\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B18",
+      "status": "PASS",
+      "detail": "4"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B18",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B18",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_UNIQUE_B19",
+      "status": "PASS",
+      "detail": "B19"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B19",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B19.json: c008a14d93019a0be43b823094a635ae3a4012f41659abca92fd4206e81780e2"
+    },
+    {
+      "id": "BATCH_ID_B19",
+      "status": "PASS",
+      "detail": "document=B19"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B19",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B19",
+      "status": "PASS",
+      "detail": "declared=6; actual=6"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B19",
+      "status": "PASS",
+      "detail": "[\"T081\",\"T082\",\"T089\",\"T083\",\"T084\",\"T085\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B19_T081",
+      "status": "PASS",
+      "detail": "T081"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B19_T081",
+      "status": "PASS",
+      "detail": "T081"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B19_T082",
+      "status": "PASS",
+      "detail": "T082"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B19_T082",
+      "status": "PASS",
+      "detail": "T082"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B19_T089",
+      "status": "PASS",
+      "detail": "T089"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B19_T089",
+      "status": "PASS",
+      "detail": "T089"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B19_T083",
+      "status": "PASS",
+      "detail": "T083"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B19_T083",
+      "status": "PASS",
+      "detail": "T083"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B19_T084",
+      "status": "PASS",
+      "detail": "T084"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B19_T084",
+      "status": "PASS",
+      "detail": "T084"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B19_T085",
+      "status": "PASS",
+      "detail": "T085"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B19_T085",
+      "status": "PASS",
+      "detail": "T085"
+    },
+    {
+      "id": "MAP_ENTRY_B19",
+      "status": "PASS",
+      "detail": "B19"
+    },
+    {
+      "id": "MAP_PATH_B19",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B19.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B19",
+      "status": "PASS",
+      "detail": "[\"T081\",\"T082\",\"T089\",\"T083\",\"T084\",\"T085\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B19",
+      "status": "PASS",
+      "detail": "6"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B19",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B19",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_UNIQUE_B20",
+      "status": "PASS",
+      "detail": "B20"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B20",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B20.json: e42d8daa554509e86d5687f74ddfe0775c7a954e22bdbabe6528756acdde7fe0"
+    },
+    {
+      "id": "BATCH_ID_B20",
+      "status": "PASS",
+      "detail": "document=B20"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B20",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B20",
+      "status": "PASS",
+      "detail": "declared=3; actual=3"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B20",
+      "status": "PASS",
+      "detail": "[\"T086\",\"T087\",\"T088\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B20_T086",
+      "status": "PASS",
+      "detail": "T086"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B20_T086",
+      "status": "PASS",
+      "detail": "T086"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B20_T087",
+      "status": "PASS",
+      "detail": "T087"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B20_T087",
+      "status": "PASS",
+      "detail": "T087"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B20_T088",
+      "status": "PASS",
+      "detail": "T088"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B20_T088",
+      "status": "PASS",
+      "detail": "T088"
+    },
+    {
+      "id": "MAP_ENTRY_B20",
+      "status": "PASS",
+      "detail": "B20"
+    },
+    {
+      "id": "MAP_PATH_B20",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B20.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B20",
+      "status": "PASS",
+      "detail": "[\"T086\",\"T087\",\"T088\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B20",
+      "status": "PASS",
+      "detail": "3"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B20",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B20",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_UNIQUE_B21",
+      "status": "PASS",
+      "detail": "B21"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B21",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B21.json: 7fc182c019f75f2d9b185092c849a4d0c2eec7d0a213f08737bd1dea805af871"
+    },
+    {
+      "id": "BATCH_ID_B21",
+      "status": "PASS",
+      "detail": "document=B21"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B21",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B21",
+      "status": "PASS",
+      "detail": "declared=6; actual=6"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B21",
+      "status": "PASS",
+      "detail": "[\"T090\",\"T091\",\"T092\",\"T093\",\"T094\",\"T095\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B21_T090",
+      "status": "PASS",
+      "detail": "T090"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B21_T090",
+      "status": "PASS",
+      "detail": "T090"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B21_T091",
+      "status": "PASS",
+      "detail": "T091"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B21_T091",
+      "status": "PASS",
+      "detail": "T091"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B21_T092",
+      "status": "PASS",
+      "detail": "T092"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B21_T092",
+      "status": "PASS",
+      "detail": "T092"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B21_T093",
+      "status": "PASS",
+      "detail": "T093"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B21_T093",
+      "status": "PASS",
+      "detail": "T093"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B21_T094",
+      "status": "PASS",
+      "detail": "T094"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B21_T094",
+      "status": "PASS",
+      "detail": "T094"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B21_T095",
+      "status": "PASS",
+      "detail": "T095"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B21_T095",
+      "status": "PASS",
+      "detail": "T095"
+    },
+    {
+      "id": "MAP_ENTRY_B21",
+      "status": "PASS",
+      "detail": "B21"
+    },
+    {
+      "id": "MAP_PATH_B21",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B21.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B21",
+      "status": "PASS",
+      "detail": "[\"T090\",\"T091\",\"T092\",\"T093\",\"T094\",\"T095\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B21",
+      "status": "PASS",
+      "detail": "6"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B21",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B21",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_UNIQUE_B22",
+      "status": "PASS",
+      "detail": "B22"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B22",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B22.json: f648db249282dc31df7e9306545ef0a25ec444e86d7c934ad177552bc9473683"
+    },
+    {
+      "id": "BATCH_ID_B22",
+      "status": "PASS",
+      "detail": "document=B22"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B22",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B22",
+      "status": "PASS",
+      "detail": "declared=4; actual=4"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B22",
+      "status": "PASS",
+      "detail": "[\"T096\",\"T097\",\"T098\",\"T099\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B22_T096",
+      "status": "PASS",
+      "detail": "T096"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B22_T096",
+      "status": "PASS",
+      "detail": "T096"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B22_T097",
+      "status": "PASS",
+      "detail": "T097"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B22_T097",
+      "status": "PASS",
+      "detail": "T097"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B22_T098",
+      "status": "PASS",
+      "detail": "T098"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B22_T098",
+      "status": "PASS",
+      "detail": "T098"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B22_T099",
+      "status": "PASS",
+      "detail": "T099"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B22_T099",
+      "status": "PASS",
+      "detail": "T099"
+    },
+    {
+      "id": "MAP_ENTRY_B22",
+      "status": "PASS",
+      "detail": "B22"
+    },
+    {
+      "id": "MAP_PATH_B22",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B22.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B22",
+      "status": "PASS",
+      "detail": "[\"T096\",\"T097\",\"T098\",\"T099\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B22",
+      "status": "PASS",
+      "detail": "4"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B22",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B22",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_UNIQUE_B23",
+      "status": "PASS",
+      "detail": "B23"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B23",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B23.json: 5c72b70130c5719aa38e71e71ff4b676bf178aef28f70f6925788cbf2cd69282"
+    },
+    {
+      "id": "BATCH_ID_B23",
+      "status": "PASS",
+      "detail": "document=B23"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B23",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B23",
+      "status": "PASS",
+      "detail": "declared=4; actual=4"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B23",
+      "status": "PASS",
+      "detail": "[\"T100\",\"T101\",\"T102\",\"T103\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B23_T100",
+      "status": "PASS",
+      "detail": "T100"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B23_T100",
+      "status": "PASS",
+      "detail": "T100"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B23_T101",
+      "status": "PASS",
+      "detail": "T101"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B23_T101",
+      "status": "PASS",
+      "detail": "T101"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B23_T102",
+      "status": "PASS",
+      "detail": "T102"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B23_T102",
+      "status": "PASS",
+      "detail": "T102"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B23_T103",
+      "status": "PASS",
+      "detail": "T103"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B23_T103",
+      "status": "PASS",
+      "detail": "T103"
+    },
+    {
+      "id": "MAP_ENTRY_B23",
+      "status": "PASS",
+      "detail": "B23"
+    },
+    {
+      "id": "MAP_PATH_B23",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B23.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B23",
+      "status": "PASS",
+      "detail": "[\"T100\",\"T101\",\"T102\",\"T103\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B23",
+      "status": "PASS",
+      "detail": "4"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B23",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B23",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_UNIQUE_B24",
+      "status": "PASS",
+      "detail": "B24"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B24",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B24.json: 553266dd0c7577da5af978321ee6252480ac56b097280da0a970de17ab0a03d9"
+    },
+    {
+      "id": "BATCH_ID_B24",
+      "status": "PASS",
+      "detail": "document=B24"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B24",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B24",
+      "status": "PASS",
+      "detail": "declared=4; actual=4"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B24",
+      "status": "PASS",
+      "detail": "[\"T104\",\"T105\",\"T106\",\"T107\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B24_T104",
+      "status": "PASS",
+      "detail": "T104"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B24_T104",
+      "status": "PASS",
+      "detail": "T104"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B24_T105",
+      "status": "PASS",
+      "detail": "T105"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B24_T105",
+      "status": "PASS",
+      "detail": "T105"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B24_T106",
+      "status": "PASS",
+      "detail": "T106"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B24_T106",
+      "status": "PASS",
+      "detail": "T106"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B24_T107",
+      "status": "PASS",
+      "detail": "T107"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B24_T107",
+      "status": "PASS",
+      "detail": "T107"
+    },
+    {
+      "id": "MAP_ENTRY_B24",
+      "status": "PASS",
+      "detail": "B24"
+    },
+    {
+      "id": "MAP_PATH_B24",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B24.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B24",
+      "status": "PASS",
+      "detail": "[\"T104\",\"T105\",\"T106\",\"T107\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B24",
+      "status": "PASS",
+      "detail": "4"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B24",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B24",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_UNIQUE_B25",
+      "status": "PASS",
+      "detail": "B25"
+    },
+    {
+      "id": "BATCH_FILE_HASH_B25",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B25.json: adc63127aab4078dd37ffb1d1f5a52a6d615dbd19a5af3bcd020bbb4ccbec1da"
+    },
+    {
+      "id": "BATCH_ID_B25",
+      "status": "PASS",
+      "detail": "document=B25"
+    },
+    {
+      "id": "BATCH_SOURCE_TASKS_HASH_B25",
+      "status": "PASS",
+      "detail": "batch=12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965"
+    },
+    {
+      "id": "BATCH_TASK_COUNT_B25",
+      "status": "PASS",
+      "detail": "declared=2; actual=2"
+    },
+    {
+      "id": "BATCH_EXECUTION_ORDER_B25",
+      "status": "PASS",
+      "detail": "[\"T108\",\"T109\"]"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B25_T108",
+      "status": "PASS",
+      "detail": "T108"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B25_T108",
+      "status": "PASS",
+      "detail": "T108"
+    },
+    {
+      "id": "BATCH_TASK_LOCKED_B25_T109",
+      "status": "PASS",
+      "detail": "T109"
+    },
+    {
+      "id": "BATCH_TASK_HASH_B25_T109",
+      "status": "PASS",
+      "detail": "T109"
+    },
+    {
+      "id": "MAP_ENTRY_B25",
+      "status": "PASS",
+      "detail": "B25"
+    },
+    {
+      "id": "MAP_PATH_B25",
+      "status": "PASS",
+      "detail": "implementation-control/batches/B25.json"
+    },
+    {
+      "id": "MAP_TASK_IDS_B25",
+      "status": "PASS",
+      "detail": "[\"T108\",\"T109\"]"
+    },
+    {
+      "id": "MAP_TASK_COUNT_B25",
+      "status": "PASS",
+      "detail": "2"
+    },
+    {
+      "id": "MAP_STATE_STATUS_B25",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_STATE_STATUS_B25",
+      "status": "PASS",
+      "detail": "PENDING/PENDING"
+    },
+    {
+      "id": "BATCH_COUNT",
+      "status": "PASS",
+      "detail": "count=25"
+    },
+    {
+      "id": "MAP_BATCH_COUNT",
+      "status": "PASS",
+      "detail": "declared=25; actual=25"
+    },
+    {
+      "id": "MAP_TASK_COUNT",
+      "status": "PASS",
+      "detail": "declared=109; actual=109"
+    },
+    {
+      "id": "BATCH_TASK_COVERAGE",
+      "status": "PASS",
+      "detail": "covered=109"
+    },
+    {
+      "id": "STATE_TASK_KEYS",
+      "status": "PASS",
+      "detail": "state=109; lock=109"
+    },
+    {
+      "id": "STATE_BATCH_KEYS",
+      "status": "PASS",
+      "detail": "state=25; lock=25"
+    },
+    {
+      "id": "STATE_COMPLETED_TASKS",
+      "status": "PASS",
+      "detail": "[\"T001\",\"T002\",\"T003\",\"T004\",\"T005\",\"T006\",\"T007\",\"T008\",\"T009\",\"T010\",\"T011\",\"T012\",\"T013\",\"T014\",\"T015\",\"T016\",\"T017\",\"T018\",\"T019\",\"T020\",\"T021\",\"T022\",\"T023\",\"T024\",\"T025\",\"T026\",\"T027\",\"T028\",\"T029\",\"T030\",\"T031\",\"T032\",\"T033\",\"T034\",\"T035\",\"T036\",\"T037\",\"T038\",\"T039\",\"T040\",\"T041\",\"T042\",\"T043\",\"T044\",\"T045\",\"T046\",\"T047\",\"T048\",\"T049\",\"T050\",\"T051\",\"T052\",\"T053\",\"T054\",\"T055\",\"T056\",\"T057\",\"T058\",\"T059\"]"
+    },
+    {
+      "id": "STATE_COMPLETED_BATCHES",
+      "status": "PASS",
+      "detail": "[\"B01\",\"B02\",\"B03\",\"B04\",\"B05\",\"B06\",\"B07\",\"B08\",\"B09\",\"B10\",\"B11\",\"B12\",\"B13\"]"
+    },
+    {
+      "id": "ACTIVE_NEXT_BATCH",
+      "status": "PASS",
+      "detail": "B14/B14"
+    },
+    {
+      "id": "ACTIVE_BATCH_LOCKED",
+      "status": "PASS",
+      "detail": "B14"
+    },
+    {
+      "id": "ACTIVE_DEPENDENCY_T021",
+      "status": "PASS",
+      "detail": "T021=COMPLETED"
+    },
+    {
+      "id": "ACTIVE_DEPENDENCY_T022",
+      "status": "PASS",
+      "detail": "T022=COMPLETED"
+    },
+    {
+      "id": "ACTIVE_DEPENDENCY_T053",
+      "status": "PASS",
+      "detail": "T053=COMPLETED"
+    },
+    {
+      "id": "ACTIVE_DEPENDENCY_T054",
+      "status": "PASS",
+      "detail": "T054=COMPLETED"
+    },
+    {
+      "id": "ACTIVE_DEPENDENCY_T055",
+      "status": "PASS",
+      "detail": "T055=COMPLETED"
+    },
+    {
+      "id": "ACTIVE_DEPENDENCY_T056",
+      "status": "PASS",
+      "detail": "T056=COMPLETED"
+    },
+    {
+      "id": "ACTIVE_DEPENDENCY_T057",
+      "status": "PASS",
+      "detail": "T057=COMPLETED"
+    },
+    {
+      "id": "ACTIVE_DEPENDENCY_T058",
+      "status": "PASS",
+      "detail": "T058=COMPLETED"
+    },
+    {
+      "id": "ACTIVE_DEPENDENCY_T059",
+      "status": "PASS",
+      "detail": "T059=COMPLETED"
+    },
+    {
+      "id": "DOCUMENTATION_ACTIVE_PHASE",
+      "status": "PASS",
+      "detail": "DOCUMENTATION_INDEX.md"
+    },
+    {
+      "id": "GATE_tasksAuthorized",
+      "status": "PASS",
+      "detail": "tasksAuthorized=true"
+    },
+    {
+      "id": "GATE_analysisAuthorized",
+      "status": "PASS",
+      "detail": "analysisAuthorized=true"
+    },
+    {
+      "id": "GATE_implementationAuthorized",
+      "status": "PASS",
+      "detail": "implementationAuthorized=true"
+    },
+    {
+      "id": "GATE_convergenceAuthorized",
+      "status": "PASS",
+      "detail": "convergenceAuthorized=false"
+    },
+    {
+      "id": "METADATA_REVISION",
+      "status": "PASS",
+      "detail": "v0.21.15_B13_completed/v0.21.15_B13_completed"
+    },
+    {
+      "id": "AUTHORITY_REVISION",
+      "status": "PASS",
+      "detail": "v0.21.15_B13_completed/v0.21.15_B13_completed"
+    },
+    {
+      "id": "METADATA_LOGICAL_NAME",
+      "status": "PASS",
+      "detail": "FS_v0.21.15_B13_completed.zip/FS_v0.21.15_B13_completed.zip"
+    },
+    {
+      "id": "METADATA_ROOT_DIRECTORY",
+      "status": "FAIL",
+      "detail": "FinScope_v0.21.4/finscope-analytics"
+    },
+    {
+      "id": "INSTRUCTION_CHARACTER_COUNT",
+      "status": "PASS",
+      "detail": "metadata=7999; actual=7999"
+    },
+    {
+      "id": "INSTRUCTION_CHARACTER_LIMIT",
+      "status": "PASS",
+      "detail": "actual=7999"
+    },
+    {
+      "id": "SPECIFY_FILE_COUNT",
+      "status": "PASS",
+      "detail": "count=19"
+    },
+    {
+      "id": "SPECIFY_STATE_HASH",
+      "status": "PASS",
+      "detail": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09/e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
+    },
+    {
+      "id": "SPECIFY_METADATA_HASH",
+      "status": "PASS",
+      "detail": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09/e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
+    },
+    {
+      "id": "CONTROL_FILE_implementation-control/TASK_SOURCE_LOCK.json",
+      "status": "PASS",
+      "detail": "implementation-control/TASK_SOURCE_LOCK.json"
+    },
+    {
+      "id": "CONTROL_FILE_implementation-control/IMPLEMENTATION_BATCH_MAP.json",
+      "status": "PASS",
+      "detail": "implementation-control/IMPLEMENTATION_BATCH_MAP.json"
+    },
+    {
+      "id": "CONTROL_FILE_implementation-control/IMPLEMENTATION_STATE.json",
+      "status": "PASS",
+      "detail": "implementation-control/IMPLEMENTATION_STATE.json"
+    },
+    {
+      "id": "CONTROL_FILE_implementation-control/AUTHORITY_MATRIX.json",
+      "status": "PASS",
+      "detail": "implementation-control/AUTHORITY_MATRIX.json"
+    }
+  ],
+  "issues": [
+    {
+      "id": "METADATA_ROOT_DIRECTORY",
+      "detail": "FinScope_v0.21.4/finscope-analytics"
+    }
+  ]
+}
+CONTROL_PLANE_STATE_INVALID
