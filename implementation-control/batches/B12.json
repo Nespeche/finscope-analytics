@@ -5,7 +5,7 @@
   "ordinal": 12,
   "title": "Interfaz y E2E del análisis fundamental",
   "domain": "fundamental-ui",
-  "status": "PENDING",
+  "status": "COMPLETED",
   "taskCount": 5,
   "executionOrder": [
     "T049",
@@ -230,7 +230,7 @@
       ],
       "doneWhen": "the view exports an AUTH-027 routeDefinition and identity and filing context remain visible and accessible",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "1beb4f54a29f928ef07a5dd21ed43bb01b99ed1d61dcd6e1bd9d6339eee6ba9f"
+      "sourceTaskSha256": "9e043559d679610af1f93cd5f458545f0cdb91e1da038c2d9ee395391658a174"
     },
     {
       "id": "T050",
@@ -283,7 +283,7 @@
       ],
       "doneWhen": "the view exports an AUTH-027 routeDefinition and raw, normalized and unavailable states are visually and semantically distinct",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "6c86710a78a7c083f1f28c1deec10590f2df609a51de1187e900054aadf1c625"
+      "sourceTaskSha256": "d24c7e612863b63f8c862cedfff4b1fe87ae20cde935942dd7a5e96c294f68ad"
     },
     {
       "id": "T051",
@@ -337,7 +337,7 @@
       ],
       "doneWhen": "the view exports an AUTH-027 routeDefinition and all 24 metrics render state/reason without invented values",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "c170d396e2f1e038291337d10a97c32262580d7a221570d01edc169be6e69b3a"
+      "sourceTaskSha256": "3227ba64eb296f9e88d6d74a37146777e5ef59e630a831cc8c14d31829263ea5"
     },
     {
       "id": "T052",
@@ -389,7 +389,7 @@
       ],
       "doneWhen": "the view exports an AUTH-027 routeDefinition, visible rule outcomes and synthesis match the same analysis fingerprint and are never framed as personalized investment advice",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "6787fc2537aac60b26413425757ef2285cc2b1d8d3e6ff67148299a0af233594"
+      "sourceTaskSha256": "0dcee40884c51b85bf0dc6bdca3b9c1d8092c1f3eefd4e1e8e4b52fa4b1bfb3b"
     },
     {
       "id": "T053",
@@ -446,7 +446,7 @@
       ],
       "doneWhen": "complete and partial scenarios expose all cited outputs and are independently reproducible without price",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "470e98a6d114ed737241d630424e7fa563d6ddec5e17fd7f03b92a41ed139e81"
+      "sourceTaskSha256": "b331061f0aa2a70c202182b74665444a347d7b7d5d1650b6c21494f7903b8911"
     }
   ],
   "completionGate": {
@@ -456,7 +456,7 @@
     "packageValidationPass": true,
     "doNotStartNextBatch": true
   },
-  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "sourceTasksSha256": "297a4297d9ec1e085aff9eb8f37e02fcc71add848798fcae847154ecf7728b54",
   "localValidation": {
     "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
     "browserRequired": true,

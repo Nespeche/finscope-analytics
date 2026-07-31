@@ -3,12 +3,12 @@
   "schemaVersion": "1.1.0",
   "project": "FinScope Analytics",
   "normativeBaseline": "v0.21",
-  "packageRevision": "v0.21.13_GH0_candidate_r4",
-  "activePackageLogicalName": "FS_v0.21.13_GH0_candidate_r4.zip",
+  "packageRevision": "v0.21.14_B12_completed",
+  "activePackageLogicalName": "FS_v0.21.14_B12_completed.zip",
   "sourceBaseline": {
-    "logicalName": "FS_v0.21.12_B11_completed.zip",
-    "sha256": "775a244ffd1e57ebee7a5144230312ca07598205c18f82a66a9669284bd9fc95",
-    "role": "ACTIVE_COMPLETED_BASELINE_USED_FOR_GH0"
+    "logicalName": "FS_v0.21.13_GH0_completed.zip",
+    "sha256": "788c563eee82762c6171f03296e33222d7b50ed13f03fa798a409473343be469",
+    "role": "ACTIVE_COMPLETED_BASELINE_USED_FOR_B12"
   },
   "phaseGate": {
     "tasksAuthorized": true,
@@ -17,7 +17,7 @@
     "convergenceAuthorized": false
   },
   "implementationStatus": "IN_PROGRESS",
-  "activeBatchId": "B12",
+  "activeBatchId": "B13",
   "completedBatchIds": [
     "B01",
     "B02",
@@ -29,7 +29,8 @@
     "B08",
     "B09",
     "B10",
-    "B11"
+    "B11",
+    "B12"
   ],
   "blockedBatchIds": [],
   "completedTaskIds": [
@@ -80,7 +81,12 @@
     "T045",
     "T046",
     "T047",
-    "T048"
+    "T048",
+    "T049",
+    "T050",
+    "T051",
+    "T052",
+    "T053"
   ],
   "blockedTaskIds": [],
   "taskStatus": {
@@ -132,11 +138,11 @@
     "T046": "COMPLETED",
     "T047": "COMPLETED",
     "T048": "COMPLETED",
-    "T049": "PENDING",
-    "T050": "PENDING",
-    "T051": "PENDING",
-    "T052": "PENDING",
-    "T053": "PENDING",
+    "T049": "COMPLETED",
+    "T050": "COMPLETED",
+    "T051": "COMPLETED",
+    "T052": "COMPLETED",
+    "T053": "COMPLETED",
     "T054": "PENDING",
     "T055": "PENDING",
     "T056": "PENDING",
@@ -206,7 +212,7 @@
     "B09": "COMPLETED",
     "B10": "COMPLETED",
     "B11": "COMPLETED",
-    "B12": "PENDING",
+    "B12": "COMPLETED",
     "B13": "PENDING",
     "B14": "PENDING",
     "B15": "PENDING",
@@ -221,9 +227,9 @@
     "B24": "PENDING",
     "B25": "PENDING"
   },
-  "lastCompletedBatchId": "B11",
-  "lastBatchReport": "implementation-control/reports/B11_EVIDENCE_VERIFICATION_AND_CLOSURE.md",
-  "nextAuthorizedBatchId": "B12",
+  "lastCompletedBatchId": "B12",
+  "lastBatchReport": "implementation-control/reports/B12_EVIDENCE_VERIFICATION_AND_CLOSURE.md",
+  "nextAuthorizedBatchId": "B13",
   "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
   "openFindings": [
     {
@@ -596,15 +602,15 @@
   "productCodePresent": true,
   "dependenciesInstalled": false,
   "buildArtifactsPresent": false,
-  "updatedBy": "GH0 closure authoring",
-  "updatedOn": "2026-07-30",
-  "baselineRole": "CANDIDATE_AWAITING_LOCAL_VALIDATION",
+  "updatedBy": "FinScope GitHub B12 authenticated closure",
+  "updatedOn": "2026-07-31",
+  "baselineRole": "ACTIVE_COMPLETED_BASELINE",
   "normativeSourceBaseline": {
     "logicalName": "FinScope_Analytics_SpecDev_ChatGPT_v0.21_post_analysis_remediated.zip",
     "sha256": "2e765125d2d3415f9804a0bd8c30f1d9073eb9ae2576ff573c58c4706065e425",
     "role": "NORMATIVE_V0_21_ORIGIN"
   },
-  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "sourceTasksSha256": "297a4297d9ec1e085aff9eb8f37e02fcc71add848798fcae847154ecf7728b54",
   "validationWorkflow": {
     "candidatePromotionRule": "Exact candidate r4 PR Validation PASS artifact is authenticated; an allowlisted Closure PASS for the closure commit is required before merge and Release.",
     "localProtocol": "implementation-control/LOCAL_VALIDATION_PROTOCOL.md",

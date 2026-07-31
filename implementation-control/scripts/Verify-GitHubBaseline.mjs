@@ -18,8 +18,8 @@ try{
   if(api.exitCode!==0) throw new Error(`RELEASE_API_EXIT_${api.exitCode}`);
   const release=JSON.parse(api.stdout.toString('utf8'));
   if(release.draft||release.prerelease) throw new Error('RELEASE_NOT_PUBLISHED_STABLE');
-  const assets=release.assets??[]; const wanted=assets.filter((a)=>[expected.zipName,expected.sidecarName].includes(a.name));
-  if(assets.length!==2 || wanted.length!==2 || new Set(wanted.map((a)=>a.name)).size!==2) throw new Error('CUSTOM_ASSET_SET_INVALID');
+  const assets=release.assets??[]; const assetNames=assets.map((a)=>a.name); const wanted=assets.filter((a)=>[expected.zipName,expected.sidecarName].includes(a.name));
+  if(assets.length<2 || new Set(assetNames).size!==assetNames.length || wanted.length!==2 || new Set(wanted.map((a)=>a.name)).size!==2) throw new Error('CUSTOM_ASSET_SET_INVALID');
   const commitLookup=await run(`gh api repos/${handoff.repository}/commits/${expected.tag} --jq .sha`,{cwd:root});
   if(commitLookup.exitCode!==0 || commitLookup.stdout.toString('utf8').trim()!==expected.commitSha) throw new Error('RELEASE_TAG_COMMIT_MISMATCH');
   const zipAsset=wanted.find((a)=>a.name===expected.zipName); const sidecarAsset=wanted.find((a)=>a.name===expected.sidecarName);

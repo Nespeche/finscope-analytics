@@ -4,8 +4,8 @@
 
 - Repositorio autorizado: `Nespeche/finscope-analytics`.
 - Rama protegida de integración: `main`.
-- Todo cambio se realiza en rama temática y Pull Request draft; nunca se trabaja directamente sobre `main`.
-- GH0 usa `chore/github-bootstrap-gh0` desde `ae756b882ac56dd6eaffa7dbc57933dd9add7ec5`.
+- Todo cambio se realiza en la rama temática declarada por `GITHUB_HANDOFF.json` y en Pull Request Draft; nunca se trabaja directamente sobre `main`.
+- Cada operación parte del commit completed autenticado declarado como baseline y conserva una única rama de trabajo hasta cierre o abandono explícito.
 
 ## Autoridad
 
@@ -17,7 +17,7 @@ Los workflows usan actions oficiales fijadas a SHA completo, permisos mínimos, 
 
 ## Pull Requests
 
-El PR debe conservar B12 y tareas futuras sin cambios fuera del lote autorizado. Los checks estables son:
+El PR debe conservar lotes futuros sin cambios fuera del lote autorizado. Los checks estables son:
 
 - `FinScope PR Validation / validate`;
 - `FinScope Closure Validation / verify-closure`.

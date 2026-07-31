@@ -4,7 +4,7 @@
 
 El workflow `FinScope PR Validation` ejecuta en `ubuntu-latest` con `contents: read`. Primero valida el plano de control. Después autentica el Release completed anterior mediante sus assets personalizados. Resuelve `activeBatchId`, `browserRequired` y `localValidation.commands` desde las autoridades activas.
 
-Durante la única migración GH0, el workflow registra literalmente los comandos de B12 pero ejecuta la matriz de calificación operacional declarada en `GITHUB_HANDOFF.json`; esto evita implementar o simular T049–T053. Fuera de la rama bootstrap, ejecuta literalmente los comandos del batch activo.
+En etapa `candidate`, ejecuta literalmente todos los comandos requeridos del batch activo. En etapa `closure`, valida baseline, control plane, `.specify` y autopruebas, pero no repite npm: la evidencia ejecutable queda ligada al candidate SHA exacto y el cierre se controla por allowlist.
 
 ## 2. Ejecución
 
@@ -16,6 +16,6 @@ Chromium se instala únicamente cuando la autoridad resuelta declara `browserReq
 
 Siempre se produce un artifact con `github-validation-evidence.json`, logs, preflight, manifest y hashes. El nombre termina en `PASS` o `_FAILED`. La evidencia se relee contra `github-validation-evidence.schema.json` antes del gate final.
 
-## 4. Calificación GH0
+## 4. Autopruebas operativas
 
-GH0 debe demostrar: sintaxis, control plane, baseline PASS, hash negativo, traversal negativo, suite vacía negativa, artifact PASS y `_FAILED`, relectura del schema, regresión completa, browser y build, `.specify` idéntico y recuperación de un run fallido sin alterar checks.
+Cada ejecución demuestra colecciones nula, vacía, 0, 1 y N; traversal negativo; hash negativo; suite vacía negativa; identidad de Git HEAD; baseline Release; `.specify`; schema y manifest de evidencia. Las pruebas de bootstrap GH0 permanecen preservadas como historial, no como condición hardcodeada de lotes futuros.

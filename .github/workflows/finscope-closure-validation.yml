@@ -7,8 +7,9 @@ on:
       - implementation-control/GITHUB_HANDOFF.json
 
 permissions:
-  contents: read
+  contents: write
   actions: read
+  pull-requests: read
 
 jobs:
   verify-closure:
@@ -24,6 +25,11 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: package.json
+      - name: Apply authenticated closure payload when requested
+        id: apply
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node implementation-control/scripts/Apply-GitHubBatchClosure.mjs
       - name: Prepare normative package-root alias
         shell: bash
         run: |
@@ -47,7 +53,7 @@ jobs:
           path: ${{ steps.closure.outputs.evidence_dir }}
           if-no-files-found: error
           include-hidden-files: true
-          retention-days: 30
+          retention-days: 14
       - name: Enforce closure result
         if: always()
         env:
