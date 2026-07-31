@@ -14,18 +14,24 @@
     "id": "B12",
     "kind": "BATCH",
     "branch": "agent/implement-b12-fundamental-ui",
-    "stage": "candidate",
+    "stage": "closure",
     "activeBatchId": "B12",
     "nextBatchId": "B13",
     "completedTasksThroughOnClosure": "T053"
   },
-  "candidate": null,
+  "candidate": {
+    "sha": "06df86a6f68868474f28a090b75a968291b1fe2a",
+    "runId": "30633065198",
+    "artifactId": 8794161946,
+    "artifactName": "finscope-github-validation-06df86a6f688-PASS",
+    "artifactDigest": "sha256:39021df347a9d5c355ab1df3e8f99e695d851ff52b5757442d415d1daaf973b2"
+  },
   "closure": {
-    "status": "NOT_REQUESTED",
-    "candidateSha": null
+    "status": "PENDING",
+    "candidateSha": "06df86a6f68868474f28a090b75a968291b1fe2a"
   },
   "release": {
-    "pending": false,
+    "pending": true,
     "tag": "v0.21.14-B12-completed",
     "packageRevision": "v0.21.14_B12_completed",
     "zipName": "FS_v0.21.14_B12_completed.zip",
@@ -36,9 +42,9 @@
     "notes": "B12 fundamental-analysis interface and E2E completed with authenticated GitHub evidence. B13 remains pending."
   },
   "productState": {
-    "activeBatchId": "B12",
-    "nextAuthorizedBatchId": "B12",
-    "completedTasksThrough": "T048",
+    "activeBatchId": "B13",
+    "nextAuthorizedBatchId": "B13",
+    "completedTasksThrough": "T053",
     "convergenceAuthorized": false
   }
 }
