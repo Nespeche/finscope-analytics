@@ -2,81 +2,44 @@
   "schemaVersion": "1.2.0",
   "repository": "Nespeche/finscope-analytics",
   "baseline": {
-    "tag": "v0.21.13-GH0-completed",
-    "commitSha": "582862ec1a344f3809946273e1d121ccfb359d7f",
-    "zipName": "FS_v0.21.13_GH0_completed.zip",
-    "sidecarName": "FS_v0.21.13_GH0_completed.zip.sha256",
-    "zipSha256": "788c563eee82762c6171f03296e33222d7b50ed13f03fa798a409473343be469",
+    "tag": "v0.21.14-B12-completed",
+    "commitSha": "06f3ef365c2ab3437d427468c7266f12a6d7f259",
+    "zipName": "FS_v0.21.14_B12_completed.zip",
+    "sidecarName": "FS_v0.21.14_B12_completed.zip.sha256",
+    "zipSha256": "d5a278507e880c49e10adae9f087eb6b9bb6c05b57d61253b8662afa300c8d9a",
     "root": "FinScope_v0.21.4/",
     "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
   },
   "operation": {
-    "id": "B12",
-    "kind": "RELEASE_REMEDIATION",
-    "branch": "agent/b12-release-remediation",
-    "stage": "candidate",
-    "activeBatchId": "B12",
-    "nextBatchId": "B13",
-    "completedTasksThroughOnClosure": "T053",
-    "qualificationCommands": [
-      {
-        "id": "npm-ci",
-        "category": "dependencies",
-        "command": "npm ci",
-        "required": true
-      },
-      {
-        "id": "typecheck",
-        "category": "static",
-        "command": "npm run typecheck",
-        "required": true
-      },
-      {
-        "id": "regression-vitest",
-        "category": "regression",
-        "command": "npm run test",
-        "required": true
-      },
-      {
-        "id": "build",
-        "category": "build",
-        "command": "npm run build",
-        "required": true
-      },
-      {
-        "id": "package-completed-release",
-        "category": "package",
-        "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
-        "required": true
-      }
-    ]
+    "id": "B13",
+    "kind": "BATCH",
+    "branch": "agent/b13-refresh-core",
+    "stage": "closure",
+    "activeBatchId": "B13",
+    "nextBatchId": "B14",
+    "completedTasksThroughOnClosure": "T059"
   },
   "candidate": {
-    "sha": "06df86a6f68868474f28a090b75a968291b1fe2a",
-    "runId": "30633065198",
-    "artifactId": 8794161946,
-    "artifactName": "finscope-github-validation-06df86a6f688-PASS",
-    "artifactDigest": "sha256:39021df347a9d5c355ab1df3e8f99e695d851ff52b5757442d415d1daaf973b2"
+    "sha": "68d47100ff3a2d520a5ad2769a61bfe7090fa611",
+    "runId": "30654130117",
+    "artifactId": 8802543812,
+    "artifactName": "finscope-github-validation-68d47100ff3a-PASS",
+    "artifactDigest": "sha256:0cdae11c61510c48b0cd735afae690d9f903ba52cea0398350e61882141be648"
   },
   "closure": {
-    "status": "COMPLETED",
-    "candidateSha": "06df86a6f68868474f28a090b75a968291b1fe2a",
-    "commitSha": "09ed5099958fae3e8373db074e174e3c224523c2",
-    "runId": "30633399806",
-    "artifactId": 8794262864,
-    "artifactName": "finscope-closure-09ed5099958f-PASS",
-    "artifactDigest": "sha256:97df3dc4596c94ec59412950a3107cb064aea1c2605a8b1be5d13048295b83f2"
+    "status": "PENDING",
+    "candidateSha": "68d47100ff3a2d520a5ad2769a61bfe7090fa611"
   },
   "release": {
     "pending": true,
-    "tag": "v0.21.14-B12-completed",
-    "packageRevision": "v0.21.14_B12_completed",
-    "zipName": "FS_v0.21.14_B12_completed.zip",
-    "sidecarName": "FS_v0.21.14_B12_completed.zip.sha256",
-    "evidencePrefix": "FinScope_B12_release_evidence",
-    "promptName": "PROMPT_IMPLEMENTACION_B13.md",
-    "title": "FinScope B12 completed",
-    "notes": "B12 fundamental-analysis interface and E2E completed with authenticated GitHub evidence. B13 remains pending."
+    "tag": "v0.21.15-B13-completed",
+    "packageRevision": "v0.21.15_B13_completed",
+    "zipName": "FS_v0.21.15_B13_completed.zip",
+    "sidecarName": "FS_v0.21.15_B13_completed.zip.sha256",
+    "evidencePrefix": "FinScope_B13_release_evidence",
+    "promptName": "PROMPT_IMPLEMENTACION_B14.md",
+    "title": "FinScope B13 completed",
+    "notes": "B13 cache, novelty, retry, idempotency, invalidation and degradation completed with authenticated GitHub evidence. B14 remains pending."
   },
   "productState": {
     "activeBatchId": "B13",
