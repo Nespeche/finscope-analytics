@@ -5,7 +5,7 @@
   "ordinal": 13,
   "title": "Cache, novedad, retry, idempotencia e invalidación",
   "domain": "refresh-core",
-  "status": "PENDING",
+  "status": "COMPLETED",
   "taskCount": 6,
   "executionOrder": [
     "T054",
@@ -193,7 +193,7 @@
       ],
       "doneWhen": "fresh causes zero network and stale/expired query Submissions first",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "14342eeccdf1c58200434732f937e01f563c331a00c3caddbf08c9f378e2f0e8"
+      "sourceTaskSha256": "b8d10cabc0998b8fec84e5e0b10c955892b5868520be218650d7a1be01dfd605"
     },
     {
       "id": "T055",
@@ -237,7 +237,7 @@
       ],
       "doneWhen": "unchanged submissions avoid Company Facts unless manual/dependency invalidation applies",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "635c96db9abbff4e20d4546db1f79901e5d64f9ae7abd3a21c34a6a990022723"
+      "sourceTaskSha256": "260145edc690c4a135e5cfc10bdaf0928d4e9a887cdfd97300462f6067ae8c0c"
     },
     {
       "id": "T056",
@@ -276,7 +276,7 @@
       ],
       "doneWhen": "three logical attempts, timeouts, the 14-call budget and nonessential-refresh stops are enforced by one shared guard",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "1ed0206b3ade949aad328bf9529e00e26a8e9fb18dcbf2e4cb2a0ae824dcd68f"
+      "sourceTaskSha256": "dd4bd73d6626dcc90a033559844369e72bdb4b5aa528042159070098f2049a12"
     },
     {
       "id": "T057",
@@ -317,7 +317,7 @@
       ],
       "doneWhen": "double activation starts one operation and one candidate without depending on any presentation task",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "ec289a7d59bc922003f20f5b961d66f22c7c4b1f92b1919396499f6da88f2130"
+      "sourceTaskSha256": "ae80b6aa68475433922a527add34e4fa3367c4a981c117d24588b10bc38b462b"
     },
     {
       "id": "T058",
@@ -365,7 +365,7 @@
       ],
       "doneWhen": "only affected stages rerun and visual changes start zero domain work",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "d5a412d86c7df47c7fd0ce519621a73542b6e60ce1262ac40825bdbe63bb4c6b"
+      "sourceTaskSha256": "14bc0ce359acc491cfe20c6547aac9d7d89075784e128b4b851b25d17fe5eaf7"
     },
     {
       "id": "T059",
@@ -409,7 +409,7 @@
       ],
       "doneWhen": "failed, cancelled or quota-blocked refresh never destroys the prior usable snapshot",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "85ce9318b85dac57dece92101fffb70e8356377ba0d8a831ff3a25779f028524"
+      "sourceTaskSha256": "eea576d9d39626304237310d3d71f067a2136c1298d4acf3a4dc7965644fca7f"
     }
   ],
   "completionGate": {
@@ -419,7 +419,7 @@
     "packageValidationPass": true,
     "doNotStartNextBatch": true
   },
-  "sourceTasksSha256": "297a4297d9ec1e085aff9eb8f37e02fcc71add848798fcae847154ecf7728b54",
+  "sourceTasksSha256": "12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965",
   "localValidation": {
     "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
     "browserRequired": false,

@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "1.1.0",
+  "batchId": "B13",
+  "status": "COMPLETED",
+  "baseline": {
+    "logicalName": "FS_v0.21.14_B12_completed.zip",
+    "sha256": "d5a278507e880c49e10adae9f087eb6b9bb6c05b57d61253b8662afa300c8d9a",
+    "tag": "v0.21.14-B12-completed",
+    "commitSha": "06f3ef365c2ab3437d427468c7266f12a6d7f259",
+    "sidecarMatch": true,
+    "crcValid": true,
+    "singleRoot": true,
+    "safeExtraction": true
+  },
+  "candidate": {
+    "sha": "68d47100ff3a2d520a5ad2769a61bfe7090fa611",
+    "runId": "30654130117",
+    "artifactId": 8802543812,
+    "artifactName": "finscope-github-validation-68d47100ff3a-PASS",
+    "artifactDigest": "sha256:0cdae11c61510c48b0cd735afae690d9f903ba52cea0398350e61882141be648"
+  },
+  "taskResults": [
+    {
+      "taskId": "T054",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T055",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T056",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T057",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T058",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T059",
+      "status": "COMPLETED"
+    }
+  ],
+  "commands": [
+    {
+      "id": "npm-ci",
+      "command": "npm ci",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "typecheck",
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-unit",
+      "command": "npm run test:unit -- tests/unit/gateway/retry-policy.test.ts tests/unit/orchestration/cache-vectors.test.ts tests/unit/orchestration/invalidation-events.test.ts tests/unit/orchestration/novelty.test.ts",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-integration",
+      "command": "npm run test:integration -- tests/integration/orchestration/idempotency.test.ts tests/integration/orchestration/stale-partial.test.ts",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "regression-vitest",
+      "command": "npm run test",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "build",
+      "command": "npm run build",
+      "status": "PASS",
+      "exitCode": 0
+    }
+  ],
+  "specifyTreeSha256Before": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "specifyTreeSha256After": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "sourceTasksSha256Before": "297a4297d9ec1e085aff9eb8f37e02fcc71add848798fcae847154ecf7728b54",
+  "sourceTasksSha256AfterClosure": "12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965",
+  "promotion": {
+    "allowed": true,
+    "postCandidateChangesLimitedToClosureAllowlist": true,
+    "npmRepeatedAfterClosure": false,
+    "nextBatchId": "B14",
+    "convergenceAuthorized": false
+  },
+  "completedPackageLogicalName": "FS_v0.21.15_B13_completed.zip"
+}
