@@ -3,7 +3,8 @@
   export const routeDefinition = { id: 'issuer-evidence', label: 'Issuer evidence', order: 30, requiredCapabilities: ['issuer_identity', 'filings', 'evidence'] } as const satisfies RouteDefinition;
 </script>
 <script lang="ts">
-  import FilingTable, { type FilingRow } from '../components/FilingTable.svelte';
+  import FilingTable from '../components/FilingTable.svelte';
+  interface FilingRow { readonly form:string; readonly accession:string; readonly filed:string; readonly reportDate:string; readonly sourceStatus:'verified'|'partial'|'unavailable' }
   const filings: readonly FilingRow[] = [
     { form: '10-K', accession: '0000320193-25-000079', filed: '2025-10-31', reportDate: '2025-09-27', sourceStatus: 'verified' },
     { form: '10-Q', accession: '0000320193-26-000006', filed: '2026-01-30', reportDate: '2025-12-27', sourceStatus: 'verified' },
