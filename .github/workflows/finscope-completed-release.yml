@@ -39,12 +39,19 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          kind=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).operation.kind")
           pending=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.pending")
           status=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.status")
+          candidate=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).candidate.sha")
+          closure_candidate=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.candidateSha")
           closure=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.commitSha")
+          test "$kind" = RELEASE_REMEDIATION
           test "$pending" = true
           test "$status" = COMPLETED
-          test "$closure" = "09ed5099958fae3e8373db074e174e3c224523c2"
+          test "$candidate" = "$closure_candidate"
+          test "$(printf '%s' "$closure" | grep -Ec '^[0-9a-f]{40}$')" -eq 1
+          git cat-file -e "${closure}^{commit}"
+          git merge-base --is-ancestor "$closure" "$GITHUB_SHA"
           test "$(git rev-list --parents -n 1 "$GITHUB_SHA" | awk '{print NF}')" -ge 3
           while IFS= read -r path; do
             case "$path" in
