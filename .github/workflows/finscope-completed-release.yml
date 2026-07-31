@@ -52,6 +52,8 @@ jobs:
               .github/workflows/finscope-release-qualification.yml|\
               implementation-control/GITHUB_HANDOFF.json|\
               implementation-control/scripts/Run-GitHubValidation.mjs|\
+              implementation-control/scripts/Package-GitHubCompletedRelease.mjs|\
+              implementation-control/scripts/Finalize-GitHubReleaseHandoff.mjs|\
               implementation-control/schemas/github-validation-evidence.schema.json) ;;
               *) echo "Release remediation allowlist violation: $path" >&2; exit 1 ;;
             esac
