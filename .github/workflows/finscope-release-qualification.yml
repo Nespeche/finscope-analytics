@@ -29,12 +29,26 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
+      - name: Classify Release remediation
+        id: mode
+        shell: bash
+        run: |
+          set -euo pipefail
+          kind=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).operation.kind")
+          if test "$kind" = RELEASE_REMEDIATION; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "Release qualification is not applicable to operation kind: $kind"
+          fi
       - name: Configure Node from package authority
+        if: steps.mode.outputs.enabled == 'true'
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version-file: package.json
           cache: npm
       - name: Prepare qualification workspace
+        if: steps.mode.outputs.enabled == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -45,6 +59,7 @@ jobs:
           echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
           echo "QUAL_TAG=finscope-release-qualification-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" >> "$GITHUB_ENV"
       - name: Verify remediation authority and control plane
+        if: steps.mode.outputs.enabled == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -57,13 +72,16 @@ jobs:
           test "$pending" = true
           test "$closure" = COMPLETED
           node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
-      - name: Authenticate GH0 completed baseline
+      - name: Authenticate completed baseline
+        if: steps.mode.outputs.enabled == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-release/qualification-baseline.json
       - name: Install dependencies
+        if: steps.mode.outputs.enabled == 'true'
         run: npm ci
       - name: Run release regressions and build
+        if: steps.mode.outputs.enabled == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -71,10 +89,12 @@ jobs:
           npm run test
           npm run build
       - name: Package completed baseline
+        if: steps.mode.outputs.enabled == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release
       - name: Authenticate explicit closure run and artifact
+        if: steps.mode.outputs.enabled == 'true'
         id: closure
         env:
           GH_TOKEN: ${{ github.token }}
@@ -99,6 +119,7 @@ jobs:
           echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
           echo "artifact_id=$artifact_id" >> "$GITHUB_OUTPUT"
       - name: Create temporary draft Release by ID
+        if: steps.mode.outputs.enabled == 'true'
         id: draft
         env:
           GH_TOKEN: ${{ github.token }}
@@ -114,7 +135,7 @@ jobs:
             -f tag_name="$QUAL_TAG" \
             -f target_commitish="${{ github.event.pull_request.head.sha }}" \
             -f name="FinScope Release qualification" \
-            -f body="Temporary draft used only to qualify B12 Release publishing." \
+            -f body="Temporary draft used only to qualify the completed Release declared by the active handoff." \
             -F draft=true \
             -F prerelease=false)
           release_id=$(printf '%s' "$release_json" | jq -er .id)
@@ -122,8 +143,10 @@ jobs:
           test "$(printf '%s' "$release_json" | jq -r .tag_name)" = "$QUAL_TAG"
           echo "release_id=$release_id" >> "$GITHUB_OUTPUT"
       - name: Generate Release handoff
+        if: steps.mode.outputs.enabled == 'true'
         run: node implementation-control/scripts/Finalize-GitHubReleaseHandoff.mjs .finscope-release "${{ steps.draft.outputs.release_id }}" "${{ steps.closure.outputs.closure_sha }}" "${{ steps.closure.outputs.run_id }}" "${{ steps.closure.outputs.artifact_id }}"
       - name: Upload and reauthenticate temporary assets by Release ID
+        if: steps.mode.outputs.enabled == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -176,7 +199,7 @@ jobs:
           node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
           printf '{"schemaVersion":"1.0.0","result":"PASS","temporaryTag":"%s","releaseId":%s,"commitSha":"%s","checkedAt":"%s"}\n' "$QUAL_TAG" "$release_id" "${{ github.event.pull_request.head.sha }}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > .finscope-release/RELEASE_QUALIFICATION.json
       - name: Remove temporary draft Release by ID
-        if: always()
+        if: always() && steps.mode.outputs.enabled == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_ID: ${{ steps.draft.outputs.release_id }}
@@ -188,7 +211,7 @@ jobs:
           fi
           gh api --method DELETE "repos/${GITHUB_REPOSITORY}/git/refs/tags/${QUAL_TAG}" >/dev/null 2>&1 || true
       - name: Upload qualification evidence
-        if: always()
+        if: always() && steps.mode.outputs.enabled == 'true'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: finscope-release-qualification-${{ github.event.pull_request.head.sha }}
