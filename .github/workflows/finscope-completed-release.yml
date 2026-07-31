@@ -4,7 +4,11 @@ on:
   push:
     branches: [main]
     paths:
+      - .github/workflows/finscope-completed-release.yml
+      - .github/workflows/finscope-release-qualification.yml
       - implementation-control/GITHUB_HANDOFF.json
+      - implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
+      - implementation-control/scripts/Run-GitHubReleaseTransfer.mjs
 
 permissions:
   contents: write
@@ -24,7 +28,7 @@ jobs:
         with:
           node-version-file: package.json
           cache: npm
-      - name: Prepare evidence and package-root alias
+      - name: Prepare Release workspace
         shell: bash
         run: |
           set -euo pipefail
@@ -33,38 +37,39 @@ jobs:
           rm -rf "$root_alias"
           ln -s "$GITHUB_WORKSPACE" "$root_alias"
           echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
-      - name: Verify release gate and remediated tree
+      - name: Verify Release gate, ancestry and remediation allowlist
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          pending=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.pending")
-          status=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.status")
-          closure=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.commitSha")
-          test "$pending" = true
-          test "$status" = COMPLETED
-          test "$closure" = "09ed5099958fae3e8373db074e174e3c224523c2"
+          handoff=implementation-control/GITHUB_HANDOFF.json
+          closure=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).closure.commitSha")
+          candidate=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).candidate.sha")
+          test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.kind")" = RELEASE_REMEDIATION
+          test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.pending")" = true
+          test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).closure.status")" = COMPLETED
+          test "$candidate" = "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).closure.candidateSha")"
+          git cat-file -e "${closure}^{commit}"
+          git merge-base --is-ancestor "$closure" "$GITHUB_SHA"
           test "$(git rev-list --parents -n 1 "$GITHUB_SHA" | awk '{print NF}')" -ge 3
           while IFS= read -r path; do
             case "$path" in
               .github/workflows/finscope-completed-release.yml|\
               .github/workflows/finscope-release-qualification.yml|\
               implementation-control/GITHUB_HANDOFF.json|\
-              implementation-control/scripts/Run-GitHubValidation.mjs|\
-              implementation-control/scripts/Package-GitHubCompletedRelease.mjs|\
-              implementation-control/scripts/Finalize-GitHubReleaseHandoff.mjs|\
-              implementation-control/schemas/github-validation-evidence.schema.json) ;;
+              implementation-control/scripts/Verify-GitHubClosureArtifact.mjs|\
+              implementation-control/scripts/Run-GitHubReleaseTransfer.mjs) ;;
               *) echo "Release remediation allowlist violation: $path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only "$closure" "$GITHUB_SHA")
           node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
-      - name: Install dependencies for schema and regression validation
-        run: npm ci
-      - name: Run full non-product regression and build
+          node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-release/release-baseline.json
+      - name: Execute full Release regressions and build
         shell: bash
         run: |
           set -euo pipefail
+          npm ci
           npm run typecheck
           npm run test
           npm run build
@@ -72,117 +77,16 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release
-      - name: Authenticate explicit closure run and artifact
+      - name: Authenticate closure artifact contents
         id: closure
         env:
           GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          closure=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.commitSha")
-          run_id=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.runId")
-          artifact_id=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.artifactId")
-          artifact_name=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.artifactName")
-          artifact_digest=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.artifactDigest")
-          run_json=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}")
-          test "$(printf '%s' "$run_json" | jq -r .head_sha)" = "$closure"
-          test "$(printf '%s' "$run_json" | jq -r .conclusion)" = success
-          test "$(printf '%s' "$run_json" | jq -r .event)" = pull_request
-          artifact_json=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}")
-          test "$(printf '%s' "$artifact_json" | jq -r .name)" = "$artifact_name"
-          test "$(printf '%s' "$artifact_json" | jq -r .digest)" = "$artifact_digest"
-          test "$(printf '%s' "$artifact_json" | jq -r .expired)" = false
-          test "$(printf '%s' "$artifact_json" | jq -r .workflow_run.head_sha)" = "$closure"
-          echo "closure_sha=$closure" >> "$GITHUB_OUTPUT"
-          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
-          echo "artifact_id=$artifact_id" >> "$GITHUB_OUTPUT"
-      - name: Create authenticated draft Release by ID
+        run: node implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
+      - name: Prepare authenticated draft Release and custom assets
         id: draft
         env:
           GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          tag=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.tag")
-          title=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.title")
-          notes=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.notes")
-          releases=$(gh api "repos/${GITHUB_REPOSITORY}/releases?per_page=100")
-          published_id=$(printf '%s' "$releases" | jq -r --arg tag "$tag" '.[] | select(.draft == false and .tag_name == $tag) | .id' | head -1)
-          if test -n "$published_id"; then
-            echo "A published Release already exists for $tag: $published_id" >&2
-            exit 1
-          fi
-          while IFS= read -r orphan_id; do
-            test -n "$orphan_id" || continue
-            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/releases/${orphan_id}" >/dev/null
-          done < <(printf '%s' "$releases" | jq -r --arg tag "$tag" '.[] | select(.draft == true and .tag_name == $tag) | .id')
-          release_json=$(gh api --method POST "repos/${GITHUB_REPOSITORY}/releases" \
-            -f tag_name="$tag" \
-            -f target_commitish="$GITHUB_SHA" \
-            -f name="$title" \
-            -f body="$notes" \
-            -F draft=true \
-            -F prerelease=false)
-          release_id=$(printf '%s' "$release_json" | jq -er .id)
-          test "$(printf '%s' "$release_json" | jq -r .draft)" = true
-          test "$(printf '%s' "$release_json" | jq -r .tag_name)" = "$tag"
-          echo "tag=$tag" >> "$GITHUB_OUTPUT"
-          echo "release_id=$release_id" >> "$GITHUB_OUTPUT"
-      - name: Generate and validate Release handoff
-        run: node implementation-control/scripts/Finalize-GitHubReleaseHandoff.mjs .finscope-release "${{ steps.draft.outputs.release_id }}" "${{ steps.closure.outputs.closure_sha }}" "${{ steps.closure.outputs.run_id }}" "${{ steps.closure.outputs.artifact_id }}"
-      - name: Upload and authenticate custom assets by Release ID
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          release_id="${{ steps.draft.outputs.release_id }}"
-          tag="${{ steps.draft.outputs.tag }}"
-          zip=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.zipName")
-          sidecar=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.sidecarName")
-          prefix=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.evidencePrefix")
-          prompt=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.promptName")
-          evidence="${prefix}_${GITHUB_RUN_ID}.json"
-          files=(".finscope-release/$zip" ".finscope-release/$sidecar" ".finscope-release/$evidence" ".finscope-release/GITHUB_RELEASE_HANDOFF.json" ".finscope-release/$prompt")
-          release_json=$(gh api "repos/${GITHUB_REPOSITORY}/releases/${release_id}")
-          upload_url=$(printf '%s' "$release_json" | jq -er '.upload_url | split("{")[0]')
-          test "$(printf '%s' "$release_json" | jq -r .draft)" = true
-          test "$(printf '%s' "$release_json" | jq -r .tag_name)" = "$tag"
-          for file in "${files[@]}"; do
-            name=$(basename "$file")
-            encoded_name=$(jq -rn --arg value "$name" '$value|@uri')
-            asset_response=$(curl --fail-with-body --silent --show-error \
-              --request POST \
-              --header "Authorization: Bearer $GH_TOKEN" \
-              --header "Accept: application/vnd.github+json" \
-              --header "X-GitHub-Api-Version: 2022-11-28" \
-              --header "Content-Type: application/octet-stream" \
-              --data-binary @"$file" \
-              "${upload_url}?name=${encoded_name}")
-            test "$(printf '%s' "$asset_response" | jq -r .name)" = "$name"
-            test "$(printf '%s' "$asset_response" | jq -r .state)" = uploaded
-          done
-          assets_json=$(gh api "repos/${GITHUB_REPOSITORY}/releases/${release_id}/assets?per_page=100")
-          test "$(printf '%s' "$assets_json" | jq 'length')" -eq 5
-          test "$(printf '%s' "$assets_json" | jq -r '.[].name' | sort -u | wc -l)" -eq 5
-          download="$RUNNER_TEMP/finscope-final-release-download"
-          rm -rf "$download"
-          mkdir -p "$download"
-          for file in "${files[@]}"; do
-            name=$(basename "$file")
-            asset_id=$(printf '%s' "$assets_json" | jq -er --arg name "$name" '.[] | select(.name == $name) | .id')
-            curl --fail-with-body --silent --show-error --location \
-              --header "Authorization: Bearer $GH_TOKEN" \
-              --header "Accept: application/octet-stream" \
-              --header "X-GitHub-Api-Version: 2022-11-28" \
-              --output "$download/$name" \
-              "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/assets/${asset_id}"
-            cmp "$file" "$download/$name"
-          done
-          (cd "$download" && sha256sum -c "$sidecar")
-          unzip -tqq "$download/$zip"
-          printf '%s\n' "$assets_json" > .finscope-release/release-assets.json
-          printf '{"schemaVersion":"1.0.0","result":"PASS","tag":"%s","releaseId":%s,"commitSha":"%s","checkedAt":"%s"}\n' "$tag" "$release_id" "$GITHUB_SHA" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > .finscope-release/RELEASE_UPLOAD_VERIFICATION.json
+        run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs prepare .finscope-release
       - name: Upload Release workflow evidence before publication
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -194,33 +98,16 @@ jobs:
       - name: Publish authenticated completed Release
         env:
           GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          release_id="${{ steps.draft.outputs.release_id }}"
-          tag="${{ steps.draft.outputs.tag }}"
-          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/releases/${release_id}" -F draft=false -F prerelease=false >/dev/null
-          published=$(gh api "repos/${GITHUB_REPOSITORY}/releases/${release_id}")
-          test "$(printf '%s' "$published" | jq -r .draft)" = false
-          test "$(printf '%s' "$published" | jq -r .prerelease)" = false
-          test "$(printf '%s' "$published" | jq -r .tag_name)" = "$tag"
-          test "$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${tag}" --jq .id)" = "$release_id"
-          test "$(gh api "repos/${GITHUB_REPOSITORY}/commits/${tag}" --jq .sha)" = "$GITHUB_SHA"
+          RELEASE_ID: ${{ steps.draft.outputs.release_id }}
+          RELEASE_TAG: ${{ steps.draft.outputs.tag }}
+        run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs publish .finscope-release
       - name: Remove failed draft Release
         if: failure()
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_ID: ${{ steps.draft.outputs.release_id }}
           RELEASE_TAG: ${{ steps.draft.outputs.tag }}
-        shell: bash
-        run: |
-          set -u
-          if test -n "${RELEASE_ID:-}"; then
-            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}" >/dev/null 2>&1 || true
-          fi
-          if test -n "${RELEASE_TAG:-}"; then
-            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/git/refs/tags/${RELEASE_TAG}" >/dev/null 2>&1 || true
-          fi
+        run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs cleanup .finscope-release
       - name: Upload failed Release evidence
         if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

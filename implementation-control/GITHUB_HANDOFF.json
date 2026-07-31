@@ -12,12 +12,44 @@
   },
   "operation": {
     "id": "B13",
-    "kind": "BATCH",
-    "branch": "agent/b13-refresh-core",
-    "stage": "closure",
+    "kind": "RELEASE_REMEDIATION",
+    "branch": "agent/b13-release-remediation",
+    "stage": "candidate",
     "activeBatchId": "B13",
     "nextBatchId": "B14",
-    "completedTasksThroughOnClosure": "T059"
+    "completedTasksThroughOnClosure": "T059",
+    "qualificationCommands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      },
+      {
+        "id": "package-completed-release",
+        "category": "package",
+        "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
+        "required": true
+      }
+    ]
   },
   "candidate": {
     "sha": "68d47100ff3a2d520a5ad2769a61bfe7090fa611",
@@ -27,8 +59,13 @@
     "artifactDigest": "sha256:0cdae11c61510c48b0cd735afae690d9f903ba52cea0398350e61882141be648"
   },
   "closure": {
-    "status": "PENDING",
-    "candidateSha": "68d47100ff3a2d520a5ad2769a61bfe7090fa611"
+    "status": "COMPLETED",
+    "candidateSha": "68d47100ff3a2d520a5ad2769a61bfe7090fa611",
+    "commitSha": "975bfc689249ff5c50ca67585d4a3806fff45ba8",
+    "runId": "30654337428",
+    "artifactId": 8802609626,
+    "artifactName": "finscope-closure-975bfc689249-PASS",
+    "artifactDigest": "sha256:2daaf1a523cef1d7ec3ba39505fb224e1941bcb6db929086ad5a20cdab3c0051"
   },
   "release": {
     "pending": true,
@@ -42,9 +79,9 @@
     "notes": "B13 cache, novelty, retry, idempotency, invalidation and degradation completed with authenticated GitHub evidence. B14 remains pending."
   },
   "productState": {
-    "activeBatchId": "B13",
-    "nextAuthorizedBatchId": "B13",
-    "completedTasksThrough": "T053",
+    "activeBatchId": "B14",
+    "nextAuthorizedBatchId": "B14",
+    "completedTasksThrough": "T059",
     "convergenceAuthorized": false
   }
 }
