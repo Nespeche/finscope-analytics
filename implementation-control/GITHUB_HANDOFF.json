@@ -14,7 +14,7 @@
     "id": "B14",
     "kind": "BATCH",
     "branch": "agent/b14-refresh-resilience",
-    "stage": "candidate",
+    "stage": "closure",
     "activeBatchId": "B14",
     "nextBatchId": "B15",
     "completedTasksThroughOnClosure": "T062",
@@ -76,15 +76,15 @@
     ]
   },
   "candidate": {
-    "sha": "41f4bd4b2937f584775c7aadbe2a1a289017cf18",
-    "runId": null,
-    "artifactId": null,
-    "artifactName": null,
-    "artifactDigest": null
+    "sha": "4adacd4dd45f60ba143937e68f555315c37bf206",
+    "runId": "30674163121",
+    "artifactId": 8809856237,
+    "artifactName": "finscope-github-validation-4adacd4dd45f-PASS",
+    "artifactDigest": "sha256:8a2a632aef7e7396adc91b63cf56991a49687671531411e76512132cca5cc8f3"
   },
   "closure": {
-    "status": "NOT_REQUESTED",
-    "candidateSha": null,
+    "status": "PENDING",
+    "candidateSha": "4adacd4dd45f60ba143937e68f555315c37bf206",
     "commitSha": null,
     "runId": null,
     "artifactId": null,
