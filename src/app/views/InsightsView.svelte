@@ -3,7 +3,8 @@
   export const routeDefinition = { id: 'insights', label: 'Insights', order: 60, requiredCapabilities: ['insights', 'synthesis', 'evidence'] } as const satisfies RouteDefinition;
 </script>
 <script lang="ts">
-  import InsightRuleResult, { type RuleOutcome } from '../components/InsightRuleResult.svelte';
+  import InsightRuleResult from '../components/InsightRuleResult.svelte';
+  type RuleOutcome='positive'|'neutral'|'negative'|'not_evaluable';
   const fingerprint='analysis-3ef1294ac4e87df48d4eb90561f1d047';
   const rules: readonly {id:string;title:string;outcome:RuleOutcome;explanation:string}[]=[
     {id:'R01',title:'Revenue trend',outcome:'positive',explanation:'Reported revenue increased across comparable periods.'},{id:'R02',title:'Gross margin',outcome:'neutral',explanation:'Margin remains within the historical range.'},{id:'R03',title:'Operating margin',outcome:'positive',explanation:'Operating efficiency improved.'},{id:'R04',title:'Net margin',outcome:'neutral',explanation:'Net margin is stable.'},{id:'R05',title:'Free cash flow',outcome:'positive',explanation:'Free cash flow remains positive.'},{id:'R06',title:'Leverage',outcome:'not_evaluable',explanation:'Debt classification is incomplete.'},{id:'R07',title:'Liquidity',outcome:'neutral',explanation:'Short-term coverage is adequate.'},{id:'R08',title:'Return on assets',outcome:'positive',explanation:'Asset returns improved.'},{id:'R09',title:'Return on equity',outcome:'not_evaluable',explanation:'Non-positive equity prevents meaningful evaluation.'}
