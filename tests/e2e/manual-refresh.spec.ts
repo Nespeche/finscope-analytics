@@ -1,4 +1,46 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+async function logRefreshGeometry(page: Page, label: string): Promise<void> {
+  const geometry = await page.evaluate(() => {
+    const button = document.querySelector<HTMLElement>('[data-testid="refresh-fundamentals-button"]');
+    const control = document.querySelector<HTMLElement>('[data-testid="refresh-fundamentals-control"]');
+    const consent = document.querySelector<HTMLElement>('label.consent');
+    const main = document.querySelector<HTMLElement>('main');
+    if (button === null || control === null || consent === null || main === null) {
+      return { missing: true };
+    }
+    const serializeRect = (element: HTMLElement) => {
+      const rect = element.getBoundingClientRect();
+      return { top: rect.top, right: rect.right, bottom: rect.bottom, left: rect.left, width: rect.width, height: rect.height };
+    };
+    const buttonRect = button.getBoundingClientRect();
+    const centerX = buttonRect.left + buttonRect.width / 2;
+    const centerY = buttonRect.top + buttonRect.height / 2;
+    const hit = document.elementFromPoint(centerX, centerY);
+    return {
+      missing: false,
+      scrollY: window.scrollY,
+      innerHeight: window.innerHeight,
+      documentScrollHeight: document.documentElement.scrollHeight,
+      visualViewport: window.visualViewport === null ? null : {
+        height: window.visualViewport.height,
+        offsetTop: window.visualViewport.offsetTop,
+        pageTop: window.visualViewport.pageTop,
+      },
+      button: serializeRect(button),
+      control: serializeRect(control),
+      consent: serializeRect(consent),
+      main: serializeRect(main),
+      hit: hit === null ? null : {
+        tagName: hit.tagName,
+        className: hit instanceof HTMLElement ? hit.className : '',
+        testId: hit instanceof HTMLElement ? hit.dataset.testid ?? null : null,
+        text: hit.textContent?.trim().slice(0, 120) ?? '',
+      },
+    };
+  });
+  console.log(`B14_LAYOUT_DIAGNOSTIC ${label} ${JSON.stringify(geometry)}`);
+}
 
 const submissionsEnvelope = {
   sourceKind: 'submissions',
@@ -42,6 +84,7 @@ test('manual refresh requires consent and double activation creates one operatio
   const refreshButton = page.getByTestId('refresh-fundamentals-button');
   await expect(refreshButton).toBeVisible();
   await expect(page.getByText(/forces a one-time SEC Submissions check/u)).toBeVisible();
+  await logRefreshGeometry(page, 'before-consent-click');
 
   await refreshButton.click();
   await expect(page.getByTestId('refresh-status')).toContainText('Refresh consent is required');
@@ -92,6 +135,7 @@ test('cancellation preserves the prior pointer and exposes keyboard recovery', a
   await page.goto('/');
   await page.getByRole('checkbox', { name: 'Allow open, resume, and manual SEC refreshes' }).check();
   const refreshButton = page.getByTestId('refresh-fundamentals-button');
+  await logRefreshGeometry(page, 'after-consent-check');
   await refreshButton.click();
   await expect(page.getByTestId('refresh-state')).toHaveText('acquiring');
 
