@@ -1,8 +1,14 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+async function activateRoute(page: Page, name: string): Promise<void> {
+  const button = page.getByRole('button', { name, exact: true });
+  await button.focus();
+  await button.press('Enter');
+}
 
 test('all 24 metrics expose period state reason and evidence without invented values', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Fundamental metrics' }).click();
+  await activateRoute(page, 'Fundamental metrics');
   await expect(page.getByRole('heading', { name: 'Fundamental metrics' })).toBeVisible();
   const cards = page.locator('[data-metric-state]');
   await expect(cards).toHaveCount(24);
