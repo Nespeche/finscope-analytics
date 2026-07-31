@@ -3,7 +3,8 @@
   export const routeDefinition = { id: 'fundamental-metrics', label: 'Fundamental metrics', order: 50, requiredCapabilities: ['fundamental_metrics', 'evidence'] } as const satisfies RouteDefinition;
 </script>
 <script lang="ts">
-  import MetricCard, { type MetricState } from '../components/MetricCard.svelte';
+  import MetricCard from '../components/MetricCard.svelte';
+  type MetricState='available'|'not_available'|'not_applicable';
   interface Metric { label:string; value:string|null; unit:string; period:string; state:MetricState; reason:string }
   const names=['Revenue','Revenue growth','Gross profit','Gross margin','Operating income','Operating margin','Net income','Net margin','EBITDA','EBITDA margin','Operating cash flow','Capital expenditure','Free cash flow','Free cash flow margin','Cash and equivalents','Total debt','Net debt','Total assets','Total liabilities','Shareholders equity','Current ratio','Debt to equity','Return on assets','Return on equity'] as const;
   const metrics: readonly Metric[] = names.map((label,index)=>({ label, value:index===16||index===21?null:String(100+index), unit:index%4===1?'%':'USD million', period:index%3===0?'FY 2025':index%3===1?'Q1 2026':'TTM Q1 2026', state:index===16?'not_available':index===21?'not_applicable':'available', reason:index===16?'Debt classification is incomplete for the selected filing.':index===21?'Ratio is not applicable because equity is non-positive.':'' }));
