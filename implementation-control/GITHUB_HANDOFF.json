@@ -82,7 +82,7 @@
     "evidencePrefix": "FinScope_B13_release_evidence",
     "promptName": "PROMPT_IMPLEMENTACION_B14.md",
     "title": "FinScope B13 completed — metadata remediated",
-    "notes": "B13 remains completed with authenticated candidate and closure evidence. This revision corrects completed-package metadata, synchronizes the active B14 phase mirror, and adds fail-closed package verification. It supersedes v0.21.15-B13-completed as the eligible B13 baseline after independent asset authentication. B14 remains pending and convergenceAuthorized=false."
+    "notes": "B13 remains completed with authenticated candidate and closure evidence. This revision corrects completed-package metadata, synchronizes the active B14 phase mirror, and adds fail-closed package verification. It supersedes v0.21.15-B13-completed as the eligible B13 baseline after independent asset authentication; v0.21.15 remains historical and non-normative. B14 remains pending and convergenceAuthorized=false."
   },
   "productState": {
     "activeBatchId": "B14",
