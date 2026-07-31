@@ -1,0 +1,166 @@
+name: FinScope B12 Post-Publish Verification
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - .github/workflows/finscope-b12-postpublish-verification.yml
+
+permissions:
+  contents: read
+
+jobs:
+  verify-published-release:
+    name: verify-published-release
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout verifier branch
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Configure Node from package authority
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: package.json
+      - name: Verify published B12 Release independently
+        id: verify
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v0.21.14-B12-completed
+          EXPECTED_COMMIT: 06f3ef365c2ab3437d427468c7266f12a6d7f259
+          ZIP_NAME: FS_v0.21.14_B12_completed.zip
+          SIDECAR_NAME: FS_v0.21.14_B12_completed.zip.sha256
+          ROOT_NAME: FinScope_v0.21.4
+          EXPECTED_SPECIFY_SHA256: e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09
+          CANDIDATE_SHA: 06df86a6f68868474f28a090b75a968291b1fe2a
+          CANDIDATE_RUN_ID: "30633065198"
+          CANDIDATE_ARTIFACT_ID: "8794161946"
+          CLOSURE_SHA: 09ed5099958fae3e8373db074e174e3c224523c2
+          CLOSURE_RUN_ID: "30633399806"
+          CLOSURE_ARTIFACT_ID: "8794262864"
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          out=.finscope-postpublish
+          download="$out/download"
+          extract="$out/extract"
+          mkdir -p "$download" "$extract"
+          exec > >(tee "$out/stdout.log") 2> >(tee "$out/stderr.log" >&2)
+          failure_detail=""
+          trap 'failure_detail="line=${LINENO}; command=${BASH_COMMAND}; exit=$?"' ERR
+          trap 'code=$?; trap - EXIT; if (( code != 0 )); then jq -n --arg result FAIL --arg tag "$TAG" --arg commit "$EXPECTED_COMMIT" --arg failure "${failure_detail:-unclassified}" --arg checkedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "{schemaVersion:\"1.0.0\",result:\$result,tag:\$tag,expectedCommitSha:\$commit,primaryFailure:\$failure,checkedAt:\$checkedAt}" > "$out/POSTPUBLISH_VERIFICATION_FAILED.json"; fi; exit "$code"' EXIT
+
+          release_json=$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${TAG}")
+          printf '%s\n' "$release_json" > "$out/release.json"
+          release_id=$(printf '%s' "$release_json" | jq -er .id)
+          test "$(printf '%s' "$release_json" | jq -r .draft)" = false
+          test "$(printf '%s' "$release_json" | jq -r .prerelease)" = false
+          test "$(printf '%s' "$release_json" | jq -r .tag_name)" = "$TAG"
+          test "$(gh api "repos/${GITHUB_REPOSITORY}/commits/${TAG}" --jq .sha)" = "$EXPECTED_COMMIT"
+
+          assets_json=$(gh api "repos/${GITHUB_REPOSITORY}/releases/${release_id}/assets?per_page=100")
+          printf '%s\n' "$assets_json" > "$out/release-assets.json"
+          test "$(printf '%s' "$assets_json" | jq 'length')" -eq 5
+          test "$(printf '%s' "$assets_json" | jq -r '.[].name' | sort -u | wc -l)" -eq 5
+          for required in "$ZIP_NAME" "$SIDECAR_NAME" GITHUB_RELEASE_HANDOFF.json PROMPT_IMPLEMENTACION_B13.md; do
+            test "$(printf '%s' "$assets_json" | jq --arg name "$required" '[.[] | select(.name == $name)] | length')" -eq 1
+          done
+          evidence_name=$(printf '%s' "$assets_json" | jq -er '[.[].name | select(test("^FinScope_B12_release_evidence_[0-9]+\\.json$"))] | if length == 1 then .[0] else error("release evidence asset count") end')
+
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir "$download"
+          test "$(find "$download" -maxdepth 1 -type f | wc -l)" -eq 5
+          for required in "$ZIP_NAME" "$SIDECAR_NAME" GITHUB_RELEASE_HANDOFF.json PROMPT_IMPLEMENTACION_B13.md "$evidence_name"; do
+            test -f "$download/$required"
+          done
+
+          zip_sha=$(sha256sum "$download/$ZIP_NAME" | awk '{print $1}')
+          test "$(cat "$download/$SIDECAR_NAME")" = "$zip_sha  $ZIP_NAME"
+          (cd "$download" && sha256sum -c "$SIDECAR_NAME")
+          unzip -tqq "$download/$ZIP_NAME"
+          unzip -Z1 "$download/$ZIP_NAME" > "$out/archive-paths.txt"
+          node --input-type=module - "$out/archive-paths.txt" "$ROOT_NAME/" <<'NODE'
+          import { readFile } from 'node:fs/promises';
+          import { assertSafeArchivePaths } from './implementation-control/scripts/GitHub-Common.mjs';
+          const [listPath, expectedRoot] = process.argv.slice(2);
+          const names=(await readFile(listPath,'utf8')).split(/\r?\n/u).filter(Boolean);
+          assertSafeArchivePaths(names,expectedRoot);
+          const roots=[...new Set(names.map((name)=>name.split('/')[0]))];
+          if(roots.length!==1||roots[0]!==expectedRoot.replace(/\/$/u,'')) throw new Error(`ROOT_SET_INVALID:${JSON.stringify(roots)}`);
+          const folded=new Map();
+          for(const name of names){const key=name.normalize('NFC').toLocaleLowerCase('en-US');if(folded.has(key)&&folded.get(key)!==name)throw new Error(`CASE_FOLD_COLLISION:${folded.get(key)}:${name}`);folded.set(key,name);}
+          const nested=names.filter((name)=>/\.zip(?:\.sha256)?$/iu.test(name.slice(expectedRoot.length)));
+          if(nested.length) throw new Error(`NESTED_ARCHIVE_PRESENT:${JSON.stringify(nested)}`);
+          NODE
+          if zipinfo -l "$download/$ZIP_NAME" | grep -Eq '^l[-rwx]{9}[[:space:]]'; then
+            echo SYMLINK_PRESENT >&2
+            exit 1
+          fi
+          unzip -q "$download/$ZIP_NAME" -d "$extract"
+          package_root="$extract/$ROOT_NAME"
+          test -d "$package_root"
+          (cd "$package_root" && sha256sum -c FILE_MANIFEST.sha256)
+
+          PACKAGE_ROOT="$package_root" DOWNLOAD_ROOT="$download" EVIDENCE_NAME="$evidence_name" ZIP_SHA="$zip_sha" RELEASE_ID="$release_id" node --input-type=module <<'NODE'
+          import { createHash } from 'node:crypto';
+          import { readFile, stat } from 'node:fs/promises';
+          import { join } from 'node:path';
+          import { canonicalTreeHash } from './implementation-control/scripts/GitHub-Common.mjs';
+          const packageRoot=process.env.PACKAGE_ROOT;
+          const download=process.env.DOWNLOAD_ROOT;
+          const readJson=async(path)=>JSON.parse(await readFile(path,'utf8'));
+          const sha=async(path)=>createHash('sha256').update(await readFile(path)).digest('hex');
+          const metadata=await readJson(join(packageRoot,'PACKAGE_METADATA.json'));
+          if(metadata.logicalZipName!==process.env.ZIP_NAME||metadata.finalSha256Sidecar!==process.env.SIDECAR_NAME||metadata.rootDirectory!==process.env.ROOT_NAME||metadata.result!=='COMPLETED') throw new Error('PACKAGE_METADATA_IDENTITY_INVALID');
+          const state=await readJson(join(packageRoot,'implementation-control/IMPLEMENTATION_STATE.json'));
+          if(state.batchStatus?.B12!=='COMPLETED'||state.activeBatchId!=='B13'||state.nextAuthorizedBatchId!=='B13'||state.phaseGate?.convergenceAuthorized!==false) throw new Error('IMPLEMENTATION_STATE_INVALID');
+          for(const id of ['T049','T050','T051','T052','T053']) if(state.taskStatus?.[id]!=='COMPLETED') throw new Error(`TASK_NOT_COMPLETED:${id}`);
+          const internalHandoff=await readJson(join(packageRoot,'implementation-control/GITHUB_HANDOFF.json'));
+          if(internalHandoff.operation?.stage!=='completed'||internalHandoff.closure?.status!=='COMPLETED'||internalHandoff.release?.pending!==false||internalHandoff.productState?.activeBatchId!=='B13'||internalHandoff.productState?.convergenceAuthorized!==false) throw new Error('INTERNAL_HANDOFF_INVALID');
+          const specify=await canonicalTreeHash(join(packageRoot,'.specify'));
+          if(specify.count!==19||specify.sha256!==process.env.EXPECTED_SPECIFY_SHA256) throw new Error(`SPECIFY_INVALID:${JSON.stringify(specify)}`);
+          const inventory=await readJson(join(packageRoot,'PACKAGE_INVENTORY.json'));
+          if(inventory.itemCount!==inventory.files.length) throw new Error('INVENTORY_COUNT_INVALID');
+          for(const item of inventory.files){const path=join(packageRoot,item.path);const info=await stat(path);if(info.size!==item.sizeBytes)throw new Error(`INVENTORY_SIZE:${item.path}`);if(await sha(path)!==item.sha256)throw new Error(`INVENTORY_HASH:${item.path}`);}
+          const handoff=await readJson(join(download,'GITHUB_RELEASE_HANDOFF.json'));
+          if(handoff.tag!==process.env.TAG||handoff.commitSha!==process.env.EXPECTED_COMMIT||String(handoff.releaseId)!==process.env.RELEASE_ID||handoff.candidateRunId!==process.env.CANDIDATE_RUN_ID||String(handoff.candidateArtifactId)!==process.env.CANDIDATE_ARTIFACT_ID||handoff.closureCommitSha!==process.env.CLOSURE_SHA||handoff.closureRunId!==process.env.CLOSURE_RUN_ID||String(handoff.closureArtifactId)!==process.env.CLOSURE_ARTIFACT_ID||handoff.baselineState?.activeBatchId!=='B13'||handoff.baselineState?.convergenceAuthorized!==false) throw new Error('RELEASE_HANDOFF_INVALID');
+          const expectedEvidence=`FinScope_B12_release_evidence_${handoff.releaseRunId}.json`;
+          if(expectedEvidence!==process.env.EVIDENCE_NAME) throw new Error(`EVIDENCE_NAME_INVALID:${expectedEvidence}`);
+          const evidence=await readJson(join(download,process.env.EVIDENCE_NAME));
+          if(evidence.result!=='PASS'||evidence.commitSha!==process.env.EXPECTED_COMMIT||evidence.completedBatchId!=='B12'||evidence.nextBatchId!=='B13'||evidence.zipSha256!==process.env.ZIP_SHA||evidence.specify?.count!==19||evidence.specify?.sha256!==process.env.EXPECTED_SPECIFY_SHA256||evidence.controlPlaneExitCode!==0) throw new Error('RELEASE_EVIDENCE_INVALID');
+          for(const asset of handoff.assets){const path=join(download,asset.name);const info=await stat(path);if(info.size!==asset.sizeBytes)throw new Error(`HANDOFF_ASSET_SIZE:${asset.name}`);if(await sha(path)!==asset.sha256)throw new Error(`HANDOFF_ASSET_HASH:${asset.name}`);}
+          console.log(JSON.stringify({metadata:'PASS',state:'PASS',inventory:'PASS',specify,handoff:'PASS',evidence:'PASS'}));
+          NODE
+
+          node "$package_root/implementation-control/scripts/Validate-ControlPlaneState.mjs" "$package_root" > "$out/control-plane.stdout.log" 2> "$out/control-plane.stderr.log"
+          jq -e '.status == "PASS" and .checkCount == 1030 and .passCount == 1030 and .failCount == 0' "$out/control-plane.stdout.log" >/dev/null
+          jq -n \
+            --arg result PASS \
+            --arg tag "$TAG" \
+            --arg commitSha "$EXPECTED_COMMIT" \
+            --argjson releaseId "$release_id" \
+            --arg zipName "$ZIP_NAME" \
+            --arg zipSha256 "$zip_sha" \
+            --arg sidecarName "$SIDECAR_NAME" \
+            --arg evidenceName "$evidence_name" \
+            --arg root "$ROOT_NAME" \
+            --arg specifySha256 "$EXPECTED_SPECIFY_SHA256" \
+            --arg checkedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            '{schemaVersion:"1.0.0",result:$result,tag:$tag,commitSha:$commitSha,releaseId:$releaseId,zipName:$zipName,zipSha256:$zipSha256,sidecarName:$sidecarName,evidenceName:$evidenceName,root:$root,specifyCount:19,specifySha256:$specifySha256,controlPlane:{result:"PASS",checkCount:1030,passCount:1030,failCount:0},state:{completedBatchId:"B12",activeBatchId:"B13",convergenceAuthorized:false},checkedAt:$checkedAt}' > "$out/POSTPUBLISH_VERIFICATION_PASS.json"
+          (cd "$out" && find . -type f ! -name EVIDENCE_MANIFEST.sha256 -print0 | sort -z | xargs -0 sha256sum > EVIDENCE_MANIFEST.sha256)
+          echo "result=PASS" >> "$GITHUB_OUTPUT"
+      - name: Upload independent verification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: finscope-b12-postpublish-${{ github.event.pull_request.head.sha }}
+          path: .finscope-postpublish
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 14
+      - name: Enforce verification result
+        if: always()
+        env:
+          RESULT: ${{ steps.verify.outputs.result }}
+        run: test "$RESULT" = PASS
