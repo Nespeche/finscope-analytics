@@ -535,3 +535,12 @@
 - Changed `bootstrap.stage` from `candidate` to `closure`, set closure status `PENDING` and set `release.pending=true` for the authorized post-closure merge.
 - Preserved B12/T049–T053 as `PENDING`, `convergenceAuthorized=false`, all product authorities and all 19 `.specify` files.
 - Did not rerun npm locally because the closure diff is limited to the post-evidence allowlist; GitHub workflows remain the independent remote gate.
+
+
+## 2026-07-31 — B12 candidate PASS y cierre GitHub-first
+
+- baseline autenticado: `FS_v0.21.13_GH0_completed.zip` (`788c563eee82762c6171f03296e33222d7b50ed13f03fa798a409473343be469`);
+- candidate exacto: `06df86a6f68868474f28a090b75a968291b1fe2a`, run `30633065198`, artifact `8794161946`;
+- todos los comandos obligatorios del mirror B12 PASS;
+- T049, T050, T051, T052, T053 y B12 pasan a `COMPLETED`; B13 queda `PENDING`;
+- cierre limitado a la allowlist y `convergenceAuthorized=false`.
