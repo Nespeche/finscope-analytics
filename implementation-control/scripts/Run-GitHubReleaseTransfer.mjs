@@ -103,6 +103,17 @@ async function uploadAsset(releaseId, path) {
 }
 async function stageRelease(qualification) {
   assert(/^[0-9a-f]{40}$/u.test(commitSha ?? ''), 'RELEASE_COMMIT_INVALID');
+  const evidenceName = `${handoff.release.evidencePrefix}_${process.env.GITHUB_RUN_ID}.json`;
+  const packageNames = [
+    handoff.release.zipName,
+    handoff.release.sidecarName,
+    evidenceName,
+    handoff.release.promptName,
+  ];
+  const frozenAssets = new Map();
+  for (const name of packageNames) {
+    frozenAssets.set(name, await readFile(join(output, name)));
+  }
   const tag = qualification
     ? `finscope-release-qualification-${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT}`
     : handoff.release.tag;
@@ -111,22 +122,21 @@ async function stageRelease(qualification) {
     qualification ? 'FinScope Release qualification' : handoff.release.title,
     qualification ? 'Temporary draft used only to qualify the completed Release declared by the active handoff.' : handoff.release.notes,
   );
+  const transferDirectory = join(output, '.release-transfer');
   let successful = false;
   try {
+    await rm(transferDirectory, { recursive: true, force: true });
+    await mkdir(transferDirectory, { recursive: true });
+    for (const [name, bytes] of frozenAssets) {
+      await writeFile(join(transferDirectory, name), bytes);
+    }
     const finalize = await run(
-      `node implementation-control/scripts/Finalize-GitHubReleaseHandoff.mjs "${output}" "${release.id}" "${handoff.closure.commitSha}" "${handoff.closure.runId}" "${handoff.closure.artifactId}"`,
+      `node implementation-control/scripts/Finalize-GitHubReleaseHandoff.mjs "${transferDirectory}" "${release.id}" "${handoff.closure.commitSha}" "${handoff.closure.runId}" "${handoff.closure.artifactId}"`,
       { cwd: root },
     );
     assert(finalize.exitCode === 0, 'RELEASE_HANDOFF_GENERATION_FAILED', finalize.stderr.toString('utf8'));
-    const evidenceName = `${handoff.release.evidencePrefix}_${process.env.GITHUB_RUN_ID}.json`;
-    const names = [
-      handoff.release.zipName,
-      handoff.release.sidecarName,
-      evidenceName,
-      'GITHUB_RELEASE_HANDOFF.json',
-      handoff.release.promptName,
-    ];
-    const paths = names.map((name) => join(output, name));
+    const names = [...packageNames.slice(0, 3), 'GITHUB_RELEASE_HANDOFF.json', packageNames[3]];
+    const paths = names.map((name) => join(transferDirectory, name));
     for (const path of paths) await uploadAsset(release.id, path);
     const assets = await api('GET', `releases/${release.id}/assets?per_page=100`);
     assert(assets.length === 5 && new Set(assets.map((asset) => asset.name)).size === 5, 'RELEASE_ASSET_SET_INVALID', JSON.stringify(assets.map((asset) => asset.name)));
@@ -151,6 +161,7 @@ async function stageRelease(qualification) {
     assert(crc.exitCode === 0, 'RELEASE_ZIP_CRC_FAILED', crc.stderr.toString('utf8'));
     const control = await run(`node implementation-control/scripts/Validate-ControlPlaneState.mjs "${process.env.FINSCOPE_PACKAGE_ROOT}"`, { cwd: root });
     assert(control.exitCode === 0, 'RELEASE_CONTROL_PLANE_FAILED', control.stderr.toString('utf8'));
+    await writeFile(join(output, 'GITHUB_RELEASE_HANDOFF.json'), await readFile(join(transferDirectory, 'GITHUB_RELEASE_HANDOFF.json')));
     const verification = {
       schemaVersion: '1.0.0',
       result: 'PASS',
@@ -168,6 +179,7 @@ async function stageRelease(qualification) {
     console.log(JSON.stringify(verification, null, 2));
     return { release, tag };
   } finally {
+    if (successful) await rm(transferDirectory, { recursive: true, force: true });
     if (qualification || !successful) await deleteRelease(release.id, tag);
   }
 }
