@@ -1,78 +1,39 @@
 {
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "1.1.0",
   "repository": "Nespeche/finscope-analytics",
   "baseline": {
-    "tag": "v0.21.12-B11-completed",
-    "commitSha": "ae756b882ac56dd6eaffa7dbc57933dd9add7ec5",
-    "zipName": "FS_v0.21.12_B11_completed.zip",
-    "sidecarName": "FS_v0.21.12_B11_completed.zip.sha256",
-    "zipSha256": "775a244ffd1e57ebee7a5144230312ca07598205c18f82a66a9669284bd9fc95",
+    "tag": "v0.21.13-GH0-completed",
+    "commitSha": "582862ec1a344f3809946273e1d121ccfb359d7f",
+    "zipName": "FS_v0.21.13_GH0_completed.zip",
+    "sidecarName": "FS_v0.21.13_GH0_completed.zip.sha256",
+    "zipSha256": "788c563eee82762c6171f03296e33222d7b50ed13f03fa798a409473343be469",
     "root": "FinScope_v0.21.4/",
     "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
   },
-  "bootstrap": {
-    "id": "GH0",
-    "branch": "chore/github-bootstrap-gh0",
-    "stage": "closure",
-    "expectedFailure": null,
-    "browserRequired": true,
-    "qualificationCommands": [
-      {
-        "id": "npm-ci",
-        "category": "dependencies",
-        "command": "npm ci",
-        "required": true
-      },
-      {
-        "id": "playwright-chromium",
-        "category": "browser",
-        "command": "npm exec playwright install --with-deps chromium",
-        "required": true
-      },
-      {
-        "id": "typecheck",
-        "category": "static",
-        "command": "npm run typecheck",
-        "required": true
-      },
-      {
-        "id": "regression-vitest",
-        "category": "regression",
-        "command": "npm run test",
-        "required": true
-      },
-      {
-        "id": "regression-browser",
-        "category": "regression",
-        "command": "npm run test:browser",
-        "required": true
-      },
-      {
-        "id": "build",
-        "category": "build",
-        "command": "npm run build",
-        "required": true
-      }
-    ],
-    "expectedFailureTrigger": "commit-subject:[GH0_EXPECT_FAIL_HASH]"
+  "operation": {
+    "id": "B12",
+    "kind": "BATCH",
+    "branch": "agent/implement-b12-fundamental-ui",
+    "stage": "candidate",
+    "activeBatchId": "B12",
+    "nextBatchId": "B13",
+    "completedTasksThroughOnClosure": "T053"
   },
-  "candidate": {
-    "sha": "98fb21313fe85f740d0398fc473b3e74b306a936",
-    "runId": "30572841974",
-    "artifactId": 8771517121,
-    "artifactName": "finscope-github-validation-98fb21313fe8-PASS",
-    "artifactDigest": "sha256:89885a0aed5ec8f7776abad82761d346ce02d9cf1fd3d8e86011e0afb7b5fdb6"
-  },
+  "candidate": null,
   "closure": {
-    "status": "PENDING",
-    "candidateSha": "98fb21313fe85f740d0398fc473b3e74b306a936"
+    "status": "NOT_REQUESTED",
+    "candidateSha": null
   },
   "release": {
-    "pending": true,
-    "tag": "v0.21.13-GH0-completed",
-    "packageRevision": "v0.21.13_GH0_completed",
-    "zipName": "FS_v0.21.13_GH0_completed.zip",
-    "sidecarName": "FS_v0.21.13_GH0_completed.zip.sha256"
+    "pending": false,
+    "tag": "v0.21.14-B12-completed",
+    "packageRevision": "v0.21.14_B12_completed",
+    "zipName": "FS_v0.21.14_B12_completed.zip",
+    "sidecarName": "FS_v0.21.14_B12_completed.zip.sha256",
+    "evidencePrefix": "FinScope_B12_release_evidence",
+    "promptName": "PROMPT_IMPLEMENTACION_B13.md",
+    "title": "FinScope B12 completed",
+    "notes": "B12 fundamental-analysis interface and E2E completed with authenticated GitHub evidence. B13 remains pending."
   },
   "productState": {
     "activeBatchId": "B12",
