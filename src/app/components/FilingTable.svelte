@@ -10,6 +10,7 @@
   export let filings: readonly FilingRow[] = [];
 </script>
 
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div class="table-wrap" tabindex="0" role="region" aria-label="Issuer filing evidence" aria-describedby="filing-table-help">
   <p id="filing-table-help" class="visually-hidden">Scroll horizontally when needed to review all filing evidence columns.</p>
   <table>
