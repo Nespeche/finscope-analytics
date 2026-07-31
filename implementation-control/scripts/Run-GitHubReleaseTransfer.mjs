@@ -1,7 +1,5 @@
 import { createHash } from 'node:crypto';
-import { createWriteStream } from 'node:fs';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
-import { get } from 'node:https';
 import { basename, join, resolve } from 'node:path';
 import { readJson, root, run, setOutput } from './GitHub-Common.mjs';
 
@@ -33,33 +31,15 @@ async function api(method, path, body) {
   return text.length ? JSON.parse(text) : null;
 }
 async function download(url, destination, authorized = true) {
-  await new Promise((resolvePromise, reject) => {
-    const request = (target, withAuthorization) => get(target, {
-      headers: {
-        ...(withAuthorization ? { Authorization: `Bearer ${token}` } : {}),
-        Accept: 'application/octet-stream',
-        'User-Agent': 'FinScope-GitHub',
-        'X-GitHub-Api-Version': '2022-11-28',
-      },
-    }, (response) => {
-      if ([301, 302, 307, 308].includes(response.statusCode) && response.headers.location) {
-        response.resume();
-        request(response.headers.location, false);
-        return;
-      }
-      if (response.statusCode !== 200) {
-        response.resume();
-        reject(new Error(`ASSET_HTTP_${response.statusCode}`));
-        return;
-      }
-      const stream = createWriteStream(destination);
-      response.pipe(stream);
-      stream.on('finish', () => stream.close(resolvePromise));
-      stream.on('error', reject);
-    }).on('error', reject);
-    request(url, authorized);
-  });
+  assert(token, 'GITHUB_TOKEN_MISSING');
+  const authorizationHeader = authorized ? '--header "Authorization: Bearer $GH_TOKEN"' : '';
+  const result = await run(
+    `curl --fail-with-body --silent --show-error --location ${authorizationHeader} --header "Accept: application/octet-stream" --header "X-GitHub-Api-Version: 2022-11-28" --output "${destination}" "${url}"`,
+    { cwd: root, env: { GH_TOKEN: token } },
+  );
+  assert(result.exitCode === 0, 'ASSET_DOWNLOAD_FAILED', result.stderr.toString('utf8'));
 }
+
 async function deleteRelease(releaseId, tag) {
   if (releaseId) await api('DELETE', `releases/${releaseId}`).catch(() => {});
   if (tag) await api('DELETE', `git/refs/tags/${encodeURIComponent(tag)}`).catch(() => {});
