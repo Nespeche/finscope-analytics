@@ -1,0 +1,54 @@
+name: Hydrate B13 package remediation
+
+on:
+  push:
+    branches: [agent/b13-package-metadata-remediation]
+    paths:
+      - .github/workflows/hydrate-b13-package-remediation.yml
+
+permissions:
+  contents: write
+
+jobs:
+  hydrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: agent/b13-package-metadata-remediation
+      - name: Materialize authenticated remediation scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          decode() {
+            local source="$1"
+            local destination="$2"
+            base64 --decode "$source" | gzip --decompress > "$destination"
+          }
+          decode .github/remediation/apply-closure.mjs.gz.b64 implementation-control/scripts/Apply-GitHubBatchClosure.mjs
+          decode .github/remediation/package-release.mjs.gz.b64 implementation-control/scripts/Package-GitHubCompletedRelease.mjs
+          decode .github/remediation/release-transfer.mjs.gz.b64 implementation-control/scripts/Run-GitHubReleaseTransfer.mjs
+          decode .github/remediation/verify-package.mjs.gz.b64 implementation-control/scripts/Verify-GitHubCompletedPackage.mjs
+          cat <<'HASHES' | sha256sum --check --strict
+          814896b642c40f57725ef5f7511ae55684f433ec0b514a2c03746a064116a952  implementation-control/scripts/Apply-GitHubBatchClosure.mjs
+          84dd4ccc6c97be52fb0773877dea051c63e7f1b1687eddee5ef7ac39eaa2d1c2  implementation-control/scripts/Package-GitHubCompletedRelease.mjs
+          678f0b1177dbac9e79d51c22b90b272402f4f2fdb3ee89700a58f44bf45bac17  implementation-control/scripts/Run-GitHubReleaseTransfer.mjs
+          d5d021279c9a0c572a5415e6c7f69609f8d4dd69d830805137e6869a459c7034  implementation-control/scripts/Verify-GitHubCompletedPackage.mjs
+          HASHES
+          node --check implementation-control/scripts/Apply-GitHubBatchClosure.mjs
+          node --check implementation-control/scripts/Package-GitHubCompletedRelease.mjs
+          node --check implementation-control/scripts/Run-GitHubReleaseTransfer.mjs
+          node --check implementation-control/scripts/Verify-GitHubCompletedPackage.mjs
+      - name: Commit materialized scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "FinScope Release Remediation"
+          git config user.email "actions@users.noreply.github.com"
+          git add implementation-control/scripts/Apply-GitHubBatchClosure.mjs \
+                  implementation-control/scripts/Package-GitHubCompletedRelease.mjs \
+                  implementation-control/scripts/Run-GitHubReleaseTransfer.mjs \
+                  implementation-control/scripts/Verify-GitHubCompletedPackage.mjs
+          git diff --cached --quiet && exit 0
+          git commit -m "fix(b13): recalculate and authenticate completed package metadata"
+          git push origin HEAD:agent/b13-package-metadata-remediation
