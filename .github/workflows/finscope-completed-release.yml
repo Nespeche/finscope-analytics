@@ -24,30 +24,45 @@ jobs:
         with:
           node-version-file: package.json
           cache: npm
-      - name: Prepare normative package-root alias
+      - name: Prepare evidence and package-root alias
         shell: bash
         run: |
           set -euo pipefail
+          mkdir -p .finscope-release
           root_alias="$RUNNER_TEMP/FinScope_v0.21.4"
           rm -rf "$root_alias"
           ln -s "$GITHUB_WORKSPACE" "$root_alias"
           echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
-      - name: Verify release gate and closure tree
+      - name: Verify release gate and remediated tree
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
           pending=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.pending")
+          status=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.status")
+          closure=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.commitSha")
           test "$pending" = true
+          test "$status" = COMPLETED
+          test "$closure" = "09ed5099958fae3e8373db074e174e3c224523c2"
           test "$(git rev-list --parents -n 1 "$GITHUB_SHA" | awk '{print NF}')" -ge 3
-          closure=$(git rev-parse "$GITHUB_SHA^2")
-          git diff --quiet "$closure" "$GITHUB_SHA"
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/finscope-completed-release.yml|\
+              .github/workflows/finscope-release-qualification.yml|\
+              implementation-control/GITHUB_HANDOFF.json|\
+              implementation-control/scripts/Run-GitHubValidation.mjs|\
+              implementation-control/schemas/github-validation-evidence.schema.json) ;;
+              *) echo "Release remediation allowlist violation: $path" >&2; exit 1 ;;
+            esac
+          done < <(git diff --name-only "$closure" "$GITHUB_SHA")
           node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
       - name: Install dependencies for schema and regression validation
         run: npm ci
       - name: Run full non-product regression and build
+        shell: bash
         run: |
+          set -euo pipefail
           npm run typecheck
           npm run test
           npm run build
@@ -55,20 +70,27 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release
-      - name: Resolve successful closure run and artifact
+      - name: Authenticate explicit closure run and artifact
         id: closure
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          closure=$(git rev-parse "$GITHUB_SHA^2")
-          run_json=$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/finscope-closure-validation.yml/runs?head_sha=${closure}&status=success&per_page=20")
-          run_id=$(printf '%s' "$run_json" | jq -r '.workflow_runs[0].id // empty')
-          test -n "$run_id"
-          artifact_json=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/artifacts")
-          artifact_id=$(printf '%s' "$artifact_json" | jq -r '.artifacts[] | select(.name|endswith("-PASS")) | .id' | head -1)
-          test -n "$artifact_id"
+          closure=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.commitSha")
+          run_id=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.runId")
+          artifact_id=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.artifactId")
+          artifact_name=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.artifactName")
+          artifact_digest=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).closure.artifactDigest")
+          run_json=$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}")
+          test "$(printf '%s' "$run_json" | jq -r .head_sha)" = "$closure"
+          test "$(printf '%s' "$run_json" | jq -r .conclusion)" = success
+          test "$(printf '%s' "$run_json" | jq -r .event)" = pull_request
+          artifact_json=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}")
+          test "$(printf '%s' "$artifact_json" | jq -r .name)" = "$artifact_name"
+          test "$(printf '%s' "$artifact_json" | jq -r .digest)" = "$artifact_digest"
+          test "$(printf '%s' "$artifact_json" | jq -r .expired)" = false
+          test "$(printf '%s' "$artifact_json" | jq -r .workflow_run.head_sha)" = "$closure"
           echo "closure_sha=$closure" >> "$GITHUB_OUTPUT"
           echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
           echo "artifact_id=$artifact_id" >> "$GITHUB_OUTPUT"
