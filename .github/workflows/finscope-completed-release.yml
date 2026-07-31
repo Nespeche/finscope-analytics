@@ -6,7 +6,11 @@ on:
     paths:
       - .github/workflows/finscope-completed-release.yml
       - .github/workflows/finscope-release-qualification.yml
+      - V0.21_PHASE_STATUS.md
       - implementation-control/GITHUB_HANDOFF.json
+      - implementation-control/scripts/Apply-GitHubBatchClosure.mjs
+      - implementation-control/scripts/Package-GitHubCompletedRelease.mjs
+      - implementation-control/scripts/Verify-GitHubCompletedPackage.mjs
       - implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
       - implementation-control/scripts/Run-GitHubReleaseTransfer.mjs
 
@@ -57,7 +61,11 @@ jobs:
             case "$path" in
               .github/workflows/finscope-completed-release.yml|\
               .github/workflows/finscope-release-qualification.yml|\
+              V0.21_PHASE_STATUS.md|\
               implementation-control/GITHUB_HANDOFF.json|\
+              implementation-control/scripts/Apply-GitHubBatchClosure.mjs|\
+              implementation-control/scripts/Package-GitHubCompletedRelease.mjs|\
+              implementation-control/scripts/Verify-GitHubCompletedPackage.mjs|\
               implementation-control/scripts/Verify-GitHubClosureArtifact.mjs|\
               implementation-control/scripts/Run-GitHubReleaseTransfer.mjs) ;;
               *) echo "Release remediation allowlist violation: $path" >&2; exit 1 ;;
@@ -65,18 +73,17 @@ jobs:
           done < <(git diff --name-only "$closure" "$GITHUB_SHA")
           node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
           node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-release/release-baseline.json
-      - name: Execute full Release regressions and build
+      - name: Execute literal Release qualification commands
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          npm ci
-          npm run typecheck
-          npm run test
-          npm run build
-      - name: Package completed baseline
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release
+          while IFS= read -r encoded; do
+            command=$(printf '%s' "$encoded" | base64 --decode)
+            printf 'Executing literal qualification command: %s\n' "$command"
+            bash -lc "$command"
+          done < <(node -e "const h=require('./implementation-control/GITHUB_HANDOFF.json'); for (const item of h.operation.qualificationCommands.filter((entry)=>entry.required)) console.log(Buffer.from(item.command).toString('base64'))")
       - name: Authenticate closure artifact contents
         id: closure
         env:
