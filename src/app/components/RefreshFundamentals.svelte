@@ -50,7 +50,7 @@
 </script>
 
 <section class="refresh-control" aria-labelledby="refresh-fundamentals-heading" data-testid="refresh-fundamentals-control">
-  <div>
+  <div class="intro">
     <p class="eyebrow">Foreground refresh</p>
     <h2 id="refresh-fundamentals-heading">Update fundamentals</h2>
     <p id="refresh-force-disclosure">
@@ -110,32 +110,40 @@
     {runtimeSnapshot.statusMessage}
   </p>
 
-  <dl class="runtime-evidence" aria-label="Refresh integrity evidence">
-    <div>
-      <dt>Pipeline state</dt>
-      <dd data-testid="refresh-state">{runtimeSnapshot.state}</dd>
-    </div>
-    <div>
-      <dt>Active snapshot</dt>
-      <dd data-testid="active-snapshot-id">{runtimeSnapshot.activeSnapshotId}</dd>
-    </div>
-    <div>
-      <dt>Pointer generation</dt>
-      <dd data-testid="active-pointer-generation">{runtimeSnapshot.activePointerGeneration}</dd>
-    </div>
-    <div>
-      <dt>Network calls in this session</dt>
-      <dd data-testid="refresh-network-call-count">{runtimeSnapshot.networkCallCount}</dd>
-    </div>
-  </dl>
+  <details class="runtime-evidence">
+    <summary>Refresh integrity details</summary>
+    <dl aria-label="Refresh integrity evidence">
+      <div>
+        <dt>Pipeline state</dt>
+        <dd data-testid="refresh-state">{runtimeSnapshot.state}</dd>
+      </div>
+      <div>
+        <dt>Active snapshot</dt>
+        <dd data-testid="active-snapshot-id">{runtimeSnapshot.activeSnapshotId}</dd>
+      </div>
+      <div>
+        <dt>Pointer generation</dt>
+        <dd data-testid="active-pointer-generation">{runtimeSnapshot.activePointerGeneration}</dd>
+      </div>
+      <div>
+        <dt>Network calls in this session</dt>
+        <dd data-testid="refresh-network-call-count">{runtimeSnapshot.networkCallCount}</dd>
+      </div>
+    </dl>
+  </details>
 </section>
 
 <style>
   .refresh-control {
     border-block: 1px solid currentColor;
     display: grid;
-    gap: 0.75rem;
-    padding: 1rem;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .intro {
+    display: grid;
+    gap: 0.25rem;
   }
 
   h2,
@@ -160,7 +168,7 @@
   .recovery {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 
   button {
@@ -172,16 +180,23 @@
     padding-inline-start: 0.75rem;
   }
 
-  .runtime-evidence {
-    display: grid;
-    gap: 0.35rem;
-    margin: 0;
+  .runtime-evidence summary {
+    cursor: pointer;
+    font-weight: 700;
   }
 
-  .runtime-evidence div {
-    display: grid;
-    grid-template-columns: minmax(10rem, 0.5fr) 1fr;
-    gap: 0.75rem;
+  .runtime-evidence dl {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+    margin-block: 0.5rem 0;
+  }
+
+  .runtime-evidence dl div {
+    display: flex;
+    flex: 1 1 12rem;
+    gap: 0.35rem;
+    min-inline-size: 0;
   }
 
   dt {
