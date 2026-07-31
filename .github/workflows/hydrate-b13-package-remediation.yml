@@ -32,7 +32,7 @@ jobs:
           decode .github/remediation/apply-closure.mjs.gz.b64 implementation-control/scripts/Apply-GitHubBatchClosure.mjs
           decode .github/remediation/package-release.mjs.gz.b64 implementation-control/scripts/Package-GitHubCompletedRelease.mjs
           decode .github/remediation/release-transfer.mjs.gz.b64 implementation-control/scripts/Run-GitHubReleaseTransfer.mjs
-          decode .github/remediation/verify-package.mjs.gz.b64 implementation-control/scripts/Verify-GitHubCompletedPackage.mjs
+          cat .github/remediation/verify-package.part1.b64 .github/remediation/verify-package.part2.b64 | base64 --decode | gzip --decompress > implementation-control/scripts/Verify-GitHubCompletedPackage.mjs
           cat <<'HASHES' | sha256sum --check --strict
           814896b642c40f57725ef5f7511ae55684f433ec0b514a2c03746a064116a952  implementation-control/scripts/Apply-GitHubBatchClosure.mjs
           84dd4ccc6c97be52fb0773877dea051c63e7f1b1687eddee5ef7ac39eaa2d1c2  implementation-control/scripts/Package-GitHubCompletedRelease.mjs
