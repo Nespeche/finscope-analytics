@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.1.0",
+  "schemaVersion": "1.2.0",
   "repository": "Nespeche/finscope-analytics",
   "baseline": {
     "tag": "v0.21.13-GH0-completed",
@@ -12,12 +12,44 @@
   },
   "operation": {
     "id": "B12",
-    "kind": "BATCH",
-    "branch": "agent/implement-b12-fundamental-ui",
-    "stage": "closure",
+    "kind": "RELEASE_REMEDIATION",
+    "branch": "agent/b12-release-remediation",
+    "stage": "candidate",
     "activeBatchId": "B12",
     "nextBatchId": "B13",
-    "completedTasksThroughOnClosure": "T053"
+    "completedTasksThroughOnClosure": "T053",
+    "qualificationCommands": [
+      {
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      },
+      {
+        "id": "package-completed-release",
+        "category": "package",
+        "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
+        "required": true
+      }
+    ]
   },
   "candidate": {
     "sha": "06df86a6f68868474f28a090b75a968291b1fe2a",
@@ -27,8 +59,13 @@
     "artifactDigest": "sha256:39021df347a9d5c355ab1df3e8f99e695d851ff52b5757442d415d1daaf973b2"
   },
   "closure": {
-    "status": "PENDING",
-    "candidateSha": "06df86a6f68868474f28a090b75a968291b1fe2a"
+    "status": "COMPLETED",
+    "candidateSha": "06df86a6f68868474f28a090b75a968291b1fe2a",
+    "commitSha": "09ed5099958fae3e8373db074e174e3c224523c2",
+    "runId": "30633399806",
+    "artifactId": 8794262864,
+    "artifactName": "finscope-closure-09ed5099958f-PASS",
+    "artifactDigest": "sha256:97df3dc4596c94ec59412950a3107cb064aea1c2605a8b1be5d13048295b83f2"
   },
   "release": {
     "pending": true,
