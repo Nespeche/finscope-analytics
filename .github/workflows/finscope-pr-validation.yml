@@ -69,11 +69,16 @@ jobs:
             .github/workflows/b14-diagnostic-hydrate.yml
           rmdir .finscope-transport 2>/dev/null || true
 
-      - name: Validate control plane and immutable specification
+      - name: Validate active control plane
         shell: bash
         run: |
           set -euo pipefail
           node implementation-control/scripts/Validate-ControlPlaneState.mjs .
+
+      - name: Verify immutable specification tree
+        shell: bash
+        run: |
+          set -euo pipefail
           test -z "$(git diff --name-only bcb8034e37e0d109c121fe6321a8c60bbf6877c6 -- .specify)"
 
       - name: Commit exact six-file candidate tree
