@@ -14,18 +14,24 @@
     "id": "B13",
     "kind": "BATCH",
     "branch": "agent/b13-refresh-core",
-    "stage": "candidate",
+    "stage": "closure",
     "activeBatchId": "B13",
     "nextBatchId": "B14",
     "completedTasksThroughOnClosure": "T059"
   },
-  "candidate": null,
+  "candidate": {
+    "sha": "68d47100ff3a2d520a5ad2769a61bfe7090fa611",
+    "runId": "30654130117",
+    "artifactId": 8802543812,
+    "artifactName": "finscope-github-validation-68d47100ff3a-PASS",
+    "artifactDigest": "sha256:0cdae11c61510c48b0cd735afae690d9f903ba52cea0398350e61882141be648"
+  },
   "closure": {
-    "status": "NOT_REQUESTED",
-    "candidateSha": null
+    "status": "PENDING",
+    "candidateSha": "68d47100ff3a2d520a5ad2769a61bfe7090fa611"
   },
   "release": {
-    "pending": false,
+    "pending": true,
     "tag": "v0.21.15-B13-completed",
     "packageRevision": "v0.21.15_B13_completed",
     "zipName": "FS_v0.21.15_B13_completed.zip",
