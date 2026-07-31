@@ -5,7 +5,7 @@
   "ordinal": 14,
   "title": "Apertura, reanudación y refresh resiliente",
   "domain": "refresh-ui-e2e",
-  "status": "PENDING",
+  "status": "COMPLETED",
   "taskCount": 3,
   "executionOrder": [
     "T060",
@@ -158,7 +158,7 @@
       ],
       "doneWhen": "the plugin installs once, opening or resuming with `refreshConsent=false` performs zero calls, consented flows preserve one active operation, and a closed app performs no work",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "92169a44e6716a8f0153eb75cc44c80ce5ceda82972c677e575618916a69ce7f"
+      "sourceTaskSha256": "b6aada198488b54f1e18527e68ced15b5ab9c90040bb3599d2faaf1dee5ecf5a"
     },
     {
       "id": "T061",
@@ -205,7 +205,7 @@
       ],
       "doneWhen": "the control is mounted through composition and never bypasses consent, fair access, retry, locks, cancellation, quota guards or the previous snapshot",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "2268c0d58b73aeb353aa264c6070dac60c52453ffc1811cbaa6b7b019a27ca95"
+      "sourceTaskSha256": "9f72d76d94d33187a93a1a38d771df547d4f5456e5d26090d3130d2daca9e510"
     },
     {
       "id": "T062",
@@ -262,7 +262,7 @@
       ],
       "doneWhen": "no-consent open/resume makes zero calls, all recovery paths preserve exact capabilities and pointers, and no scenario assumes work while closed",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "b1d959c1ed9de3bcb3d07fdc9999ba352e5976126b463d07b17aad6c5b07f98c"
+      "sourceTaskSha256": "fbfa36aa0e138d57908f6138d9549c0a2336a0aa5a4103d7fc7d0c0a9d2804d5"
     }
   ],
   "completionGate": {
@@ -272,7 +272,7 @@
     "packageValidationPass": true,
     "doNotStartNextBatch": true
   },
-  "sourceTasksSha256": "12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965",
+  "sourceTasksSha256": "934d2e077125e92fe619949c929d7d0940185c13110c1db30d3c14ead2b86277",
   "localValidation": {
     "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
     "browserRequired": true,

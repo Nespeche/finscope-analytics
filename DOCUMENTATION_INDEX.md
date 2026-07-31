@@ -1,4 +1,4 @@
-# DOCUMENTATION INDEX — FinScope Analytics B13 completed
+# DOCUMENTATION INDEX — FinScope Analytics B14 completed
 
 ## Entrada obligatoria
 
@@ -9,17 +9,17 @@
 5. `implementation-control/IMPLEMENTATION_STATE.json`;
 6. `implementation-control/TASK_SOURCE_LOCK.json`;
 7. `implementation-control/IMPLEMENTATION_BATCH_MAP.json`;
-8. `implementation-control/batches/B14.json`;
+8. `implementation-control/batches/B15.json`;
 9. `implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md`;
 10. `implementation-control/GITHUB_HANDOFF.json`;
-11. `implementation-control/reports/B13_EVIDENCE_VERIFICATION_AND_CLOSURE.md`.
+11. `implementation-control/reports/B14_EVIDENCE_VERIFICATION_AND_CLOSURE.md`.
 
 ## Gate y estado activo
 
 `tasksAuthorized=true`, `analysisAuthorized=true`, `implementationAuthorized=true`, `convergenceAuthorized=false`.
 
-B01–B13 y T001–T059 están `COMPLETED`. B14 está `PENDING` y es el único lote activo/autorizado: `activeBatchId=B14`, `nextAuthorizedBatchId=B14`.
+B01–B14 y T001–T062 están `COMPLETED`. B15 está `PENDING` y es el único lote activo/autorizado: `activeBatchId=B15`, `nextAuthorizedBatchId=B15`.
 
 ## Integridad
 
-Paquete lógico `FS_v0.21.15_B13_completed.zip`; raíz `FinScope_v0.21.4/`; `.specify` byte-inmutable.
+Paquete lógico `FS_v0.21.17_B14_completed.zip`; raíz `FinScope_v0.21.4/`; `.specify` byte-inmutable.

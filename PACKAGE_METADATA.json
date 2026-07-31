@@ -1,37 +1,37 @@
 {
   "project": "FinScope Analytics",
-  "packageId": "FinScope-Analytics-v0.21.15-B13-completed",
-  "packageVersion": "v0.21.15_B13_completed",
-  "packageRevision": "v0.21.15_B13_completed",
+  "packageId": "FinScope-Analytics-v0.21.17-B14-completed",
+  "packageVersion": "v0.21.17_B14_completed",
+  "packageRevision": "v0.21.17_B14_completed",
   "generatedOn": "2026-07-31",
-  "phase": "implementation_B13_completed",
+  "phase": "implementation_B14_completed",
   "result": "COMPLETED",
-  "implementationReadiness": "B13_COMPLETED_B14_AUTHORIZED_PENDING",
+  "implementationReadiness": "B14_COMPLETED_B15_AUTHORIZED_PENDING",
   "normativeBaseline": "v0.21",
-  "logicalZipName": "FS_v0.21.15_B13_completed.zip",
-  "finalSha256Sidecar": "FS_v0.21.15_B13_completed.zip.sha256",
+  "logicalZipName": "FS_v0.21.17_B14_completed.zip",
+  "finalSha256Sidecar": "FS_v0.21.17_B14_completed.zip.sha256",
   "rootDirectory": "FinScope_v0.21.4",
   "sourceBaseline": {
-    "logicalName": "FS_v0.21.14_B12_completed.zip",
-    "sha256": "d5a278507e880c49e10adae9f087eb6b9bb6c05b57d61253b8662afa300c8d9a",
+    "logicalName": "FS_v0.21.16_B13_completed.zip",
+    "sha256": "815e2dcdc5c2f149b3b7cc6dc7083ea3ef79642b82599534d8ee3816b94c0796",
     "sidecarMatch": true,
     "crcValid": true,
     "singleRoot": true,
     "safeExtraction": true,
-    "role": "ACTIVE_COMPLETED_BASELINE_USED_FOR_B13"
+    "role": "ACTIVE_COMPLETED_BASELINE_USED_FOR_B14"
   },
   "inputCandidate": {
-    "logicalName": "Git commit 68d47100ff3a2d520a5ad2769a61bfe7090fa611",
+    "logicalName": "Git commit 4adacd4dd45f60ba143937e68f555315c37bf206",
     "sha256": null,
     "sidecarMatch": null,
-    "disposition": "GITHUB_B13_CANDIDATE_PASS_AUTHENTICATED_CLOSURE_REQUESTED"
+    "disposition": "GITHUB_B14_CANDIDATE_PASS_AUTHENTICATED_CLOSURE_REQUESTED"
   },
   "inputEvidence": {
     "status": "PASS_AUTHENTICATED",
-    "logicalName": "finscope-github-validation-68d47100ff3a-PASS",
-    "sha256": "0cdae11c61510c48b0cd735afae690d9f903ba52cea0398350e61882141be648",
+    "logicalName": "finscope-github-validation-4adacd4dd45f-PASS",
+    "sha256": "8a2a632aef7e7396adc91b63cf56991a49687671531411e76512132cca5cc8f3",
     "sidecarMatch": null,
-    "effect": "AUTHORIZES_B13_CLOSURE_ONLY"
+    "effect": "AUTHORIZES_B14_CLOSURE_ONLY"
   },
   "normativeSourceBaseline": {
     "logicalName": "FinScope_Analytics_SpecDev_ChatGPT_v0.21_post_analysis_remediated.zip",
@@ -58,13 +58,14 @@
       "B10",
       "B11",
       "B12",
-      "B13"
+      "B13",
+      "B14"
     ],
-    "activeBatchId": "B14",
-    "nextAuthorizedBatchId": "B14",
-    "completedTasksThrough": "T059",
+    "activeBatchId": "B15",
+    "nextAuthorizedBatchId": "B15",
+    "completedTasksThrough": "T062",
     "nextBatchStatus": {
-      "B14": "PENDING"
+      "B15": "PENDING"
     }
   },
   "authorityModel": {
@@ -79,7 +80,7 @@
     "taskCount": 109,
     "batchCount": 25,
     "maximumTasksPerBatch": 6,
-    "tasksSha256": "12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965",
+    "tasksSha256": "934d2e077125e92fe619949c929d7d0940185c13110c1db30d3c14ead2b86277",
     "dagCycles": 0
   },
   "validationModel": {
@@ -88,8 +89,8 @@
     "protocol": "implementation-control/GITHUB_VALIDATION_PROTOCOL.md",
     "instructions": "implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md",
     "batchScript": "implementation-control/scripts/Run-GitHubValidation.mjs",
-    "externalLauncher": "Run-FinScope-BatchValidation_B11_r3_v1.ps1",
-    "externalLauncherSha256": "b5b89a8e734c67e0a92dd77ad90226454a1eecbede9236553ba8e3ed956090c6",
+    "externalLauncher": null,
+    "externalLauncherSha256": null,
     "stateValidator": "implementation-control/scripts/Validate-ControlPlaneState.mjs",
     "evidenceSchema": "implementation-control/schemas/github-validation-evidence.schema.json",
     "automaticCleanExtraction": true,
@@ -98,10 +99,10 @@
     "promotionRequiresAllRequiredCommandsPass": true,
     "externalEvidenceRequired": true,
     "externalEvidenceVerified": true,
-    "browserRequired": false,
-    "requiredCommandCount": 6,
-    "recommendedWindowsInputRoot": "C:\\FS\\B11r3v1\\input",
-    "recommendedWindowsWorkRoot": "C:\\FS\\B11r3v1\\work",
+    "browserRequired": true,
+    "requiredCommandCount": 7,
+    "recommendedWindowsInputRoot": "C:\\FS\\B14-release\\input",
+    "recommendedWindowsWorkRoot": "C:\\FS\\B14-release\\work",
     "shortArchiveNamingRequired": true,
     "maximumRecommendedAbsolutePathLength": 220,
     "evidenceSchemaVersion": "1.1.0",
@@ -219,10 +220,10 @@
     "executedInExternalWindowsEnvironment": false,
     "executedInGitHubActions": true,
     "status": "PASS_AUTHENTICATED",
-    "sourceCandidate": "68d47100ff3a2d520a5ad2769a61bfe7090fa611",
-    "sourceEvidence": "finscope-github-validation-68d47100ff3a-PASS",
-    "requiredCommands": 6,
-    "pass": 6,
+    "sourceCandidate": "4adacd4dd45f60ba143937e68f555315c37bf206",
+    "sourceEvidence": "finscope-github-validation-4adacd4dd45f-PASS",
+    "requiredCommands": 7,
+    "pass": 7,
     "fail": 0,
     "notRun": 0,
     "primaryFailure": null,
@@ -271,30 +272,26 @@
   "extractionValidated": false,
   "finalZipSha256RecordedExternally": false,
   "activeReports": [
-    "implementation-control/reports/B11_EVIDENCE_VERIFICATION_AND_CLOSURE.md",
-    "implementation-control/reports/B11_EVIDENCE_VERIFICATION_AND_CLOSURE.json",
-    "implementation-control/reports/B11_IMPLEMENTATION_REPORT.md",
-    "implementation-control/reports/B11_IMPLEMENTATION_REPORT.json",
-    "implementation-control/reports/B11_R2_VALIDATION_FAILURE_AND_R3_REMEDIATION.md",
-    "implementation-control/reports/B11_R2_VALIDATION_FAILURE_AND_R3_REMEDIATION.json",
+    "implementation-control/reports/B14_EVIDENCE_VERIFICATION_AND_CLOSURE.json",
+    "implementation-control/reports/B14_EVIDENCE_VERIFICATION_AND_CLOSURE.md",
+    "implementation-control/reports/GH0_IMPLEMENTATION_REPORT.json",
     "implementation-control/reports/GH0_IMPLEMENTATION_REPORT.md",
-    "implementation-control/reports/GH0_IMPLEMENTATION_REPORT.json"
+    "implementation-control/reports/GH0_PREFLIGHT_RELEASE_VERIFICATION.json",
+    "implementation-control/reports/GH0_PREFLIGHT_RELEASE_VERIFICATION.md",
+    "implementation-control/reports/GH0_SCOPE_GUARD.md"
   ],
   "nextPhase": "Complete GH0 GitHub Actions qualification and Release; B12 remains pending.",
-  "sourceTasksSha256": "1d5c136cee6257991d9e6c1fa2a400c009147831b9df3684d413909ba46aad70",
+  "sourceTasksSha256": "934d2e077125e92fe619949c929d7d0940185c13110c1db30d3c14ead2b86277",
   "implementedPendingValidationFindings": [],
   "windowsExtractionPolicy": {
-    "candidateName": "FS_B11_r3.zip",
-    "candidateSidecarName": "FS_B11_r3.zip.sha256",
-    "recommendedInputRoot": "C:\\FS\\B11r3v1\\input",
-    "recommendedWorkRoot": "C:\\FS\\B11r3v1\\work",
-    "runnerName": "Run-FinScope-BatchValidation_B11_r3_v1.ps1",
-    "runnerSha256": "b5b89a8e734c67e0a92dd77ad90226454a1eecbede9236553ba8e3ed956090c6",
-    "singleRunnerFlow": true,
-    "selfTestCommandMode": "same runner with -SelfTestOnly",
-    "preflightCommandMode": "same runner with -PreflightOnly",
-    "futureRunnerRequired": true,
-    "runnerNamingRule": "Run-FinScope-BatchValidation_B11_rN_vM.ps1",
+    "mode": "GITHUB_FIRST_COMPLETED_RELEASE",
+    "releaseTag": "v0.21.17-B14-completed",
+    "zipName": "FS_v0.21.17_B14_completed.zip",
+    "sidecarName": "FS_v0.21.17_B14_completed.zip.sha256",
+    "recommendedInputRoot": "C:\\FS\\B14-release\\input",
+    "recommendedWorkRoot": "C:\\FS\\B14-release\\work",
+    "localFallbackProtocol": "implementation-control/LOCAL_VALIDATION_PROTOCOL.md",
+    "sourceCodeAssetsForbidden": true,
     "explorerExtractionNotRequired": true,
     "transportAliasResolution": "SIDE_CAR_LOGICAL_NAME_PLUS_REAL_SHA256"
   },
@@ -648,6 +645,7 @@
   },
   "changes": [
     "Authenticated exact GitHub B12 candidate and promoted T049/T050/T051/T052/T053 plus B12 through the post-evidence closure allowlist; B13 remains pending and convergence remains unauthorized.",
-    "Authenticated exact GitHub B13 candidate and promoted T054/T055/T056/T057/T058/T059 plus B13 through the post-evidence closure allowlist; B14 remains pending and convergence remains unauthorized."
+    "Authenticated exact GitHub B13 candidate and promoted T054/T055/T056/T057/T058/T059 plus B13 through the post-evidence closure allowlist; B14 remains pending and convergence remains unauthorized.",
+    "Authenticated exact GitHub B14 candidate and promoted T060/T061/T062 plus B14 through the post-evidence closure allowlist; B15 remains pending and convergence remains unauthorized."
   ]
 }

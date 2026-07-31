@@ -553,3 +553,12 @@
 - todos los comandos obligatorios del mirror B13 PASS;
 - T054, T055, T056, T057, T058, T059 y B13 pasan a `COMPLETED`; B14 queda `PENDING`;
 - cierre limitado a la allowlist y `convergenceAuthorized=false`.
+
+
+## 2026-07-31 — B14 candidate PASS y cierre GitHub-first
+
+- baseline autenticado: `FS_v0.21.16_B13_completed.zip` (`815e2dcdc5c2f149b3b7cc6dc7083ea3ef79642b82599534d8ee3816b94c0796`);
+- candidate exacto: `4adacd4dd45f60ba143937e68f555315c37bf206`, run `30674163121`, artifact `8809856237`;
+- todos los comandos obligatorios del mirror B14 PASS;
+- T060, T061, T062 y B14 pasan a `COMPLETED`; B15 queda `PENDING`;
+- cierre limitado a la allowlist y `convergenceAuthorized=false`.

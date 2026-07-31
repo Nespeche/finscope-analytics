@@ -1,7 +1,7 @@
-# START HERE — FinScope Analytics B13 completed
+# START HERE — FinScope Analytics B14 completed
 
-Este árbol corresponde a `v0.21.15_B13_completed`. Su nombre lógico es `FS_v0.21.15_B13_completed.zip` y reemplaza al baseline anterior únicamente cuando Release, ZIP y sidecar sean publicados y autenticados.
+Este árbol corresponde a `v0.21.17_B14_completed`. Su nombre lógico es `FS_v0.21.17_B14_completed.zip` y reemplaza al baseline anterior únicamente cuando Release, ZIP y sidecar sean publicados y autenticados.
 
-B01–B13 y T001–T059 están `COMPLETED`. B14 permanece `PENDING` como único lote activo/autorizado: `activeBatchId=B14`, `nextAuthorizedBatchId=B14`. `convergenceAuthorized=false`.
+B01–B14 y T001–T062 están `COMPLETED`. B15 permanece `PENDING` como único lote activo/autorizado: `activeBatchId=B15`, `nextAuthorizedBatchId=B15`. `convergenceAuthorized=false`.
 
-La próxima conversación puede implementar exclusivamente B14 desde una rama nueva basada en `main`. No iniciar lotes posteriores ni convergencia.
+La próxima conversación puede implementar exclusivamente B15 desde una rama nueva basada en `main`. No iniciar lotes posteriores ni convergencia.
