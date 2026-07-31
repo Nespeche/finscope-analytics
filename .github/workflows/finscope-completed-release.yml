@@ -80,12 +80,14 @@ jobs:
         run: |
           set -euo pipefail
           tag=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.tag")
+          title=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.title")
+          notes=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.notes")
           if gh release view "$tag" >/dev/null 2>&1; then
             draft=$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${tag}" --jq .draft)
             test "$draft" = true
             gh release delete "$tag" --yes --cleanup-tag
           fi
-          gh release create "$tag" --draft --target "$GITHUB_SHA" --title "FinScope GH0 completed" --notes "GitHub-first operational bootstrap completed. B12 remains pending."
+          gh release create "$tag" --draft --target "$GITHUB_SHA" --title "$title" --notes "$notes"
           release_id=$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${tag}" --jq .id)
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
           echo "release_id=$release_id" >> "$GITHUB_OUTPUT"
@@ -98,14 +100,18 @@ jobs:
         run: |
           set -euo pipefail
           tag="${{ steps.draft.outputs.tag }}"
-          gh release upload "$tag" .finscope-release/FS_v0.21.13_GH0_completed.zip .finscope-release/FS_v0.21.13_GH0_completed.zip.sha256 .finscope-release/FinScope_GH0_release_evidence_${GITHUB_RUN_ID}.json .finscope-release/GITHUB_RELEASE_HANDOFF.json .finscope-release/PROMPT_IMPLEMENTACION_B12.md --clobber
+          zip=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.zipName")
+          sidecar=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.sidecarName")
+          prefix=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.evidencePrefix")
+          prompt=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.promptName")
+          gh release upload "$tag" ".finscope-release/$zip" ".finscope-release/$sidecar" ".finscope-release/${prefix}_${GITHUB_RUN_ID}.json" .finscope-release/GITHUB_RELEASE_HANDOFF.json ".finscope-release/$prompt" --clobber
           gh api --method PATCH "repos/${GITHUB_REPOSITORY}/releases/${{ steps.draft.outputs.release_id }}" -F draft=false >/dev/null
       - name: Upload Release workflow evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: finscope-gh0-completed-release-${{ github.sha }}
+          name: finscope-completed-release-${{ github.sha }}
           path: .finscope-release
           if-no-files-found: error
           include-hidden-files: true
-          retention-days: 90
+          retention-days: 14
