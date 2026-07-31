@@ -139,6 +139,15 @@ async function stageRelease(qualification) {
     assert(createHash('sha256').update(zipBytes).digest('hex') === match[1], 'RELEASE_ZIP_HASH_MISMATCH');
     const crc = await run(`unzip -tqq "${join(downloadDirectory, handoff.release.zipName)}"`, { cwd: root });
     assert(crc.exitCode === 0, 'RELEASE_ZIP_CRC_FAILED', crc.stderr.toString('utf8'));
+    const packageVerification = await run(
+      `node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs "${join(downloadDirectory, handoff.release.zipName)}" "${join(downloadDirectory, handoff.release.sidecarName)}"`,
+      { cwd: root },
+    );
+    await writeFile(join(output, 'release-package-verification.stdout.log'), packageVerification.stdout);
+    await writeFile(join(output, 'release-package-verification.stderr.log'), packageVerification.stderr);
+    assert(packageVerification.exitCode === 0, 'RELEASE_PACKAGE_METADATA_FAILED', packageVerification.stderr.toString('utf8'));
+    const packageVerificationResult = JSON.parse(packageVerification.stdout.toString('utf8'));
+    assert(packageVerificationResult.result === 'PASS', 'RELEASE_PACKAGE_METADATA_RESULT_INVALID');
     const control = await run(`node implementation-control/scripts/Validate-ControlPlaneState.mjs "${process.env.FINSCOPE_PACKAGE_ROOT}"`, { cwd: root });
     assert(control.exitCode === 0, 'RELEASE_CONTROL_PLANE_FAILED', control.stderr.toString('utf8'));
     await writeFile(join(output, 'GITHUB_RELEASE_HANDOFF.json'), await readFile(join(transferDirectory, 'GITHUB_RELEASE_HANDOFF.json')));
@@ -150,6 +159,8 @@ async function stageRelease(qualification) {
       releaseId: release.id,
       commitSha,
       zipSha256: match[1],
+      packageMetadataResult: packageVerificationResult.result,
+      packageFileCount: packageVerificationResult.fileCount,
       checkedAt: new Date().toISOString(),
     };
     await writeFile(join(output, qualification ? 'RELEASE_QUALIFICATION.json' : 'RELEASE_UPLOAD_VERIFICATION.json'), `${JSON.stringify(verification, null, 2)}\n`);
