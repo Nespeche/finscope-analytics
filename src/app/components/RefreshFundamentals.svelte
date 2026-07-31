@@ -51,10 +51,9 @@
 
 <section class="refresh-control" aria-labelledby="refresh-fundamentals-heading" data-testid="refresh-fundamentals-control">
   <div class="intro">
-    <p class="eyebrow">Foreground refresh</p>
     <h2 id="refresh-fundamentals-heading">Update fundamentals</h2>
     <p id="refresh-force-disclosure">
-      A manual update forces a one-time SEC Submissions check and may request Company Facts. It still requires refresh consent and never bypasses fair access, retries, quota, locks, cancellation, or snapshot protection.
+      Manual refresh forces a one-time SEC Submissions check and may fetch Company Facts; consent, fair access, retry, quota, locks, cancellation, and snapshot protection still apply.
     </p>
   </div>
 
@@ -67,7 +66,7 @@
     />
     Allow open, resume, and manual SEC refreshes
   </label>
-  <small id="refresh-consent-help">Consent is off by default and is independent from local storage consent.</small>
+  <small id="refresh-consent-help" class="visually-hidden">Consent is off by default and is independent from local storage consent.</small>
 
   <div class="actions" aria-label="Fundamental refresh actions">
     <button
@@ -137,13 +136,13 @@
   .refresh-control {
     border-block: 1px solid currentColor;
     display: grid;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
+    gap: 0.25rem;
+    padding: 0.5rem 1rem;
   }
 
   .intro {
     display: grid;
-    gap: 0.25rem;
+    gap: 0.125rem;
   }
 
   h2,
@@ -151,17 +150,21 @@
     margin: 0;
   }
 
-  .eyebrow {
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
   .consent {
     align-items: start;
     display: flex;
     gap: 0.5rem;
     font-weight: 700;
+  }
+
+  .visually-hidden {
+    block-size: 1px;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    inline-size: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
   }
 
   .actions,
