@@ -96,7 +96,7 @@ jobs:
           echo "closure_sha=$closure" >> "$GITHUB_OUTPUT"
           echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
           echo "artifact_id=$artifact_id" >> "$GITHUB_OUTPUT"
-      - name: Create authenticated draft Release
+      - name: Create authenticated draft Release by ID
         id: draft
         env:
           GH_TOKEN: ${{ github.token }}
@@ -106,36 +106,114 @@ jobs:
           tag=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.tag")
           title=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.title")
           notes=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.notes")
-          if gh release view "$tag" >/dev/null 2>&1; then
-            draft=$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${tag}" --jq .draft)
-            test "$draft" = true
-            gh release delete "$tag" --yes --cleanup-tag
+          releases=$(gh api "repos/${GITHUB_REPOSITORY}/releases?per_page=100")
+          published_id=$(printf '%s' "$releases" | jq -r --arg tag "$tag" '.[] | select(.draft == false and .tag_name == $tag) | .id' | head -1)
+          if test -n "$published_id"; then
+            echo "A published Release already exists for $tag: $published_id" >&2
+            exit 1
           fi
-          gh release create "$tag" --draft --target "$GITHUB_SHA" --title "$title" --notes "$notes"
-          release_id=$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${tag}" --jq .id)
+          while IFS= read -r orphan_id; do
+            test -n "$orphan_id" || continue
+            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/releases/${orphan_id}" >/dev/null
+          done < <(printf '%s' "$releases" | jq -r --arg tag "$tag" '.[] | select(.draft == true and .tag_name == $tag) | .id')
+          release_json=$(gh api --method POST "repos/${GITHUB_REPOSITORY}/releases" \
+            -f tag_name="$tag" \
+            -f target_commitish="$GITHUB_SHA" \
+            -f name="$title" \
+            -f body="$notes" \
+            -F draft=true \
+            -F prerelease=false)
+          release_id=$(printf '%s' "$release_json" | jq -er .id)
+          test "$(printf '%s' "$release_json" | jq -r .draft)" = true
+          test "$(printf '%s' "$release_json" | jq -r .tag_name)" = "$tag"
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
           echo "release_id=$release_id" >> "$GITHUB_OUTPUT"
       - name: Generate and validate Release handoff
         run: node implementation-control/scripts/Finalize-GitHubReleaseHandoff.mjs .finscope-release "${{ steps.draft.outputs.release_id }}" "${{ steps.closure.outputs.closure_sha }}" "${{ steps.closure.outputs.run_id }}" "${{ steps.closure.outputs.artifact_id }}"
-      - name: Upload custom assets and publish
+      - name: Upload and authenticate custom assets by Release ID
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
+          release_id="${{ steps.draft.outputs.release_id }}"
           tag="${{ steps.draft.outputs.tag }}"
           zip=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.zipName")
           sidecar=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.sidecarName")
           prefix=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.evidencePrefix")
           prompt=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.promptName")
-          gh release upload "$tag" ".finscope-release/$zip" ".finscope-release/$sidecar" ".finscope-release/${prefix}_${GITHUB_RUN_ID}.json" .finscope-release/GITHUB_RELEASE_HANDOFF.json ".finscope-release/$prompt" --clobber
-          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/releases/${{ steps.draft.outputs.release_id }}" -F draft=false >/dev/null
-      - name: Upload Release workflow evidence
-        if: always()
+          evidence="${prefix}_${GITHUB_RUN_ID}.json"
+          files=(".finscope-release/$zip" ".finscope-release/$sidecar" ".finscope-release/$evidence" ".finscope-release/GITHUB_RELEASE_HANDOFF.json" ".finscope-release/$prompt")
+          for file in "${files[@]}"; do
+            name=$(basename "$file")
+            gh api --method POST \
+              -H "Content-Type: application/octet-stream" \
+              "repos/${GITHUB_REPOSITORY}/releases/${release_id}/assets?name=${name}" \
+              --input "$file" >/dev/null
+          done
+          release_json=$(gh api "repos/${GITHUB_REPOSITORY}/releases/${release_id}")
+          test "$(printf '%s' "$release_json" | jq -r .draft)" = true
+          test "$(printf '%s' "$release_json" | jq -r .tag_name)" = "$tag"
+          assets_json=$(gh api "repos/${GITHUB_REPOSITORY}/releases/${release_id}/assets?per_page=100")
+          test "$(printf '%s' "$assets_json" | jq 'length')" -eq 5
+          test "$(printf '%s' "$assets_json" | jq -r '.[].name' | sort -u | wc -l)" -eq 5
+          download="$RUNNER_TEMP/finscope-final-release-download"
+          rm -rf "$download"
+          mkdir -p "$download"
+          for file in "${files[@]}"; do
+            name=$(basename "$file")
+            asset_id=$(printf '%s' "$assets_json" | jq -er --arg name "$name" '.[] | select(.name == $name) | .id')
+            gh api -H "Accept: application/octet-stream" "repos/${GITHUB_REPOSITORY}/releases/assets/${asset_id}" > "$download/$name"
+            cmp "$file" "$download/$name"
+          done
+          (cd "$download" && sha256sum -c "$sidecar")
+          unzip -tqq "$download/$zip"
+          printf '%s\n' "$assets_json" > .finscope-release/release-assets.json
+          printf '{"schemaVersion":"1.0.0","result":"PASS","tag":"%s","releaseId":%s,"commitSha":"%s","checkedAt":"%s"}\n' "$tag" "$release_id" "$GITHUB_SHA" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > .finscope-release/RELEASE_UPLOAD_VERIFICATION.json
+      - name: Upload Release workflow evidence before publication
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: finscope-completed-release-${{ github.sha }}
           path: .finscope-release
           if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 14
+      - name: Publish authenticated completed Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          release_id="${{ steps.draft.outputs.release_id }}"
+          tag="${{ steps.draft.outputs.tag }}"
+          gh api --method PATCH "repos/${GITHUB_REPOSITORY}/releases/${release_id}" -F draft=false -F prerelease=false >/dev/null
+          published=$(gh api "repos/${GITHUB_REPOSITORY}/releases/${release_id}")
+          test "$(printf '%s' "$published" | jq -r .draft)" = false
+          test "$(printf '%s' "$published" | jq -r .prerelease)" = false
+          test "$(printf '%s' "$published" | jq -r .tag_name)" = "$tag"
+          test "$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${tag}" --jq .id)" = "$release_id"
+          test "$(gh api "repos/${GITHUB_REPOSITORY}/commits/${tag}" --jq .sha)" = "$GITHUB_SHA"
+      - name: Remove failed draft Release
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_ID: ${{ steps.draft.outputs.release_id }}
+          RELEASE_TAG: ${{ steps.draft.outputs.tag }}
+        shell: bash
+        run: |
+          set -u
+          if test -n "${RELEASE_ID:-}"; then
+            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}" >/dev/null 2>&1 || true
+          fi
+          if test -n "${RELEASE_TAG:-}"; then
+            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/git/refs/tags/${RELEASE_TAG}" >/dev/null 2>&1 || true
+          fi
+      - name: Upload failed Release evidence
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: finscope-completed-release-${{ github.sha }}-_FAILED
+          path: .finscope-release
+          if-no-files-found: warn
           include-hidden-files: true
           retention-days: 14
