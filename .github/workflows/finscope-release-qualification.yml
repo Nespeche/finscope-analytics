@@ -98,54 +98,82 @@ jobs:
           echo "closure_sha=$closure" >> "$GITHUB_OUTPUT"
           echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
           echo "artifact_id=$artifact_id" >> "$GITHUB_OUTPUT"
-      - name: Create temporary draft Release
+      - name: Create temporary draft Release by ID
         id: draft
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          if gh release view "$QUAL_TAG" >/dev/null 2>&1; then
-            gh release delete "$QUAL_TAG" --yes --cleanup-tag
-          fi
-          gh release create "$QUAL_TAG" --draft --target "${{ github.event.pull_request.head.sha }}" --title "FinScope Release qualification" --notes "Temporary draft used only to qualify B12 Release publishing."
-          release_id=$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${QUAL_TAG}" --jq .id)
+          releases=$(gh api "repos/${GITHUB_REPOSITORY}/releases?per_page=100")
+          while IFS= read -r orphan_id; do
+            test -n "$orphan_id" || continue
+            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/releases/${orphan_id}" >/dev/null
+          done < <(printf '%s' "$releases" | jq -r --arg tag "$QUAL_TAG" '.[] | select(.draft == true and .tag_name == $tag) | .id')
+          release_json=$(gh api --method POST "repos/${GITHUB_REPOSITORY}/releases" \
+            -f tag_name="$QUAL_TAG" \
+            -f target_commitish="${{ github.event.pull_request.head.sha }}" \
+            -f name="FinScope Release qualification" \
+            -f body="Temporary draft used only to qualify B12 Release publishing." \
+            -F draft=true \
+            -F prerelease=false)
+          release_id=$(printf '%s' "$release_json" | jq -er .id)
+          test "$(printf '%s' "$release_json" | jq -r .draft)" = true
+          test "$(printf '%s' "$release_json" | jq -r .tag_name)" = "$QUAL_TAG"
           echo "release_id=$release_id" >> "$GITHUB_OUTPUT"
       - name: Generate Release handoff
         run: node implementation-control/scripts/Finalize-GitHubReleaseHandoff.mjs .finscope-release "${{ steps.draft.outputs.release_id }}" "${{ steps.closure.outputs.closure_sha }}" "${{ steps.closure.outputs.run_id }}" "${{ steps.closure.outputs.artifact_id }}"
-      - name: Upload and reauthenticate temporary assets
+      - name: Upload and reauthenticate temporary assets by Release ID
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
+          release_id="${{ steps.draft.outputs.release_id }}"
           zip=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.zipName")
           sidecar=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.sidecarName")
           prefix=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.evidencePrefix")
           prompt=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.promptName")
           evidence="${prefix}_${GITHUB_RUN_ID}.json"
-          gh release upload "$QUAL_TAG" ".finscope-release/$zip" ".finscope-release/$sidecar" ".finscope-release/$evidence" .finscope-release/GITHUB_RELEASE_HANDOFF.json ".finscope-release/$prompt" --clobber
-          test "$(gh api "repos/${GITHUB_REPOSITORY}/releases/tags/${QUAL_TAG}" --jq .draft)" = true
+          files=(".finscope-release/$zip" ".finscope-release/$sidecar" ".finscope-release/$evidence" ".finscope-release/GITHUB_RELEASE_HANDOFF.json" ".finscope-release/$prompt")
+          for file in "${files[@]}"; do
+            name=$(basename "$file")
+            gh api --method POST \
+              -H "Content-Type: application/octet-stream" \
+              "repos/${GITHUB_REPOSITORY}/releases/${release_id}/assets?name=${name}" \
+              --input "$file" >/dev/null
+          done
+          release_json=$(gh api "repos/${GITHUB_REPOSITORY}/releases/${release_id}")
+          test "$(printf '%s' "$release_json" | jq -r .draft)" = true
+          test "$(printf '%s' "$release_json" | jq -r .tag_name)" = "$QUAL_TAG"
+          assets_json=$(gh api "repos/${GITHUB_REPOSITORY}/releases/${release_id}/assets?per_page=100")
+          test "$(printf '%s' "$assets_json" | jq 'length')" -eq 5
+          test "$(printf '%s' "$assets_json" | jq -r '.[].name' | sort -u | wc -l)" -eq 5
           download="$RUNNER_TEMP/finscope-release-download"
           rm -rf "$download"
           mkdir -p "$download"
-          gh release download "$QUAL_TAG" --dir "$download"
-          (cd "$download" && sha256sum -c "$sidecar")
-          for name in "$zip" "$sidecar" "$evidence" GITHUB_RELEASE_HANDOFF.json "$prompt"; do
-            cmp ".finscope-release/$name" "$download/$name"
+          for file in "${files[@]}"; do
+            name=$(basename "$file")
+            asset_id=$(printf '%s' "$assets_json" | jq -er --arg name "$name" '.[] | select(.name == $name) | .id')
+            gh api -H "Accept: application/octet-stream" "repos/${GITHUB_REPOSITORY}/releases/assets/${asset_id}" > "$download/$name"
+            cmp "$file" "$download/$name"
           done
+          (cd "$download" && sha256sum -c "$sidecar")
           unzip -tqq "$download/$zip"
           node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
-          printf '{"schemaVersion":"1.0.0","result":"PASS","temporaryTag":"%s","commitSha":"%s","checkedAt":"%s"}\n' "$QUAL_TAG" "${{ github.event.pull_request.head.sha }}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > .finscope-release/RELEASE_QUALIFICATION.json
-      - name: Remove temporary draft Release
+          printf '{"schemaVersion":"1.0.0","result":"PASS","temporaryTag":"%s","releaseId":%s,"commitSha":"%s","checkedAt":"%s"}\n' "$QUAL_TAG" "$release_id" "${{ github.event.pull_request.head.sha }}" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > .finscope-release/RELEASE_QUALIFICATION.json
+      - name: Remove temporary draft Release by ID
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_ID: ${{ steps.draft.outputs.release_id }}
         shell: bash
         run: |
-          if gh release view "$QUAL_TAG" >/dev/null 2>&1; then
-            gh release delete "$QUAL_TAG" --yes --cleanup-tag
+          set -u
+          if test -n "${RELEASE_ID:-}"; then
+            gh api --method DELETE "repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}" >/dev/null 2>&1 || true
           fi
+          gh api --method DELETE "repos/${GITHUB_REPOSITORY}/git/refs/tags/${QUAL_TAG}" >/dev/null 2>&1 || true
       - name: Upload qualification evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
