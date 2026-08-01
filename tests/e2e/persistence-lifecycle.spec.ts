@@ -42,8 +42,8 @@ async function activate(page: Page): Promise<void> {
 function records() {
   const bundle = (bundleVectorsJson as { readonly validFixtures: readonly Fixture[] })
     .validFixtures[0]?.input as FundamentalBundle;
-  const analysis = (analysisVectorsJson as { readonly validFixtures: readonly Fixture[] })
-    .validFixtures.find((fixture) => fixture.fixtureId === 'ANALYSIS-FUNDAMENTAL-VALID')?.input
+  const analysis = ((analysisVectorsJson as { readonly validFixtures: readonly Fixture[] })
+    .validFixtures.find((fixture) => fixture.fixtureId === 'ANALYSIS-FUNDAMENTAL-VALID')?.input)
     as FundamentalAnalysis;
   const snapshot: FundamentalSnapshotRecord = {
     recordType: 'fundamental_snapshot', snapshotId: 'lifecycle-snapshot', issuerCik: bundle.issuer.cik,
@@ -56,7 +56,7 @@ function records() {
     targetId: snapshot.snapshotId, targetFingerprint: snapshot.fundamentalAnalysisFingerprint, generation: 1,
   };
   const commit: CommitRecord = {
-    recordType: 'commit', transactionId: 'lifecycle-commit', issuerCik: bundle.issuer.cik,
+    recordType: 'commit', transaactionId: 'lifecycle-commit', issuerCik: bundle.issuer.cik,
     writtenRecordIds: [bundle.bundleId, analysis.analysisId, snapshot.snapshotId],
     pointerUpdates: [`${bundle.issuer.cik}:fundamental_snapshot`], status: 'committed',
   };

@@ -51,8 +51,8 @@ async function openDataManagement(page: Page): Promise<void> {
 function fundamentalRecords(): FundamentalRepositoryRecords {
   const bundle = (bundleVectorsJson as { readonly validFixtures: readonly Fixture[] })
     .validFixtures[0]?.input as FundamentalBundle;
-  const analysis = (analysisVectorsJson as { readonly validFixtures: readonly Fixture[] })
-    .validFixtures.find((fixture) => fixture.fixtureId === 'ANALYSIS-FUNDAMENTAL-VALID')?.input
+  const analysis = ((analysisVectorsJson as { readonly validFixtures: readonly Fixture[] })
+    .validFixtures.find((fixture) => fixture.fixtureId === 'ANALYSIS-FUNDAMENTAL-VALID')?.input)
     as FundamentalAnalysis;
   const snapshot: FundamentalSnapshotRecord = {
     recordType: 'fundamental_snapshot', snapshotId: 'e2e-restore-snapshot', issuerCik: bundle.issuer.cik,
@@ -67,7 +67,7 @@ function fundamentalRecords(): FundamentalRepositoryRecords {
     generation: 1, updatedAt: '2026-08-01T00:00:00.000Z',
   };
   const commit: CommitRecord = {
-    recordType: 'commit', transactionId: 'e2e-restore-commit', issuerCik: bundle.issuer.cik,
+    recordType: 'commit', transaactionId: 'e2e-restore-commit', issuerCik: bundle.issuer.cik,
     writtenRecordIds: [bundle.bundleId, analysis.analysisId, snapshot.snapshotId],
     pointerUpdates: [`${bundle.issuer.cik}:fundamental_snapshot`], status: 'committed',
     committedAt: '2026-08-01T00:00:00.000Z',
@@ -169,4 +169,4 @@ test('restore UI discloses conflicts and restricts replacement to matching IDs',
   await replacement.check();
   await press(page.getByRole('button', { name: 'Confirm atomic restore' }));
   await expect(page.getByTestId('data-management-status')).toContainText('5 replacement(s)');
-})
+});
