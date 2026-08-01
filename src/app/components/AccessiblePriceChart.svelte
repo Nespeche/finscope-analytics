@@ -60,7 +60,7 @@
     {/if}
   </svg>
 
-  <div class="table-wrap" tabindex="0" aria-label="Scrollable historical price values table">
+  <div class="table-wrap">
     <table aria-label="Historical price observations">
       <caption>Equivalent data table for the chart</caption>
       <thead><tr><th scope="col">Date</th><th scope="col">Price ({currency})</th></tr></thead>
