@@ -5,7 +5,7 @@
   "ordinal": 17,
   "title": "Consentimiento, repositorios, export y preview",
   "domain": "storage-export",
-  "status": "PENDING",
+  "status": "COMPLETED",
   "taskCount": 5,
   "executionOrder": [
     "T072",
@@ -161,7 +161,7 @@
       ],
       "doneWhen": "the view exports an AUTH-027 routeDefinition, analysis works in memory without storage consent, no network occurs without refresh consent and revocation is visible and effective",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "70ec731a97ee23338defabc5472a12625cea7f0983f2a8d81fc76ef3e162a17f"
+      "sourceTaskSha256": "db071e5dc8d543839670e3b6ceb411aa5e431af773c763f13628d8374b938464"
     },
     {
       "id": "T073",
@@ -203,7 +203,7 @@
       ],
       "doneWhen": "candidate, evidence and pointer commit together or not at all",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "16b0b2d7931ca72fc3f4264e6b0a34eb36897bcf26c073871a20645315561559"
+      "sourceTaskSha256": "ac10a53a1200e77e39b97a3d96f707fa7f56b7b2a8fd5a51ab93507af17f5d4e"
     },
     {
       "id": "T074",
@@ -244,7 +244,7 @@
       ],
       "doneWhen": "price deletion cannot reference, update or delete fundamental records or pointers",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "e6fc57409ad589e7f013c3a8541d867dc8f9c69cf68eb68d8811a563a1e151f7"
+      "sourceTaskSha256": "ce7baacc219e37cff7a6b7894e0c5d0b14fe907513c2ec3f0cd9b91f244ea3ae"
     },
     {
       "id": "T075",
@@ -284,7 +284,7 @@
       ],
       "doneWhen": "exported records come from repository reads, quarantined/invalid records, consents and deployment variables are excluded, and hashes are reproducible",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "01a634bde7b3f3ebe4232e438516532f5955854a9de3468acf984e3a8e5cad00"
+      "sourceTaskSha256": "3790ee1e379c1ae189f510015f0c2eb843383df776a82fa60c1f587a2eac685c"
     },
     {
       "id": "T076",
@@ -331,7 +331,7 @@
       ],
       "doneWhen": "corrupt, oversized, unknown, duplicate or incompatible records are rejected and permitted migrations/conflicts are fully previewed before transaction",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "8acb05962fda298a60146a06fe0654a09497c2a5c484fee89a7e86c65e56962f"
+      "sourceTaskSha256": "fcd9f6c789bc6539e13dfe901daacb4302d09dc5423e8dc3a672c256cc1f5e2f"
     }
   ],
   "completionGate": {
@@ -341,7 +341,7 @@
     "packageValidationPass": true,
     "doNotStartNextBatch": true
   },
-  "sourceTasksSha256": "1d49528244a42302df7b8fe57e257ee42d64c9de43e1f874f1197e32e6c2d32c",
+  "sourceTasksSha256": "44be83b900cd531b63a2d25c5dcb18c8880e140e38d4f1690849f1fe680fbf5d",
   "localValidation": {
     "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
     "browserRequired": true,

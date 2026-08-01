@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "1.1.0",
+  "batchId": "B17",
+  "status": "COMPLETED",
+  "baseline": {
+    "logicalName": "FS_v0.21.19_B16_completed.zip",
+    "sha256": "6553ce27b8c4d21ceab4967628debcba0ffc67c1b736d0d488f3c6fa36881bc0",
+    "tag": "v0.21.19-B16-completed",
+    "commitSha": "80e70ce91bcd40b5fc01be15bc8521e503cd872c",
+    "sidecarMatch": true,
+    "crcValid": true,
+    "singleRoot": true,
+    "safeExtraction": true
+  },
+  "candidate": {
+    "sha": "244ee6a50f8eebdeb2d1c76bab599e3c79ec4abe",
+    "runId": "30713946002",
+    "artifactId": 8822770890,
+    "artifactName": "finscope-github-validation-244ee6a50f8e-PASS",
+    "artifactDigest": "sha256:a26bdefd2ba3808d8e621902cee78953a3a3d3a650be31d5bb8333bb25449ffa"
+  },
+  "taskResults": [
+    {
+      "taskId": "T072",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T073",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T074",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T075",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T076",
+      "status": "COMPLETED"
+    }
+  ],
+  "commands": [
+    {
+      "id": "npm-ci",
+      "command": "npm ci",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "playwright-chromium",
+      "command": "npm exec playwright install chromium",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "typecheck",
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-unit",
+      "command": "npm run test:unit -- tests/unit/persistence/export.test.ts",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-integration",
+      "command": "npm run test:integration -- tests/integration/persistence/atomic-publication.test.ts tests/integration/persistence/price-repository.test.ts",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-negative",
+      "command": "npm run test:negative -- tests/negative/persistence/restore-validation.test.ts",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-e2e",
+      "command": "npm run test:e2e -- tests/e2e/consent.spec.ts",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "regression-vitest",
+      "command": "npm run test",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "regression-browser",
+      "command": "npm run test:browser",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "build",
+      "command": "npm run build",
+      "status": "PASS",
+      "exitCode": 0
+    }
+  ],
+  "specifyTreeSha256Before": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "specifyTreeSha256After": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "sourceTasksSha256Before": "1d49528244a42302df7b8fe57e257ee42d64c9de43e1f874f1197e32e6c2d32c",
+  "sourceTasksSha256AfterClosure": "44be83b900cd531b63a2d25c5dcb18c8880e140e38d4f1690849f1fe680fbf5d",
+  "promotion": {
+    "allowed": true,
+    "postCandidateChangesLimitedToClosureAllowlist": true,
+    "npmRepeatedAfterClosure": false,
+    "nextBatchId": "B18",
+    "convergenceAuthorized": false
+  },
+  "completedPackageLogicalName": "FS_v0.21.20_B17_completed.zip"
+}
