@@ -1,3 +1,14 @@
+# PROJECT CONTEXT — FinScope Analytics B16 completed
+
+- paquete: `v0.21.19_B16_completed` / `FS_v0.21.19_B16_completed.zip`;
+- B01–B16 y T001–T071: `COMPLETED`;
+- B17: `PENDING`, único lote activo/autorizado;
+- `convergenceAuthorized=false`;
+- candidate autenticado: `21a4fa2e96e161a5b0ff1633a7200343bbf810d5`, run `30681576838`;
+- `.specify`: 19 archivos, `e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09`.
+
+---
+
 # PROJECT CONTEXT — FinScope Analytics B15 completed
 
 - paquete: `v0.21.18_B15_completed` / `FS_v0.21.18_B15_completed.zip`;
