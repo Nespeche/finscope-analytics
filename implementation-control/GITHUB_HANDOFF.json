@@ -12,53 +12,23 @@
   },
   "operation": {
     "id": "B15",
-    "kind": "BATCH",
-    "branch": "agent/b15-price-core",
-    "stage": "closure",
+    "kind": "RELEASE_REMEDIATION",
+    "branch": "agent/b15-completed-release",
+    "stage": "candidate",
     "activeBatchId": "B15",
     "nextBatchId": "B16",
     "completedTasksThroughOnClosure": "T068",
     "qualificationCommands": [
       {
-        "id": "npm-ci",
-        "category": "dependencies",
-        "command": "npm ci",
+        "id": "package-completed-release",
+        "category": "package",
+        "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
         "required": true
       },
       {
-        "id": "typecheck",
-        "category": "static",
-        "command": "npm run typecheck",
-        "required": true
-      },
-      {
-        "id": "test-unit",
-        "category": "unit",
-        "command": "npm run test:unit -- tests/unit/price/csv-parser.test.ts tests/unit/price/import-preview.test.ts tests/unit/price/manual-entry.test.ts tests/unit/price/overlay-vectors.test.ts tests/unit/price/price-metric-vectors.test.ts",
-        "required": true
-      },
-      {
-        "id": "test-integration",
-        "category": "integration",
-        "command": "npm run test:integration -- tests/integration/price/price-isolation.test.ts",
-        "required": true
-      },
-      {
-        "id": "test-negative",
-        "category": "negative",
-        "command": "npm run test:negative -- tests/negative/price/csv-security.test.ts",
-        "required": true
-      },
-      {
-        "id": "regression-vitest",
-        "category": "regression",
-        "command": "npm run test",
-        "required": true
-      },
-      {
-        "id": "build",
-        "category": "build",
-        "command": "npm run build",
+        "id": "verify-completed-package",
+        "category": "package-authentication",
+        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.18_B15_completed.zip .finscope-release/FS_v0.21.18_B15_completed.zip.sha256",
         "required": true
       }
     ]
@@ -71,13 +41,13 @@
     "artifactDigest": "sha256:d8d47770d4dd39d9c40eb41d970d00e1696b89331b664f039edecce774a5b904"
   },
   "closure": {
-    "status": "PENDING",
+    "status": "COMPLETED",
     "candidateSha": "eeb4d7065be5d0883ef72aaa89de5d07758b1f18",
-    "commitSha": null,
-    "runId": null,
-    "artifactId": null,
-    "artifactName": null,
-    "artifactDigest": null
+    "commitSha": "635764e3326c59e5685057f0d0a2db84f7b1d11b",
+    "runId": "30677141798",
+    "artifactId": 8810875085,
+    "artifactName": "finscope-closure-635764e3326c-PASS",
+    "artifactDigest": "sha256:51112037bee7b3d14d1e2cd20d940e6aed283eb770aad7f49fef041f5caac3d8"
   },
   "release": {
     "pending": true,
@@ -88,12 +58,12 @@
     "evidencePrefix": "FinScope_B15_release_evidence",
     "promptName": "PROMPT_IMPLEMENTACION_B16.md",
     "title": "FinScope B15 completed — price ingestion, overlay and metrics",
-    "notes": "B15 implements secure CSV/manual historical-price ingestion, explicit preview and confirmation, immutable price overlays, eight descriptive price metrics and strict isolation from all fundamental artifacts. B16 remains pending and convergenceAuthorized=false."
+    "notes": "B15 completed with authenticated candidate and closure evidence. This Release publishes the immutable completed ZIP and sidecar after package, upload/download and closure-artifact authentication. B16 remains pending as the only active and authorized batch; convergenceAuthorized=false."
   },
   "productState": {
-    "activeBatchId": "B15",
-    "nextAuthorizedBatchId": "B15",
-    "completedTasksThrough": "T062",
+    "activeBatchId": "B16",
+    "nextAuthorizedBatchId": "B16",
+    "completedTasksThrough": "T068",
     "convergenceAuthorized": false
   }
 }
