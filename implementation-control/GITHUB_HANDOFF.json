@@ -2,63 +2,93 @@
   "schemaVersion": "1.2.0",
   "repository": "Nespeche/finscope-analytics",
   "baseline": {
-    "tag": "v0.21.17-B14-completed",
-    "commitSha": "3bbee35f25f41edc7bf2bf6e2a76d274316a5215",
-    "zipName": "FS_v0.21.17_B14_completed.zip",
-    "sidecarName": "FS_v0.21.17_B14_completed.zip.sha256",
-    "zipSha256": "853cdfd12bb605905703e74969992092605666a0644b420995a3000ca3c5708c",
+    "tag": "v0.21.18-B15-completed",
+    "commitSha": "ee596023a71b4659a8a35e091cd21f72eaf114aa",
+    "zipName": "FS_v0.21.18_B15_completed.zip",
+    "sidecarName": "FS_v0.21.18_B15_completed.zip.sha256",
+    "zipSha256": "59482da2464228c1813c7b3b7aacd5240fbbca63837c18476204a665f21dc400",
     "root": "FinScope_v0.21.4/",
     "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
   },
   "operation": {
-    "id": "B15",
-    "kind": "RELEASE_REMEDIATION",
-    "branch": "agent/b15-completed-release",
+    "id": "B16",
+    "kind": "BATCH",
+    "branch": "agent/b16-price-ui",
     "stage": "candidate",
-    "activeBatchId": "B15",
-    "nextBatchId": "B16",
-    "completedTasksThroughOnClosure": "T068",
+    "activeBatchId": "B16",
+    "nextBatchId": "B17",
+    "completedTasksThroughOnClosure": "T071",
     "qualificationCommands": [
       {
-        "id": "package-completed-release",
-        "category": "package",
-        "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
         "required": true
       },
       {
-        "id": "verify-completed-package",
-        "category": "package-authentication",
-        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.18_B15_completed.zip .finscope-release/FS_v0.21.18_B15_completed.zip.sha256",
+        "id": "playwright-install-chromium",
+        "category": "browser-runtime",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-e2e-price",
+        "category": "e2e",
+        "command": "npm run test:e2e -- tests/e2e/price-analysis.spec.ts tests/e2e/price-import.spec.ts tests/e2e/price-overlay-lifecycle.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "browser-regression",
+        "category": "browser-regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
         "required": true
       }
     ]
   },
   "candidate": {
-    "sha": "eeb4d7065be5d0883ef72aaa89de5d07758b1f18",
-    "runId": "30677021963",
-    "artifactId": 8810837405,
-    "artifactName": "finscope-github-validation-eeb4d7065be5-PASS",
-    "artifactDigest": "sha256:d8d47770d4dd39d9c40eb41d970d00e1696b89331b664f039edecce774a5b904"
+    "sha": null,
+    "runId": null,
+    "artifactId": null,
+    "artifactName": null,
+    "artifactDigest": null
   },
   "closure": {
-    "status": "COMPLETED",
-    "candidateSha": "eeb4d7065be5d0883ef72aaa89de5d07758b1f18",
-    "commitSha": "635764e3326c59e5685057f0d0a2db84f7b1d11b",
-    "runId": "30677141798",
-    "artifactId": 8810875085,
-    "artifactName": "finscope-closure-635764e3326c-PASS",
-    "artifactDigest": "sha256:51112037bee7b3d14d1e2cd20d940e6aed283eb770aad7f49fef041f5caac3d8"
+    "status": "PENDING",
+    "candidateSha": null,
+    "commitSha": null,
+    "runId": null,
+    "artifactId": null,
+    "artifactName": null,
+    "artifactDigest": null
   },
   "release": {
     "pending": true,
-    "tag": "v0.21.18-B15-completed",
-    "packageRevision": "v0.21.18_B15_completed",
-    "zipName": "FS_v0.21.18_B15_completed.zip",
-    "sidecarName": "FS_v0.21.18_B15_completed.zip.sha256",
-    "evidencePrefix": "FinScope_B15_release_evidence",
-    "promptName": "PROMPT_IMPLEMENTACION_B16.md",
-    "title": "FinScope B15 completed — price ingestion, overlay and metrics",
-    "notes": "B15 completed with authenticated candidate and closure evidence. This Release publishes the immutable completed ZIP and sidecar after package, upload/download and closure-artifact authentication. B16 remains pending as the only active and authorized batch; convergenceAuthorized=false."
+    "tag": "v0.21.19-B16-completed",
+    "packageRevision": "v0.21.19_B16_completed",
+    "zipName": "FS_v0.21.19_B16_completed.zip",
+    "sidecarName": "FS_v0.21.19_B16_completed.zip.sha256",
+    "evidencePrefix": "FinScope_B16_release_evidence",
+    "promptName": "PROMPT_IMPLEMENTACION_B17.md",
+    "title": "FinScope B16 completed — price interface and E2E lifecycle",
+    "notes": "B16 implements the accessible historical-price import and analysis interfaces plus the authenticated end-to-end lifecycle for optional price overlays. Fundamental artifacts remain isolated, no valuation is generated, B17 remains pending and convergenceAuthorized=false."
   },
   "productState": {
     "activeBatchId": "B16",
