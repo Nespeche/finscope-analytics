@@ -14,7 +14,7 @@
     "id": "B17",
     "kind": "BATCH",
     "branch": "agent/b17-consent-storage-export-preview",
-    "stage": "closure",
+    "stage": "completed",
     "activeBatchId": "B17",
     "nextBatchId": "B18",
     "completedTasksThroughOnClosure": "T076",
@@ -89,13 +89,13 @@
     "artifactDigest": "sha256:a26bdefd2ba3808d8e621902cee78953a3a3d3a650be31d5bb8333bb25449ffa"
   },
   "closure": {
-    "status": "PENDING",
+    "status": "COMPLETED",
     "candidateSha": "244ee6a50f8eebdeb2d1c76bab599e3c79ec4abe",
-    "commitSha": null,
-    "runId": null,
-    "artifactId": null,
-    "artifactName": null,
-    "artifactDigest": null
+    "commitSha": "933b7e476f2130a7e77502882e453eda93e8326b",
+    "runId": "30714160143",
+    "artifactId": 8822805360,
+    "artifactName": "finscope-closure-933b7e476f21-PASS",
+    "artifactDigest": "sha256:26bb5ec526913214f58a35e4bd1e8d27642d7da60d714620eb79db5ec8c43e95"
   },
   "release": {
     "pending": true,
@@ -109,9 +109,9 @@
     "notes": "B17 implements separate consent controls, atomic fundamental and price repositories, deterministic local export and fail-closed restore preview. B18 remains pending and convergenceAuthorized=false."
   },
   "productState": {
-    "activeBatchId": "B17",
-    "nextAuthorizedBatchId": "B17",
-    "completedTasksThrough": "T071",
+    "activeBatchId": "B18",
+    "nextAuthorizedBatchId": "B18",
+    "completedTasksThrough": "T076",
     "convergenceAuthorized": false
   }
 }
