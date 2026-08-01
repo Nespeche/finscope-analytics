@@ -1,8 +1,8 @@
 # IMPLEMENTATION BATCH MAP — FinScope Analytics
 
-Revisión: `v0.21.18_B15_completed`. Fuente: `tasks.md` (`7400703ae42a981fa8312f7ea1748b642c8264f897027b749906c155ffd11839`).
+Revisión: `v0.21.19_B16_completed`. Fuente: `tasks.md` (`1d49528244a42302df7b8fe57e257ee42d64c9de43e1f874f1197e32e6c2d32c`).
 
-**SHA-256 de tareas:** `7400703ae42a981fa8312f7ea1748b642c8264f897027b749906c155ffd11839`
+**SHA-256 de tareas:** `1d49528244a42302df7b8fe57e257ee42d64c9de43e1f874f1197e32e6c2d32c`
 
 | Lote | Tareas | Estado |
 |---|---|---|
@@ -21,7 +21,7 @@ Revisión: `v0.21.18_B15_completed`. Fuente: `tasks.md` (`7400703ae42a981fa8312f
 | B13 | T054, T055, T056, T057, T058, T059 | `COMPLETED` |
 | B14 | T060, T061, T062 | `COMPLETED` |
 | B15 | T063, T064, T065, T066, T067, T068 | `COMPLETED` |
-| B16 | T069, T070, T071 | `PENDING` |
+| B16 | T069, T070, T071 | `COMPLETED` |
 | B17 | T072, T073, T074, T075, T076 | `PENDING` |
 | B18 | T077, T078, T079, T080 | `PENDING` |
 | B19 | T081, T082, T089, T083, T084, T085 | `PENDING` |
@@ -32,4 +32,4 @@ Revisión: `v0.21.18_B15_completed`. Fuente: `tasks.md` (`7400703ae42a981fa8312f
 | B24 | T104, T105, T106, T107 | `PENDING` |
 | B25 | T108, T109 | `PENDING` |
 
-B01–B15 y T001–T068 están `COMPLETED`. B16 permanece `PENDING` como único lote activo/autorizado; `activeBatchId=B16`; `nextAuthorizedBatchId=B16`; `convergenceAuthorized=false`.
+B01–B16 y T001–T071 están `COMPLETED`. B17 permanece `PENDING` como único lote activo/autorizado; `activeBatchId=B17`; `nextAuthorizedBatchId=B17`; `convergenceAuthorized=false`.
