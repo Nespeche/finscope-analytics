@@ -184,10 +184,11 @@ jobs:
           const zipBytes = execFileSync('gh', ['api', 'repos/' + repo + '/actions/artifacts/' + closureArtifactId + '/zip'], { maxBuffer: 20 * 1024 * 1024 });
           writeFileSync(zipPath, zipBytes);
           assert(sha256(zipBytes) === closureArtifactDigest, 'CLOSURE_ARTIFACT_DIGEST_MISMATCH');
-          const entries = execFileSync('unzip', ['-Z1', zipPath], { encoding: 'utf8' }).split(/\r?\n/u).filter(Boolean);
-          assert(entries.length === 25, 'CLOSURE_ARCHIVE_ENTRY_COUNT_INVALID', String(entries.length));
+          const rawEntries = execFileSync('unzip', ['-Z1', zipPath], { encoding: 'utf8' }).split(/\r?\n/u).filter(Boolean);
+          const entries = rawEntries.filter((entry) => !entry.endsWith('/'));
+          assert(entries.length === 25, 'CLOSURE_ARCHIVE_FILE_COUNT_INVALID', String(entries.length));
           const folded = new Set();
-          for (const entry of entries) {
+          for (const entry of rawEntries) {
             const relative = safeRelative(entry);
             const foldedPath = relative.toLowerCase();
             assert(!folded.has(foldedPath), 'CLOSURE_ARCHIVE_CASE_COLLISION', relative);
