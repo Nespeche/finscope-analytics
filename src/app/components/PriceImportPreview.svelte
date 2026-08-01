@@ -48,7 +48,7 @@
     </section>
   {/if}
 
-  <div class="table-wrap" tabindex="0" aria-label="Scrollable price preview table">
+  <div class="table-wrap">
     <table aria-label="Historical price observations in the import preview">
       <caption>Validated observations, sorted by date</caption>
       <thead><tr><th scope="col">Date</th><th scope="col">Price</th></tr></thead>
