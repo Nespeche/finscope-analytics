@@ -5,7 +5,7 @@
   "ordinal": 15,
   "title": "Ingesta, overlay y métricas de precio",
   "domain": "price-core",
-  "status": "PENDING",
+  "status": "COMPLETED",
   "taskCount": 6,
   "executionOrder": [
     "T063",
@@ -191,7 +191,7 @@
       ],
       "doneWhen": "5 MiB, 50,000 rows and 8-column limits fail before persistence",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "2071cdddc07ac7c9b8bb0fa20689633485b0d04d847f6138d7c713b92d7b8485"
+      "sourceTaskSha256": "881fb3d435fb1a53cc07e1c30db7f8d581ae34f59a7926fb6edf3c06c415282b"
     },
     {
       "id": "T064",
@@ -225,7 +225,7 @@
       ],
       "doneWhen": "manual and CSV data produce the same canonical observation model",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "2ba280a0bcde262a487a9b724fdbbe7ce75a4bd6129f5d2493f88406a74c8325"
+      "sourceTaskSha256": "9e189f44b15884de7697afaf34642b318f6095b99070e14ce7332498a35c7728"
     },
     {
       "id": "T065",
@@ -263,7 +263,7 @@
       ],
       "doneWhen": "nothing is persisted on selection, invalid preview or missing confirmation",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "c763013f3ecbee207e1b9bd6d134b70fbc102c76bc6423cb58cd1d8979eed222"
+      "sourceTaskSha256": "aaa1210e98cc437fc3dff46ab35a36c353bda24c9bda25569dcc906c72e56e9e"
     },
     {
       "id": "T066",
@@ -318,7 +318,7 @@
       ],
       "doneWhen": "clock-derived fields are rejected, overlay versions are immutable and fundamental fingerprints stay identical",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "4eeb46e56868458f20313bff906078c4e7926a454df4481e61f632c44334c7ea"
+      "sourceTaskSha256": "8988be28fedcbd0e689a480195ecb0e71470df03e96cd0b509473e0de60cc77e"
     },
     {
       "id": "T067",
@@ -365,7 +365,7 @@
       ],
       "doneWhen": "last/min/max/mean/median/return/drawdown/trend pass 24 vectors without duplicated formulas or fundamental-domain prerequisites",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "cd082bc2277fe0cb31fa5d45d972505adb54b28125b5efe97aef9ece646d33a9"
+      "sourceTaskSha256": "7d9f8b9e339873c8e87a70eafea5d1f5ff52a23874ca036892dd2d383e3a1b28"
     },
     {
       "id": "T068",
@@ -412,7 +412,7 @@
       ],
       "doneWhen": "fundamental bundle, analysis, snapshot, pointer and fingerprints never change",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "67d7488bf6b3ed5d4b08bed104a3e87fb0d81242e877a195f71f990f64fc0c61"
+      "sourceTaskSha256": "b6ab3a463a72bcf1dd89876744aca0ab4e7a24e0772d6801f79d13082426198a"
     }
   ],
   "completionGate": {
@@ -422,7 +422,7 @@
     "packageValidationPass": true,
     "doNotStartNextBatch": true
   },
-  "sourceTasksSha256": "934d2e077125e92fe619949c929d7d0940185c13110c1db30d3c14ead2b86277",
+  "sourceTasksSha256": "7400703ae42a981fa8312f7ea1748b642c8264f897027b749906c155ffd11839",
   "localValidation": {
     "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
     "browserRequired": false,

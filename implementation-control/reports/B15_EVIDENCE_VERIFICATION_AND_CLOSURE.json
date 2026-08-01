@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "1.1.0",
+  "batchId": "B15",
+  "status": "COMPLETED",
+  "baseline": {
+    "logicalName": "FS_v0.21.17_B14_completed.zip",
+    "sha256": "853cdfd12bb605905703e74969992092605666a0644b420995a3000ca3c5708c",
+    "tag": "v0.21.17-B14-completed",
+    "commitSha": "3bbee35f25f41edc7bf2bf6e2a76d274316a5215",
+    "sidecarMatch": true,
+    "crcValid": true,
+    "singleRoot": true,
+    "safeExtraction": true
+  },
+  "candidate": {
+    "sha": "eeb4d7065be5d0883ef72aaa89de5d07758b1f18",
+    "runId": "30677021963",
+    "artifactId": 8810837405,
+    "artifactName": "finscope-github-validation-eeb4d7065be5-PASS",
+    "artifactDigest": "sha256:d8d47770d4dd39d9c40eb41d970d00e1696b89331b664f039edecce774a5b904"
+  },
+  "taskResults": [
+    {
+      "taskId": "T063",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T064",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T065",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T066",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T067",
+      "status": "COMPLETED"
+    },
+    {
+      "taskId": "T068",
+      "status": "COMPLETED"
+    }
+  ],
+  "commands": [
+    {
+      "id": "npm-ci",
+      "command": "npm ci",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "typecheck",
+      "command": "npm run typecheck",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-unit",
+      "command": "npm run test:unit -- tests/unit/price/csv-parser.test.ts tests/unit/price/import-preview.test.ts tests/unit/price/manual-entry.test.ts tests/unit/price/overlay-vectors.test.ts tests/unit/price/price-metric-vectors.test.ts",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-integration",
+      "command": "npm run test:integration -- tests/integration/price/price-isolation.test.ts",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "test-negative",
+      "command": "npm run test:negative -- tests/negative/price/csv-security.test.ts",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "regression-vitest",
+      "command": "npm run test",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "id": "build",
+      "command": "npm run build",
+      "status": "PASS",
+      "exitCode": 0
+    }
+  ],
+  "specifyTreeSha256Before": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "specifyTreeSha256After": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+  "sourceTasksSha256Before": "934d2e077125e92fe619949c929d7d0940185c13110c1db30d3c14ead2b86277",
+  "sourceTasksSha256AfterClosure": "7400703ae42a981fa8312f7ea1748b642c8264f897027b749906c155ffd11839",
+  "promotion": {
+    "allowed": true,
+    "postCandidateChangesLimitedToClosureAllowlist": true,
+    "npmRepeatedAfterClosure": false,
+    "nextBatchId": "B16",
+    "convergenceAuthorized": false
+  },
+  "completedPackageLogicalName": "FS_v0.21.18_B15_completed.zip"
+}
