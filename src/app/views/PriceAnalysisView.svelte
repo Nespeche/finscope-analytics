@@ -130,7 +130,7 @@
     <section class="metrics" aria-labelledby="price-metrics-heading">
       <h2 id="price-metrics-heading">Eight historical price metrics</h2>
       <p>Each value is available in this table independently of the chart.</p>
-      <div class="table-wrap" tabindex="0" aria-label="Scrollable historical price metrics table">
+      <div class="table-wrap">
         <table aria-label="Eight historical price metrics">
           <caption>Descriptive price metrics for overlay version {pointer.overlayVersion}</caption>
           <thead>
