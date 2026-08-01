@@ -12,53 +12,23 @@
   },
   "operation": {
     "id": "B16",
-    "kind": "BATCH",
-    "branch": "agent/b16-price-ui",
-    "stage": "completed",
+    "kind": "RELEASE_REMEDIATION",
+    "branch": "agent/b16-completed-release",
+    "stage": "candidate",
     "activeBatchId": "B16",
     "nextBatchId": "B17",
     "completedTasksThroughOnClosure": "T071",
     "qualificationCommands": [
       {
-        "id": "npm-ci",
-        "category": "dependencies",
-        "command": "npm ci",
+        "id": "package-completed-release",
+        "category": "package",
+        "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
         "required": true
       },
       {
-        "id": "playwright-install-chromium",
-        "category": "browser-runtime",
-        "command": "npm exec playwright install chromium",
-        "required": true
-      },
-      {
-        "id": "typecheck",
-        "category": "static",
-        "command": "npm run typecheck",
-        "required": true
-      },
-      {
-        "id": "test-e2e-price",
-        "category": "e2e",
-        "command": "npm run test:e2e -- tests/e2e/price-analysis.spec.ts tests/e2e/price-import.spec.ts tests/e2e/price-overlay-lifecycle.spec.ts",
-        "required": true
-      },
-      {
-        "id": "regression-vitest",
-        "category": "regression",
-        "command": "npm run test",
-        "required": true
-      },
-      {
-        "id": "browser-regression",
-        "category": "browser-regression",
-        "command": "npm run test:browser",
-        "required": true
-      },
-      {
-        "id": "build",
-        "category": "build",
-        "command": "npm run build",
+        "id": "verify-completed-package",
+        "category": "package-authentication",
+        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.19_B16_completed.zip .finscope-release/FS_v0.21.19_B16_completed.zip.sha256",
         "required": true
       }
     ]
@@ -88,7 +58,7 @@
     "evidencePrefix": "FinScope_B16_release_evidence",
     "promptName": "PROMPT_IMPLEMENTACION_B17.md",
     "title": "FinScope B16 completed — price interface and E2E lifecycle",
-    "notes": "B16 implements the accessible historical-price import and analysis interfaces plus the authenticated end-to-end lifecycle for optional price overlays. Fundamental artifacts remain isolated, no valuation is generated, B17 remains pending and convergenceAuthorized=false."
+    "notes": "B16 completed with authenticated candidate and closure evidence. This Release publishes the immutable completed ZIP and sidecar after package, upload/download and closure-artifact authentication. B17 remains pending as the only active and authorized batch; convergenceAuthorized=false."
   },
   "productState": {
     "activeBatchId": "B17",
