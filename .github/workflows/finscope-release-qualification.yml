@@ -59,6 +59,15 @@ jobs:
           rm -rf "$root_alias"
           ln -s "$GITHUB_WORKSPACE" "$root_alias"
           echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
+      - name: Inspect published B17 Release digest
+        if: steps.mode.outputs.enabled == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api repos/${{ github.repository }}/releases/tags/v0.21.20-B17-completed \
+            --jq '{id,tag_name,draft,prerelease,assets:[.assets[]|{id,name,size,digest}]}'
       - name: Verify remediation authority, allowlist and control plane
         if: steps.mode.outputs.enabled == 'true'
         shell: bash
