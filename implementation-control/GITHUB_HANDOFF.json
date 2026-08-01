@@ -14,7 +14,7 @@
     "id": "B17",
     "kind": "BATCH",
     "branch": "agent/b17-consent-storage-export-preview",
-    "stage": "candidate",
+    "stage": "closure",
     "activeBatchId": "B17",
     "nextBatchId": "B18",
     "completedTasksThroughOnClosure": "T076",
@@ -82,15 +82,15 @@
     ]
   },
   "candidate": {
-    "sha": null,
-    "runId": null,
-    "artifactId": null,
-    "artifactName": null,
-    "artifactDigest": null
+    "sha": "244ee6a50f8eebdeb2d1c76bab599e3c79ec4abe",
+    "runId": "30713946002",
+    "artifactId": 8822770890,
+    "artifactName": "finscope-github-validation-244ee6a50f8e-PASS",
+    "artifactDigest": "sha256:a26bdefd2ba3808d8e621902cee78953a3a3d3a650be31d5bb8333bb25449ffa"
   },
   "closure": {
     "status": "PENDING",
-    "candidateSha": null,
+    "candidateSha": "244ee6a50f8eebdeb2d1c76bab599e3c79ec4abe",
     "commitSha": null,
     "runId": null,
     "artifactId": null,
