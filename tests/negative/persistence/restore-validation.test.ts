@@ -136,6 +136,7 @@ describe('fail-closed restore preview', () => {
 
     const duplicate = structuredClone(base) as Record<string, unknown>;
     (duplicate.records as unknown[]).push(structuredClone((duplicate.records as unknown[])[0]));
+    (duplicate.manifest as Record<string, unknown>).recordCount = (duplicate.records as unknown[]).length;
     await expect(new RestorePreviewService({ find: async () => undefined }).preview(JSON.stringify(duplicate)))
       .rejects.toSatisfy((error: unknown) => code(error) === 'RESTORE_DUPLICATE_RECORD_ID');
 
