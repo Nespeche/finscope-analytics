@@ -8,7 +8,10 @@ test('privacy settings keep refresh and storage consent independent and revocabl
   });
 
   await page.goto('/');
-  await page.getByRole('button', { name: 'Privacy settings' }).click();
+  const privacyNavigation = page.getByRole('button', { name: 'Privacy settings' });
+  await privacyNavigation.focus();
+  await expect(privacyNavigation).toBeFocused();
+  await privacyNavigation.press('Enter');
 
   const refreshConsent = page.getByRole('checkbox', { name: 'Allow explicit refresh requests' });
   const storageConsent = page.getByRole('checkbox', { name: 'Save confirmed analysis on this device' });
