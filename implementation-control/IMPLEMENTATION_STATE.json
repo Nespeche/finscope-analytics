@@ -3,12 +3,12 @@
   "schemaVersion": "1.1.0",
   "project": "FinScope Analytics",
   "normativeBaseline": "v0.21",
-  "packageRevision": "v0.21.15_B13_completed",
-  "activePackageLogicalName": "FS_v0.21.15_B13_completed.zip",
+  "packageRevision": "v0.21.17_B14_completed",
+  "activePackageLogicalName": "FS_v0.21.17_B14_completed.zip",
   "sourceBaseline": {
-    "logicalName": "FS_v0.21.14_B12_completed.zip",
-    "sha256": "d5a278507e880c49e10adae9f087eb6b9bb6c05b57d61253b8662afa300c8d9a",
-    "role": "ACTIVE_COMPLETED_BASELINE_USED_FOR_B13"
+    "logicalName": "FS_v0.21.16_B13_completed.zip",
+    "sha256": "815e2dcdc5c2f149b3b7cc6dc7083ea3ef79642b82599534d8ee3816b94c0796",
+    "role": "ACTIVE_COMPLETED_BASELINE_USED_FOR_B14"
   },
   "phaseGate": {
     "tasksAuthorized": true,
@@ -17,7 +17,7 @@
     "convergenceAuthorized": false
   },
   "implementationStatus": "IN_PROGRESS",
-  "activeBatchId": "B14",
+  "activeBatchId": "B15",
   "completedBatchIds": [
     "B01",
     "B02",
@@ -31,7 +31,8 @@
     "B10",
     "B11",
     "B12",
-    "B13"
+    "B13",
+    "B14"
   ],
   "blockedBatchIds": [],
   "completedTaskIds": [
@@ -93,7 +94,10 @@
     "T056",
     "T057",
     "T058",
-    "T059"
+    "T059",
+    "T060",
+    "T061",
+    "T062"
   ],
   "blockedTaskIds": [],
   "taskStatus": {
@@ -156,9 +160,9 @@
     "T057": "COMPLETED",
     "T058": "COMPLETED",
     "T059": "COMPLETED",
-    "T060": "PENDING",
-    "T061": "PENDING",
-    "T062": "PENDING",
+    "T060": "COMPLETED",
+    "T061": "COMPLETED",
+    "T062": "COMPLETED",
     "T063": "PENDING",
     "T064": "PENDING",
     "T065": "PENDING",
@@ -221,7 +225,7 @@
     "B11": "COMPLETED",
     "B12": "COMPLETED",
     "B13": "COMPLETED",
-    "B14": "PENDING",
+    "B14": "COMPLETED",
     "B15": "PENDING",
     "B16": "PENDING",
     "B17": "PENDING",
@@ -234,9 +238,9 @@
     "B24": "PENDING",
     "B25": "PENDING"
   },
-  "lastCompletedBatchId": "B13",
-  "lastBatchReport": "implementation-control/reports/B13_EVIDENCE_VERIFICATION_AND_CLOSURE.md",
-  "nextAuthorizedBatchId": "B14",
+  "lastCompletedBatchId": "B14",
+  "lastBatchReport": "implementation-control/reports/B14_EVIDENCE_VERIFICATION_AND_CLOSURE.md",
+  "nextAuthorizedBatchId": "B15",
   "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
   "openFindings": [
     {
@@ -609,7 +613,7 @@
   "productCodePresent": true,
   "dependenciesInstalled": false,
   "buildArtifactsPresent": false,
-  "updatedBy": "FinScope GitHub B13 authenticated closure",
+  "updatedBy": "FinScope GitHub B14 authenticated closure",
   "updatedOn": "2026-07-31",
   "baselineRole": "ACTIVE_COMPLETED_BASELINE",
   "normativeSourceBaseline": {
@@ -617,7 +621,7 @@
     "sha256": "2e765125d2d3415f9804a0bd8c30f1d9073eb9ae2576ff573c58c4706065e425",
     "role": "NORMATIVE_V0_21_ORIGIN"
   },
-  "sourceTasksSha256": "12f46ebcd66ef19946281d3a477a0250a887f00b1dff3cafe57e6c02008d7965",
+  "sourceTasksSha256": "934d2e077125e92fe619949c929d7d0940185c13110c1db30d3c14ead2b86277",
   "validationWorkflow": {
     "candidatePromotionRule": "Exact candidate r4 PR Validation PASS artifact is authenticated; an allowlisted Closure PASS for the closure commit is required before merge and Release.",
     "localProtocol": "implementation-control/LOCAL_VALIDATION_PROTOCOL.md",
