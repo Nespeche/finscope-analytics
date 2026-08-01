@@ -1,10 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { canonicalizeJson, type JsonValue } from '../../src/core/canonical-json';
-import {
-  parseFundamentalAnalysis,
-  parseFundamentalBundle,
-} from '../../src/domain/fundamental/types';
+import type { FundamentalAnalysis, FundamentalBundle } from '../../src/domain/fundamental/types';
 import { LocalExportService, type LocalExportPackage } from '../../src/persistence/export-service';
 import type {
   ActivePointerRecord,
@@ -43,13 +40,11 @@ async function activate(page: Page): Promise<void> {
   await consent.press('Space');
 }
 function records() {
-  const bundle = parseFundamentalBundle(
-    (bundleVectorsJson as { readonly validFixtures: readonly Fixture[] }).validFixtures[0]?.input,
-  );
-  const analysis = parseFundamentalAnalysis(
-    (analysisVectorsJson as { readonly validFixtures: readonly Fixture[] }).validFixtures
-      .find((fixture) => fixture.fixtureId === 'ANALYSIS-FUNDAMENTAL-VALID')?.input,
-  );
+  const bundle = (bundleVectorsJson as { readonly validFixtures: readonly Fixture[] })
+    .validFixtures[0]?.input as FundamentalBundle;
+  const analysis = (analysisVectorsJson as { readonly validFixtures: readonly Fixture[] })
+    .validFixtures.find((fixture) => fixture.fixtureId === 'ANALYSIS-FUNDAMENTAL-VALID')?.input
+    as FundamentalAnalysis;
   const snapshot: FundamentalSnapshotRecord = {
     recordType: 'fundamental_snapshot', snapshotId: 'lifecycle-snapshot', issuerCik: bundle.issuer.cik,
     bundleId: bundle.bundleId, analysisId: analysis.analysisId,
