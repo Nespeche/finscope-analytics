@@ -1,4 +1,16 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
+
+async function activate(control: Locator): Promise<void> {
+  await control.focus();
+  await expect(control).toBeFocused();
+  await control.press('Enter');
+}
+
+async function toggle(control: Locator): Promise<void> {
+  await control.focus();
+  await expect(control).toBeFocused();
+  await control.press('Space');
+}
 
 test('privacy settings keep refresh and storage consent independent and revocable', async ({ page }) => {
   let probeRequests = 0;
@@ -8,10 +20,7 @@ test('privacy settings keep refresh and storage consent independent and revocabl
   });
 
   await page.goto('/');
-  const privacyNavigation = page.getByRole('button', { name: 'Privacy settings' });
-  await privacyNavigation.focus();
-  await expect(privacyNavigation).toBeFocused();
-  await privacyNavigation.press('Enter');
+  await activate(page.getByRole('button', { name: 'Privacy settings' }));
 
   const refreshConsent = page.getByRole('checkbox', { name: 'Allow explicit refresh requests' });
   const storageConsent = page.getByRole('checkbox', { name: 'Save confirmed analysis on this device' });
@@ -20,36 +29,39 @@ test('privacy settings keep refresh and storage consent independent and revocabl
   await expect(refreshConsent).not.toBeChecked();
   await expect(storageConsent).not.toBeChecked();
 
-  await page.getByRole('button', { name: 'Check for updates' }).click();
+  await activate(page.getByRole('button', { name: 'Check for updates' }));
   await expect(status).toContainText('zero network requests');
   expect(probeRequests).toBe(0);
 
-  await page.getByRole('button', { name: 'Run local analysis' }).click();
+  await activate(page.getByRole('button', { name: 'Run local analysis' }));
   await expect(status).toContainText('memory only');
   expect(probeRequests).toBe(0);
 
-  await storageConsent.check();
+  await toggle(storageConsent);
   await expect(storageConsent).toBeFocused();
+  await expect(storageConsent).toBeChecked();
   await expect(refreshConsent).not.toBeChecked();
-  await page.getByRole('button', { name: 'Run local analysis' }).click();
+  await activate(page.getByRole('button', { name: 'Run local analysis' }));
   await expect(status).toContainText('saved locally');
   expect(probeRequests).toBe(0);
 
-  await refreshConsent.check();
+  await toggle(refreshConsent);
   await expect(refreshConsent).toBeFocused();
-  await page.getByRole('button', { name: 'Check for updates' }).click();
+  await expect(refreshConsent).toBeChecked();
+  await activate(page.getByRole('button', { name: 'Check for updates' }));
   await expect(status).toContainText('Refresh completed');
   expect(probeRequests).toBe(1);
 
-  await page.getByRole('button', { name: 'Revoke refresh consent' }).click();
+  await activate(page.getByRole('button', { name: 'Revoke refresh consent' }));
   await expect(refreshConsent).not.toBeChecked();
   await expect(refreshConsent).toBeFocused();
-  await page.getByRole('button', { name: 'Check for updates' }).click();
+  await activate(page.getByRole('button', { name: 'Check for updates' }));
+  await expect(status).toContainText('zero network requests');
   expect(probeRequests).toBe(1);
 
-  await page.getByRole('button', { name: 'Revoke storage consent' }).click();
+  await activate(page.getByRole('button', { name: 'Revoke storage consent' }));
   await expect(storageConsent).not.toBeChecked();
   await expect(storageConsent).toBeFocused();
-  await page.getByRole('button', { name: 'Run local analysis' }).click();
+  await activate(page.getByRole('button', { name: 'Run local analysis' }));
   await expect(status).toContainText('memory only');
 });
