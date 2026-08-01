@@ -1,22 +1,32 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 
-async function activateRoute(page: Page, name: string): Promise<void> {
-  const button = page.getByRole('button', { name, exact: true });
+async function pressButton(button: Locator): Promise<void> {
   await button.focus();
   await button.press('Enter');
+}
+
+async function activateRoute(page: Page, name: string): Promise<void> {
+  await pressButton(page.getByRole('button', { name, exact: true }));
+}
+
+async function selectRadio(page: Page, name: string): Promise<void> {
+  const radio = page.getByLabel(name);
+  await radio.focus();
+  await radio.press('Space');
+  await expect(radio).toBeChecked();
 }
 
 async function addManualObservation(page: Page, date: string, price: string): Promise<void> {
   await page.getByLabel('Observation date (YYYY-MM-DD)').fill(date);
   await page.getByLabel('Closing price').fill(price);
-  await page.getByRole('button', { name: 'Add manual observation', exact: true }).click();
+  await pressButton(page.getByRole('button', { name: 'Add manual observation', exact: true }));
 }
 
 async function confirmMutation(page: Page, label: string, dialogName: RegExp): Promise<void> {
-  await page.getByRole('button', { name: label, exact: true }).click();
+  await pressButton(page.getByRole('button', { name: label, exact: true }));
   const dialog = page.getByRole('dialog', { name: dialogName });
   await expect(dialog).toBeVisible();
-  await dialog.getByRole('button', { name: label, exact: true }).click();
+  await pressButton(dialog.getByRole('button', { name: label, exact: true }));
 }
 
 test('manual import binds invalid date and price errors to their fields before preview', async ({ page }) => {
@@ -27,7 +37,7 @@ test('manual import binds invalid date and price errors to their fields before p
   const priceField = page.getByLabel('Closing price');
   await dateField.fill('2025-02-30');
   await priceField.fill('-1');
-  await page.getByRole('button', { name: 'Add manual observation', exact: true }).click();
+  await pressButton(page.getByRole('button', { name: 'Add manual observation', exact: true }));
 
   await expect(dateField).toHaveAttribute('aria-invalid', 'true');
   await expect(dateField).toHaveAttribute('aria-describedby', /manual-price-date-error/u);
@@ -46,7 +56,7 @@ test('manual preview requires confirmation and restores focus after cancellation
   await addManualObservation(page, '2025-01-03', '100');
   await addManualObservation(page, '2025-01-31', '110');
   await addManualObservation(page, '2025-03-14', '105');
-  await page.getByRole('button', { name: 'Create price preview', exact: true }).click();
+  await pressButton(page.getByRole('button', { name: 'Create price preview', exact: true }));
 
   const preview = page.getByTestId('price-import-preview');
   await expect(preview).toBeVisible();
@@ -56,17 +66,17 @@ test('manual preview requires confirmation and restores focus after cancellation
   await expect(page.getByTestId('active-price-pointer')).toContainText('No active price overlay');
 
   const importButton = page.getByRole('button', { name: 'Import price overlay', exact: true });
-  await importButton.click();
+  await pressButton(importButton);
   const dialog = page.getByRole('dialog', { name: 'Confirm price import' });
   await expect(dialog).toBeVisible();
-  await dialog.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await pressButton(dialog.getByRole('button', { name: 'Cancel', exact: true }));
   await expect(importButton).toBeFocused();
   await expect(page.getByTestId('active-price-pointer')).toContainText('No active price overlay');
 
-  await importButton.click();
-  await dialog.getByRole('button', { name: 'Import price overlay', exact: true }).click();
+  await pressButton(importButton);
+  await pressButton(dialog.getByRole('button', { name: 'Import price overlay', exact: true }));
   await expect(page.locator('#price-import-status')).toContainText('version 1 imported');
-  await expect(importButton).toBeFocused();
+  await expect(page.getByRole('button', { name: 'Replace price overlay', exact: true })).toBeFocused();
   await expect(page.getByTestId('active-price-pointer')).toContainText('Version');
   await expect(page.getByTestId('active-price-pointer')).toContainText('1');
   await expect(page.getByText('Last price event:')).toContainText('historical_price_imported');
@@ -76,7 +86,7 @@ test('manual preview requires confirmation and restores focus after cancellation
 test('CSV import, replacement and deletion each use an explicit confirmation gate', async ({ page }) => {
   await page.goto('/');
   await activateRoute(page, 'Price import');
-  await page.getByLabel('CSV import').check();
+  await selectRadio(page, 'CSV import');
 
   const csvInput = page.getByLabel('CSV file');
   await csvInput.setInputFiles({
@@ -85,7 +95,7 @@ test('CSV import, replacement and deletion each use an explicit confirmation gat
     buffer: Buffer.from('date,close\n2025-01-03,100\n2025-01-31,110\n2025-03-14,105\n'),
   });
   await expect(page.locator('#price-import-status')).toContainText('CSV parsed: 3 observations');
-  await page.getByRole('button', { name: 'Create price preview', exact: true }).click();
+  await pressButton(page.getByRole('button', { name: 'Create price preview', exact: true }));
   await confirmMutation(page, 'Import price overlay', /Confirm price import/u);
   await expect(page.locator('#price-import-status')).toContainText('version 1 imported');
 
@@ -94,17 +104,17 @@ test('CSV import, replacement and deletion each use an explicit confirmation gat
     mimeType: 'text/csv',
     buffer: Buffer.from('date,close\n2025-01-03,100\n2025-01-31,112\n2025-03-14,120\n'),
   });
-  await page.getByRole('button', { name: 'Create price preview', exact: true }).click();
+  await pressButton(page.getByRole('button', { name: 'Create price preview', exact: true }));
   await confirmMutation(page, 'Replace price overlay', /Confirm price replacement/u);
   await expect(page.locator('#price-import-status')).toContainText('version 2 replaced');
   await expect(page.getByTestId('active-price-pointer')).toContainText('2');
   await expect(page.getByText('Last price event:')).toContainText('historical_price_replaced');
 
   const deleteButton = page.getByRole('button', { name: 'Delete price overlay', exact: true });
-  await deleteButton.click();
+  await pressButton(deleteButton);
   const deleteDialog = page.getByRole('dialog', { name: 'Confirm price deletion' });
   await expect(deleteDialog).toBeVisible();
-  await deleteDialog.getByRole('button', { name: /Delete price overlay: Confirm price deletion/u }).click();
+  await pressButton(deleteDialog.getByRole('button', { name: /Delete price overlay: Confirm price deletion/u }));
   await expect(page.locator('#price-import-status')).toContainText('Price overlay deleted');
   await expect(deleteButton).toBeFocused();
   await expect(page.getByTestId('active-price-pointer')).toContainText('No active price overlay');
