@@ -14,7 +14,7 @@
     "id": "B15",
     "kind": "BATCH",
     "branch": "agent/b15-price-core",
-    "stage": "candidate",
+    "stage": "closure",
     "activeBatchId": "B15",
     "nextBatchId": "B16",
     "completedTasksThroughOnClosure": "T068",
@@ -64,15 +64,15 @@
     ]
   },
   "candidate": {
-    "sha": null,
-    "runId": null,
-    "artifactId": null,
-    "artifactName": null,
-    "artifactDigest": null
+    "sha": "eeb4d7065be5d0883ef72aaa89de5d07758b1f18",
+    "runId": "30677021963",
+    "artifactId": 8810837405,
+    "artifactName": "finscope-github-validation-eeb4d7065be5-PASS",
+    "artifactDigest": "sha256:d8d47770d4dd39d9c40eb41d970d00e1696b89331b664f039edecce774a5b904"
   },
   "closure": {
     "status": "PENDING",
-    "candidateSha": null,
+    "candidateSha": "eeb4d7065be5d0883ef72aaa89de5d07758b1f18",
     "commitSha": null,
     "runId": null,
     "artifactId": null,
