@@ -65,6 +65,15 @@ class MemoryStorage implements AtomicRepositoryStorage {
 }
 
 const cik = parseCik('0000320193');
+const verifiedPriceQuality = Object.freeze({
+  classification: 'verified' as const,
+  axes: Object.freeze({
+    rowValidity: 'all_valid' as const,
+    dateIntegrity: 'unique_sorted' as const,
+    currencyIntegrity: 'single_declared' as const,
+    adjustmentDisclosure: 'declared' as const,
+  }),
+});
 function overlay(version: number, character: string) {
   return parseHistoricalPriceOverlay({
     overlayId: 'price-overlay-0000320193-aapl', overlayVersion: version, contractVersion: '5.0.0',
@@ -73,12 +82,13 @@ function overlay(version: number, character: string) {
     adjustmentStatus: 'unadjusted', origin: { profileId: 'local_csv_manual_v1', method: 'manual_entry' },
     warnings: [], priceUse: 'historical_descriptive_only',
     historicalPriceOverlayFingerprint: `sha256:${character.repeat(64)}`,
+    priceQuality: verifiedPriceQuality,
   });
 }
 function analysis(id: string, fingerprint: string, character: string) {
   return parsePriceAnalysis({
     analysisKind: 'historical_price_descriptive', analysisId: id, issuerCik: cik,
-    historicalPriceOverlayFingerprint: fingerprint, priceQuality: {}, priceMetricResults: [],
+    historicalPriceOverlayFingerprint: fingerprint, priceQuality: verifiedPriceQuality, priceMetricResults: [],
     versions: { metricCatalog: '5.0.1' }, priceAnalysisFingerprint: `sha256:${character.repeat(64)}`,
   });
 }
