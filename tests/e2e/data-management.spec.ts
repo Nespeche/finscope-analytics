@@ -1,0 +1,169 @@
+import { expect, test, type Locator, type Page } from '@playwright/test';
+import bundleVectorsJson from '../../specs/001-fundamental-analysis-platform/fixtures/bundles/fundamental-bundle-test-vectors.json';
+import analysisVectorsJson from '../../specs/001-fundamental-analysis-platform/fixtures/analysis/analysis-result-test-vectors.json';
+import { canonicalizeJson, type JsonValue } from '../../src/core/canonical-json';
+import { sha256Digest } from '../../src/core/sha256';
+import {
+  parseFundamentalAnalysis,
+  parseFundamentalBundle,
+} from '../../src/domain/fundamental/types';
+import { LocalExportService, type LocalExportPackage } from '../../src/persistence/export-service';
+import type {
+  ActivePointerRecord,
+  CommitRecord,
+  FundamentalRepositoryRecords,
+  FundamentalSnapshotRecord,
+} from '../../src/persistence/snapshot-repository';
+
+interface Fixture { readonly fixtureId: string; readonly input: unknown }
+
+async function press(control: Locator): Promise<void> {
+  await control.focus();
+  await expect(control).toBeFocused();
+  await control.press('Enter');
+}
+
+async function resetDatabase(page: Page): Promise<void> {
+  await page.goto('/');
+  await page.evaluate(async () => {
+    await new Promise<void>((resolve, reject) => {
+      const request = indexedDB.deleteDatabase('finscope_personal_v1');
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+      request.onblocked = () => reject(new Error('DATABASE_DELETE_BLOCKED'));
+    });
+  });
+}
+
+async function openDataManagement(page: Page): Promise<void> {
+  await press(page.getByRole('button', { name: 'Data management', exact: true }));
+  const consent = page.getByRole('checkbox', { name: 'Allow this view to open and change IndexedDB' });
+  await consent.focus();
+  await consent.press('Space');
+  await expect(consent).toBeChecked();
+}
+
+function fundamentalRecords(): FundamentalRepositoryRecords {
+  const bundle = parseFundamentalBundle(
+    (bundleVectorsJson as { readonly validFixtures: readonly Fixture[] }).validFixtures[0]?.input,
+  );
+  const analysis = parseFundamentalAnalysis(
+    (analysisVectorsJson as { readonly validFixtures: readonly Fixture[] }).validFixtures
+      .find((fixture) => fixture.fixtureId === 'ANALYSIS-FUNDAMENTAL-VALID')?.input,
+  );
+  const snapshot: FundamentalSnapshotRecord = {
+    recordType: 'fundamental_snapshot', snapshotId: 'e2e-restore-snapshot', issuerCik: bundle.issuer.cik,
+    bundleId: bundle.bundleId, analysisId: analysis.analysisId,
+    fundamentalInputFingerprint: bundle.fundamentalInputFingerprint,
+    fundamentalAnalysisFingerprint: analysis.fundamentalAnalysisFingerprint,
+    state: 'committed', createdAt: '2026-08-01T00:00:00.000Z',
+  };
+  const pointer: ActivePointerRecord = {
+    recordType: 'active_pointer', issuerCik: bundle.issuer.cik, pointerKind: 'fundamental_snapshot',
+    targetId: snapshot.snapshotId, targetFingerprint: snapshot.fundamentalAnalysisFingerprint,
+    generation: 1, updatedAt: '2026-08-01T00:00:00.000Z',
+  };
+  const commit: CommitRecord = {
+    recordType: 'commit', transactionId: 'e2e-restore-commit', issuerCik: bundle.issuer.cik,
+    writtenRecordIds: [bundle.bundleId, analysis.analysisId, snapshot.snapshotId],
+    pointerUpdates: [`${bundle.issuer.cik}:fundamental_snapshot`], status: 'committed',
+    committedAt: '2026-08-01T00:00:00.000Z',
+  };
+  return { snapshots: [snapshot], bundles: [bundle], analyses: [analysis], pointers: [pointer], commits: [commit] };
+}
+
+async function buildPackage(version: '1.1.0' | '1.0.0' = '1.1.0'): Promise<LocalExportPackage> {
+  const exporter = new LocalExportService(
+    { readAllRecords: async () => fundamentalRecords() },
+    { readAllRecords: async () => ({ overlays: [], analyses: [], pointers: [], commits: [] }) },
+    () => '2026-08-01T00:00:00.000Z',
+  );
+  const current = await exporter.createPackage();
+  if (version === '1.1.0') return current;
+  const manifest = { ...current.manifest, formatVersion: '1.0.0' };
+  const checksumInput = {
+    format: current.format,
+    version: '1.0.0',
+    formatVersion: '1.0.0',
+    manifest,
+    records: current.records,
+  };
+  return {
+    ...checksumInput,
+    packageSha256: await sha256Digest(canonicalizeJson(checksumInput as unknown as JsonValue)),
+  } as unknown as LocalExportPackage;
+}
+
+async function seedRecords(page: Page, packageObject: LocalExportPackage): Promise<void> {
+  await page.evaluate(async (records) => {
+    const database = await new Promise<IDBDatabase>((resolve, reject) => {
+      const request = indexedDB.open('finscope_personal_v1', 1);
+      request.onupgradeneeded = () => {
+        const definitions: Array<[string, string | string[]]> = [
+          ['fundamentalSnapshots', 'snapshotId'], ['fundamentalBundles', 'bundleId'],
+          ['fundamentalAnalyses', 'analysisId'], ['priceOverlays', ['overlayId', 'overlayVersion']],
+          ['priceAnalyses', 'analysisId'], ['activePointers', ['issuerCik', 'pointerKind']],
+          ['commitLog', 'transactionId'],
+        ];
+        for (const [name, keyPath] of definitions) {
+          if (!request.result.objectStoreNames.contains(name)) request.result.createObjectStore(name, { keyPath });
+        }
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+    const stores: Record<string, string> = {
+      fundamentalSnapshot: 'fundamentalSnapshots', fundamentalBundle: 'fundamentalBundles',
+      fundamentalAnalysis: 'fundamentalAnalyses', historicalPriceOverlay: 'priceOverlays',
+      priceAnalysis: 'priceAnalyses', activePointer: 'activePointers', commitRecord: 'commitLog',
+    };
+    const transaction = database.transaction([...new Set(records.map((record) => stores[record.recordKind]))], 'readwrite');
+    for (const record of records) transaction.objectStore(stores[record.recordKind] as string).put(record.payload);
+    await new Promise<void>((resolve, reject) => {
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error);
+      transaction.onabort = () => reject(transaction.error);
+    });
+    database.close();
+  }, packageObject.records);
+}
+
+test('restore UI previews an allowed migration and requires explicit confirmation', async ({ page }) => {
+  await resetDatabase(page);
+  await openDataManagement(page);
+  const packageObject = await buildPackage('1.0.0');
+
+  await page.getByLabel('Preview restore file').setInputFiles({
+    name: 'finscope-v1.0.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(canonicalizeJson(packageObject as unknown as JsonValue)),
+  });
+
+  const preview = page.getByTestId('restore-preview');
+  await expect(preview).toBeVisible();
+  await expect(page.getByTestId('restore-migration')).toContainText('1.0.0 → 1.1.0');
+  await expect(page.getByTestId('data-management-status')).toContainText('Review the preview');
+
+  await press(preview.getByRole('button', { name: 'Confirm atomic restore' }));
+  await expect(page.getByTestId('data-management-status')).toContainText('Atomic restore completed: 5 record(s)');
+  await expect(preview).toHaveCount(0);
+});
+
+test('restore UI discloses conflicts and restricts replacement to matching IDs', async ({ page }) => {
+  await resetDatabase(page);
+  const packageObject = await buildPackage();
+  await seedRecords(page, packageObject);
+  await openDataManagement(page);
+
+  await page.getByLabel('Preview restore file').setInputFiles({
+    name: 'finscope-conflicts.json', mimeType: 'application/json',
+    buffer: Buffer.from(canonicalizeJson(packageObject as unknown as JsonValue)),
+  });
+
+  await expect(page.getByTestId('restore-conflicts').getByRole('listitem')).toHaveCount(5);
+  await expect(page.getByLabel('Reject restore when conflicts exist')).toBeChecked();
+  const replacement = page.getByLabel('Replace only matching record IDs');
+  await replacement.check();
+  await press(page.getByRole('button', { name: 'Confirm atomic restore' }));
+  await expect(page.getByTestId('data-management-status')).toContainText('5 replacement(s)');
+});

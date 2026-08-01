@@ -19,6 +19,79 @@ export class IndexedDbBlockedError extends Error {
   }
 }
 
+export type RepositoryIntegrityFailure =
+  | 'schema_mismatch'
+  | 'record_hash_mismatch'
+  | 'pointer_corrupt'
+  | 'reference_missing'
+  | 'commit_evidence_missing';
+
+export interface QuarantinedRepositoryRecord {
+  readonly quarantineId: string;
+  readonly storeName: FinScopeStoreName;
+  readonly recordKey: string;
+  readonly reason: RepositoryIntegrityFailure;
+  readonly message: string;
+  readonly payload: unknown;
+}
+
+function deterministicKeyText(value: IDBValidKey | string): string {
+  if (typeof value === 'string') return value;
+  if (typeof value === 'number' || value instanceof Date) return String(value);
+  if (Array.isArray(value)) return JSON.stringify(value);
+  if (ArrayBuffer.isView(value)) {
+    return JSON.stringify([...new Uint8Array(value.buffer, value.byteOffset, value.byteLength)]);
+  }
+  if (value instanceof ArrayBuffer) return JSON.stringify([...new Uint8Array(value)]);
+  return String(value);
+}
+
+/**
+ * Session-local quarantine registry. Invalid persisted records remain untouched in IndexedDB,
+ * but deterministic quarantine entries keep them out of active resolution and export.
+ */
+export class CorruptionQuarantine {
+  readonly #entries = new Map<string, QuarantinedRepositoryRecord>();
+
+  quarantine(input: Readonly<{
+    storeName: FinScopeStoreName;
+    recordKey: IDBValidKey | string;
+    reason: RepositoryIntegrityFailure;
+    message: string;
+    payload: unknown;
+  }>): QuarantinedRepositoryRecord {
+    const key = deterministicKeyText(input.recordKey);
+    const quarantineId = `${input.storeName}:${key}:${input.reason}`;
+    const existing = this.#entries.get(quarantineId);
+    if (existing !== undefined) return existing;
+    const entry = Object.freeze({
+      quarantineId,
+      storeName: input.storeName,
+      recordKey: key,
+      reason: input.reason,
+      message: input.message,
+      payload: input.payload,
+    });
+    this.#entries.set(quarantineId, entry);
+    return entry;
+  }
+
+  list(): readonly QuarantinedRepositoryRecord[] {
+    return Object.freeze(
+      [...this.#entries.values()].sort((left, right) => left.quarantineId.localeCompare(right.quarantineId, 'en')),
+    );
+  }
+
+  has(storeName: FinScopeStoreName, recordKey: IDBValidKey | string): boolean {
+    const prefix = `${storeName}:${deterministicKeyText(recordKey)}:`;
+    return [...this.#entries.keys()].some((key) => key.startsWith(prefix));
+  }
+
+  clear(): void {
+    this.#entries.clear();
+  }
+}
+
 export function resolveIndexedDbFactory(
   factory: IDBFactory | undefined = globalThis.indexedDB,
 ): IDBFactory {
