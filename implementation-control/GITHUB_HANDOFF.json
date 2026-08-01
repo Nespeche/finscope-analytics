@@ -12,25 +12,13 @@
   },
   "operation": {
     "id": "B16",
-    "kind": "RELEASE_REMEDIATION",
+    "kind": "RELEASE_AUDIT",
     "branch": "audit/b16-release-reauth",
     "stage": "candidate",
     "activeBatchId": "B16",
     "nextBatchId": "B17",
     "completedTasksThroughOnClosure": "T071",
     "qualificationCommands": [
-      {
-        "id": "package-completed-release",
-        "category": "package",
-        "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
-        "required": true
-      },
-      {
-        "id": "verify-completed-package",
-        "category": "package-authentication",
-        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.19_B16_completed.zip .finscope-release/FS_v0.21.19_B16_completed.zip.sha256",
-        "required": true
-      },
       {
         "id": "reauthenticate-published-release",
         "category": "published-release-authentication",
@@ -56,7 +44,7 @@
     "artifactDigest": "sha256:901eede21f93cc155298af7db998682a92fcc444cd7254ddd2a9094aa021a32d"
   },
   "release": {
-    "pending": true,
+    "pending": false,
     "tag": "v0.21.19-B16-completed",
     "packageRevision": "v0.21.19_B16_completed",
     "zipName": "FS_v0.21.19_B16_completed.zip",
