@@ -1,4 +1,4 @@
-name: FinScope PR Validation
+name: FinScope B15 Published Release Reauthentication
 
 on:
   pull_request:
@@ -8,58 +8,96 @@ permissions:
   contents: read
 
 jobs:
-  validate:
-    name: validate
+  reauthenticate:
+    if: github.event.pull_request.head.ref == 'agent/b15-release-reauth' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout exact PR commit
+      - name: Checkout audit branch
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Configure Node from package authority
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
-        with:
-          node-version-file: package.json
-          cache: npm
-      - name: Prepare normative package-root alias
+      - name: Download only custom completed assets
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          root_alias="$RUNNER_TEMP/FinScope_v0.21.4"
-          rm -rf "$root_alias"
-          ln -s "$GITHUB_WORKSPACE" "$root_alias"
-          echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
-      - name: Validate control plane first
+          tag=v0.21.18-B15-completed
+          mkdir -p .finscope-reauth/assets .finscope-reauth/extract
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$tag" > .finscope-reauth/release.json
+          test "$(node -p "JSON.parse(require('fs').readFileSync('.finscope-reauth/release.json')).draft")" = false
+          test "$(node -p "JSON.parse(require('fs').readFileSync('.finscope-reauth/release.json')).prerelease")" = false
+          mapfile -t names < <(node -e "const r=require('./.finscope-reauth/release.json'); for(const a of r.assets) console.log(a.name)" | sort)
+          printf '%s\n' "${names[@]}" > .finscope-reauth/release-assets.txt
+          test "${#names[@]}" -eq 5
+          grep -Fx 'FS_v0.21.18_B15_completed.zip' .finscope-reauth/release-assets.txt
+          grep -Fx 'FS_v0.21.18_B15_completed.zip.sha256' .finscope-reauth/release-assets.txt
+          grep -Fx 'GITHUB_RELEASE_HANDOFF.json' .finscope-reauth/release-assets.txt
+          grep -Fx 'PROMPT_IMPLEMENTACION_B16.md' .finscope-reauth/release-assets.txt
+          test "$(grep -Ec '^FinScope_B15_release_evidence_[0-9]+\.json$' .finscope-reauth/release-assets.txt)" -eq 1
+          gh release download "$tag" --repo "$GITHUB_REPOSITORY" --dir .finscope-reauth/assets
+          test "$(find .finscope-reauth/assets -maxdepth 1 -type f | wc -l)" -eq 5
+      - name: Authenticate ZIP, sidecar and tag target
+        env:
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          mkdir -p .finscope-evidence/preflight
-          set +e
-          node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT" >.finscope-evidence/preflight/control-plane.stdout.log 2>.finscope-evidence/preflight/control-plane.stderr.log
-          code=$?
-          printf '%s\n' "$code" >.finscope-evidence/preflight/control-plane.exit-code
-          exit 0
-      - name: Authenticate completed Release assets
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-evidence/preflight/release-baseline.json
-      - name: Execute derived validation and build evidence
-        id: validation
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: node implementation-control/scripts/Run-GitHubValidation.mjs
-      - name: Upload PASS or FAILED evidence
-        if: always()
-        id: upload
+          set -euo pipefail
+          cd .finscope-reauth/assets
+          expected=$(awk 'NF{print tolower($1); exit}' FS_v0.21.18_B15_completed.zip.sha256)
+          actual=$(sha256sum FS_v0.21.18_B15_completed.zip | awk '{print $1}')
+          test "$actual" = "$expected"
+          printf '%s\n' "$actual" > ../ZIP_SHA256.txt
+          cd "$GITHUB_WORKSPACE"
+          tag_sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/v0.21.18-B15-completed" --jq .sha)
+          test "$tag_sha" = 'ee596023a71b4659a8a35e091cd21f72eaf114aa'
+          printf '%s\n' "$tag_sha" > .finscope-reauth/TAG_COMMIT_SHA.txt
+      - name: Verify completed package independently
+        shell: bash
+        run: |
+          set -euo pipefail
+          unzip -q .finscope-reauth/assets/FS_v0.21.18_B15_completed.zip -d .finscope-reauth/extract
+          test "$(find .finscope-reauth/extract -mindepth 1 -maxdepth 1 -type d | wc -l)" -eq 1
+          root=$(find .finscope-reauth/extract -mindepth 1 -maxdepth 1 -type d)
+          test "$(basename "$root")" = 'FinScope_v0.21.4'
+          (cd "$root" && node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs \
+            "$GITHUB_WORKSPACE/.finscope-reauth/assets/FS_v0.21.18_B15_completed.zip" \
+            "$GITHUB_WORKSPACE/.finscope-reauth/assets/FS_v0.21.18_B15_completed.zip.sha256") \
+            > .finscope-reauth/completed-package-verification.json
+          node -e "const v=require('./.finscope-reauth/completed-package-verification.json'); if(v.result!=='PASS'||v.activeBatchId!=='B16'||v.nextAuthorizedBatchId!=='B16'||v.convergenceAuthorized!==false||v.specify.count!==19||v.specify.sha256!=='e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09') process.exit(1)"
+      - name: Cross-check handoff and published evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs=require('fs');
+          const p='.finscope-reauth/assets/';
+          const handoff=JSON.parse(fs.readFileSync(p+'GITHUB_RELEASE_HANDOFF.json','utf8'));
+          if(handoff.tag!=='v0.21.18-B15-completed') throw new Error('TAG_MISMATCH');
+          if(handoff.commitSha!=='ee596023a71b4659a8a35e091cd21f72eaf114aa') throw new Error('COMMIT_MISMATCH');
+          if(handoff.baselineState.activeBatchId!=='B16'||handoff.baselineState.nextAuthorizedBatchId!=='B16'||handoff.baselineState.completedTasksThrough!=='T068'||handoff.baselineState.convergenceAuthorized!==false) throw new Error('STATE_MISMATCH');
+          if(handoff.baselineState.specifyTreeSha256!=='e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09') throw new Error('SPECIFY_MISMATCH');
+          const evidenceName=fs.readdirSync(p).find((name)=>/^FinScope_B15_release_evidence_\d+\.json$/.test(name));
+          if(!evidenceName) throw new Error('EVIDENCE_MISSING');
+          const evidence=JSON.parse(fs.readFileSync(p+evidenceName,'utf8'));
+          if(evidence.result!=='PASS'||evidence.commitSha!==handoff.commitSha) throw new Error('EVIDENCE_IDENTITY_MISMATCH');
+          const zipAsset=handoff.assets.find((a)=>a.name==='FS_v0.21.18_B15_completed.zip');
+          if(!zipAsset) throw new Error('ZIP_ASSET_MISSING');
+          fs.writeFileSync('.finscope-reauth/FINAL_RELEASE_SUMMARY.json',JSON.stringify({result:'PASS',releaseRunId:handoff.releaseRunId,releaseId:handoff.releaseId,tag:handoff.tag,commitSha:handoff.commitSha,zipSha256:zipAsset.sha256,assetNames:fs.readdirSync(p).sort(),baselineState:handoff.baselineState},null,2)+'\n');
+          NODE
+      - name: Upload reauthenticated custom assets
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: ${{ steps.validation.outputs.artifact_name }}
-          path: ${{ steps.validation.outputs.evidence_dir }}
+          name: finscope-b15-release-reauth-${{ github.event.pull_request.head.sha }}
+          path: |
+            .finscope-reauth/assets
+            .finscope-reauth/release.json
+            .finscope-reauth/release-assets.txt
+            .finscope-reauth/ZIP_SHA256.txt
+            .finscope-reauth/TAG_COMMIT_SHA.txt
+            .finscope-reauth/completed-package-verification.json
+            .finscope-reauth/FINAL_RELEASE_SUMMARY.json
           if-no-files-found: error
           include-hidden-files: true
-          retention-days: 30
-      - name: Enforce final result
-        if: always()
-        env:
-          RESULT: ${{ steps.validation.outputs.result }}
-        run: test "$RESULT" = PASS
+          retention-days: 14
