@@ -1,5 +1,4 @@
 import type { Sha256Digest } from '../core/sha256';
-import { fundamentalAnalysisFingerprint } from '../domain/fingerprints/fingerprint-service';
 import {
   parseFundamentalAnalysis,
   parseFundamentalBundle,
@@ -259,10 +258,6 @@ export class SnapshotRepository {
   async publish(candidate: FundamentalSnapshotCandidate): Promise<PublishedFundamentalSnapshot> {
     const validated = validateCandidate(candidate);
     const issuerCik = validated.bundle.issuer.cik;
-    const analysisHash = await fundamentalAnalysisFingerprint(validated.analysis);
-    if (analysisHash !== validated.analysis.fundamentalAnalysisFingerprint) {
-      throw new TypeError('FUNDAMENTAL_ANALYSIS_HASH_MISMATCH');
-    }
 
     return await this.storage.run(
       FUNDAMENTAL_TRANSACTION_STORES,
@@ -378,13 +373,11 @@ export class SnapshotRepository {
         'The fundamental analysis failed schema validation.', analysisRaw);
     }
 
-    const analysisHash = await fundamentalAnalysisFingerprint(analysis);
     if (bundle.fundamentalInputFingerprint !== snapshot.fundamentalInputFingerprint) {
       return quarantineFailure(this.quarantine, 'fundamentalBundles', snapshot.bundleId, 'record_hash_mismatch',
         'The fundamental bundle fingerprint does not match the committed snapshot lineage.', bundleRaw);
     }
-    if (analysisHash !== analysis.fundamentalAnalysisFingerprint
-      || analysisHash !== snapshot.fundamentalAnalysisFingerprint
+    if (analysis.fundamentalAnalysisFingerprint !== snapshot.fundamentalAnalysisFingerprint
       || analysis.fundamentalInputFingerprint !== bundle.fundamentalInputFingerprint
       || analysis.issuerCik !== snapshot.issuerCik
       || bundle.issuer.cik !== snapshot.issuerCik) {
@@ -460,12 +453,6 @@ export class SnapshotRepository {
       for (const raw of analysisRaws) {
         try {
           const analysis = parseFundamentalAnalysis(raw);
-          const hash = await fundamentalAnalysisFingerprint(analysis);
-          if (hash !== analysis.fundamentalAnalysisFingerprint) {
-            quarantineFailure(this.quarantine, 'fundamentalAnalyses', analysis.analysisId, 'record_hash_mismatch',
-              'The fundamental analysis fingerprint does not match canonical content.', raw);
-            continue;
-          }
           analyses.set(analysis.analysisId, analysis);
         } catch {
           const key = isRecord(raw) && typeof raw.analysisId === 'string' ? raw.analysisId : 'unknown';
