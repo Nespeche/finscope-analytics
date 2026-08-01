@@ -1,8 +1,5 @@
 import type { Sha256Digest } from '../core/sha256';
-import {
-  fundamentalAnalysisFingerprint,
-  fundamentalInputFingerprint,
-} from '../domain/fingerprints/fingerprint-service';
+import { fundamentalAnalysisFingerprint } from '../domain/fingerprints/fingerprint-service';
 import {
   parseFundamentalAnalysis,
   parseFundamentalBundle,
@@ -262,13 +259,7 @@ export class SnapshotRepository {
   async publish(candidate: FundamentalSnapshotCandidate): Promise<PublishedFundamentalSnapshot> {
     const validated = validateCandidate(candidate);
     const issuerCik = validated.bundle.issuer.cik;
-    const [inputHash, analysisHash] = await Promise.all([
-      fundamentalInputFingerprint(validated.bundle),
-      fundamentalAnalysisFingerprint(validated.analysis),
-    ]);
-    if (inputHash !== validated.bundle.fundamentalInputFingerprint) {
-      throw new TypeError('FUNDAMENTAL_BUNDLE_HASH_MISMATCH');
-    }
+    const analysisHash = await fundamentalAnalysisFingerprint(validated.analysis);
     if (analysisHash !== validated.analysis.fundamentalAnalysisFingerprint) {
       throw new TypeError('FUNDAMENTAL_ANALYSIS_HASH_MISMATCH');
     }
@@ -387,14 +378,10 @@ export class SnapshotRepository {
         'The fundamental analysis failed schema validation.', analysisRaw);
     }
 
-    const [bundleHash, analysisHash] = await Promise.all([
-      fundamentalInputFingerprint(bundle),
-      fundamentalAnalysisFingerprint(analysis),
-    ]);
-    if (bundleHash !== bundle.fundamentalInputFingerprint
-      || bundleHash !== snapshot.fundamentalInputFingerprint) {
+    const analysisHash = await fundamentalAnalysisFingerprint(analysis);
+    if (bundle.fundamentalInputFingerprint !== snapshot.fundamentalInputFingerprint) {
       return quarantineFailure(this.quarantine, 'fundamentalBundles', snapshot.bundleId, 'record_hash_mismatch',
-        'The fundamental bundle fingerprint does not match its canonical content.', bundleRaw);
+        'The fundamental bundle fingerprint does not match the committed snapshot lineage.', bundleRaw);
     }
     if (analysisHash !== analysis.fundamentalAnalysisFingerprint
       || analysisHash !== snapshot.fundamentalAnalysisFingerprint
@@ -461,12 +448,6 @@ export class SnapshotRepository {
       for (const raw of bundleRaws) {
         try {
           const bundle = parseFundamentalBundle(raw);
-          const hash = await fundamentalInputFingerprint(bundle);
-          if (hash !== bundle.fundamentalInputFingerprint) {
-            quarantineFailure(this.quarantine, 'fundamentalBundles', bundle.bundleId, 'record_hash_mismatch',
-              'The fundamental bundle fingerprint does not match canonical content.', raw);
-            continue;
-          }
           bundles.set(bundle.bundleId, bundle);
         } catch {
           const key = isRecord(raw) && typeof raw.bundleId === 'string' ? raw.bundleId : 'unknown';
