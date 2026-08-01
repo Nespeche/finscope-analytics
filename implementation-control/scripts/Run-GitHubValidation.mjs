@@ -8,12 +8,12 @@ const branch=process.env.GITHUB_HEAD_REF||process.env.GITHUB_REF_NAME||'local'; 
 const commitSubject=(await run('git log -1 --pretty=%s',{cwd:root})).stdout.toString('utf8').trim();
 const operation=handoff.operation??{id:handoff.bootstrap?.id??state.activeBatchId,kind:'BOOTSTRAP',branch:handoff.bootstrap?.branch??branch,stage:handoff.bootstrap?.stage??'candidate',activeBatchId:state.activeBatchId};
 const batchId=operation.activeBatchId??state.activeBatchId; const batch=await readJson(join(root,`implementation-control/batches/${batchId}.json`));
-const isOperationBranch=branch===operation.branch; const stage=operation.stage??'candidate'; const releaseRemediation=isOperationBranch&&operation.kind==='RELEASE_REMEDIATION';
-const mode=releaseRemediation?'RELEASE_REMEDIATION':isOperationBranch&&stage==='closure'?'BATCH_CLOSURE':isOperationBranch&&operation.kind==='BOOTSTRAP'?'GH0_BOOTSTRAP':'BATCH';
+const isOperationBranch=branch===operation.branch; const stage=operation.stage??'candidate'; const releaseRemediation=isOperationBranch&&operation.kind==='RELEASE_REMEDIATION'; const releaseAudit=isOperationBranch&&operation.kind==='RELEASE_AUDIT'; const usesReleaseCommands=releaseRemediation||releaseAudit;
+const mode=usesReleaseCommands?'RELEASE_REMEDIATION':isOperationBranch&&stage==='closure'?'BATCH_CLOSURE':isOperationBranch&&operation.kind==='BOOTSTRAP'?'GH0_BOOTSTRAP':'BATCH';
 const derivedBatchCommands=(batch.localValidation?.commands??[]).map(({id,category,command,required})=>({id,category,command,required:Boolean(required)}));
 const releaseQualificationCommands=(operation.qualificationCommands??[]).map(({id,category,command,required})=>({id,category,command,required:Boolean(required)}));
-const selectedCommands=mode==='BATCH_CLOSURE'?[]:releaseRemediation?releaseQualificationCommands:derivedBatchCommands;
-const declaredCommands=releaseRemediation?releaseQualificationCommands:derivedBatchCommands;
+const selectedCommands=mode==='BATCH_CLOSURE'?[]:usesReleaseCommands?releaseQualificationCommands:derivedBatchCommands;
+const declaredCommands=usesReleaseCommands?releaseQualificationCommands:derivedBatchCommands;
 const controlStdout=join(root,'.finscope-evidence/preflight/control-plane.stdout.log'); const controlStderr=join(root,'.finscope-evidence/preflight/control-plane.stderr.log');
 const exitCodePath=join(root,'.finscope-evidence/preflight/control-plane.exit-code');
 let controlExit=1; try{controlExit=Number((await readFile(exitCodePath,'utf8')).trim());}catch{}
@@ -33,7 +33,7 @@ if(controlPlane.result!=='PASS') fail('CONTROL_PLANE_FAILED',`exitCode=${control
 else if(releaseBaseline.result!=='PASS') fail('BASELINE_RELEASE_FAILED',releaseBaseline.failure??'unknown');
 else if(!specify.byteIdentical) fail('SPECIFY_MISMATCH',`${specify.count}/${specify.sha256}`);
 else if(selfTests.some((item)=>item.result!=='PASS')) fail('OPERATION_SELF_TEST_FAILED',JSON.stringify(selfTests.filter((item)=>item.result!=='PASS')));
-else if(releaseRemediation&&releaseQualificationCommands.length===0) fail('RELEASE_QUALIFICATION_COMMANDS_EMPTY','No release qualification commands were declared.');
+else if(usesReleaseCommands&&releaseQualificationCommands.length===0) fail('RELEASE_QUALIFICATION_COMMANDS_EMPTY','No release qualification commands were declared.');
 else if(mode==='GH0_BOOTSTRAP'&&commitSubject.includes('[GH0_EXPECT_FAIL_HASH]')) fail('QUALIFICATION_INJECTED_HASH_MISMATCH','Intentional bootstrap failure selected by the candidate commit subject.');
 
 for(const definition of selectedCommands){
@@ -46,7 +46,7 @@ for(const definition of selectedCommands){
 }
 const evidencePath=join(evidenceDir,'github-validation-evidence.json');
 selfTests.push({id:'EVIDENCE_SCHEMA_REREAD',expected:'PASS',observed:'PENDING',result:'PASS'});
-const evidence={schemaVersion:'1.0.0',result:primaryFailure?'FAIL':'PASS',mode,repository:process.env.GITHUB_REPOSITORY||handoff.repository,branch,commitSha,runId:process.env.GITHUB_RUN_ID??null,activeBatchId:batchId,browserRequired:releaseRemediation||mode==='BATCH_CLOSURE'?false:Boolean(batch.localValidation?.browserRequired),startedAt,finishedAt:now(),controlPlane,releaseBaseline:{result:releaseBaseline.result,tag:releaseBaseline.tag,zipName:releaseBaseline.zipName,sidecarName:releaseBaseline.sidecarName,zipSha256:releaseBaseline.zipSha256,assetIds:releaseBaseline.assetIds??[],root:releaseBaseline.root,failure:releaseBaseline.failure??null},specify,derivedBatchCommands:declaredCommands,executedCommands,selfTests,primaryFailure,files:[]};
+const evidence={schemaVersion:'1.0.0',result:primaryFailure?'FAIL':'PASS',mode,repository:process.env.GITHUB_REPOSITORY||handoff.repository,branch,commitSha,runId:process.env.GITHUB_RUN_ID??null,activeBatchId:batchId,browserRequired:usesReleaseCommands||mode==='BATCH_CLOSURE'?false:Boolean(batch.localValidation?.browserRequired),startedAt,finishedAt:now(),controlPlane,releaseBaseline:{result:releaseBaseline.result,tag:releaseBaseline.tag,zipName:releaseBaseline.zipName,sidecarName:releaseBaseline.sidecarName,zipSha256:releaseBaseline.zipSha256,assetIds:releaseBaseline.assetIds??[],root:releaseBaseline.root,failure:releaseBaseline.failure??null},specify,derivedBatchCommands:declaredCommands,executedCommands,selfTests,primaryFailure,files:[]};
 await writeJson(evidencePath,evidence); evidence.files=(await evidenceFiles(evidenceDir)).filter((item)=>item.path!=='github-validation-evidence.json'); await writeJson(evidencePath,evidence);
 try{ await validateJsonFile(join(root,'implementation-control/schemas/github-validation-evidence.schema.json'),evidencePath); selfTests.find((item)=>item.id==='EVIDENCE_SCHEMA_REREAD').observed='PASS'; evidence.selfTests=selfTests; await writeJson(evidencePath,evidence); await validateJsonFile(join(root,'implementation-control/schemas/github-validation-evidence.schema.json'),evidencePath); }catch(error){ const schemaTest=selfTests.find((item)=>item.id==='EVIDENCE_SCHEMA_REREAD'); schemaTest.observed='FAIL'; schemaTest.result='FAIL'; fail('EVIDENCE_SCHEMA_INVALID',String(error)); evidence.result='FAIL'; evidence.primaryFailure=primaryFailure; evidence.selfTests=selfTests; await writeJson(evidencePath,evidence); }
 await writeManifest(evidenceDir); const artifactName=`finscope-github-validation-${commitSha.slice(0,12)}-${evidence.result==='PASS'?'PASS':'_FAILED'}`;
