@@ -1,42 +1,52 @@
 import { expect, test } from '@playwright/test';
 
-test('refresh consent defaults false and prevents lifecycle network requests', async ({ page }) => {
+test('privacy settings keep refresh and storage consent independent and revocable', async ({ page }) => {
   let probeRequests = 0;
   await page.route('**/consent-network-probe', async (route) => {
     probeRequests += 1;
     await route.fulfill({ status: 200, contentType: 'application/json', body: '{}' });
   });
+
   await page.goto('/');
+  await page.getByRole('button', { name: 'Privacy settings' }).click();
 
-  const result = await page.evaluate(async () => {
-    const moduleUrl = '/src/persistence/consent-repository.ts';
-    const { createConsentRepository } = await import(/* @vite-ignore */ moduleUrl);
-    const repository = createConsentRepository();
+  const refreshConsent = page.getByRole('checkbox', { name: 'Allow explicit refresh requests' });
+  const storageConsent = page.getByRole('checkbox', { name: 'Save confirmed analysis on this device' });
+  const status = page.getByTestId('privacy-status');
 
-    const before = repository.snapshot();
-    const localOnly = await repository.runLifecycleRefresh(async () => {
-      const response = await fetch('/consent-network-probe');
-      return response.status;
-    });
-    const memoryOnly = await repository.runPersistentWrite(() => 'persisted');
+  await expect(refreshConsent).not.toBeChecked();
+  await expect(storageConsent).not.toBeChecked();
 
-    repository.grantRefreshConsent();
-    const refreshed = await repository.runLifecycleRefresh(async () => {
-      const response = await fetch('/consent-network-probe');
-      return response.status;
-    });
+  await page.getByRole('button', { name: 'Check for updates' }).click();
+  await expect(status).toContainText('zero network requests');
+  expect(probeRequests).toBe(0);
 
-    return { before, localOnly, memoryOnly, refreshed };
-  });
+  await page.getByRole('button', { name: 'Run local analysis' }).click();
+  await expect(status).toContainText('memory only');
+  expect(probeRequests).toBe(0);
 
-  expect(result.before).toEqual({
-    refreshConsent: { kind: 'refreshConsent', granted: false, revision: 0 },
-    storageConsent: { kind: 'storageConsent', granted: false, revision: 0 },
-  });
-  expect(result.localOnly.mode).toBe('local_only');
-  expect(result.localOnly.value).toBeUndefined();
-  expect(result.memoryOnly.mode).toBe('memory_only');
-  expect(result.memoryOnly.value).toBeUndefined();
-  expect(result.refreshed).toEqual({ mode: 'refreshed', value: 200 });
+  await storageConsent.check();
+  await expect(storageConsent).toBeFocused();
+  await expect(refreshConsent).not.toBeChecked();
+  await page.getByRole('button', { name: 'Run local analysis' }).click();
+  await expect(status).toContainText('saved locally');
+  expect(probeRequests).toBe(0);
+
+  await refreshConsent.check();
+  await expect(refreshConsent).toBeFocused();
+  await page.getByRole('button', { name: 'Check for updates' }).click();
+  await expect(status).toContainText('Refresh completed');
   expect(probeRequests).toBe(1);
+
+  await page.getByRole('button', { name: 'Revoke refresh consent' }).click();
+  await expect(refreshConsent).not.toBeChecked();
+  await expect(refreshConsent).toBeFocused();
+  await page.getByRole('button', { name: 'Check for updates' }).click();
+  expect(probeRequests).toBe(1);
+
+  await page.getByRole('button', { name: 'Revoke storage consent' }).click();
+  await expect(storageConsent).not.toBeChecked();
+  await expect(storageConsent).toBeFocused();
+  await page.getByRole('button', { name: 'Run local analysis' }).click();
+  await expect(status).toContainText('memory only');
 });
