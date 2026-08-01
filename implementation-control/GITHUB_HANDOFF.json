@@ -2,18 +2,18 @@
   "schemaVersion": "1.2.0",
   "repository": "Nespeche/finscope-analytics",
   "baseline": {
-    "tag": "v0.21.18-B15-completed",
-    "commitSha": "ee596023a71b4659a8a35e091cd21f72eaf114aa",
-    "zipName": "FS_v0.21.18_B15_completed.zip",
-    "sidecarName": "FS_v0.21.18_B15_completed.zip.sha256",
-    "zipSha256": "59482da2464228c1813c7b3b7aacd5240fbbca63837c18476204a665f21dc400",
+    "tag": "v0.21.19-B16-completed",
+    "commitSha": "80e70ce91bcd40b5fc01be15bc8521e503cd872c",
+    "zipName": "FS_v0.21.19_B16_completed.zip",
+    "sidecarName": "FS_v0.21.19_B16_completed.zip.sha256",
+    "zipSha256": "4cb4aa05b59568794282f3d539de6e95695a95138279c124dcc87d907ae19bb8",
     "root": "FinScope_v0.21.4/",
     "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
   },
   "operation": {
     "id": "B16",
     "kind": "RELEASE_REMEDIATION",
-    "branch": "agent/b16-completed-release",
+    "branch": "audit/b16-release-reauth",
     "stage": "candidate",
     "activeBatchId": "B16",
     "nextBatchId": "B17",
@@ -57,8 +57,8 @@
     "sidecarName": "FS_v0.21.19_B16_completed.zip.sha256",
     "evidencePrefix": "FinScope_B16_release_evidence",
     "promptName": "PROMPT_IMPLEMENTACION_B17.md",
-    "title": "FinScope B16 completed — price interface and E2E lifecycle",
-    "notes": "B16 completed with authenticated candidate and closure evidence. This Release publishes the immutable completed ZIP and sidecar after package, upload/download and closure-artifact authentication. B17 remains pending as the only active and authorized batch; convergenceAuthorized=false."
+    "title": "FinScope B16 completed — independent Release audit",
+    "notes": "Temporary independent reauthentication of the published B16 completed Release. This branch and PR must close without merge; B17 remains pending and convergenceAuthorized=false."
   },
   "productState": {
     "activeBatchId": "B17",
