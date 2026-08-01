@@ -14,7 +14,7 @@
     "id": "B16",
     "kind": "BATCH",
     "branch": "agent/b16-price-ui",
-    "stage": "closure",
+    "stage": "completed",
     "activeBatchId": "B16",
     "nextBatchId": "B17",
     "completedTasksThroughOnClosure": "T071",
@@ -71,13 +71,13 @@
     "artifactDigest": "sha256:57d8ef88b375c7203737d92adb2b5fe4cd7350494583df2d442d59e9364093fd"
   },
   "closure": {
-    "status": "PENDING",
+    "status": "COMPLETED",
     "candidateSha": "21a4fa2e96e161a5b0ff1633a7200343bbf810d5",
-    "commitSha": null,
-    "runId": null,
-    "artifactId": null,
-    "artifactName": null,
-    "artifactDigest": null
+    "commitSha": "1ed72efd70e6ba26f31e4ef9f8a37434dd4e9327",
+    "runId": "30681713842",
+    "artifactId": 8812473494,
+    "artifactName": "finscope-closure-1ed72efd70e6-PASS",
+    "artifactDigest": "sha256:901eede21f93cc155298af7db998682a92fcc444cd7254ddd2a9094aa021a32d"
   },
   "release": {
     "pending": true,
@@ -91,9 +91,9 @@
     "notes": "B16 implements the accessible historical-price import and analysis interfaces plus the authenticated end-to-end lifecycle for optional price overlays. Fundamental artifacts remain isolated, no valuation is generated, B17 remains pending and convergenceAuthorized=false."
   },
   "productState": {
-    "activeBatchId": "B16",
-    "nextAuthorizedBatchId": "B16",
-    "completedTasksThrough": "T068",
+    "activeBatchId": "B17",
+    "nextAuthorizedBatchId": "B17",
+    "completedTasksThrough": "T071",
     "convergenceAuthorized": false
   }
 }
