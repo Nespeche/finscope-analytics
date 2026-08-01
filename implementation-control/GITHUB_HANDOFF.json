@@ -6,7 +6,7 @@
     "commitSha": "80e70ce91bcd40b5fc01be15bc8521e503cd872c",
     "zipName": "FS_v0.21.19_B16_completed.zip",
     "sidecarName": "FS_v0.21.19_B16_completed.zip.sha256",
-    "zipSha256": "4cb4aa05b59568794282f3d539de6e95695a95138279c124dcc87d907ae19bb8",
+    "zipSha256": "6553ce27b8c4d21ceab4967628debcba0ffc67c1b736d0d488f3c6fa36881bc0",
     "root": "FinScope_v0.21.4/",
     "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
   },
@@ -29,6 +29,12 @@
         "id": "verify-completed-package",
         "category": "package-authentication",
         "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.19_B16_completed.zip .finscope-release/FS_v0.21.19_B16_completed.zip.sha256",
+        "required": true
+      },
+      {
+        "id": "reauthenticate-published-release",
+        "category": "published-release-authentication",
+        "command": "rm -rf .finscope-release/published-audit && mkdir -p .finscope-release/published-audit && gh release download v0.21.19-B16-completed --repo Nespeche/finscope-analytics --dir .finscope-release/published-audit --pattern \"FS_v0.21.19_B16_completed.zip\" --pattern \"FS_v0.21.19_B16_completed.zip.sha256\" --clobber && node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/published-audit/FS_v0.21.19_B16_completed.zip .finscope-release/published-audit/FS_v0.21.19_B16_completed.zip.sha256",
         "required": true
       }
     ]
