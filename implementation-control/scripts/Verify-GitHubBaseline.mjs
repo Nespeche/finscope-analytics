@@ -23,7 +23,7 @@ try{
   const commitLookup=await run(`gh api repos/${handoff.repository}/commits/${expected.tag} --jq .sha`,{cwd:root});
   if(commitLookup.exitCode!==0 || commitLookup.stdout.toString('utf8').trim()!==expected.commitSha) throw new Error('RELEASE_TAG_COMMIT_MISMATCH');
   const zipAsset=wanted.find((a)=>a.name===expected.zipName); const sidecarAsset=wanted.find((a)=>a.name===expected.sidecarName);
-  if(zipAsset.digest!==`sha256:${expected.zipSha256}`) throw new Error('RELEASE_ASSET_DIGEST_MISMATCH');
+  if(zipAsset.digest!==`sha256:${expected.zipSha256}`) throw new Error(`RELEASE_ASSET_DIGEST_MISMATCH:${zipAsset.digest ?? 'MISSING'}`);
   report.assetIds=[Number(zipAsset.id),Number(sidecarAsset.id)];
   const dl=await run(`gh release download ${expected.tag} --repo ${handoff.repository} --dir "${work}" --pattern "${expected.zipName}" --pattern "${expected.sidecarName}" --clobber`,{cwd:root});
   await writeFile(join(root,'.finscope-evidence/preflight/release-download.stdout.log'),dl.stdout);
