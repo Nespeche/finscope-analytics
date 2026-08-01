@@ -120,7 +120,7 @@ jobs:
           import { join, normalize, resolve, sep } from 'node:path';
 
           const repo = 'Nespeche/finscope-analytics';
-          const requestSha = '6d8b99fb397eb4d545ad645fecb79121c72b5d08';
+          const requestSha = '6d8b99fb899d5099181697a8c27e92f90d08473a';
           const closureSha = '933b7e476f2130a7e77502882e453eda93e8326b';
           const candidateSha = '244ee6a50f8eebdeb2d1c76bab599e3c79ec4abe';
           const closureRunId = '30714160143';
