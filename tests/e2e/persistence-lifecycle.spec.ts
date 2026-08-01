@@ -1,6 +1,5 @@
+import { readFileSync } from 'node:fs';
 import { expect, test, type Locator, type Page } from '@playwright/test';
-import bundleVectorsJson from '../../specs/001-fundamental-analysis-platform/fixtures/bundles/fundamental-bundle-test-vectors.json';
-import analysisVectorsJson from '../../specs/001-fundamental-analysis-platform/fixtures/analysis/analysis-result-test-vectors.json';
 import { canonicalizeJson, type JsonValue } from '../../src/core/canonical-json';
 import {
   parseFundamentalAnalysis,
@@ -12,6 +11,15 @@ import type {
   CommitRecord,
   FundamentalSnapshotRecord,
 } from '../../src/persistence/snapshot-repository';
+
+const bundleVectorsJson = JSON.parse(readFileSync(
+  new URL('../../specs/001-fundamental-analysis-platform/fixtures/bundles/fundamental-bundle-test-vectors.json', import.meta.url),
+  'utf8',
+)) as unknown;
+const analysisVectorsJson = JSON.parse(readFileSync(
+  new URL('../../specs/001-fundamental-analysis-platform/fixtures/analysis/analysis-result-test-vectors.json', import.meta.url),
+  'utf8',
+)) as unknown;
 
 interface Fixture { readonly fixtureId: string; readonly input: unknown }
 async function press(control: Locator): Promise<void> {
