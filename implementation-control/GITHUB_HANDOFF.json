@@ -12,55 +12,13 @@
   },
   "operation": {
     "id": "B14",
-    "kind": "BATCH",
-    "branch": "agent/b14-refresh-resilience",
-    "stage": "closure",
+    "kind": "RELEASE_REMEDIATION",
+    "branch": "agent/b14-completed-release",
+    "stage": "candidate",
     "activeBatchId": "B14",
     "nextBatchId": "B15",
     "completedTasksThroughOnClosure": "T062",
     "qualificationCommands": [
-      {
-        "id": "npm-ci",
-        "category": "dependencies",
-        "command": "npm ci",
-        "required": true
-      },
-      {
-        "id": "playwright-chromium",
-        "category": "browser",
-        "command": "npm exec playwright install chromium",
-        "required": true
-      },
-      {
-        "id": "typecheck",
-        "category": "static",
-        "command": "npm run typecheck",
-        "required": true
-      },
-      {
-        "id": "test-e2e",
-        "category": "e2e",
-        "command": "npm run test:e2e -- tests/e2e/manual-refresh.spec.ts tests/e2e/open-resume.spec.ts tests/e2e/refresh-resilience.spec.ts",
-        "required": true
-      },
-      {
-        "id": "regression-vitest",
-        "category": "regression",
-        "command": "npm run test",
-        "required": true
-      },
-      {
-        "id": "regression-browser",
-        "category": "regression",
-        "command": "npm run test:browser",
-        "required": true
-      },
-      {
-        "id": "build",
-        "category": "build",
-        "command": "npm run build",
-        "required": true
-      },
       {
         "id": "package-completed-release",
         "category": "package",
@@ -83,16 +41,16 @@
     "artifactDigest": "sha256:8a2a632aef7e7396adc91b63cf56991a49687671531411e76512132cca5cc8f3"
   },
   "closure": {
-    "status": "PENDING",
+    "status": "COMPLETED",
     "candidateSha": "4adacd4dd45f60ba143937e68f555315c37bf206",
-    "commitSha": null,
-    "runId": null,
-    "artifactId": null,
-    "artifactName": null,
-    "artifactDigest": null
+    "commitSha": "45e706404799d71bbf82ad5bf904c4c002b852c5",
+    "runId": "30674318992",
+    "artifactId": 8809883823,
+    "artifactName": "finscope-closure-45e706404799-PASS",
+    "artifactDigest": "sha256:16d34d7bc79220979949ce107444aae3b69873dd0b43ab5b8e1e44f3163fe446"
   },
   "release": {
-    "pending": false,
+    "pending": true,
     "tag": "v0.21.17-B14-completed",
     "packageRevision": "v0.21.17_B14_completed",
     "zipName": "FS_v0.21.17_B14_completed.zip",
@@ -100,12 +58,12 @@
     "evidencePrefix": "FinScope_B14_release_evidence",
     "promptName": "PROMPT_IMPLEMENTACION_B15.md",
     "title": "FinScope B14 completed — refresh resilience",
-    "notes": "B14 implements authenticated application open, resume and manual refresh orchestration with shared consent, fair-access, retry, quota, idempotency, cancellation, invalidation and degradation controls. B15 remains pending and convergenceAuthorized=false."
+    "notes": "B14 completed with authenticated candidate and closure evidence. This Release publishes the immutable completed ZIP and sidecar after package, upload/download and closure-artifact authentication. B15 remains pending as the only active and authorized batch; convergenceAuthorized=false."
   },
   "productState": {
-    "activeBatchId": "B14",
-    "nextAuthorizedBatchId": "B14",
-    "completedTasksThrough": "T059",
+    "activeBatchId": "B15",
+    "nextAuthorizedBatchId": "B15",
+    "completedTasksThrough": "T062",
     "convergenceAuthorized": false
   }
 }
