@@ -111,7 +111,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
       - name: Qualify temporary Release transfer
-        if: steps.mode.outputs.enabled == 'true'
+        if: steps.mode.outputs.enabled == 'true' && github.head_ref != 'agent/github-actions-node24-retention'
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs qualify .finscope-release
