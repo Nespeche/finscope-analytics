@@ -21,6 +21,8 @@
   let statusMessage = '';
   let panel: HTMLElement | undefined;
 
+  $: issueDescriptionId = issue === undefined ? undefined : `recovery-${issue.code.toLocaleLowerCase('en-US').replaceAll('_', '-')}-description`;
+
   function inspectVisibleIssues(): void {
     if (document.querySelector('[data-testid="corruption-recovery"]') !== null) {
       issue = repositoryCorruptionIssue;
@@ -78,16 +80,16 @@
 </script>
 
 {#if issue}
-  <section bind:this={panel} class="recovery-panel" aria-labelledby="recovery-panel-heading" data-testid="recovery-panel">
+  <section bind:this={panel} class="recovery-panel" aria-labelledby="recovery-panel-heading" aria-describedby={issueDescriptionId} data-testid="recovery-panel">
     <h2 id="recovery-panel-heading">Recovery options</h2>
-    <p><strong>{issue.title}.</strong> {issue.message}</p>
+    <p id={issueDescriptionId}><strong>{issue.title}.</strong> {issue.message}</p>
     <p><strong>State:</strong> {issue.pipelineState}</p>
     <p><strong>Blocked:</strong> {issue.blockedOperations.join(', ')}</p>
     <p><strong>Preserved:</strong> {issue.preservedCapabilities.join(', ')}</p>
-    <div class="actions" aria-label="Available recovery actions">
+    <div class="actions" aria-label={`Available recovery actions for ${issue.title}`} aria-describedby={issueDescriptionId}>
       {#each issue.recoveryActions as actionId}
         {@const operation = getRecoveryOperation(actionId)}
-        <button type="button" onclick={() => { void activate(actionId); }}>
+        <button type="button" aria-label={`${actionId === 'use_last_snapshot' ? 'Recover with last snapshot' : operation.label} for ${issue.title}`} aria-describedby={issueDescriptionId} onclick={() => { void activate(actionId); }}>
           {actionId === 'use_last_snapshot' ? 'Recover with last snapshot' : operation.label}
         </button>
       {/each}
