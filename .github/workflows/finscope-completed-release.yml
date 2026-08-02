@@ -4,7 +4,9 @@ on:
   push:
     branches: [main]
     paths:
+      - .github/workflows/finscope-closure-validation.yml
       - .github/workflows/finscope-completed-release.yml
+      - .github/workflows/finscope-pr-validation.yml
       - .github/workflows/finscope-release-qualification.yml
       - V0.21_PHASE_STATUS.md
       - implementation-control/GITHUB_HANDOFF.json
@@ -24,11 +26,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout merged main
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 0
       - name: Configure Node from package authority
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
           node-version-file: package.json
           cache: npm
@@ -59,7 +61,9 @@ jobs:
           test "$(git rev-list --parents -n 1 "$GITHUB_SHA" | awk '{print NF}')" -ge 3
           while IFS= read -r path; do
             case "$path" in
+              .github/workflows/finscope-closure-validation.yml|\
               .github/workflows/finscope-completed-release.yml|\
+              .github/workflows/finscope-pr-validation.yml|\
               .github/workflows/finscope-release-qualification.yml|\
               V0.21_PHASE_STATUS.md|\
               implementation-control/GITHUB_HANDOFF.json|\
@@ -95,13 +99,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs prepare .finscope-release
       - name: Upload Release workflow evidence before publication
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: finscope-completed-release-${{ github.sha }}
           path: .finscope-release
           if-no-files-found: error
           include-hidden-files: true
-          retention-days: 14
+          retention-days: 30
       - name: Publish authenticated completed Release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -117,10 +121,10 @@ jobs:
         run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs cleanup .finscope-release
       - name: Upload failed Release evidence
         if: failure()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: finscope-completed-release-${{ github.sha }}-_FAILED
           path: .finscope-release
           if-no-files-found: warn
           include-hidden-files: true
-          retention-days: 14
+          retention-days: 30
