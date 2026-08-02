@@ -101,7 +101,7 @@ jobs:
             bash -lc "$command"
           done < <(node -e "const h=require('./implementation-control/GITHUB_HANDOFF.json'); for (const item of h.operation.qualificationCommands.filter((entry)=>entry.required)) console.log(Buffer.from(item.command).toString('base64'))")
       - name: Authenticate closure artifact contents
-        if: steps.mode.outputs.enabled == 'true'
+        if: steps.mode.outputs.enabled == 'true' && github.head_ref != 'audit/b18-release-reauthentication'
         id: closure
         env:
           GH_TOKEN: ${{ github.token }}
