@@ -87,19 +87,7 @@
     <div class="actions" aria-label="Available recovery actions">
       {#each issue.recoveryActions as actionId}
         {@const operation = getRecoveryOperation(actionId)}
-        <button type="button" onclick={() => { void activate(actionId); }}>
-          {operation.label}
-        </button>
-      {/each}
-    </div>
-    <p class="status" role="status" aria-live="polite" aria-atomic="true">{statusMessage}</p>
-  </section>
-{/if}
-
-<style>
-  .recovery-panel { border: 2px solid currentColor; display: grid; gap: 0.5rem; margin: 1rem; padding: 1rem; }
-  h2, p { margin: 0; }
-  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-  button { min-block-size: 2.75rem; }
-  .status:empty { display: none; }
-</style>
+        {@const actionLabel = actionId === 'use_last_snapshot' ? 'Recover with last snapshot' : operation.label}
+        <bu]Ûˆ\OH˜]ÛˆˆÛ˜ÛXÚÏ^Ê
+HOˆÈ›ÚYXÝ]˜]JXÝ[Û’Y
+NÈ_O‚ˆØXÝ[Û“X™[BˆØ]Û‚ˆËÙXXÚBˆÙ]‚ˆÛ\ÜÏHœÝ]\Èˆ›ÛOHœÝ]\Èˆ\šXK[]™OHœÛ]Hˆ\šXKX]ÛZXÏHYHžÜÝ]\ÓY\ÜØYÙ_OÜ‚ˆÜÙXÝ[Û‚žËÚYŸB‚Ý[O‚ˆœ™XÛÝ™\žK\[™[È›Ü™\ŽˆœÛÛYÝ\œ™[ÛÛÜŽÈ\Ü^NˆÜšYÈØ\ˆ\™[NÈX\™Ú[Žˆ\™[NÈY[™Îˆ\™[NÈBˆ‹ÈX\™Ú[ŽˆÈBˆ˜XÝ[ÛœÈÈ\Ü^Nˆ›^È›^]Ü˜\ˆÜ˜\ÈØ\ˆÍ\™[NÈBˆ]ÛˆÈZ[‹X›ØÚË\Ú^™Nˆ‹Í\™[NÈBˆœÝ]\Î™[\HÈ\Ü^Nˆ›Û™NÈBÜÝ[O‚

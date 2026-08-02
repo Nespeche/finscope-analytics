@@ -110,7 +110,7 @@ table,
     max-inline-size: 100%;
   }
 
-  main :where(dl, .comparison, .grid, .summary, .fingerprints, .metrics, .contract-state) {
+  main :where(dl, .configuration-grid, .comparison, .grid, .summary, .fingerprints, .metrics, .contract-state) {
     grid-template-columns: minmax(0, 1fr) !important;
   }
 }
