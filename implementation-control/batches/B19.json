@@ -5,7 +5,7 @@
   "ordinal": 19,
   "title": "Contexto, recuperación y accesibilidad base",
   "domain": "a11y-foundation",
-  "status": "PENDING",
+  "status": "COMPLETED",
   "taskCount": 6,
   "executionOrder": [
     "T081",
@@ -175,7 +175,7 @@
       ],
       "doneWhen": "the context header is mounted through composition and context never switches silently during refresh or navigation",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "7302f74282d402bcc368c12e3d684dc8ff0401411ae95d8bdd1f9250790fe712"
+      "sourceTaskSha256": "4c3688e134b3c5743852b9dbef795858f2c76639a0e11735a5e551223f298ebd"
     },
     {
       "id": "T082",
@@ -222,7 +222,7 @@
       ],
       "doneWhen": "no terminal-only recovery exists, quarantined data offers validated restore, and each action maps to an active operation",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "ef2e0ee4c4e4120f00c87b2ab1af7b1443a9d9c1bdf71166c4fe4598468d4e08"
+      "sourceTaskSha256": "69b5b9164e250d52bdfabe38d719382347419187eff537c88fe9813c5de37451"
     },
     {
       "id": "T089",
@@ -264,7 +264,7 @@
       ],
       "doneWhen": "the disclaimer is mounted through composition and no buy/sell/hold, target price, personalized recommendation or return promise appears",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "0946c03432daa25ebbef13e207a38e085ef1ce6a9d9e03b479d8960dde088e8b"
+      "sourceTaskSha256": "4fd874db8e84406a388f19daeaac114b3d2434c91ef0c2bd7459591a9f396f38"
     },
     {
       "id": "T083",
@@ -299,7 +299,7 @@
       ],
       "doneWhen": "the plugin installs once and focus is visible, unobscured and returned to the invoker",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "552d5ee98ae9166b5c5c2231d39e83b5fc1eb415978cd40f4fcf16b19ab1404d"
+      "sourceTaskSha256": "585ce9a81fc1de1f9d5529ddd1559f44fc9388fd21a9e6be369508308ca3563c"
     },
     {
       "id": "T084",
@@ -339,7 +339,7 @@
       ],
       "doneWhen": "the plugin installs once and status changes are concise, non-duplicated and state-accurate",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "2919737438cfac1876a58a97d6f9429e1072aa023c2e8af22af8018e5f20f381"
+      "sourceTaskSha256": "5f0d573db11697220832991ae7266ffeaa3271b588bf246ba861ddd99845ce09"
     },
     {
       "id": "T085",
@@ -375,7 +375,7 @@
       ],
       "doneWhen": "styles are loaded without later App.svelte edits and 320 CSS px reflow and 200% text zoom have no two-dimensional scroll",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "367ec7f87a27744a98fdf1ea79cb589d2033885854afcc3a9c787c8de48770fa"
+      "sourceTaskSha256": "23e0ac6ab38179ecffc4cecb23a16cf4c4c18c252c5474c2270251b02ab9e405"
     }
   ],
   "completionGate": {
@@ -385,7 +385,7 @@
     "packageValidationPass": true,
     "doNotStartNextBatch": true
   },
-  "sourceTasksSha256": "9e6a655f41288b1b73ef9a0b06e2311354ade8f048e969eebc07a58a53536703",
+  "sourceTasksSha256": "88d74002fbbafa4f7b675788b93515ed4f0089e83a09fb9a5ba6f4a1fd0bd62a",
   "localValidation": {
     "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
     "browserRequired": true,
