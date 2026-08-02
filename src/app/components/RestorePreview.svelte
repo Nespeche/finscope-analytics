@@ -107,13 +107,17 @@
 
 <style>
   .preview {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 0.9rem;
     border: 2px solid currentColor;
     border-radius: 0.5rem;
     padding: 1rem;
     inline-size: 100%;
     min-inline-size: 0;
+    position: relative;
+    z-index: 1;
+    isolation: isolate;
   }
   .preview > * { min-inline-size: 0; }
   h2, h3, p, ul, dl { margin-block: 0; }
@@ -124,12 +128,13 @@
   dt { font-weight: 700; }
   dd { margin: 0; overflow-wrap: anywhere; min-inline-size: 0; }
   fieldset {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
     border: 1px solid currentColor;
     min-inline-size: 0;
     position: relative;
-    isolation: isolate;
+    z-index: 2;
   }
   .policy-option {
     display: grid;
@@ -137,24 +142,49 @@
     gap: 0.6rem;
     align-items: start;
     min-inline-size: 0;
+    min-block-size: 2.75rem;
+    padding: 0.5rem;
     position: relative;
+    z-index: 3;
   }
   .policy-option input {
-    inline-size: 1.5rem;
-    block-size: 1.5rem;
-    margin: 0.1rem 0 0;
-    position: relative;
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
     z-index: 2;
   }
   .policy-option label {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    gap: 0.6rem;
     min-inline-size: 0;
     overflow-wrap: anywhere;
     cursor: pointer;
-    position: relative;
-    z-index: 1;
+    pointer-events: none;
+  }
+  .policy-option label::before {
+    content: '';
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    margin-block-start: 0.1rem;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    background: transparent;
+  }
+  .policy-option input:checked + label::before {
+    background: radial-gradient(circle, currentColor 0 38%, transparent 42%);
+  }
+  .policy-option input:focus-visible + label {
+    outline: 3px solid currentColor;
+    outline-offset: 3px;
   }
   .notice { border-inline-start: 0.35rem solid currentColor; padding-inline-start: 0.75rem; }
-  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; position: relative; z-index: 2; }
   button { min-block-size: 2.75rem; }
   @media (max-width: 36rem) {
     dl div { grid-template-columns: 1fr; gap: 0.1rem; }
