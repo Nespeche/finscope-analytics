@@ -13,7 +13,7 @@
   "operation": {
     "id": "B18",
     "kind": "RELEASE_REMEDIATION",
-    "branch": "agent/github-actions-node24-retention",
+    "branch": "agent/b18-node24-completed-release",
     "stage": "completed",
     "activeBatchId": "B18",
     "nextBatchId": "B19",
@@ -76,7 +76,7 @@
       {
         "id": "verify-completed-package",
         "category": "package-authentication",
-        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.21_B18_completed.zip .finscope-release/FS_v0.21.21_B18_completed.zip.sha256",
+        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.22_B18_completed.zip .finscope-release/FS_v0.21.22_B18_completed.zip.sha256",
         "required": true
       }
     ]
@@ -98,15 +98,15 @@
     "artifactDigest": "sha256:452b8097fc0eb57458bf574f137819493c97054cc89aa5e99951b9316ef74d54"
   },
   "release": {
-    "pending": false,
-    "tag": "v0.21.21-B18-completed",
-    "packageRevision": "v0.21.21_B18_completed",
-    "zipName": "FS_v0.21.21_B18_completed.zip",
-    "sidecarName": "FS_v0.21.21_B18_completed.zip.sha256",
+    "pending": true,
+    "tag": "v0.21.22-B18-completed",
+    "packageRevision": "v0.21.22_B18_completed",
+    "zipName": "FS_v0.21.22_B18_completed.zip",
+    "sidecarName": "FS_v0.21.22_B18_completed.zip.sha256",
     "evidencePrefix": "FinScope_B18_release_evidence",
     "promptName": "PROMPT_IMPLEMENTACION_B19.md",
-    "title": "FinScope B18 completed — restore, deletion, quarantine and data management UI",
-    "notes": "GitHub Actions infrastructure remediation completed against the independently authenticated B18 Release. Node.js 24-native pinned actions and uniform 30-day artifact retention are qualified; no new Release publication, B19 implementation or convergence authorization is pending."
+    "title": "FinScope B18 completed — Node.js 24 Actions and 30-day evidence retention",
+    "notes": "Immutable B18 completed revision containing the independently qualified Node.js 24-native GitHub Actions, uniform 30-day evidence retention and safe publication gates. Product behavior and .specify are unchanged. B19 remains pending/authorized and convergenceAuthorized=false."
   },
   "productState": {
     "activeBatchId": "B19",
