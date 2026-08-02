@@ -1,10 +1,10 @@
 {
   "$schema": "schemas/task-source-lock.schema.json",
   "schemaVersion": "1.0.0",
-  "packageRevision": "v0.21.21_B18_completed",
+  "packageRevision": "v0.21.23_B19_completed",
   "generatedOn": "2026-08-02",
   "taskAuthority": "specs/001-fundamental-analysis-platform/tasks.md",
-  "tasksFileSha256": "9e6a655f41288b1b73ef9a0b06e2311354ade8f048e969eebc07a58a53536703",
+  "tasksFileSha256": "88d74002fbbafa4f7b675788b93515ed4f0089e83a09fb9a5ba6f4a1fd0bd62a",
   "taskCount": 109,
   "tasks": [
     {
@@ -410,27 +410,27 @@
     {
       "taskId": "T081",
       "lineNumber": 151,
-      "sourceTaskSha256": "7302f74282d402bcc368c12e3d684dc8ff0401411ae95d8bdd1f9250790fe712"
+      "sourceTaskSha256": "4c3688e134b3c5743852b9dbef795858f2c76639a0e11735a5e551223f298ebd"
     },
     {
       "taskId": "T082",
       "lineNumber": 152,
-      "sourceTaskSha256": "ef2e0ee4c4e4120f00c87b2ab1af7b1443a9d9c1bdf71166c4fe4598468d4e08"
+      "sourceTaskSha256": "69b5b9164e250d52bdfabe38d719382347419187eff537c88fe9813c5de37451"
     },
     {
       "taskId": "T083",
       "lineNumber": 154,
-      "sourceTaskSha256": "552d5ee98ae9166b5c5c2231d39e83b5fc1eb415978cd40f4fcf16b19ab1404d"
+      "sourceTaskSha256": "585ce9a81fc1de1f9d5529ddd1559f44fc9388fd21a9e6be369508308ca3563c"
     },
     {
       "taskId": "T084",
       "lineNumber": 155,
-      "sourceTaskSha256": "2919737438cfac1876a58a97d6f9429e1072aa023c2e8af22af8018e5f20f381"
+      "sourceTaskSha256": "5f0d573db11697220832991ae7266ffeaa3271b588bf246ba861ddd99845ce09"
     },
     {
       "taskId": "T085",
       "lineNumber": 156,
-      "sourceTaskSha256": "367ec7f87a27744a98fdf1ea79cb589d2033885854afcc3a9c787c8de48770fa"
+      "sourceTaskSha256": "23e0ac6ab38179ecffc4cecb23a16cf4c4c18c252c5474c2270251b02ab9e405"
     },
     {
       "taskId": "T086",
@@ -450,7 +450,7 @@
     {
       "taskId": "T089",
       "lineNumber": 153,
-      "sourceTaskSha256": "0946c03432daa25ebbef13e207a38e085ef1ce6a9d9e03b479d8960dde088e8b"
+      "sourceTaskSha256": "4fd874db8e84406a388f19daeaac114b3d2434c91ef0c2bd7459591a9f396f38"
     },
     {
       "taskId": "T090",
@@ -558,127 +558,127 @@
     {
       "batchId": "B01",
       "path": "implementation-control/batches/B01.json",
-      "sha256": "9c74204f122dd0923a12bbdb264bec87caeac05d0bf63f784eed5eec5bbebf02"
+      "sha256": "8bb703329cd708aaea9fe6d9c3f1648a27fc2134922baab5f7c423bed5274af1"
     },
     {
       "batchId": "B02",
       "path": "implementation-control/batches/B02.json",
-      "sha256": "5ba7802f2d54d1e6ef98cdfa853f0076e52fadf55098ba329e255ca42684e7c5"
+      "sha256": "1119b52f5fb045f70fffddb63e36aecd18744796f8ded505fd6558f9b4248b03"
     },
     {
       "batchId": "B03",
       "path": "implementation-control/batches/B03.json",
-      "sha256": "4c80cee52e063f7dc45a288ad76f70468fb92e62fdcb98b4cf6761ca6282bb10"
+      "sha256": "ca96cb59ba8ef4b8da89a642622ea1642349b852a5940081f45d5045a59d01a5"
     },
     {
       "batchId": "B04",
       "path": "implementation-control/batches/B04.json",
-      "sha256": "17b43c12a19691cf764da190177fedce44b689294ea388655e20fbabbea539f7"
+      "sha256": "e79114d86bacaa7b3ef52d405585825b1971702f6e7fe3a189933eefcc6572d7"
     },
     {
       "batchId": "B05",
       "path": "implementation-control/batches/B05.json",
-      "sha256": "78ba194e88108af923288bfce3a90648ca2bf5d57d9d7c1c246cf86dc7c95b8f"
+      "sha256": "3c28cf636a91428391b995dabe55e2f8c16ff9d86dec80487ace775a3d4f2458"
     },
     {
       "batchId": "B06",
       "path": "implementation-control/batches/B06.json",
-      "sha256": "5a44037d042f815246a377feebe21880d6ad91c716bc55752db2760305d6d674"
+      "sha256": "5a40cc53db4d9844d312d9bcde8cf87894d4d22c0506ed740ce986fd6c0ce987"
     },
     {
       "batchId": "B07",
       "path": "implementation-control/batches/B07.json",
-      "sha256": "6726dc2e1032ca876de99f9425228a61c5fdbd4617ffebaecdec30a03eb66f33"
+      "sha256": "92214a611c7210a1c44fb33087e6e60c8640b3a3f2949204c81f3e0afe7c456b"
     },
     {
       "batchId": "B08",
       "path": "implementation-control/batches/B08.json",
-      "sha256": "6d1cc9dda90f39fcecf415bbe308e6b5d536756d22fc035e9bc9a65eff7b257e"
+      "sha256": "709b055e9a49e020568966304e9d5d481bc5fb7b35351a281ddccef7b8e48e51"
     },
     {
       "batchId": "B09",
       "path": "implementation-control/batches/B09.json",
-      "sha256": "9b616fb0256068ef8b4e5fb23c8949c107527059cb096220b6288be5d41b3c7d"
+      "sha256": "3dbb3865b2e0575aaadc9a1a0ba30546561675d91439fc5ba026f6b785a1e787"
     },
     {
       "batchId": "B10",
       "path": "implementation-control/batches/B10.json",
-      "sha256": "d54f697dc83216cb3c9192a76bed7bde7add010ecf01326be6e865c49a57b4db"
+      "sha256": "fe858bed54e53e60a0c9ee06c5bff03307271cb34fab193b627e44cbfd4414ad"
     },
     {
       "batchId": "B11",
       "path": "implementation-control/batches/B11.json",
-      "sha256": "15b8adee7979df451e6302833e9096e4d082ddb693565d7cbf8b3c886eece36c"
+      "sha256": "9a235a2950aa1aa40713de00ffae38ebfde966478710e42ac14554501549e8b7"
     },
     {
       "batchId": "B12",
       "path": "implementation-control/batches/B12.json",
-      "sha256": "309e711c75c3f9a79805c531a343d9d3434da5b141fde69caec4fc8a8ad3858b"
+      "sha256": "19ec52578f1d4ef5690350b31187a0e2a443deb23f9b27aa42102895d394c3a9"
     },
     {
       "batchId": "B13",
       "path": "implementation-control/batches/B13.json",
-      "sha256": "2aab7f356d5694cf9dce83dc5beb5a20e527e96e7dbc551e6ae51da765ce1b05"
+      "sha256": "6e3b6394ab23538e7d2e9e381f14ee94605ebd6f504d2614f8ca062cdad7cfb0"
     },
     {
       "batchId": "B14",
       "path": "implementation-control/batches/B14.json",
-      "sha256": "6025431bebea0d2a9e6f4ecdecdb08546e32c80d57458c4a805fe45578730b77"
+      "sha256": "f9ff4d9b138695fd8c31fe613e82c4b36e08d7c78318ff021051612fe6b85723"
     },
     {
       "batchId": "B15",
       "path": "implementation-control/batches/B15.json",
-      "sha256": "9d21627ce9b0f0122aea64616fe036daf22b05bfdd1e3e9ca873bad3aa07aeae"
+      "sha256": "afb51814bb8728a10fd3e258a83b4ac1d13e68ff706140e65ff71b18a33007e8"
     },
     {
       "batchId": "B16",
       "path": "implementation-control/batches/B16.json",
-      "sha256": "98305d38970ba63745cf3a86dcb9aa3c4373fab0d2a28dc9c4959e7000364e77"
+      "sha256": "cfa6676716237ad50efec1a8917c0eb72fe4f7d0174e445aee5aa4298ed5bc31"
     },
     {
       "batchId": "B17",
       "path": "implementation-control/batches/B17.json",
-      "sha256": "c23352d4d86ae1d4db081c28768dd705a5dce8870601aa1fe7efe9fdf593f642"
+      "sha256": "2565dd6a14efa7bf058fc5284c51ee3d7960e1c4b3aa06329b9287c334349727"
     },
     {
       "batchId": "B18",
       "path": "implementation-control/batches/B18.json",
-      "sha256": "d11b992f64bbf0a6538f7e1d04554bd91c24022b5f396fba119861613f8b9d07"
+      "sha256": "771cc70effe982bb9d51228ab7c23f1f076b4a0b9f332afe55e5ad6a5173a8ca"
     },
     {
       "batchId": "B19",
       "path": "implementation-control/batches/B19.json",
-      "sha256": "637b6ba8d77887d8ecfbc59190115e8d3f55c0aee1adb462876b9f7c391b8b55"
+      "sha256": "e2afb8074b37c479885bde04431d7c966c9c439920eaf621d871655a0525c5be"
     },
     {
       "batchId": "B20",
       "path": "implementation-control/batches/B20.json",
-      "sha256": "e682a16c22ed8aed1f3a16b3e12cf69993a841b2cda21029ab9eac3307ca5669"
+      "sha256": "082abad9ff017a2211fa40bd902d7e95d17d31b4ee70fd76a565849c9d80ec97"
     },
     {
       "batchId": "B21",
       "path": "implementation-control/batches/B21.json",
-      "sha256": "37d42f9158b06d53f2e680e4899ea9a0e52c1df5143eb2147f8b8534436cf556"
+      "sha256": "6b0b141df76b0dab584b1b017d383456629065c66405e74fc880e3d03a4f9cf0"
     },
     {
       "batchId": "B22",
       "path": "implementation-control/batches/B22.json",
-      "sha256": "53c598107caae8bc606f762368cb7363be3c8e7e4fad684f556d7beb5d89250c"
+      "sha256": "6aab3306c5685a4fea9d61bc2daf3347671924e497293db65b9815e7561a1856"
     },
     {
       "batchId": "B23",
       "path": "implementation-control/batches/B23.json",
-      "sha256": "1291046ebf0390f2dd1c0a7c8e0190a12d496512aa5519a65df832b24138a155"
+      "sha256": "82773340372a66db6e2ede29df42acce22200d8b9f8861bd21173ce4ee5110ca"
     },
     {
       "batchId": "B24",
       "path": "implementation-control/batches/B24.json",
-      "sha256": "ef761420201ac8fe021b72f01bf5804dc3bcd8d8a664aec96ddd3bec828c69d7"
+      "sha256": "ac8f0b9dcc5bd0cbb3689260f42f5dcd3522a19b03326b755351b7d1fed64fae"
     },
     {
       "batchId": "B25",
       "path": "implementation-control/batches/B25.json",
-      "sha256": "91e89acfab3080f7a5bace9043b20d8d3d6d41fb8d4d25d44035cca0b79848b8"
+      "sha256": "ce79c44d1e0a74ab2e601b6ea5d2d797d426140901dfb2fb4ba57884407e34d0"
     }
   ]
 }

@@ -1,0 +1,133 @@
+html {
+  overflow-x: clip;
+  scroll-padding-block-start: var(--fs-space-4);
+}
+
+body {
+  min-inline-size: 320px;
+  overflow-wrap: anywhere;
+}
+
+header,
+nav,
+main,
+footer,
+[data-testid='refresh-fundamentals-control'],
+[data-testid='recovery-panel'] {
+  inline-size: min(100%, var(--fs-content-width));
+  margin-inline: auto;
+  min-inline-size: 0;
+}
+
+nav ul,
+.actions,
+[aria-label$=' actions'] {
+  flex-wrap: wrap;
+}
+
+button,
+input:not([type='hidden']),
+select,
+textarea,
+summary,
+a {
+  min-block-size: var(--fs-target-size);
+  max-inline-size: 100%;
+}
+
+a {
+  align-items: center;
+  display: inline-flex;
+}
+
+button,
+input,
+select,
+textarea,
+code,
+pre,
+dd,
+td,
+th {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+:focus-visible {
+  outline: var(--fs-focus-width) solid currentColor !important;
+  outline-offset: var(--fs-space-1) !important;
+  scroll-margin: var(--fs-space-6);
+}
+
+main:focus-visible {
+  outline-offset: calc(-1 * var(--fs-focus-width)) !important;
+}
+
+table {
+  display: block;
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+
+table,
+[role='table'] {
+  overflow-x: auto;
+}
+
+.visually-hidden {
+  block-size: 1px !important;
+  clip: rect(0 0 0 0) !important;
+  clip-path: inset(50%) !important;
+  inline-size: 1px !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 30rem) {
+  header,
+  nav,
+  main,
+  footer,
+  [data-testid='refresh-fundamentals-control'],
+  [data-testid='recovery-panel'] {
+    padding-inline: var(--fs-space-3);
+  }
+
+  nav ul,
+  dl,
+  fieldset,
+  .actions {
+    min-inline-size: 0;
+  }
+
+  main *,
+  nav li,
+  nav button,
+  .actions > *,
+  fieldset > * {
+    min-inline-size: 0 !important;
+    max-inline-size: 100%;
+  }
+
+  main :where(dl, .configuration-grid, .comparison, .grid, .summary, .fingerprints, .metrics, .contract-state) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight !important;
+  }
+}
