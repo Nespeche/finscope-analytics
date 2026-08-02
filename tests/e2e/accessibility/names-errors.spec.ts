@@ -1,4 +1,4 @@
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 async function activateRoute(page: Page, name: string): Promise<void> {
   const button = page.getByRole('button', { name, exact: true });
@@ -107,9 +107,12 @@ test('price import fields and CSV validation expose deterministic error associat
 test('data management declares destructive consequences, CIK errors and busy status', async ({ page }) => {
   await page.goto('/');
   await activateRoute(page, 'Data management');
-  await page.getByLabel(/Allow this view to open and change IndexedDB/u).check();
-  const cik = page.getByLabel('Issuer CIK for price deletion');
+  await expect(page.getByRole('heading', { name: 'Data management' })).toBeVisible();
+  const cik = page.locator('#price-delete-cik');
+  await expect(cik).toBeVisible();
+  await expect(page.locator('label[for="price-delete-cik"]')).toHaveText('Issuer CIK for price deletion');
   await cik.fill('123');
+  await page.getByLabel(/Allow this view to open and change IndexedDB/u).check();
   await page.getByRole('button', { name: 'Delete price history' }).click();
   await expect(cik).toHaveAttribute('aria-invalid', 'true');
   await expect(cik).toHaveAttribute('aria-errormessage', 'price-delete-cik-error');
@@ -119,11 +122,12 @@ test('data management declares destructive consequences, CIK errors and busy sta
   await expect(page.getByRole('region', { name: 'Data management' })).toHaveAttribute('aria-busy', 'false');
 });
 
-test('tables, charts and recovery actions expose equivalent text and reachable names', async ({ page }) => {
+test('fact lineage, charts and recovery actions expose equivalent text and reachable names', async ({ page }) => {
   await page.goto('/');
   await activateRoute(page, 'Facts');
-  await expect(page.getByRole('table', { name: 'Normalized financial facts' })).toBeVisible();
-  await expect(page.getByText('Unavailable', { exact: true }).first()).toBeVisible();
+  await expect(page.locator('[data-fact-state="normalized"]')).toContainText('Raw SEC fact');
+  await expect(page.locator('[data-fact-state="normalized"]')).toContainText('Normalized fact');
+  await expect(page.locator('[data-fact-state="unavailable"]')).toContainText('Unavailable');
 
   await activateRoute(page, 'Price analysis');
   const chart = page.getByRole('img', { name: 'Historical price line chart' });
