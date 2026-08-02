@@ -13,8 +13,8 @@
   "operation": {
     "id": "B19",
     "kind": "RELEASE_REMEDIATION",
-    "branch": "agent/b19-completed-release",
-    "stage": "candidate",
+    "branch": "agent/b19-release-reauthentication",
+    "stage": "completed",
     "activeBatchId": "B19",
     "nextBatchId": "B20",
     "completedTasksThroughOnClosure": "T085",
@@ -28,7 +28,7 @@
       {
         "id": "verify-completed-package",
         "category": "package-authentication",
-        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.23_B19_completed.zip .finscope-release/FS_v0.21.23_B19_completed.zip.sha256",
+        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.24_B19_completed.zip .finscope-release/FS_v0.21.24_B19_completed.zip.sha256",
         "required": true
       }
     ]
@@ -51,14 +51,14 @@
   },
   "release": {
     "pending": true,
-    "tag": "v0.21.23-B19-completed",
-    "packageRevision": "v0.21.23_B19_completed",
-    "zipName": "FS_v0.21.23_B19_completed.zip",
-    "sidecarName": "FS_v0.21.23_B19_completed.zip.sha256",
+    "tag": "v0.21.24-B19-completed",
+    "packageRevision": "v0.21.24_B19_completed",
+    "zipName": "FS_v0.21.24_B19_completed.zip",
+    "sidecarName": "FS_v0.21.24_B19_completed.zip.sha256",
     "evidencePrefix": "FinScope_B19_release_evidence",
     "promptName": "PROMPT_IMPLEMENTACION_B20.md",
-    "title": "FinScope B19 completed — context, recovery and accessibility foundation",
-    "notes": "B19 completed with authenticated candidate and closure evidence. This Release publishes the immutable completed ZIP and sidecar after package, upload/download and closure-artifact authentication. B20 remains pending as the next active and authorized batch; convergenceAuthorized=false."
+    "title": "FinScope B19 completed — reauthenticated immutable Release",
+    "notes": "Immutable B19 completed revision re-published after the prior v0.21.23 asset digest metadata failed exact baseline authentication. Product behavior, tests and .specify are unchanged. B20 remains pending/authorized and convergenceAuthorized=false."
   },
   "productState": {
     "activeBatchId": "B20",
