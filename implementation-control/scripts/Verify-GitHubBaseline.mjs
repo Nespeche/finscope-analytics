@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -6,7 +7,7 @@ import { assertSafeArchivePaths, canonicalTreeHash, now, readJson, root, run, sh
 const output=process.argv[2] ?? '.finscope-evidence/preflight/release-baseline.json';
 const handoff=await readJson(join(root,'implementation-control/GITHUB_HANDOFF.json'));
 const expected=handoff.baseline;
-const report={result:'FAIL',tag:expected.tag,zipName:expected.zipName,sidecarName:expected.sidecarName,zipSha256:expected.zipSha256,assetIds:[],root:expected.root.replace(/\/$/u,''),failure:null,checkedAt:now()};
+const report={result:'FAIL',tag:expected.tag,zipName:expected.zipName,sidecarName:expected.sidecarName,zipSha256:expected.zipSha256,assetIds:[],assetMetadataDigests:{zip:null,sidecar:null},assetMetadataDigestStatus:'NOT_CHECKED',root:expected.root.replace(/\/$/u,''),failure:null,checkedAt:now()};
 let work;
 try{
   if(!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) throw new Error('GITHUB_TOKEN_MISSING');
@@ -23,8 +24,15 @@ try{
   const commitLookup=await run(`gh api repos/${handoff.repository}/commits/${expected.tag} --jq .sha`,{cwd:root});
   if(commitLookup.exitCode!==0 || commitLookup.stdout.toString('utf8').trim()!==expected.commitSha) throw new Error('RELEASE_TAG_COMMIT_MISMATCH');
   const zipAsset=wanted.find((a)=>a.name===expected.zipName); const sidecarAsset=wanted.find((a)=>a.name===expected.sidecarName);
-  if(zipAsset.digest!==`sha256:${expected.zipSha256}`) throw new Error('RELEASE_ASSET_DIGEST_MISMATCH');
   report.assetIds=[Number(zipAsset.id),Number(sidecarAsset.id)];
+  const expectedSidecarBytes=Buffer.from(`${expected.zipSha256}  ${expected.zipName}\n`,'utf8');
+  const expectedSidecarDigest=`sha256:${createHash('sha256').update(expectedSidecarBytes).digest('hex')}`;
+  const zipMetadataDigest=typeof zipAsset.digest==='string'&&zipAsset.digest.length>0?zipAsset.digest:null;
+  const sidecarMetadataDigest=typeof sidecarAsset.digest==='string'&&sidecarAsset.digest.length>0?sidecarAsset.digest:null;
+  report.assetMetadataDigests={zip:zipMetadataDigest,sidecar:sidecarMetadataDigest};
+  if(zipMetadataDigest!==null&&zipMetadataDigest!==`sha256:${expected.zipSha256}`) throw new Error(`RELEASE_ZIP_ASSET_METADATA_DIGEST_MISMATCH:${zipMetadataDigest}`);
+  if(sidecarMetadataDigest!==null&&sidecarMetadataDigest!==expectedSidecarDigest) throw new Error(`RELEASE_SIDECAR_ASSET_METADATA_DIGEST_MISMATCH:${sidecarMetadataDigest}`);
+  report.assetMetadataDigestStatus=zipMetadataDigest!==null&&sidecarMetadataDigest!==null?'MATCH':'UNAVAILABLE_FALLBACK_TO_DOWNLOADED_BYTES';
   const dl=await run(`gh release download ${expected.tag} --repo ${handoff.repository} --dir "${work}" --pattern "${expected.zipName}" --pattern "${expected.sidecarName}" --clobber`,{cwd:root});
   await writeFile(join(root,'.finscope-evidence/preflight/release-download.stdout.log'),dl.stdout);
   await writeFile(join(root,'.finscope-evidence/preflight/release-download.stderr.log'),dl.stderr);
