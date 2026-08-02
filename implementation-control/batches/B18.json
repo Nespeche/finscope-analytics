@@ -5,7 +5,7 @@
   "ordinal": 18,
   "title": "Restore, borrado, cuarentena e interfaz de datos",
   "domain": "storage-recovery",
-  "status": "PENDING",
+  "status": "COMPLETED",
   "taskCount": 4,
   "executionOrder": [
     "T077",
@@ -165,7 +165,7 @@
       ],
       "doneWhen": "restore cannot bypass preview and any store failure restores the exact prior database state",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "0bc0257b4631739d8d18298628e64b955c5f098d25a2396277ac3b51d8b13196"
+      "sourceTaskSha256": "d80083e6f5f385da62b23a8ed9eef5f61f600d58989bf84efa9a92017f362229"
     },
     {
       "id": "T078",
@@ -208,7 +208,7 @@
       ],
       "doneWhen": "delete all is atomic, pre-export is offered and delete price preserves fundamentals",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "446d759cb47b994a2f36e5c86967977f36b234228d105ab8a5fdca0563b06f10"
+      "sourceTaskSha256": "6294415eb7b9c5ddb7fc06896789e27b437cad5eabddcabafe3bbd74e30f3281"
     },
     {
       "id": "T079",
@@ -259,7 +259,7 @@
       ],
       "doneWhen": "hash mismatch, schema mismatch and corrupt pointers are quarantined deterministically and never advance an active pointer",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "8fca1a90a89460617b44121c12d62f8f0577541f5d59fa8d23c2886a49cd7711"
+      "sourceTaskSha256": "8e34ca1a87fe52f916d3c9a8b96f80250e76ee96de5be443268ee2f22908b24a"
     },
     {
       "id": "T080",
@@ -322,7 +322,7 @@
       ],
       "doneWhen": "the view exports an AUTH-027 routeDefinition and preview, conflicts, allowed migration, rollback, corruption recovery, pre-export and deletion run through UI with no orphan records or pointers",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "e199cc77272686a868c07299707733025d7c6a27e9bbb2e43305a90aee5fce95"
+      "sourceTaskSha256": "ecea3da8eddd9e89c5e29bcb9633f71eed4986372e822bc2bbb6c958bbff6a28"
     }
   ],
   "completionGate": {
@@ -332,7 +332,7 @@
     "packageValidationPass": true,
     "doNotStartNextBatch": true
   },
-  "sourceTasksSha256": "44be83b900cd531b63a2d25c5dcb18c8880e140e38d4f1690849f1fe680fbf5d",
+  "sourceTasksSha256": "9e6a655f41288b1b73ef9a0b06e2311354ade8f048e969eebc07a58a53536703",
   "localValidation": {
     "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
     "browserRequired": true,
