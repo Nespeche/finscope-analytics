@@ -49,19 +49,32 @@
     if (next !== undefined) issue = next;
   }
 
+  function recoveryTarget(selector: string | undefined): HTMLElement | null {
+    return selector === undefined
+      ? document.querySelector<HTMLElement>('main h1, main h2, main')
+      : document.querySelector<HTMLElement>(selector);
+  }
+
+  async function nextFrame(): Promise<void> {
+    await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+  }
+
   async function activate(actionId: string): Promise<void> {
     const operation = getRecoveryOperation(actionId);
-    const navButton = [...document.querySelectorAll<HTMLButtonElement>('nav[aria-label="Primary navigation"] button')]
-      .find((button) => button.textContent?.trim() === operation.routeLabel);
-    navButton?.click();
+    let target = recoveryTarget(operation.targetSelector);
+    if (target === null) {
+      const navButton = [...document.querySelectorAll<HTMLButtonElement>('nav[aria-label="Primary navigation"] button')]
+        .find((button) => button.textContent?.trim() === operation.routeLabel);
+      navButton?.click();
+      await tick();
+      await nextFrame();
+    }
     if (operation.eventName !== undefined) {
       window.dispatchEvent(new CustomEvent(operation.eventName, { detail: { actionId } }));
     }
     await tick();
-    const target = operation.targetSelector === undefined
-      ? document.querySelector<HTMLElement>('main h1, main h2, main')
-      : document.querySelector<HTMLElement>(operation.targetSelector);
-    if (target !== null && target !== undefined) {
+    target = recoveryTarget(operation.targetSelector);
+    if (target !== null) {
       if (!target.matches('a, button, input, select, textarea, summary, [tabindex]')) target.tabIndex = -1;
       target.focus();
       target.scrollIntoView({ block: 'nearest' });

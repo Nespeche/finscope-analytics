@@ -26,8 +26,8 @@ test('errors identify fields, explain corrections and use one live source', asyn
 });
 
 test('states, consequences, tables and graphic alternatives remain explicit', async ({ page }) => {
-  await page.goto('/'); await activate(page,'Facts'); await expect(page.getByText('Fact state: normalized and available.')).toBeVisible(); await expect(page.getByText('Fact state: unavailable.')).toBeVisible();
-  await activate(page,'Fundamental metrics'); await expect(page.locator('[data-metric-state]')).toHaveCount(24); await expect(page.getByRole('link',{name:'View evidence for Revenue'})).toBeVisible();
+  await page.goto('/'); await activate(page,'Facts'); await expect(page.getByText('Fact state: normalized and available.')).toBeVisible(); await expect(page.getByText(/Fact state: unavailable\./iu)).toBeVisible();
+  await activate(page,'Fundamental metrics'); await expect(page.locator('[data-metric-state]')).toHaveCount(24); await expect(page.getByRole('link',{name:'View evidence for Revenue', exact:true})).toBeVisible();
   await activate(page,'Insights'); await expect(page.getByText('Outcome: positive').first()).toBeVisible(); await expect(page.getByText('Outcome: not evaluable').first()).toBeVisible();
   await activate(page,'Issuer evidence'); await expect(page.getByRole('table',{name:'SEC filings used as source evidence'})).toContainText('partial');
   await activate(page,'Data management'); await expect(page.locator('#price-delete-consequence')).toContainText('confirmation dialog');

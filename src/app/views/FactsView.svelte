@@ -45,7 +45,7 @@
 
   <article data-fact-state="unavailable" aria-labelledby="minority-fact-heading" aria-describedby="minority-fact-state facts-instructions">
     <h2 id="minority-fact-heading">Minority interest</h2>
-    <p id="minority-fact-state"><strong>Fact state:</strong> unavailable.</p>
+    <p id="minority-fact-state"><strong>Fact state:</strong> Unavailable.</p>
     <p>No authoritative compatible fact was reported for the selected period. FinScope does not substitute zero.</p>
     <h3>Minority interest provenance</h3>
     <FactProvenance concept="unmapped" accession="not available" sourceUnit="not available" normalizedUnit="not available" scale="not available" sign="not available" mapping="minority_interest" confidence="none" quality="unavailable" />

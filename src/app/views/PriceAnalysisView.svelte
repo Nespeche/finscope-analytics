@@ -124,7 +124,7 @@
         <label for="price-evaluation-date">Evaluation date for displayed age</label>
         <input id="price-evaluation-date" type="date" bind:value={evaluationDate} aria-describedby="price-evaluation-help price-display-age-status" />
         <p id="price-evaluation-help">The evaluation date changes presentation only; it does not alter stored observations or fingerprints.</p>
-        <p id="price-display-age-status" role="status" aria-live="polite" aria-atomic="true">
+        <p id="price-display-age-status">
           Display age: <strong data-testid="price-display-age">{displayAgeDays === undefined ? 'Unavailable' : `${displayAgeDays} days`}</strong>.
           This presentation-only value is not stored in the overlay and does not change either price fingerprint.
         </p>
