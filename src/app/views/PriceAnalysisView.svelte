@@ -119,7 +119,8 @@
 
       <div class="evaluation-field">
         <label for="price-evaluation-date">Evaluation date for displayed age</label>
-        <input id="price-evaluation-date" type="date" bind:value={evaluationDate} />
+        <input id="price-evaluation-date" type="date" bind:value={evaluationDate} aria-describedby="price-evaluation-date-help" />
+        <p id="price-evaluation-date-help">Changing this presentation-only date recalculates display age but does not persist data or change either price fingerprint.</p>
         <p>
           Display age: <strong data-testid="price-display-age">{displayAgeDays === undefined ? 'Unavailable' : `${displayAgeDays} days`}</strong>.
           This presentation-only value is not stored in the overlay and does not change either price fingerprint.
@@ -149,7 +150,11 @@
       </div>
     </section>
 
-    <AccessiblePriceChart observations={overlay.observations} currency={overlay.currency} />
+    <section aria-labelledby="price-chart-alternative-heading">
+      <h2 id="price-chart-alternative-heading" class="visually-hidden">Chart and equivalent data</h2>
+      <p>The line chart is descriptive only. Its trend summary and complete date-and-price table provide the same information without relying on shape, position or color.</p>
+      <AccessiblePriceChart observations={overlay.observations} currency={overlay.currency} />
+    </section>
 
     <section class="contract-state" aria-labelledby="price-contract-heading">
       <h2 id="price-contract-heading">Overlay contract and isolation</h2>
@@ -229,6 +234,8 @@
     padding: 0.5rem 0.625rem;
     font: inherit;
   }
+
+  .visually-hidden { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
   .table-wrap {
     max-inline-size: 100%;
