@@ -17,14 +17,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout exact PR commit
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Configure Node from package authority
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
           node-version-file: package.json
+          package-manager-cache: false
       - name: Apply authenticated closure payload when requested
         id: apply
         env:
@@ -47,13 +48,13 @@ jobs:
         run: node implementation-control/scripts/Verify-GitHubClosure.mjs
       - name: Upload closure evidence
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: ${{ steps.closure.outputs.artifact_name }}
           path: ${{ steps.closure.outputs.evidence_dir }}
           if-no-files-found: error
           include-hidden-files: true
-          retention-days: 14
+          retention-days: 30
       - name: Enforce closure result
         if: always()
         env:
