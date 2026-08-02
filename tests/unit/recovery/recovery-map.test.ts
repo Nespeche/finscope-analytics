@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import gatewayCatalog from '../../../specs/001-fundamental-analysis-platform/definitions/gateway-problem-details-catalog.json';
-import localIssueCatalog from '../../../specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json';
+import localCatalog from '../../../specs/001-fundamental-analysis-platform/definitions/local-operation-issue-catalog.json';
 import {
   getRecoveryIssue,
   getRecoveryOperation,
