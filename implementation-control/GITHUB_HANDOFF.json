@@ -34,11 +34,11 @@
     ]
   },
   "candidate": {
-    "sha": null,
-    "runId": null,
-    "artifactId": null,
-    "artifactName": null,
-    "artifactDigest": null
+    "sha": "52e2f934beef1cf31fa662ea5cb0f2ab42f13ff4",
+    "runId": "30733785638",
+    "artifactId": 8828860313,
+    "artifactName": "finscope-github-validation-52e2f934beef-PASS",
+    "artifactDigest": "sha256:88e322205ed1d0b38cae1381203996ce70e92324ee4ab1216cfe958e4d44a100"
   },
   "closure": {
     "status": "COMPLETED",
