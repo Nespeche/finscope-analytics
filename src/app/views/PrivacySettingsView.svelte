@@ -1,107 +1,194 @@
 <script module lang="ts">
-  import type { AppPlacement } from '../composition';
+  import type { RouteDefinition } from '../composition';
 
-  export const componentId = 'recovery-panel';
-  export const appPlacement: AppPlacement = 'recovery';
-  export const order = 30;
+  export const routeDefinition = {
+    id: 'privacy-settings',
+    label: 'Privacy settings',
+    order: 90,
+    requiredCapabilities: ['consent', 'local_snapshot', 'export_restore'],
+  } as const satisfies RouteDefinition;
 </script>
 
 <script lang="ts">
-  import { onMount, tick } from 'svelte';
-  import {
-    getRecoveryIssue,
-    getRecoveryOperation,
-    issueCodeFromText,
-    parseRecoveryIssueDetail,
-    repositoryCorruptionIssue,
-    type RecoveryIssueDescriptor,
-  } from '../recovery/recovery-actions';
+  import { tick } from 'svelte';
+  import { createConsentRepository } from '../../persistence/consent-repository';
 
-  let issue: RecoveryIssueDescriptor | undefined;
-  let statusMessage = '';
-  let panel: HTMLElement | undefined;
+  const consentRepository = createConsentRepository();
 
-  $: issueDescriptionId = issue === undefined ? undefined : `recovery-${issue.code.toLocaleLowerCase('en-US').replaceAll('_', '-')}-description`;
+  let refreshConsent = consentRepository.read('refreshConsent').granted;
+  let storageConsent = consentRepository.read('storageConsent').granted;
+  let statusMessage = 'Refresh and local storage are disabled by default.';
+  let statusKind: 'status' | 'alert' = 'status';
+  let refreshControl: HTMLInputElement;
+  let storageControl: HTMLInputElement;
 
-  function inspectVisibleIssues(): void {
-    if (document.querySelector('[data-testid="corruption-recovery"]') !== null) {
-      issue = repositoryCorruptionIssue;
-      return;
-    }
-    const alerts = [...document.querySelectorAll('[role="alert"]')]
-      .filter((element) => !panel?.contains(element));
-    for (const alert of alerts.reverse()) {
-      const code = issueCodeFromText(alert.textContent ?? '');
-      const next = code === undefined ? undefined : getRecoveryIssue(code);
-      if (next !== undefined) {
-        issue = Object.freeze({ ...next, message: alert.textContent?.trim() || next.message });
-        return;
-      }
-    }
-    if (issue?.source !== 'repository') issue = undefined;
+  function setRefreshConsent(granted: boolean): void {
+    const record = consentRepository.set('refreshConsent', granted);
+    refreshConsent = record.granted;
+    statusKind = 'status';
+    statusMessage = granted
+      ? 'Refresh consent granted. Network access still requires an explicit refresh action.'
+      : 'Refresh consent revoked. Lifecycle and manual refresh actions are local-only.';
+    void tick().then(() => refreshControl.focus());
   }
 
-  function handleIssueEvent(event: Event): void {
-    if (!(event instanceof CustomEvent)) return;
-    const next = parseRecoveryIssueDetail(event.detail);
-    if (next !== undefined) issue = next;
+  function setStorageConsent(granted: boolean): void {
+    const record = consentRepository.set('storageConsent', granted);
+    storageConsent = record.granted;
+    statusKind = 'status';
+    statusMessage = granted
+      ? 'Storage consent granted. Confirmed analyses may be saved locally.'
+      : 'Storage consent revoked. Analysis remains available in memory and no new local write is allowed.';
+    void tick().then(() => storageControl.focus());
   }
 
-  async function activate(actionId: string): Promise<void> {
-    const operation = getRecoveryOperation(actionId);
-    const navButton = [...document.querySelectorAll<HTMLButtonElement>('nav[aria-label="Primary navigation"] button')]
-      .find((button) => button.textContent?.trim() === operation.routeLabel);
-    navButton?.click();
-    if (operation.eventName !== undefined) {
-      window.dispatchEvent(new CustomEvent(operation.eventName, { detail: { actionId } }));
-    }
-    await tick();
-    const target = operation.targetSelector === undefined
-      ? document.querySelector<HTMLElement>('main h1, main h2, main')
-      : document.querySelector<HTMLElement>(operation.targetSelector);
-    if (target !== null && target !== undefined) {
-      if (!target.matches('a, button, input, select, textarea, summary, [tabindex]')) target.tabIndex = -1;
-      target.focus();
-      target.scrollIntoView({ block: 'nearest' });
-    }
-    statusMessage = `${operation.label} is available in ${operation.routeLabel}.`;
+  async function runMemoryAnalysis(): Promise<void> {
+    const result = await consentRepository.runPersistentWrite(() => 'saved-locally');
+    statusKind = 'status';
+    statusMessage = result.mode === 'persisted'
+      ? 'Analysis completed and saved locally with storage consent.'
+      : 'Analysis completed in memory only. Storage consent is not required for analysis.';
   }
 
-  onMount(() => {
-    inspectVisibleIssues();
-    const observer = new MutationObserver(inspectVisibleIssues);
-    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
-    window.addEventListener('finscope:recovery-issue', handleIssueEvent);
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('finscope:recovery-issue', handleIssueEvent);
-    };
-  });
+  async function requestRefresh(): Promise<void> {
+    try {
+      const result = await consentRepository.runLifecycleRefresh(async () => {
+        const response = await fetch('/consent-network-probe', {
+          method: 'GET',
+          headers: { accept: 'application/json' },
+        });
+        if (!response.ok) throw new Error(`Refresh probe returned HTTP ${response.status}.`);
+        return response.status;
+      });
+      statusKind = 'status';
+      statusMessage = result.mode === 'local_only'
+        ? 'Refresh skipped. Refresh consent is off, so zero network requests were made.'
+        : 'Refresh completed after explicit consent and action.';
+    } catch (caught: unknown) {
+      statusKind = 'alert';
+      statusMessage = caught instanceof Error ? caught.message : 'Refresh failed.';
+    }
+  }
 </script>
 
-{#if issue}
-  <section bind:this={panel} class="recovery-panel" aria-labelledby="recovery-panel-heading" aria-describedby={issueDescriptionId} data-testid="recovery-panel">
-    <h2 id="recovery-panel-heading">Recovery options</h2>
-    <p id={issueDescriptionId}><strong>{issue.title}.</strong> {issue.message}</p>
-    <p><strong>State:</strong> {issue.pipelineState}</p>
-    <p><strong>Blocked:</strong> {issue.blockedOperations.join(', ')}</p>
-    <p><strong>Preserved:</strong> {issue.preservedCapabilities.join(', ')}</p>
-    <div class="actions" aria-label={`Available recovery actions for ${issue.title}`} aria-describedby={issueDescriptionId}>
-      {#each issue.recoveryActions as actionId}
-        {@const operation = getRecoveryOperation(actionId)}
-        <button type="button" aria-label={`${actionId === 'use_last_snapshot' ? 'Recover with last snapshot' : operation.label} for ${issue.title}`} aria-describedby={issueDescriptionId} onclick={() => { void activate(actionId); }}>
-          {actionId === 'use_last_snapshot' ? 'Recover with last snapshot' : operation.label}
-        </button>
-      {/each}
-    </div>
-    <p class="status" role="status" aria-live="polite" aria-atomic="true">{statusMessage}</p>
-  </section>
-{/if}
+<section aria-labelledby="privacy-settings-heading">
+  <p class="eyebrow">Local-first privacy controls</p>
+  <h1 id="privacy-settings-heading">Privacy and consent</h1>
+  <p>
+    Refresh consent and storage consent are independent. Revoking either consent takes effect immediately without deleting valid local analysis.
+  </p>
+
+  <fieldset>
+    <legend>Refresh consent</legend>
+    <label>
+      <input
+        bind:this={refreshControl}
+        type="checkbox"
+        checked={refreshConsent}
+        onchange={(event) => setRefreshConsent(event.currentTarget.checked)}
+        aria-describedby="refresh-consent-help"
+      />
+      Allow explicit refresh requests
+    </label>
+    <p id="refresh-consent-help">
+      When disabled, opening, resuming and choosing refresh remain local-only and produce zero network requests.
+    </p>
+    <p id="refresh-consent-consequence">Revocation takes effect immediately: lifecycle and manual refresh actions make zero network requests, while valid local analysis remains available.</p>
+    <button type="button" onclick={() => setRefreshConsent(false)} disabled={!refreshConsent} aria-describedby="refresh-consent-consequence">
+      Revoke refresh consent
+    </button>
+  </fieldset>
+
+  <fieldset>
+    <legend>Storage consent</legend>
+    <label>
+      <input
+        bind:this={storageControl}
+        type="checkbox"
+        checked={storageConsent}
+        onchange={(event) => setStorageConsent(event.currentTarget.checked)}
+        aria-describedby="storage-consent-help"
+      />
+      Save confirmed analysis on this device
+    </label>
+    <p id="storage-consent-help">
+      Analysis can always run in memory. Local persistence is attempted only while this consent is granted.
+    </p>
+    <p id="storage-consent-consequence">Revocation prevents new local writes and closes future persistence access; it does not delete valid local records.</p>
+    <button type="button" onclick={() => setStorageConsent(false)} disabled={!storageConsent} aria-describedby="storage-consent-consequence">
+      Revoke storage consent
+    </button>
+  </fieldset>
+
+  <div class="actions" aria-label="Consent verification actions" aria-describedby="consent-action-help">
+    <p id="consent-action-help">These controls demonstrate local-only analysis and the refresh-consent boundary; neither changes consent automatically.</p>
+    <button type="button" onclick={() => { void runMemoryAnalysis(); }}>
+      Run local analysis
+    </button>
+    <button type="button" onclick={() => { void requestRefresh(); }}>
+      Check for updates
+    </button>
+  </div>
+
+  <p
+    data-testid="privacy-status"
+    role={statusKind}
+    aria-live={statusKind === 'alert' ? 'assertive' : 'polite'}
+    aria-atomic="true"
+  >
+    {statusMessage}
+  </p>
+</section>
 
 <style>
-  .recovery-panel { border: 2px solid currentColor; display: grid; gap: 0.5rem; margin: 1rem; padding: 1rem; }
-  h2, p { margin: 0; }
-  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-  button { min-block-size: 2.75rem; }
-  .status:empty { display: none; }
+  section {
+    display: grid;
+    gap: 1rem;
+    max-inline-size: 68ch;
+  }
+
+  .eyebrow,
+  legend {
+    font-weight: 700;
+  }
+
+  .eyebrow {
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  h1,
+  p {
+    margin-block: 0;
+  }
+
+  fieldset {
+    display: grid;
+    gap: 0.75rem;
+    border: 2px solid currentColor;
+    border-radius: 0.5rem;
+    padding: 1rem;
+  }
+
+  label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-weight: 700;
+  }
+
+  input[type='checkbox'] {
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  button {
+    min-block-size: 2.75rem;
+  }
 </style>
