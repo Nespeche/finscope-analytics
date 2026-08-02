@@ -34,7 +34,7 @@
     The issuer CIK, analysis profile and filing status remain visible in text. Source status is written in every row and never communicated by color alone.
   </p>
 
-  <aside aria-labelledby="issuer-evidence-context-heading">
+  <aside aria-label="Issuer identity">
     <h2 id="issuer-evidence-context-heading">Apple Inc. — active issuer context</h2>
     <dl>
       <div><dt>CIK</dt><dd><code>0000320193</code></dd></div>

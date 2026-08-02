@@ -30,7 +30,7 @@
 <section aria-labelledby="insights-heading" aria-describedby="insights-disclosure">
   <p class="eyebrow">Descriptive analysis only</p>
   <h1 id="insights-heading">Rule outcomes and synthesis</h1>
-  <p id="insights-disclosure" class="disclosure"><strong>Not investment advice.</strong> These deterministic observations are descriptive, are not personalized, and do not provide a recommendation, target price, forecast, suitability assessment or confidence score.</p>
+  <p id="insights-disclosure" class="disclosure"><strong>Not investment advice.</strong> These deterministic observations are descriptive and are not personalized. They do not provide a recommendation, target price or confidence score, and they are not a forecast or suitability assessment.</p>
   <p><strong>Active context:</strong> Apple Inc.; CIK 0000320193; FY 2025; profile us-gaap-industrial-v1; snapshot fundamental-snapshot-0000320193-fy2025.</p>
   <p>Shared analysis fingerprint: <code>{fingerprint}</code></p>
 
