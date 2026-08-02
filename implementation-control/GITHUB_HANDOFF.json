@@ -14,7 +14,7 @@
     "id": "B18",
     "kind": "RELEASE_REMEDIATION",
     "branch": "agent/github-actions-node24-retention",
-    "stage": "candidate",
+    "stage": "completed",
     "activeBatchId": "B18",
     "nextBatchId": "B19",
     "completedTasksThroughOnClosure": "T080",
@@ -98,7 +98,7 @@
     "artifactDigest": "sha256:452b8097fc0eb57458bf574f137819493c97054cc89aa5e99951b9316ef74d54"
   },
   "release": {
-    "pending": true,
+    "pending": false,
     "tag": "v0.21.21-B18-completed",
     "packageRevision": "v0.21.21_B18_completed",
     "zipName": "FS_v0.21.21_B18_completed.zip",
@@ -106,7 +106,7 @@
     "evidencePrefix": "FinScope_B18_release_evidence",
     "promptName": "PROMPT_IMPLEMENTACION_B19.md",
     "title": "FinScope B18 completed — restore, deletion, quarantine and data management UI",
-    "notes": "Independent GitHub Actions infrastructure remediation. Qualify Node.js 24-native pinned actions and uniform 30-day artifact retention without publishing, implementing B19 or authorizing convergence."
+    "notes": "GitHub Actions infrastructure remediation completed against the independently authenticated B18 Release. Node.js 24-native pinned actions and uniform 30-day artifact retention are qualified; no new Release publication, B19 implementation or convergence authorization is pending."
   },
   "productState": {
     "activeBatchId": "B19",
