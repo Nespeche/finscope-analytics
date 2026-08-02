@@ -1,5 +1,4 @@
-import matrixJson from '../../specs/001-fundamental-analysis-platform/definitions/wcag-2.2-aa-matrix.json';
-import oracleInventoryJson from '../../specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json';
+import { readFileSync } from 'node:fs';
 
 export type WcagApplicability = 'APPLICABLE' | 'NOT_APPLICABLE';
 export type WcagLevel = 'A' | 'AA';
@@ -51,17 +50,70 @@ export interface LoadedWcagMatrix {
   readonly oracles: Readonly<Record<string, WcagOracle>>;
 }
 
-function criterionId(successCriterion: string): string {
-  return `SC-${successCriterion.replaceAll('.', '-')}`;
+interface RawWcagOracle {
+  readonly successCriterion: string;
+  readonly level: string;
+  readonly name: string;
+  readonly applicability: string;
+  readonly components: readonly string[];
+  readonly risk: string;
+  readonly oracle: string;
+  readonly testMethod: string;
+  readonly automationPossible: boolean;
+  readonly manualTestRequired: boolean;
+  readonly fixtureRef: string;
+  readonly releaseBlocking: boolean;
+  readonly notApplicableJustification?: string;
+  readonly reclassificationTrigger?: string;
+}
+
+interface RawWcagCriterion extends RawWcagOracle {
+  readonly acceptanceCriterionIds: readonly string[];
+}
+
+interface RawWcagMatrixDocument {
+  readonly matrixId: string;
+  readonly version: string;
+  readonly criterionCount: number;
+  readonly applicableCount: number;
+  readonly notApplicableCount: number;
+  readonly criteria: readonly RawWcagCriterion[];
+}
+
+interface RawWcagOracleInventory {
+  readonly criterionCount: number;
+  readonly applicableCount: number;
+  readonly notApplicableCount: number;
+  readonly oracles: Readonly<Record<string, RawWcagOracle>>;
 }
 
 function assertCondition(condition: unknown, message: string): asserts condition {
   if (!condition) throw new TypeError(`WCAG_MATRIX_INVALID: ${message}`);
 }
 
-function freezeCriterion(raw: (typeof matrixJson.criteria)[number]): WcagCriterion {
+function readJsonDocument<T>(relativePath: string, label: string): T {
+  const documentUrl = new URL(relativePath, import.meta.url);
+  const parsed: unknown = JSON.parse(readFileSync(documentUrl, 'utf8'));
+  assertCondition(typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed), `${label} must be a JSON object`);
+  return parsed as T;
+}
+
+const matrixJson = readJsonDocument<RawWcagMatrixDocument>(
+  '../../specs/001-fundamental-analysis-platform/definitions/wcag-2.2-aa-matrix.json',
+  'WCAG matrix',
+);
+const oracleInventoryJson = readJsonDocument<RawWcagOracleInventory>(
+  '../../specs/001-fundamental-analysis-platform/fixtures/accessibility/wcag-oracle-inventory.json',
+  'WCAG oracle inventory',
+);
+
+function criterionId(successCriterion: string): string {
+  return `SC-${successCriterion.replaceAll('.', '-')}`;
+}
+
+function freezeCriterion(raw: RawWcagCriterion): WcagCriterion {
   const matrixId = criterionId(raw.successCriterion);
-  const criterion: WcagCriterion = Object.freeze({
+  return Object.freeze({
     matrixId,
     successCriterion: raw.successCriterion,
     level: raw.level as WcagLevel,
@@ -76,17 +128,16 @@ function freezeCriterion(raw: (typeof matrixJson.criteria)[number]): WcagCriteri
     fixtureRef: raw.fixtureRef,
     releaseBlocking: raw.releaseBlocking,
     acceptanceCriterionIds: Object.freeze([...raw.acceptanceCriterionIds]),
-    ...('notApplicableJustification' in raw
-      ? { notApplicableJustification: raw.notApplicableJustification }
-      : {}),
-    ...('reclassificationTrigger' in raw
-      ? { reclassificationTrigger: raw.reclassificationTrigger }
-      : {}),
+    ...(raw.notApplicableJustification === undefined
+      ? {}
+      : { notApplicableJustification: raw.notApplicableJustification }),
+    ...(raw.reclassificationTrigger === undefined
+      ? {}
+      : { reclassificationTrigger: raw.reclassificationTrigger }),
   });
-  return criterion;
 }
 
-function freezeOracle(raw: (typeof oracleInventoryJson.oracles)[keyof typeof oracleInventoryJson.oracles]): WcagOracle {
+function freezeOracle(raw: RawWcagOracle): WcagOracle {
   return Object.freeze({
     successCriterion: raw.successCriterion,
     level: raw.level as WcagLevel,
@@ -100,12 +151,12 @@ function freezeOracle(raw: (typeof oracleInventoryJson.oracles)[keyof typeof ora
     manualTestRequired: raw.manualTestRequired,
     fixtureRef: raw.fixtureRef,
     releaseBlocking: raw.releaseBlocking,
-    ...('notApplicableJustification' in raw
-      ? { notApplicableJustification: raw.notApplicableJustification }
-      : {}),
-    ...('reclassificationTrigger' in raw
-      ? { reclassificationTrigger: raw.reclassificationTrigger }
-      : {}),
+    ...(raw.notApplicableJustification === undefined
+      ? {}
+      : { notApplicableJustification: raw.notApplicableJustification }),
+    ...(raw.reclassificationTrigger === undefined
+      ? {}
+      : { reclassificationTrigger: raw.reclassificationTrigger }),
   });
 }
 
@@ -114,6 +165,8 @@ export function loadWcagMatrix(): LoadedWcagMatrix {
   assertCondition(matrixJson.applicableCount === 43, 'matrix applicableCount must be 43');
   assertCondition(matrixJson.notApplicableCount === 12, 'matrix notApplicableCount must be 12');
   assertCondition(oracleInventoryJson.criterionCount === 55, 'oracle criterionCount must be 55');
+  assertCondition(oracleInventoryJson.applicableCount === 43, 'oracle applicableCount must be 43');
+  assertCondition(oracleInventoryJson.notApplicableCount === 12, 'oracle notApplicableCount must be 12');
 
   const criteria = Object.freeze(matrixJson.criteria.map(freezeCriterion));
   const identifiers = criteria.map((criterion) => criterion.matrixId);
