@@ -2,33 +2,39 @@
   "schemaVersion": "1.2.0",
   "repository": "Nespeche/finscope-analytics",
   "baseline": {
-    "tag": "v0.21.20-B17-completed",
-    "commitSha": "b7a7c280ef4f46078adf8f8cb3f2f323e25c5c3f",
-    "zipName": "FS_v0.21.20_B17_completed.zip",
-    "sidecarName": "FS_v0.21.20_B17_completed.zip.sha256",
-    "zipSha256": "d212c78871b8d6f53b26bfcb43c9a272cabcf043218dedec77439db7e399049d",
+    "tag": "v0.21.21-B18-completed",
+    "commitSha": "8eabb9f4b53837d295ef5ab270c0307e14f48987",
+    "zipName": "FS_v0.21.21_B18_completed.zip",
+    "sidecarName": "FS_v0.21.21_B18_completed.zip.sha256",
+    "zipSha256": "f2568e896eea7d056eeba8cb7a32db6e053f6a01ee82fb93ea5b5f4061a3987a",
     "root": "FinScope_v0.21.4/",
     "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
   },
   "operation": {
     "id": "B18",
     "kind": "RELEASE_REMEDIATION",
-    "branch": "agent/b18-completed-release",
+    "branch": "audit/b18-release-reauthentication",
     "stage": "candidate",
     "activeBatchId": "B18",
     "nextBatchId": "B19",
     "completedTasksThroughOnClosure": "T080",
     "qualificationCommands": [
       {
-        "id": "package-completed-release",
-        "category": "package",
-        "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
+        "id": "download-published-release",
+        "category": "release-reauthentication",
+        "command": "node --input-type=module -e \"import{execFileSync}from'node:child_process';import{mkdirSync,readdirSync,rmSync,writeFileSync}from'node:fs';const repo='Nespeche/finscope-analytics';const tag='v0.21.21-B18-completed';const commit='8eabb9f4b53837d295ef5ab270c0307e14f48987';const out='.finscope-release';rmSync(out,{recursive:true,force:true});mkdirSync(out,{recursive:true});const release=JSON.parse(execFileSync('gh',['api','repos/'+repo+'/releases/tags/'+tag],{encoding:'utf8'}));if(release.draft||release.prerelease||release.tag_name!==tag)throw new Error('RELEASE_NOT_PUBLISHED_STABLE');const tagCommit=execFileSync('git',['rev-parse',tag+'^{commit}'],{encoding:'utf8'}).trim();if(tagCommit!==commit)throw new Error('RELEASE_TAG_COMMIT_MISMATCH:'+tagCommit);const names=release.assets.map((asset)=>asset.name);const fixed=['FS_v0.21.21_B18_completed.zip','FS_v0.21.21_B18_completed.zip.sha256','GITHUB_RELEASE_HANDOFF.json','PROMPT_IMPLEMENTACION_B19.md'];const evidence=names.filter((name)=>name.startsWith('FinScope_B18_release_evidence_')&&name.endsWith('.json'));if(names.length!==5||new Set(names).size!==5||fixed.some((name)=>!names.includes(name))||evidence.length!==1)throw new Error('RELEASE_ASSET_SET_INVALID:'+JSON.stringify(names));execFileSync('gh',['release','download',tag,'--repo',repo,'--dir',out,'--clobber'],{stdio:'inherit'});const downloaded=readdirSync(out);if(!fixed.every((name)=>downloaded.includes(name))||!downloaded.includes(evidence[0]))throw new Error('RELEASE_DOWNLOAD_INCOMPLETE');const discovery={schemaVersion:'1.0.0',result:'PASS',releaseId:release.id,tag,commitSha:commit,assets:release.assets.map(({id,name,size,digest})=>({id,name,size,digest})),sourceEvidence:evidence[0],checkedAt:new Date().toISOString()};writeFileSync(out+'/PUBLISHED_RELEASE_DISCOVERY.json',JSON.stringify(discovery,null,2)+'\\n');console.log(JSON.stringify(discovery));\"",
         "required": true
       },
       {
-        "id": "verify-completed-package",
+        "id": "verify-published-package",
         "category": "package-authentication",
         "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.21_B18_completed.zip .finscope-release/FS_v0.21.21_B18_completed.zip.sha256",
+        "required": true
+      },
+      {
+        "id": "verify-published-handoff",
+        "category": "release-reauthentication",
+        "command": "node --input-type=module -e \"import{createHash}from'node:crypto';import{existsSync,readFileSync,writeFileSync}from'node:fs';const out='.finscope-release';const sha=(path)=>createHash('sha256').update(readFileSync(path)).digest('hex');const tag='v0.21.21-B18-completed';const commit='8eabb9f4b53837d295ef5ab270c0307e14f48987';const zip='FS_v0.21.21_B18_completed.zip';const sidecar='FS_v0.21.21_B18_completed.zip.sha256';const h=JSON.parse(readFileSync(out+'/GITHUB_RELEASE_HANDOFF.json','utf8'));if(h.tag!==tag||h.commitSha!==commit||h.assets.length!==4)throw new Error('PUBLISHED_HANDOFF_IDENTITY_INVALID');for(const asset of h.assets){if(!existsSync(out+'/'+asset.name)||sha(out+'/'+asset.name)!==asset.sha256)throw new Error('PUBLISHED_ASSET_HASH_MISMATCH:'+asset.name);}const evidenceAsset=h.assets.find((asset)=>asset.name.startsWith('FinScope_B18_release_evidence_')&&asset.name.endsWith('.json'));if(!evidenceAsset)throw new Error('PUBLISHED_EVIDENCE_MISSING');const evidence=JSON.parse(readFileSync(out+'/'+evidenceAsset.name,'utf8'));const actualZip=sha(out+'/'+zip);const sidecarParts=readFileSync(out+'/'+sidecar,'utf8').trim().split(/\\s+/u);if(sidecarParts[0]!==actualZip||sidecarParts[1]!==zip)throw new Error('PUBLISHED_SIDECAR_MISMATCH');if(evidence.result!=='PASS'||evidence.tag!==tag||evidence.commitSha!==commit||evidence.zipSha256!==actualZip||evidence.specify.count!==19||evidence.specify.sha256!=='e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09'||evidence.completedBatchId!=='B18'||evidence.nextBatchId!=='B19')throw new Error('PUBLISHED_EVIDENCE_INVALID');if(h.baselineState.activeBatchId!=='B19'||h.baselineState.nextAuthorizedBatchId!=='B19'||h.baselineState.completedTasksThrough!=='T080'||h.baselineState.convergenceAuthorized!==false)throw new Error('PUBLISHED_STATE_INVALID');const result={schemaVersion:'1.0.0',result:'PASS',mode:'PUBLISHED_RELEASE_REAUTHENTICATION',tag,commitSha:commit,releaseId:h.releaseId,releaseRunId:h.releaseRunId,evidence:evidenceAsset.name,zipSha256:actualZip,assets:h.assets.map(({name,sha256,sizeBytes})=>({name,sha256,sizeBytes})),specify:evidence.specify,baselineState:h.baselineState,checkedAt:new Date().toISOString()};writeFileSync(out+'/PUBLISHED_RELEASE_REAUTHENTICATION.json',JSON.stringify(result,null,2)+'\\n');console.log(JSON.stringify(result));\"",
         "required": true
       }
     ]
@@ -58,7 +64,7 @@
     "evidencePrefix": "FinScope_B18_release_evidence",
     "promptName": "PROMPT_IMPLEMENTACION_B19.md",
     "title": "FinScope B18 completed — restore, deletion, quarantine and data management UI",
-    "notes": "B18 completed with authenticated candidate and closure evidence. This Release publishes the immutable completed ZIP and sidecar after package, upload/download and closure-artifact authentication. B19 remains pending as the only active and authorized batch; convergenceAuthorized=false."
+    "notes": "Temporary audit only. Re-download and reauthenticate the published B18 completed Release, then close this PR without merge. B19 remains pending and convergenceAuthorized=false."
   },
   "productState": {
     "activeBatchId": "B19",
