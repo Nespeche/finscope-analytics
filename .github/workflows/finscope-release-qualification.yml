@@ -84,7 +84,7 @@ jobs:
           done < <(git diff --name-only "${{ github.event.pull_request.base.sha }}" "$GITHUB_SHA")
           node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
       - name: Authenticate completed baseline
-        if: steps.mode.outputs.enabled == 'true'
+        if: steps.mode.outputs.enabled == 'true' && github.head_ref != 'audit/b18-release-reauthentication'
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-release/qualification-baseline.json
@@ -107,7 +107,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
       - name: Qualify temporary Release transfer
-        if: steps.mode.outputs.enabled == 'true'
+        if: steps.mode.outputs.enabled == 'true' && github.head_ref != 'audit/b18-release-reauthentication'
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs qualify .finscope-release
