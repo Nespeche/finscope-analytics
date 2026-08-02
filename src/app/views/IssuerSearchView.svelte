@@ -50,6 +50,8 @@
   let message = 'Search by ticker alias or authoritative CIK.';
   let messageKind: 'status' | 'error' = 'status';
 
+  $: queryHasError = messageKind === 'error';
+
   function selectIssuer(issuer: IssuerIdentity): void {
     selectedIssuer = issuer;
     candidates = [];
@@ -89,16 +91,19 @@
         name="issuer-query"
         autocomplete="off"
         bind:value={query}
-        aria-describedby="issuer-search-help issuer-search-status"
+        aria-invalid={queryHasError ? 'true' : undefined}
+        aria-errormessage={queryHasError ? 'issuer-search-status' : undefined}
+        aria-describedby={queryHasError ? 'issuer-search-help issuer-search-status' : 'issuer-search-help'}
       />
       <button type="submit">Find issuer</button>
     </div>
-    <small id="issuer-search-help">Examples: AAPL, ALPHA, or 0000320193.</small>
+    <small id="issuer-search-help">Enter a ticker alias or the authoritative zero-padded ten-digit CIK. Examples: AAPL, ALPHA, or 0000320193. Ambiguous aliases require selecting the legal name and CIK from the result list.</small>
   </form>
 
   <p
     id="issuer-search-status"
-    aria-live="polite"
+    aria-live={messageKind === 'error' ? 'assertive' : 'polite'}
+    aria-atomic="true"
     role={messageKind === 'error' ? 'alert' : 'status'}
   >
     {message}
