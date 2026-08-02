@@ -14,7 +14,7 @@
     "id": "B18",
     "kind": "BATCH",
     "branch": "agent/b18-restore-delete-quarantine-data-ui",
-    "stage": "closure",
+    "stage": "completed",
     "activeBatchId": "B18",
     "nextBatchId": "B19",
     "completedTasksThroughOnClosure": "T080",
@@ -77,13 +77,13 @@
     "artifactDigest": "sha256:5b4ca38a913ae9fdb1be0028d1706e55fbf298b1b13d4446254dfff48b03d320"
   },
   "closure": {
-    "status": "PENDING",
+    "status": "COMPLETED",
     "candidateSha": "bc80cad07e51bc7e93d196e8854c78b873ca5e6b",
-    "commitSha": null,
-    "runId": null,
-    "artifactId": null,
-    "artifactName": null,
-    "artifactDigest": null
+    "commitSha": "06e9c81dbde3f91213d3f17a7d344da5b6b34d29",
+    "runId": "30726021563",
+    "artifactId": 8826674495,
+    "artifactName": "finscope-closure-06e9c81dbde3-PASS",
+    "artifactDigest": "sha256:452b8097fc0eb57458bf574f137819493c97054cc89aa5e99951b9316ef74d54"
   },
   "release": {
     "pending": true,
@@ -97,9 +97,9 @@
     "notes": "B18 implements atomic restore and deletion, deterministic corruption quarantine and the accessible local data-management UI. B19 remains pending and convergenceAuthorized=false."
   },
   "productState": {
-    "activeBatchId": "B18",
-    "nextAuthorizedBatchId": "B18",
-    "completedTasksThrough": "T076",
+    "activeBatchId": "B19",
+    "nextAuthorizedBatchId": "B19",
+    "completedTasksThrough": "T080",
     "convergenceAuthorized": false
   }
 }
