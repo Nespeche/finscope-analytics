@@ -1,0 +1,10 @@
+:root {
+  --fs-space-1: 0.25rem;
+  --fs-space-2: 0.5rem;
+  --fs-space-3: 0.75rem;
+  --fs-space-4: 1rem;
+  --fs-space-6: 1.5rem;
+  --fs-target-size: 2.75rem;
+  --fs-content-width: 80rem;
+  --fs-focus-width: 0.1875rem;
+}

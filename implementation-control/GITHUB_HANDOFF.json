@@ -2,22 +2,22 @@
   "schemaVersion": "1.2.0",
   "repository": "Nespeche/finscope-analytics",
   "baseline": {
-    "tag": "v0.21.21-B18-completed",
-    "commitSha": "8eabb9f4b53837d295ef5ab270c0307e14f48987",
-    "zipName": "FS_v0.21.21_B18_completed.zip",
-    "sidecarName": "FS_v0.21.21_B18_completed.zip.sha256",
-    "zipSha256": "1e80a37463f36e85a0f2d9a4ade0fd7e64474c5a14516ad422152f7e8f0d8acd",
+    "tag": "v0.21.22-B18-completed",
+    "commitSha": "0388f1417630f3284caab6076950739bff68d59d",
+    "zipName": "FS_v0.21.22_B18_completed.zip",
+    "sidecarName": "FS_v0.21.22_B18_completed.zip.sha256",
+    "zipSha256": "1588cb6c69559b41580f75f95979dbae84b480c99c917070f39ef165f6fe79bb",
     "root": "FinScope_v0.21.4/",
     "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
   },
   "operation": {
-    "id": "B18",
-    "kind": "RELEASE_REMEDIATION",
-    "branch": "agent/b18-node24-completed-release",
-    "stage": "completed",
-    "activeBatchId": "B18",
-    "nextBatchId": "B19",
-    "completedTasksThroughOnClosure": "T080",
+    "id": "B19",
+    "kind": "BATCH",
+    "branch": "agent/b19-context-recovery-accessibility",
+    "stage": "candidate",
+    "activeBatchId": "B19",
+    "nextBatchId": "B20",
+    "completedTasksThroughOnClosure": "T085",
     "qualificationCommands": [
       {
         "id": "npm-ci",
@@ -38,15 +38,15 @@
         "required": true
       },
       {
-        "id": "test-integration",
-        "category": "integration",
-        "command": "npm run test:integration -- tests/integration/persistence/corruption-quarantine.test.ts tests/integration/persistence/delete.test.ts tests/integration/persistence/restore-rollback.test.ts",
+        "id": "test-unit",
+        "category": "unit",
+        "command": "npm run test:unit -- tests/unit/recovery/recovery-map.test.ts",
         "required": true
       },
       {
         "id": "test-e2e",
         "category": "e2e",
-        "command": "npm run test:e2e -- tests/e2e/data-management.spec.ts tests/e2e/persistence-lifecycle.spec.ts",
+        "command": "npm run test:e2e -- tests/e2e/accessibility/focus.spec.ts tests/e2e/accessibility/status.spec.ts tests/e2e/accessibility/visual-behavior.spec.ts tests/e2e/context-persistence.spec.ts tests/e2e/no-investment-advice.spec.ts",
         "required": true
       },
       {
@@ -66,47 +66,35 @@
         "category": "build",
         "command": "npm run build",
         "required": true
-      },
-      {
-        "id": "package-completed-release",
-        "category": "package",
-        "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
-        "required": true
-      },
-      {
-        "id": "verify-completed-package",
-        "category": "package-authentication",
-        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.22_B18_completed.zip .finscope-release/FS_v0.21.22_B18_completed.zip.sha256",
-        "required": true
       }
     ]
   },
   "candidate": {
-    "sha": "bc80cad07e51bc7e93d196e8854c78b873ca5e6b",
-    "runId": "30725871924",
-    "artifactId": 8826336502,
-    "artifactName": "finscope-github-validation-bc80cad07e51-PASS",
-    "artifactDigest": "sha256:5b4ca38a913ae9fdb1be0028d1706e55fbf298b1b13d4446254dfff48b03d320"
+    "sha": null,
+    "runId": null,
+    "artifactId": null,
+    "artifactName": null,
+    "artifactDigest": null
   },
   "closure": {
-    "status": "COMPLETED",
-    "candidateSha": "bc80cad07e51bc7e93d196e8854c78b873ca5e6b",
-    "commitSha": "06e9c81dbde3f91213d3f17a7d344da5b6b34d29",
-    "runId": "30726021563",
-    "artifactId": 8826674495,
-    "artifactName": "finscope-closure-06e9c81dbde3-PASS",
-    "artifactDigest": "sha256:452b8097fc0eb57458bf574f137819493c97054cc89aa5e99951b9316ef74d54"
+    "status": "PENDING",
+    "candidateSha": null,
+    "commitSha": null,
+    "runId": null,
+    "artifactId": null,
+    "artifactName": null,
+    "artifactDigest": null
   },
   "release": {
     "pending": true,
-    "tag": "v0.21.22-B18-completed",
-    "packageRevision": "v0.21.22_B18_completed",
-    "zipName": "FS_v0.21.22_B18_completed.zip",
-    "sidecarName": "FS_v0.21.22_B18_completed.zip.sha256",
-    "evidencePrefix": "FinScope_B18_release_evidence",
-    "promptName": "PROMPT_IMPLEMENTACION_B19.md",
-    "title": "FinScope B18 completed — Node.js 24 Actions and 30-day evidence retention",
-    "notes": "Immutable B18 completed revision containing the independently qualified Node.js 24-native GitHub Actions, uniform 30-day evidence retention and safe publication gates. Product behavior and .specify are unchanged. B19 remains pending/authorized and convergenceAuthorized=false."
+    "tag": "v0.21.23-B19-completed",
+    "packageRevision": "v0.21.23_B19_completed",
+    "zipName": "FS_v0.21.23_B19_completed.zip",
+    "sidecarName": "FS_v0.21.23_B19_completed.zip.sha256",
+    "evidencePrefix": "FinScope_B19_release_evidence",
+    "promptName": "PROMPT_IMPLEMENTACION_B20.md",
+    "title": "FinScope B19 completed — context, recovery and accessibility foundation",
+    "notes": "B19 implements persistent analysis context, capability-preserving recovery, descriptive-only disclosure, focus management, live announcements and responsive accessibility styles. B20 remains pending and convergenceAuthorized=false."
   },
   "productState": {
     "activeBatchId": "B19",
