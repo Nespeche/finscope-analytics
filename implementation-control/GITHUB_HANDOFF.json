@@ -2,68 +2,104 @@
   "schemaVersion": "1.2.0",
   "repository": "Nespeche/finscope-analytics",
   "baseline": {
-    "tag": "v0.21.19-B16-completed",
-    "commitSha": "80e70ce91bcd40b5fc01be15bc8521e503cd872c",
-    "zipName": "FS_v0.21.19_B16_completed.zip",
-    "sidecarName": "FS_v0.21.19_B16_completed.zip.sha256",
-    "zipSha256": "6553ce27b8c4d21ceab4967628debcba0ffc67c1b736d0d488f3c6fa36881bc0",
+    "tag": "v0.21.20-B17-completed",
+    "commitSha": "b7a7c280ef4f46078adf8f8cb3f2f323e25c5c3f",
+    "zipName": "FS_v0.21.20_B17_completed.zip",
+    "sidecarName": "FS_v0.21.20_B17_completed.zip.sha256",
+    "zipSha256": "d212c78871b8d6f53b26bfcb43c9a272cabcf043218dedec77439db7e399049d",
     "root": "FinScope_v0.21.4/",
     "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
   },
   "operation": {
-    "id": "B17",
-    "kind": "RELEASE_REMEDIATION",
-    "branch": "agent/b17-completed-release",
-    "stage": "candidate",
-    "activeBatchId": "B17",
-    "nextBatchId": "B18",
-    "completedTasksThroughOnClosure": "T076",
+    "id": "B18",
+    "kind": "BATCH",
+    "branch": "agent/b18-restore-delete-quarantine-data-ui",
+    "stage": "completed",
+    "activeBatchId": "B18",
+    "nextBatchId": "B19",
+    "completedTasksThroughOnClosure": "T080",
     "qualificationCommands": [
       {
-        "id": "package-completed-release",
-        "category": "package",
-        "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
         "required": true
       },
       {
-        "id": "verify-completed-package",
-        "category": "package-authentication",
-        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.20_B17_completed.zip .finscope-release/FS_v0.21.20_B17_completed.zip.sha256",
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-integration",
+        "category": "integration",
+        "command": "npm run test:integration -- tests/integration/persistence/corruption-quarantine.test.ts tests/integration/persistence/delete.test.ts tests/integration/persistence/restore-rollback.test.ts",
+        "required": true
+      },
+      {
+        "id": "test-e2e",
+        "category": "e2e",
+        "command": "npm run test:e2e -- tests/e2e/data-management.spec.ts tests/e2e/persistence-lifecycle.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
         "required": true
       }
     ]
   },
   "candidate": {
-    "sha": "244ee6a50f8eebdeb2d1c76bab599e3c79ec4abe",
-    "runId": "30713946002",
-    "artifactId": 8822770890,
-    "artifactName": "finscope-github-validation-244ee6a50f8e-PASS",
-    "artifactDigest": "sha256:a26bdefd2ba3808d8e621902cee78953a3a3d3a650be31d5bb8333bb25449ffa"
+    "sha": "bc80cad07e51bc7e93d196e8854c78b873ca5e6b",
+    "runId": "30725871924",
+    "artifactId": 8826336502,
+    "artifactName": "finscope-github-validation-bc80cad07e51-PASS",
+    "artifactDigest": "sha256:5b4ca38a913ae9fdb1be0028d1706e55fbf298b1b13d4446254dfff48b03d320"
   },
   "closure": {
     "status": "COMPLETED",
-    "candidateSha": "244ee6a50f8eebdeb2d1c76bab599e3c79ec4abe",
-    "commitSha": "933b7e476f2130a7e77502882e453eda93e8326b",
-    "runId": "30714160143",
-    "artifactId": 8822805360,
-    "artifactName": "finscope-closure-933b7e476f21-PASS",
-    "artifactDigest": "sha256:26bb5ec526913214f58a35e4bd1e8d27642d7da60d714620eb79db5ec8c43e95"
+    "candidateSha": "bc80cad07e51bc7e93d196e8854c78b873ca5e6b",
+    "commitSha": "06e9c81dbde3f91213d3f17a7d344da5b6b34d29",
+    "runId": "30726021563",
+    "artifactId": 8826674495,
+    "artifactName": "finscope-closure-06e9c81dbde3-PASS",
+    "artifactDigest": "sha256:452b8097fc0eb57458bf574f137819493c97054cc89aa5e99951b9316ef74d54"
   },
   "release": {
     "pending": true,
-    "tag": "v0.21.20-B17-completed",
-    "packageRevision": "v0.21.20_B17_completed",
-    "zipName": "FS_v0.21.20_B17_completed.zip",
-    "sidecarName": "FS_v0.21.20_B17_completed.zip.sha256",
-    "evidencePrefix": "FinScope_B17_release_evidence",
-    "promptName": "PROMPT_IMPLEMENTACION_B18.md",
-    "title": "FinScope B17 completed — consent, repositories, export and restore preview",
-    "notes": "B17 completed with authenticated candidate and closure evidence. This Release publishes the immutable completed ZIP and sidecar after package, upload/download and closure-artifact authentication. B18 remains pending as the only active and authorized batch; convergenceAuthorized=false."
+    "tag": "v0.21.21-B18-completed",
+    "packageRevision": "v0.21.21_B18_completed",
+    "zipName": "FS_v0.21.21_B18_completed.zip",
+    "sidecarName": "FS_v0.21.21_B18_completed.zip.sha256",
+    "evidencePrefix": "FinScope_B18_release_evidence",
+    "promptName": "PROMPT_IMPLEMENTACION_B19.md",
+    "title": "FinScope B18 completed — restore, deletion, quarantine and data management UI",
+    "notes": "B18 implements atomic restore and deletion, deterministic corruption quarantine and the accessible local data-management UI. B19 remains pending and convergenceAuthorized=false."
   },
   "productState": {
-    "activeBatchId": "B18",
-    "nextAuthorizedBatchId": "B18",
-    "completedTasksThrough": "T076",
+    "activeBatchId": "B19",
+    "nextAuthorizedBatchId": "B19",
+    "completedTasksThrough": "T080",
     "convergenceAuthorized": false
   }
 }

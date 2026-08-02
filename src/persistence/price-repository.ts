@@ -1,5 +1,9 @@
-import type { ConfirmedHistoricalPriceImport } from '../domain/price/import-preview';
 import type { PriceEventResult } from '../domain/orchestration/price-events';
+import {
+  historicalPriceOverlayFingerprint,
+  priceAnalysisFingerprint,
+} from '../domain/fingerprints/fingerprint-service';
+import type { ConfirmedHistoricalPriceImport } from '../domain/price/import-preview';
 import {
   parseHistoricalPriceOverlay,
   parsePriceAnalysis,
@@ -9,9 +13,16 @@ import {
 import type { Cik } from '../domain/model';
 import type { FinScopeStoreName } from './db-schema';
 import {
+  CorruptionQuarantine,
+  type QuarantinedRepositoryRecord,
+  type RepositoryIntegrityFailure,
+} from './indexeddb';
+import {
   type ActivePointerRecord,
   type AtomicRepositoryStorage,
+  type AtomicRepositoryTransaction,
   type CommitRecord,
+  type RepositoryKey,
 } from './snapshot-repository';
 
 export interface ConfirmedPricePublication {
@@ -75,6 +86,56 @@ function requireId(value: string, code: string): string {
   return normalized;
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+function isDigest(value: unknown): boolean {
+  return typeof value === 'string' && /^sha256:[0-9a-f]{64}$/u.test(value);
+}
+
+function parsePointer(value: unknown): ActivePointerRecord {
+  if (!isRecord(value)
+    || value.recordType !== 'active_pointer'
+    || typeof value.issuerCik !== 'string'
+    || value.pointerKind !== 'price_overlay'
+    || typeof value.targetId !== 'string'
+    || value.targetId.length === 0
+    || !isDigest(value.targetFingerprint)
+    || !Number.isSafeInteger(value.generation)
+    || Number(value.generation) < 1) {
+    throw new TypeError('INVALID_PRICE_POINTER_RECORD');
+  }
+  return value as unknown as ActivePointerRecord;
+}
+
+function parseCommit(value: unknown): CommitRecord {
+  if (!isRecord(value)
+    || value.recordType !== 'commit'
+    || typeof value.transactionId !== 'string'
+    || typeof value.issuerCik !== 'string'
+    || !Array.isArray(value.writtenRecordIds)
+    || !value.writtenRecordIds.every((entry) => typeof entry === 'string')
+    || !Array.isArray(value.pointerUpdates)
+    || !value.pointerUpdates.every((entry) => typeof entry === 'string')
+    || value.status !== 'committed') {
+    throw new TypeError('INVALID_COMMIT_RECORD');
+  }
+  return value as unknown as CommitRecord;
+}
+
+function quarantineFailure(
+  quarantine: CorruptionQuarantine,
+  storeName: FinScopeStoreName,
+  recordKey: RepositoryKey,
+  reason: RepositoryIntegrityFailure,
+  message: string,
+  payload: unknown,
+): undefined {
+  quarantine.quarantine({ storeName, recordKey, reason, message, payload });
+  return undefined;
+}
+
 function resolveConfirmedPublication(input: ConfirmedPricePublication): Readonly<{
   overlay: HistoricalPriceOverlay;
   analysis: PriceAnalysis;
@@ -111,18 +172,36 @@ function resolveConfirmedPublication(input: ConfirmedPricePublication): Readonly
 }
 
 export class PriceRepository {
-  constructor(private readonly storage: AtomicRepositoryStorage) {}
+  constructor(
+    private readonly storage: AtomicRepositoryStorage,
+    private readonly quarantine: CorruptionQuarantine = new CorruptionQuarantine(),
+  ) {}
+
+  listQuarantinedRecords(): readonly QuarantinedRepositoryRecord[] {
+    return this.quarantine.list().filter((entry) => (
+      entry.storeName === 'priceOverlays'
+      || entry.storeName === 'priceAnalyses'
+      || entry.storeName === 'activePointers'
+      || entry.storeName === 'commitLog'
+    ));
+  }
 
   async publishConfirmed(input: ConfirmedPricePublication): Promise<PublishedPriceVersion> {
     const resolved = resolveConfirmedPublication(input);
     const expectedGeneration = requireGeneration(input.expectedPointerGeneration);
     const transactionId = requireId(input.transactionId, 'PRICE_TRANSACTION_ID_REQUIRED');
     const issuerCik = resolved.overlay.issuerCik;
-
     return await this.storage.run(PRICE_STORES, 'readwrite', async (transaction) => {
-      const current = await transaction.get<ActivePointerRecord>('activePointers', pointerKey(issuerCik));
-      if (current !== undefined && current.pointerKind !== 'price_overlay') {
-        throw new TypeError('ACTIVE_POINTER_KIND_MISMATCH');
+      const currentRaw = await transaction.get<unknown>('activePointers', pointerKey(issuerCik));
+      let current: ActivePointerRecord | undefined;
+      if (currentRaw !== undefined) {
+        try {
+          current = parsePointer(currentRaw);
+        } catch {
+          quarantineFailure(this.quarantine, 'activePointers', pointerKey(issuerCik), 'pointer_corrupt',
+            'The active price pointer failed structural validation.', currentRaw);
+          throw new TypeError('ACTIVE_POINTER_CORRUPT');
+        }
       }
       const actualGeneration = current?.generation ?? 0;
       if (actualGeneration !== expectedGeneration) throw new TypeError('PRICE_POINTER_COMPARE_AND_SWAP_FAILED');
@@ -167,8 +246,16 @@ export class PriceRepository {
     const expectedGeneration = requireGeneration(input.expectedPointerGeneration);
     const transactionId = requireId(input.transactionId, 'PRICE_TRANSACTION_ID_REQUIRED');
     await this.storage.run(PRICE_STORES, 'readwrite', async (transaction) => {
-      const pointer = await transaction.get<ActivePointerRecord>('activePointers', pointerKey(input.issuerCik));
-      if (pointer === undefined || pointer.pointerKind !== 'price_overlay') throw new TypeError('PRICE_HISTORY_NOT_FOUND');
+      const pointerRaw = await transaction.get<unknown>('activePointers', pointerKey(input.issuerCik));
+      if (pointerRaw === undefined) throw new TypeError('PRICE_HISTORY_NOT_FOUND');
+      let pointer: ActivePointerRecord;
+      try {
+        pointer = parsePointer(pointerRaw);
+      } catch {
+        quarantineFailure(this.quarantine, 'activePointers', pointerKey(input.issuerCik), 'pointer_corrupt',
+          'The active price pointer failed structural validation.', pointerRaw);
+        throw new TypeError('ACTIVE_POINTER_CORRUPT');
+      }
       if (pointer.generation !== expectedGeneration) throw new TypeError('PRICE_POINTER_COMPARE_AND_SWAP_FAILED');
       const overlays = (await transaction.getAll<HistoricalPriceOverlay>('priceOverlays'))
         .filter((overlay) => overlay.issuerCik === input.issuerCik);
@@ -186,18 +273,230 @@ export class PriceRepository {
     });
   }
 
+  private async resolvePointer(
+    transaction: AtomicRepositoryTransaction,
+    pointer: ActivePointerRecord,
+  ): Promise<PublishedPriceVersion | undefined> {
+    let overlayKey: readonly [string, number];
+    try {
+      overlayKey = parseOverlayRecordId(pointer.targetId);
+    } catch {
+      return quarantineFailure(this.quarantine, 'activePointers', pointerKey(pointer.issuerCik), 'pointer_corrupt',
+        'The active price pointer target ID is invalid.', pointer);
+    }
+    const overlayRaw = await transaction.get<unknown>('priceOverlays', overlayKey as [string, number]);
+    if (overlayRaw === undefined) {
+      return quarantineFailure(this.quarantine, 'activePointers', pointerKey(pointer.issuerCik), 'reference_missing',
+        'The active price pointer references a missing overlay.', pointer);
+    }
+    let overlay: HistoricalPriceOverlay;
+    try {
+      overlay = parseHistoricalPriceOverlay(overlayRaw);
+    } catch {
+      return quarantineFailure(this.quarantine, 'priceOverlays', overlayKey as [string, number], 'schema_mismatch',
+        'The historical price overlay failed schema validation.', overlayRaw);
+    }
+    if (overlay.issuerCik !== pointer.issuerCik
+      || overlayRecordId(overlay.overlayId, overlay.overlayVersion) !== pointer.targetId
+      || overlay.historicalPriceOverlayFingerprint !== pointer.targetFingerprint) {
+      return quarantineFailure(this.quarantine, 'activePointers', pointerKey(pointer.issuerCik), 'pointer_corrupt',
+        'The active price pointer does not match the referenced overlay.', pointer);
+    }
+    const [analysesRaw, commitsRaw] = await Promise.all([
+      transaction.getAll<unknown>('priceAnalyses'),
+      transaction.getAll<unknown>('commitLog'),
+    ]);
+    const overlayHash = await historicalPriceOverlayFingerprint(overlay);
+    if (overlayHash !== overlay.historicalPriceOverlayFingerprint) {
+      return quarantineFailure(this.quarantine, 'priceOverlays', overlayKey as [string, number], 'record_hash_mismatch',
+        'The historical price overlay fingerprint does not match canonical content.', overlayRaw);
+    }
+
+    let analysis: PriceAnalysis | undefined;
+    for (const raw of analysesRaw) {
+      try {
+        const parsed = parsePriceAnalysis(raw);
+        if (parsed.issuerCik !== pointer.issuerCik
+          || parsed.historicalPriceOverlayFingerprint !== overlay.historicalPriceOverlayFingerprint) continue;
+        const hash = await priceAnalysisFingerprint(parsed);
+        if (hash !== parsed.priceAnalysisFingerprint) {
+          quarantineFailure(this.quarantine, 'priceAnalyses', parsed.analysisId, 'record_hash_mismatch',
+            'The price analysis fingerprint does not match canonical content.', raw);
+          continue;
+        }
+        analysis = parsed;
+        break;
+      } catch {
+        const key = isRecord(raw) && typeof raw.analysisId === 'string' ? raw.analysisId : 'unknown';
+        quarantineFailure(this.quarantine, 'priceAnalyses', key, 'schema_mismatch',
+          'A price analysis failed schema validation.', raw);
+      }
+    }
+    if (analysis === undefined) {
+      return quarantineFailure(this.quarantine, 'priceOverlays', overlayKey as [string, number], 'reference_missing',
+        'The active price overlay has no valid analysis.', overlay);
+    }
+
+    let commit: CommitRecord | undefined;
+    for (const raw of commitsRaw) {
+      try {
+        const parsed = parseCommit(raw);
+        if (parsed.issuerCik === pointer.issuerCik
+          && parsed.writtenRecordIds.includes(pointer.targetId)
+          && parsed.status === 'committed') {
+          commit = parsed;
+          break;
+        }
+      } catch {
+        const key = isRecord(raw) && typeof raw.transactionId === 'string' ? raw.transactionId : 'unknown';
+        quarantineFailure(this.quarantine, 'commitLog', key, 'schema_mismatch',
+          'A commit evidence record failed structural validation.', raw);
+      }
+    }
+    if (commit === undefined) {
+      return quarantineFailure(this.quarantine, 'priceOverlays', overlayKey as [string, number], 'commit_evidence_missing',
+        'The active price overlay has no committed evidence record.', overlay);
+    }
+    return Object.freeze({ overlay, analysis, pointer, commit });
+  }
+
+  async readActive(issuerCik: Cik): Promise<PublishedPriceVersion | undefined> {
+    return await this.storage.run(PRICE_STORES, 'readonly', async (transaction) => {
+      const pointerRaw = await transaction.get<unknown>('activePointers', pointerKey(issuerCik));
+      if (pointerRaw === undefined) return undefined;
+      let pointer: ActivePointerRecord;
+      try {
+        pointer = parsePointer(pointerRaw);
+      } catch {
+        return quarantineFailure(this.quarantine, 'activePointers', pointerKey(issuerCik), 'pointer_corrupt',
+          'The active price pointer failed structural validation.', pointerRaw);
+      }
+      if (pointer.issuerCik !== issuerCik) {
+        return quarantineFailure(this.quarantine, 'activePointers', pointerKey(issuerCik), 'pointer_corrupt',
+          'The active price pointer belongs to another issuer.', pointerRaw);
+      }
+      return await this.resolvePointer(transaction, pointer);
+    });
+  }
+
   async readAllRecords(): Promise<PriceRepositoryRecords> {
     return await this.storage.run(PRICE_STORES, 'readonly', async (transaction) => {
-      const [overlays, analyses, pointers, commits] = await Promise.all([
-        transaction.getAll<HistoricalPriceOverlay>('priceOverlays'),
-        transaction.getAll<PriceAnalysis>('priceAnalyses'),
-        transaction.getAll<ActivePointerRecord>('activePointers'),
-        transaction.getAll<CommitRecord>('commitLog'),
+      const [overlayRaws, analysisRaws, pointerRaws, commitRaws] = await Promise.all([
+        transaction.getAll<unknown>('priceOverlays'),
+        transaction.getAll<unknown>('priceAnalyses'),
+        transaction.getAll<unknown>('activePointers'),
+        transaction.getAll<unknown>('commitLog'),
       ]);
+
+      const overlays = new Map<string, HistoricalPriceOverlay>();
+      for (const raw of overlayRaws) {
+        try {
+          const overlay = parseHistoricalPriceOverlay(raw);
+          const key = overlayRecordId(overlay.overlayId, overlay.overlayVersion);
+          const hash = await historicalPriceOverlayFingerprint(overlay);
+          if (hash !== overlay.historicalPriceOverlayFingerprint) {
+            quarantineFailure(this.quarantine, 'priceOverlays', [overlay.overlayId, overlay.overlayVersion],
+              'record_hash_mismatch', 'A historical price overlay fingerprint does not match canonical content.', raw);
+            continue;
+          }
+          overlays.set(key, overlay);
+        } catch {
+          const key: RepositoryKey = isRecord(raw) && typeof raw.overlayId === 'string'
+            && Number.isSafeInteger(raw.overlayVersion)
+            ? [raw.overlayId, Number(raw.overlayVersion)]
+            : 'unknown';
+          quarantineFailure(this.quarantine, 'priceOverlays', key, 'schema_mismatch',
+            'A historical price overlay failed schema validation.', raw);
+        }
+      }
+
+      const analyses = new Map<string, PriceAnalysis>();
+      for (const raw of analysisRaws) {
+        try {
+          const analysis = parsePriceAnalysis(raw);
+          const hash = await priceAnalysisFingerprint(analysis);
+          if (hash !== analysis.priceAnalysisFingerprint) {
+            quarantineFailure(this.quarantine, 'priceAnalyses', analysis.analysisId, 'record_hash_mismatch',
+              'A price analysis fingerprint does not match canonical content.', raw);
+            continue;
+          }
+          analyses.set(analysis.analysisId, analysis);
+        } catch {
+          const key = isRecord(raw) && typeof raw.analysisId === 'string' ? raw.analysisId : 'unknown';
+          quarantineFailure(this.quarantine, 'priceAnalyses', key, 'schema_mismatch',
+            'A price analysis failed schema validation.', raw);
+        }
+      }
+
+      const commits = new Map<string, CommitRecord>();
+      for (const raw of commitRaws) {
+        try {
+          const commit = parseCommit(raw);
+          commits.set(commit.transactionId, commit);
+        } catch {
+          const key = isRecord(raw) && typeof raw.transactionId === 'string' ? raw.transactionId : 'unknown';
+          quarantineFailure(this.quarantine, 'commitLog', key, 'schema_mismatch',
+            'A commit evidence record failed structural validation.', raw);
+        }
+      }
+
+      const validOverlays = new Map<string, HistoricalPriceOverlay>();
+      const validAnalyses = new Map<string, PriceAnalysis>();
+      const overlayCommits = new Map<string, CommitRecord>();
+      for (const [recordId, overlay] of overlays) {
+        const matchingAnalyses = [...analyses.values()].filter((entry) => (
+          entry.issuerCik === overlay.issuerCik
+          && entry.historicalPriceOverlayFingerprint === overlay.historicalPriceOverlayFingerprint
+        ));
+        if (matchingAnalyses.length === 0) {
+          quarantineFailure(this.quarantine, 'priceOverlays', [overlay.overlayId, overlay.overlayVersion],
+            'reference_missing', 'The historical price overlay has no valid analysis.', overlay);
+          continue;
+        }
+        const commit = [...commits.values()].find((entry) => (
+          entry.issuerCik === overlay.issuerCik
+          && entry.status === 'committed'
+          && entry.writtenRecordIds.includes(recordId)
+        ));
+        if (commit === undefined) {
+          quarantineFailure(this.quarantine, 'priceOverlays', [overlay.overlayId, overlay.overlayVersion],
+            'commit_evidence_missing', 'The historical price overlay has no committed evidence record.', overlay);
+          continue;
+        }
+        validOverlays.set(recordId, overlay);
+        matchingAnalyses.forEach((entry) => validAnalyses.set(entry.analysisId, entry));
+        overlayCommits.set(commit.transactionId, commit);
+      }
+
+      const pointers = new Map<string, ActivePointerRecord>();
+      for (const raw of pointerRaws) {
+        let pointer: ActivePointerRecord;
+        try {
+          pointer = parsePointer(raw);
+        } catch {
+          if (!isRecord(raw) || raw.pointerKind !== 'price_overlay') continue;
+          const key: RepositoryKey = typeof raw.issuerCik === 'string'
+            ? [raw.issuerCik, 'price_overlay']
+            : 'unknown';
+          quarantineFailure(this.quarantine, 'activePointers', key, 'pointer_corrupt',
+            'An active price pointer failed structural validation.', raw);
+          continue;
+        }
+        const overlay = validOverlays.get(pointer.targetId);
+        if (overlay === undefined || overlay.issuerCik !== pointer.issuerCik
+          || overlay.historicalPriceOverlayFingerprint !== pointer.targetFingerprint) {
+          quarantineFailure(this.quarantine, 'activePointers', pointerKey(pointer.issuerCik), 'pointer_corrupt',
+            'The active price pointer does not resolve to a valid overlay.', raw);
+          continue;
+        }
+        pointers.set(`${pointer.issuerCik}:price_overlay`, pointer);
+      }
+
       return Object.freeze({
-        overlays: Object.freeze([...overlays]), analyses: Object.freeze([...analyses]),
-        pointers: Object.freeze(pointers.filter((pointer) => pointer.pointerKind === 'price_overlay')),
-        commits: Object.freeze(commits.filter((commit) => commit.pointerUpdates.some((p) => p.endsWith(':price_overlay')))),
+        overlays: Object.freeze([...validOverlays.values()]),
+        analyses: Object.freeze([...validAnalyses.values()]),
+        pointers: Object.freeze([...pointers.values()]),
+        commits: Object.freeze([...overlayCommits.values()]),
       });
     });
   }

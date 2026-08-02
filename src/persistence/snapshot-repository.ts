@@ -7,7 +7,13 @@ import {
 } from '../domain/fundamental/types';
 import type { Cik } from '../domain/model';
 import type { FinScopeStoreName } from './db-schema';
-import { requestToPromise, runIndexedDbTransaction } from './indexeddb';
+import {
+  CorruptionQuarantine,
+  requestToPromise,
+  runIndexedDbTransaction,
+  type QuarantinedRepositoryRecord,
+  type RepositoryIntegrityFailure,
+} from './indexeddb';
 
 export type RepositoryKey = IDBValidKey;
 
@@ -17,6 +23,7 @@ export interface AtomicRepositoryTransaction {
   add(storeName: FinScopeStoreName, value: unknown): Promise<void>;
   put(storeName: FinScopeStoreName, value: unknown): Promise<void>;
   delete(storeName: FinScopeStoreName, key: RepositoryKey): Promise<void>;
+  clear?(storeName: FinScopeStoreName): Promise<void>;
 }
 
 export interface AtomicRepositoryStorage {
@@ -50,6 +57,9 @@ export function createIndexedDbRepositoryStorage(database: IDBDatabase): AtomicR
           },
           async delete(storeName: FinScopeStoreName, key: RepositoryKey): Promise<void> {
             await requestToPromise(nativeTransaction.objectStore(storeName).delete(key));
+          },
+          async clear(storeName: FinScopeStoreName): Promise<void> {
+            await requestToPromise(nativeTransaction.objectStore(storeName).clear());
           },
         });
         return await operation(adapter);
@@ -140,6 +150,60 @@ function pointerKey(issuerCik: Cik): [Cik, 'fundamental_snapshot'] {
   return [issuerCik, 'fundamental_snapshot'];
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value);
+}
+
+function isDigest(value: unknown): value is Sha256Digest {
+  return typeof value === 'string' && /^sha256:[0-9a-f]{64}$/u.test(value);
+}
+
+function parsePointerRecord(value: unknown): ActivePointerRecord {
+  if (!isRecord(value)
+    || value.recordType !== 'active_pointer'
+    || typeof value.issuerCik !== 'string'
+    || (value.pointerKind !== 'fundamental_snapshot' && value.pointerKind !== 'price_overlay')
+    || typeof value.targetId !== 'string'
+    || value.targetId.length === 0
+    || !isDigest(value.targetFingerprint)
+    || !Number.isSafeInteger(value.generation)
+    || Number(value.generation) < 1) {
+    throw new TypeError('INVALID_ACTIVE_POINTER_RECORD');
+  }
+  return value as unknown as ActivePointerRecord;
+}
+
+function parseSnapshotRecord(value: unknown): FundamentalSnapshotRecord {
+  if (!isRecord(value)
+    || value.recordType !== 'fundamental_snapshot'
+    || typeof value.snapshotId !== 'string'
+    || value.snapshotId.length === 0
+    || typeof value.issuerCik !== 'string'
+    || typeof value.bundleId !== 'string'
+    || typeof value.analysisId !== 'string'
+    || !isDigest(value.fundamentalInputFingerprint)
+    || !isDigest(value.fundamentalAnalysisFingerprint)
+    || value.state !== 'committed') {
+    throw new TypeError('INVALID_FUNDAMENTAL_SNAPSHOT_RECORD');
+  }
+  return value as unknown as FundamentalSnapshotRecord;
+}
+
+function parseCommitRecord(value: unknown): CommitRecord {
+  if (!isRecord(value)
+    || value.recordType !== 'commit'
+    || typeof value.transactionId !== 'string'
+    || typeof value.issuerCik !== 'string'
+    || !Array.isArray(value.writtenRecordIds)
+    || !value.writtenRecordIds.every((entry) => typeof entry === 'string')
+    || !Array.isArray(value.pointerUpdates)
+    || !value.pointerUpdates.every((entry) => typeof entry === 'string')
+    || value.status !== 'committed') {
+    throw new TypeError('INVALID_COMMIT_RECORD');
+  }
+  return value as unknown as CommitRecord;
+}
+
 function validateCandidate(candidate: FundamentalSnapshotCandidate): Readonly<{
   snapshotId: string;
   transactionId: string;
@@ -163,8 +227,33 @@ function validateCandidate(candidate: FundamentalSnapshotCandidate): Readonly<{
   return Object.freeze({ snapshotId, transactionId, bundle, analysis, expectedPointerGeneration });
 }
 
+function quarantineFailure(
+  quarantine: CorruptionQuarantine,
+  storeName: FinScopeStoreName,
+  recordKey: RepositoryKey,
+  reason: RepositoryIntegrityFailure,
+  message: string,
+  payload: unknown,
+): undefined {
+  quarantine.quarantine({ storeName, recordKey, reason, message, payload });
+  return undefined;
+}
+
 export class SnapshotRepository {
-  constructor(private readonly storage: AtomicRepositoryStorage) {}
+  constructor(
+    private readonly storage: AtomicRepositoryStorage,
+    private readonly quarantine: CorruptionQuarantine = new CorruptionQuarantine(),
+  ) {}
+
+  listQuarantinedRecords(): readonly QuarantinedRepositoryRecord[] {
+    return this.quarantine.list().filter((entry) => (
+      entry.storeName === 'fundamentalBundles'
+      || entry.storeName === 'fundamentalAnalyses'
+      || entry.storeName === 'fundamentalSnapshots'
+      || entry.storeName === 'activePointers'
+      || entry.storeName === 'commitLog'
+    ));
+  }
 
   async publish(candidate: FundamentalSnapshotCandidate): Promise<PublishedFundamentalSnapshot> {
     const validated = validateCandidate(candidate);
@@ -174,15 +263,19 @@ export class SnapshotRepository {
       FUNDAMENTAL_TRANSACTION_STORES,
       'readwrite',
       async (transaction) => {
-        const existingPointer = await transaction.get<ActivePointerRecord>(
-          'activePointers',
-          pointerKey(issuerCik),
-        );
-        if (
-          existingPointer !== undefined
-          && existingPointer.pointerKind !== 'fundamental_snapshot'
-        ) {
-          throw new TypeError('ACTIVE_POINTER_KIND_MISMATCH');
+        const existingPointerRaw = await transaction.get<unknown>('activePointers', pointerKey(issuerCik));
+        let existingPointer: ActivePointerRecord | undefined;
+        if (existingPointerRaw !== undefined) {
+          try {
+            existingPointer = parsePointerRecord(existingPointerRaw);
+          } catch {
+            quarantineFailure(this.quarantine, 'activePointers', pointerKey(issuerCik), 'pointer_corrupt',
+              'The active fundamental pointer is structurally invalid.', existingPointerRaw);
+            throw new TypeError('ACTIVE_POINTER_CORRUPT');
+          }
+          if (existingPointer.pointerKind !== 'fundamental_snapshot') {
+            throw new TypeError('ACTIVE_POINTER_KIND_MISMATCH');
+          }
         }
         const actualGeneration = existingPointer?.generation ?? 0;
         if (actualGeneration !== validated.expectedPointerGeneration) {
@@ -229,68 +322,232 @@ export class SnapshotRepository {
         await transaction.add('commitLog', commit);
         await transaction.put('activePointers', pointer);
 
-        return Object.freeze({
-          snapshot,
-          bundle: validated.bundle,
-          analysis: validated.analysis,
-          pointer,
-          commit,
-        });
+        return Object.freeze({ snapshot, bundle: validated.bundle, analysis: validated.analysis, pointer, commit });
       },
     );
   }
 
+  private async resolveSnapshot(
+    transaction: AtomicRepositoryTransaction,
+    pointer: ActivePointerRecord,
+  ): Promise<PublishedFundamentalSnapshot | undefined> {
+    const snapshotRaw = await transaction.get<unknown>('fundamentalSnapshots', pointer.targetId);
+    if (snapshotRaw === undefined) {
+      return quarantineFailure(this.quarantine, 'activePointers', pointerKey(pointer.issuerCik), 'reference_missing',
+        'The active fundamental pointer references a missing snapshot.', pointer);
+    }
+    let snapshot: FundamentalSnapshotRecord;
+    try {
+      snapshot = parseSnapshotRecord(snapshotRaw);
+    } catch {
+      return quarantineFailure(this.quarantine, 'fundamentalSnapshots', pointer.targetId, 'schema_mismatch',
+        'The fundamental snapshot record failed structural validation.', snapshotRaw);
+    }
+    if (snapshot.issuerCik !== pointer.issuerCik || pointer.targetFingerprint !== snapshot.fundamentalAnalysisFingerprint) {
+      return quarantineFailure(this.quarantine, 'activePointers', pointerKey(pointer.issuerCik), 'pointer_corrupt',
+        'The active fundamental pointer does not match its snapshot identity or fingerprint.', pointer);
+    }
+
+    const [bundleRaw, analysisRaw, commitsRaw] = await Promise.all([
+      transaction.get<unknown>('fundamentalBundles', snapshot.bundleId),
+      transaction.get<unknown>('fundamentalAnalyses', snapshot.analysisId),
+      transaction.getAll<unknown>('commitLog'),
+    ]);
+    if (bundleRaw === undefined || analysisRaw === undefined) {
+      return quarantineFailure(this.quarantine, 'fundamentalSnapshots', snapshot.snapshotId, 'reference_missing',
+        'The fundamental snapshot references a missing bundle or analysis.', snapshot);
+    }
+
+    let bundle: FundamentalBundle;
+    let analysis: FundamentalAnalysis;
+    try {
+      bundle = parseFundamentalBundle(bundleRaw);
+    } catch {
+      return quarantineFailure(this.quarantine, 'fundamentalBundles', snapshot.bundleId, 'schema_mismatch',
+        'The fundamental bundle failed schema validation.', bundleRaw);
+    }
+    try {
+      analysis = parseFundamentalAnalysis(analysisRaw);
+    } catch {
+      return quarantineFailure(this.quarantine, 'fundamentalAnalyses', snapshot.analysisId, 'schema_mismatch',
+        'The fundamental analysis failed schema validation.', analysisRaw);
+    }
+
+    if (bundle.fundamentalInputFingerprint !== snapshot.fundamentalInputFingerprint) {
+      return quarantineFailure(this.quarantine, 'fundamentalBundles', snapshot.bundleId, 'record_hash_mismatch',
+        'The fundamental bundle fingerprint does not match the committed snapshot lineage.', bundleRaw);
+    }
+    if (analysis.fundamentalAnalysisFingerprint !== snapshot.fundamentalAnalysisFingerprint
+      || analysis.fundamentalInputFingerprint !== bundle.fundamentalInputFingerprint
+      || analysis.issuerCik !== snapshot.issuerCik
+      || bundle.issuer.cik !== snapshot.issuerCik) {
+      return quarantineFailure(this.quarantine, 'fundamentalAnalyses', snapshot.analysisId, 'record_hash_mismatch',
+        'The fundamental analysis fingerprint or lineage does not match the snapshot.', analysisRaw);
+    }
+
+    let commit: CommitRecord | undefined;
+    for (const raw of commitsRaw) {
+      try {
+        const parsed = parseCommitRecord(raw);
+        if (parsed.issuerCik === pointer.issuerCik
+          && parsed.writtenRecordIds.includes(snapshot.snapshotId)
+          && parsed.status === 'committed') {
+          commit = parsed;
+          break;
+        }
+      } catch {
+        const key = isRecord(raw) && typeof raw.transactionId === 'string' ? raw.transactionId : 'unknown';
+        quarantineFailure(this.quarantine, 'commitLog', key, 'schema_mismatch',
+          'A commit evidence record failed structural validation.', raw);
+      }
+    }
+    if (commit === undefined) {
+      return quarantineFailure(this.quarantine, 'fundamentalSnapshots', snapshot.snapshotId, 'commit_evidence_missing',
+        'The fundamental snapshot has no committed evidence record.', snapshot);
+    }
+    return Object.freeze({ snapshot, bundle, analysis, pointer, commit });
+  }
+
   async readActive(issuerCik: Cik): Promise<PublishedFundamentalSnapshot | undefined> {
     return await this.storage.run(FUNDAMENTAL_TRANSACTION_STORES, 'readonly', async (transaction) => {
-      const pointer = await transaction.get<ActivePointerRecord>(
-        'activePointers',
-        pointerKey(issuerCik),
-      );
-      if (pointer === undefined) return undefined;
-      if (pointer.pointerKind !== 'fundamental_snapshot') {
-        throw new TypeError('ACTIVE_POINTER_KIND_MISMATCH');
+      const pointerRaw = await transaction.get<unknown>('activePointers', pointerKey(issuerCik));
+      if (pointerRaw === undefined) return undefined;
+      let pointer: ActivePointerRecord;
+      try {
+        pointer = parsePointerRecord(pointerRaw);
+      } catch {
+        return quarantineFailure(this.quarantine, 'activePointers', pointerKey(issuerCik), 'pointer_corrupt',
+          'The active fundamental pointer failed structural validation.', pointerRaw);
       }
-      const snapshot = await transaction.get<FundamentalSnapshotRecord>(
-        'fundamentalSnapshots',
-        pointer.targetId,
-      );
-      if (snapshot === undefined) throw new TypeError('ORPHAN_FUNDAMENTAL_POINTER');
-      const bundle = await transaction.get<FundamentalBundle>('fundamentalBundles', snapshot.bundleId);
-      const analysis = await transaction.get<FundamentalAnalysis>('fundamentalAnalyses', snapshot.analysisId);
-      if (bundle === undefined || analysis === undefined) {
-        throw new TypeError('ORPHAN_FUNDAMENTAL_SNAPSHOT');
+      if (pointer.pointerKind !== 'fundamental_snapshot' || pointer.issuerCik !== issuerCik) {
+        return quarantineFailure(this.quarantine, 'activePointers', pointerKey(issuerCik), 'pointer_corrupt',
+          'The active pointer is not a fundamental pointer for the requested issuer.', pointerRaw);
       }
-      if (pointer.targetFingerprint !== snapshot.fundamentalAnalysisFingerprint) {
-        throw new TypeError('FUNDAMENTAL_POINTER_FINGERPRINT_MISMATCH');
-      }
-      const commits = await transaction.getAll<CommitRecord>('commitLog');
-      const commit = commits.find((entry) => (
-        entry.issuerCik === issuerCik
-        && entry.writtenRecordIds.includes(snapshot.snapshotId)
-        && entry.status === 'committed'
-      ));
-      if (commit === undefined) throw new TypeError('FUNDAMENTAL_EVIDENCE_INDEX_MISSING');
-      return Object.freeze({ snapshot, bundle, analysis, pointer, commit });
+      return await this.resolveSnapshot(transaction, pointer);
     });
   }
 
   async readAllRecords(): Promise<FundamentalRepositoryRecords> {
     return await this.storage.run(FUNDAMENTAL_TRANSACTION_STORES, 'readonly', async (transaction) => {
-      const [snapshots, bundles, analyses, pointers, commits] = await Promise.all([
-        transaction.getAll<FundamentalSnapshotRecord>('fundamentalSnapshots'),
-        transaction.getAll<FundamentalBundle>('fundamentalBundles'),
-        transaction.getAll<FundamentalAnalysis>('fundamentalAnalyses'),
-        transaction.getAll<ActivePointerRecord>('activePointers'),
-        transaction.getAll<CommitRecord>('commitLog'),
+      const [snapshotRaws, bundleRaws, analysisRaws, pointerRaws, commitRaws] = await Promise.all([
+        transaction.getAll<unknown>('fundamentalSnapshots'),
+        transaction.getAll<unknown>('fundamentalBundles'),
+        transaction.getAll<unknown>('fundamentalAnalyses'),
+        transaction.getAll<unknown>('activePointers'),
+        transaction.getAll<unknown>('commitLog'),
       ]);
+
+      const bundles = new Map<string, FundamentalBundle>();
+      for (const raw of bundleRaws) {
+        try {
+          const bundle = parseFundamentalBundle(raw);
+          bundles.set(bundle.bundleId, bundle);
+        } catch {
+          const key = isRecord(raw) && typeof raw.bundleId === 'string' ? raw.bundleId : 'unknown';
+          quarantineFailure(this.quarantine, 'fundamentalBundles', key, 'schema_mismatch',
+            'A fundamental bundle failed schema validation.', raw);
+        }
+      }
+
+      const analyses = new Map<string, FundamentalAnalysis>();
+      for (const raw of analysisRaws) {
+        try {
+          const analysis = parseFundamentalAnalysis(raw);
+          analyses.set(analysis.analysisId, analysis);
+        } catch {
+          const key = isRecord(raw) && typeof raw.analysisId === 'string' ? raw.analysisId : 'unknown';
+          quarantineFailure(this.quarantine, 'fundamentalAnalyses', key, 'schema_mismatch',
+            'A fundamental analysis failed schema validation.', raw);
+        }
+      }
+
+      const commits = new Map<string, CommitRecord>();
+      for (const raw of commitRaws) {
+        try {
+          const commit = parseCommitRecord(raw);
+          commits.set(commit.transactionId, commit);
+        } catch {
+          const key = isRecord(raw) && typeof raw.transactionId === 'string' ? raw.transactionId : 'unknown';
+          quarantineFailure(this.quarantine, 'commitLog', key, 'schema_mismatch',
+            'A commit evidence record failed structural validation.', raw);
+        }
+      }
+
+      const snapshots = new Map<string, FundamentalSnapshotRecord>();
+      const snapshotCommits = new Map<string, CommitRecord>();
+      for (const raw of snapshotRaws) {
+        let snapshot: FundamentalSnapshotRecord;
+        try {
+          snapshot = parseSnapshotRecord(raw);
+        } catch {
+          const key = isRecord(raw) && typeof raw.snapshotId === 'string' ? raw.snapshotId : 'unknown';
+          quarantineFailure(this.quarantine, 'fundamentalSnapshots', key, 'schema_mismatch',
+            'A fundamental snapshot failed structural validation.', raw);
+          continue;
+        }
+        const bundle = bundles.get(snapshot.bundleId);
+        const analysis = analyses.get(snapshot.analysisId);
+        if (bundle === undefined || analysis === undefined) {
+          quarantineFailure(this.quarantine, 'fundamentalSnapshots', snapshot.snapshotId, 'reference_missing',
+            'The fundamental snapshot references a missing or quarantined bundle or analysis.', raw);
+          continue;
+        }
+        if (bundle.issuer.cik !== snapshot.issuerCik
+          || analysis.issuerCik !== snapshot.issuerCik
+          || bundle.fundamentalInputFingerprint !== snapshot.fundamentalInputFingerprint
+          || analysis.fundamentalInputFingerprint !== snapshot.fundamentalInputFingerprint
+          || analysis.fundamentalAnalysisFingerprint !== snapshot.fundamentalAnalysisFingerprint) {
+          quarantineFailure(this.quarantine, 'fundamentalSnapshots', snapshot.snapshotId, 'record_hash_mismatch',
+            'The fundamental snapshot lineage does not match its referenced records.', raw);
+          continue;
+        }
+        const commit = [...commits.values()].find((entry) => (
+          entry.issuerCik === snapshot.issuerCik
+          && entry.status === 'committed'
+          && entry.writtenRecordIds.includes(snapshot.snapshotId)
+        ));
+        if (commit === undefined) {
+          quarantineFailure(this.quarantine, 'fundamentalSnapshots', snapshot.snapshotId, 'commit_evidence_missing',
+            'The fundamental snapshot has no committed evidence record.', raw);
+          continue;
+        }
+        snapshots.set(snapshot.snapshotId, snapshot);
+        snapshotCommits.set(commit.transactionId, commit);
+      }
+
+      const pointers = new Map<string, ActivePointerRecord>();
+      for (const raw of pointerRaws) {
+        let pointer: ActivePointerRecord;
+        try {
+          pointer = parsePointerRecord(raw);
+        } catch {
+          if (!isRecord(raw) || raw.pointerKind !== 'fundamental_snapshot') continue;
+          const key: RepositoryKey = typeof raw.issuerCik === 'string'
+            ? [raw.issuerCik, 'fundamental_snapshot']
+            : 'unknown';
+          quarantineFailure(this.quarantine, 'activePointers', key, 'pointer_corrupt',
+            'An active fundamental pointer failed structural validation.', raw);
+          continue;
+        }
+        if (pointer.pointerKind !== 'fundamental_snapshot') continue;
+        const snapshot = snapshots.get(pointer.targetId);
+        if (snapshot === undefined || snapshot.issuerCik !== pointer.issuerCik
+          || snapshot.fundamentalAnalysisFingerprint !== pointer.targetFingerprint) {
+          quarantineFailure(this.quarantine, 'activePointers', pointerKey(pointer.issuerCik), 'pointer_corrupt',
+            'The active fundamental pointer does not resolve to a valid snapshot.', raw);
+          continue;
+        }
+        pointers.set(`${pointer.issuerCik}:fundamental_snapshot`, pointer);
+      }
+
+      const referencedBundleIds = new Set([...snapshots.values()].map((entry) => entry.bundleId));
+      const referencedAnalysisIds = new Set([...snapshots.values()].map((entry) => entry.analysisId));
       return Object.freeze({
-        snapshots: Object.freeze([...snapshots]),
-        bundles: Object.freeze([...bundles]),
-        analyses: Object.freeze([...analyses]),
-        pointers: Object.freeze(pointers.filter((pointer) => pointer.pointerKind === 'fundamental_snapshot')),
-        commits: Object.freeze(commits.filter((commit) => (
-          commit.pointerUpdates.some((pointer) => pointer.endsWith(':fundamental_snapshot'))
-        ))),
+        snapshots: Object.freeze([...snapshots.values()]),
+        bundles: Object.freeze([...bundles.values()].filter((entry) => referencedBundleIds.has(entry.bundleId))),
+        analyses: Object.freeze([...analyses.values()].filter((entry) => referencedAnalysisIds.has(entry.analysisId))),
+        pointers: Object.freeze([...pointers.values()]),
+        commits: Object.freeze([...snapshotCommits.values()]),
       });
     });
   }

@@ -1,10 +1,10 @@
 {
   "$schema": "schemas/implementation-batch-map.schema.json",
   "schemaVersion": "1.1.0",
-  "mapId": "FinScope-v0.21.20-B17-completed-batch-map",
+  "mapId": "FinScope-v0.21.21-B18-completed-batch-map",
   "normativeBaseline": "v0.21",
-  "packageRevision": "v0.21.20_B17_completed",
-  "generatedOn": "2026-08-01",
+  "packageRevision": "v0.21.21_B18_completed",
+  "generatedOn": "2026-08-02",
   "sourceTaskAuthority": "specs/001-fundamental-analysis-platform/tasks.md",
   "sourceCoverageMatrix": "specs/001-fundamental-analysis-platform/reports/v0.21/07_POST_TASKS_COVERAGE_MATRIX.json",
   "taskCount": 109,
@@ -456,7 +456,7 @@
         "T075",
         "T076"
       ],
-      "status": "PENDING"
+      "status": "COMPLETED"
     },
     {
       "batchId": "B19",
@@ -752,5 +752,5 @@
       "status": "PENDING"
     }
   ],
-  "sourceTasksSha256": "44be83b900cd531b63a2d25c5dcb18c8880e140e38d4f1690849f1fe680fbf5d"
+  "sourceTasksSha256": "9e6a655f41288b1b73ef9a0b06e2311354ade8f048e969eebc07a58a53536703"
 }
