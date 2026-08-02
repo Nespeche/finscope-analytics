@@ -169,7 +169,7 @@ test('restore UI previews an allowed migration and requires explicit confirmatio
   await expect(preview).toHaveCount(0);
 });
 
-test('restore UI discloses conflicts and restricts replacement to matching IDs', async ({ page }) => {
+test('restore UI discloses conflicts and restricts replacement to matching IDs', async ({ page }, testInfo) => {
   await resetDatabase(page);
   const packageObject = await createPackage();
   await seedPackage(page, packageObject);
@@ -182,7 +182,85 @@ test('restore UI discloses conflicts and restricts replacement to matching IDs',
 
   await expect(page.getByTestId('restore-conflicts').getByRole('listitem')).toHaveCount(5);
   await expect(page.getByLabel('Reject restore when conflicts exist')).toBeChecked();
-  await page.getByLabel('Replace only matching record IDs').check();
+  const replacementPolicy = page.getByLabel('Replace only matching record IDs');
+  try {
+    await replacementPolicy.check({ timeout: 5_000 });
+  } catch (caught: unknown) {
+    const geometry = await replacementPolicy.evaluate((element) => {
+      const describe = (node: Element | null) => {
+        if (node === null) return null;
+        const rectangle = node.getBoundingClientRect();
+        const style = getComputedStyle(node);
+        return {
+          tag: node.tagName,
+          id: node.id,
+          className: node.getAttribute('class'),
+          text: node.textContent?.trim().slice(0, 160) ?? '',
+          rect: {
+            x: rectangle.x,
+            y: rectangle.y,
+            top: rectangle.top,
+            right: rectangle.right,
+            bottom: rectangle.bottom,
+            left: rectangle.left,
+            width: rectangle.width,
+            height: rectangle.height,
+          },
+          style: {
+            display: style.display,
+            position: style.position,
+            zIndex: style.zIndex,
+            opacity: style.opacity,
+            pointerEvents: style.pointerEvents,
+            visibility: style.visibility,
+            transform: style.transform,
+            overflow: style.overflow,
+            inlineSize: style.inlineSize,
+            blockSize: style.blockSize,
+          },
+        };
+      };
+      const inputRectangle = element.getBoundingClientRect();
+      const center = {
+        x: inputRectangle.left + inputRectangle.width / 2,
+        y: inputRectangle.top + inputRectangle.height / 2,
+      };
+      const label = document.querySelector(`label[for="${element.id}"]`);
+      const viewport = window.visualViewport;
+      return {
+        input: describe(element),
+        parent: describe(element.parentElement),
+        offsetParent: describe(element instanceof HTMLElement ? element.offsetParent : null),
+        label: describe(label),
+        fieldset: describe(element.closest('fieldset')),
+        preview: describe(element.closest('[data-testid="restore-preview"]')),
+        main: describe(document.querySelector('main')),
+        localActions: describe(document.querySelector('[aria-label="Local data actions"]')),
+        center,
+        hitStack: document.elementsFromPoint(center.x, center.y).slice(0, 12).map(describe),
+        viewport: {
+          innerWidth: window.innerWidth,
+          innerHeight: window.innerHeight,
+          scrollX: window.scrollX,
+          scrollY: window.scrollY,
+          documentWidth: document.documentElement.scrollWidth,
+          documentHeight: document.documentElement.scrollHeight,
+          visualViewport: viewport === null ? null : {
+            width: viewport.width,
+            height: viewport.height,
+            offsetLeft: viewport.offsetLeft,
+            offsetTop: viewport.offsetTop,
+            pageLeft: viewport.pageLeft,
+            pageTop: viewport.pageTop,
+            scale: viewport.scale,
+          },
+        },
+        activeElement: describe(document.activeElement),
+      };
+    });
+    console.log(`B18_MOBILE_HIT_TEST_DIAGNOSTIC=${JSON.stringify({ project: testInfo.project.name, geometry })}`);
+    throw caught;
+  }
   await press(page.getByRole('button', { name: 'Confirm atomic restore' }));
   await expect(page.getByTestId('data-management-status')).toContainText('5 replacement(s)');
 });
