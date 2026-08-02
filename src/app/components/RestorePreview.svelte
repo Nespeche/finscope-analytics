@@ -67,26 +67,28 @@
     </ul>
     <fieldset aria-describedby="restore-conflict-help">
       <legend>Conflict policy</legend>
-      <label>
+      <div class="policy-option">
         <input
+          id="restore-conflict-reject"
           type="radio"
           name="restore-conflict-policy"
           value="reject"
           checked={conflictPolicy === 'reject'}
           onchange={() => onpolicychange?.('reject')}
         />
-        Reject restore when conflicts exist
-      </label>
-      <label>
+        <label for="restore-conflict-reject">Reject restore when conflicts exist</label>
+      </div>
+      <div class="policy-option">
         <input
+          id="restore-conflict-replace"
           type="radio"
           name="restore-conflict-policy"
           value="replace_matching_record_ids"
           checked={conflictPolicy === 'replace_matching_record_ids'}
           onchange={() => onpolicychange?.('replace_matching_record_ids')}
         />
-        Replace only matching record IDs
-      </label>
+        <label for="restore-conflict-replace">Replace only matching record IDs</label>
+      </div>
     </fieldset>
   {/if}
 
@@ -110,15 +112,51 @@
     border: 2px solid currentColor;
     border-radius: 0.5rem;
     padding: 1rem;
+    inline-size: 100%;
+    min-inline-size: 0;
   }
+  .preview > * { min-inline-size: 0; }
   h2, h3, p, ul, dl { margin-block: 0; }
+  ul { padding-inline-start: 1.25rem; }
+  li, code { min-inline-size: 0; overflow-wrap: anywhere; }
   dl { display: grid; gap: 0.5rem; }
-  dl div { display: grid; grid-template-columns: minmax(9rem, 1fr) 2fr; gap: 0.75rem; }
+  dl div { display: grid; grid-template-columns: minmax(9rem, 1fr) 2fr; gap: 0.75rem; min-inline-size: 0; }
   dt { font-weight: 700; }
-  dd { margin: 0; overflow-wrap: anywhere; }
-  fieldset { display: grid; gap: 0.5rem; border: 1px solid currentColor; }
-  label { display: flex; gap: 0.6rem; align-items: flex-start; }
+  dd { margin: 0; overflow-wrap: anywhere; min-inline-size: 0; }
+  fieldset {
+    display: grid;
+    gap: 0.5rem;
+    border: 1px solid currentColor;
+    min-inline-size: 0;
+    position: relative;
+    isolation: isolate;
+  }
+  .policy-option {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: start;
+    min-inline-size: 0;
+    position: relative;
+  }
+  .policy-option input {
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    margin: 0.1rem 0 0;
+    position: relative;
+    z-index: 2;
+  }
+  .policy-option label {
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+  }
   .notice { border-inline-start: 0.35rem solid currentColor; padding-inline-start: 0.75rem; }
   .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
   button { min-block-size: 2.75rem; }
+  @media (max-width: 36rem) {
+    dl div { grid-template-columns: 1fr; gap: 0.1rem; }
+  }
 </style>
