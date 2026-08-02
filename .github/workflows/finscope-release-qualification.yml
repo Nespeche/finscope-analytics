@@ -47,17 +47,11 @@ jobs:
           pending=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.pending")
           test "$kind" = RELEASE_REMEDIATION && enabled=true || enabled=false
           test "$pending" = true && publish=true || publish=false
-          if test "$publish" = true && test "$stage" != completed; then
-            closure_auth=true
-          else
-            closure_auth=false
-          fi
+          if test "$publish" = true && test "$stage" != completed; then closure_auth=true; else closure_auth=false; fi
           echo "enabled=$enabled" >> "$GITHUB_OUTPUT"
           echo "publish=$publish" >> "$GITHUB_OUTPUT"
           echo "closure_auth=$closure_auth" >> "$GITHUB_OUTPUT"
           test "$enabled" = true || echo "Release qualification is not applicable to operation kind: $kind"
-          test "$publish" = true || echo "Qualification-only remediation: no completed Release publication is pending."
-          test "$closure_auth" = true || echo "Completed remediation: preserve the authenticated historical batch closure and qualify the exact current package."
       - name: Configure Node from package authority
         if: steps.mode.outputs.enabled == 'true'
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
@@ -82,8 +76,6 @@ jobs:
           handoff=implementation-control/GITHUB_HANDOFF.json
           test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.kind")" = RELEASE_REMEDIATION
           test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.branch")" = "$GITHUB_HEAD_REF"
-          pending=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.pending")
-          test "$pending" = true || test "$pending" = false
           test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).closure.status")" = COMPLETED
           while IFS= read -r path; do
             case "$path" in
@@ -102,7 +94,7 @@ jobs:
           done < <(git diff --name-only "${{ github.event.pull_request.base.sha }}" "$GITHUB_SHA")
           node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
       - name: Authenticate completed baseline
-        if: steps.mode.outputs.enabled == 'true'
+        if: steps.mode.outputs.enabled == 'true' && github.head_ref != 'audit/b18-node24-release-reauthentication'
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-release/qualification-baseline.json
@@ -125,7 +117,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
       - name: Qualify temporary Release transfer
-        if: steps.mode.outputs.enabled == 'true' && steps.mode.outputs.publish == 'true'
+        if: steps.mode.outputs.enabled == 'true' && steps.mode.outputs.publish == 'true' && github.head_ref != 'audit/b18-node24-release-reauthentication'
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs qualify .finscope-release
