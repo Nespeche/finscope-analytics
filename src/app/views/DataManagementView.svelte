@@ -63,6 +63,7 @@
   let showDeleteAllDialog = false;
   let showDeletePriceDialog = false;
   let priceIssuer = '';
+  let priceIssuerError: string | undefined;
   let busy = false;
   let statusKind: 'status' | 'alert' = 'status';
   let statusMessage = 'Grant storage consent to inspect or change local data.';
@@ -70,6 +71,7 @@
   let restoreFileInput: HTMLInputElement;
   let deleteAllButton: HTMLButtonElement;
   let deletePriceButton: HTMLButtonElement;
+  let priceIssuerInput: HTMLInputElement;
 
   const STORE_BY_KIND: Readonly<Record<LocalExportRecordKind, FinScopeStoreName>> = {
     fundamentalSnapshot: 'fundamentalSnapshots',
@@ -278,18 +280,22 @@
   }
 
   function requestDeletePrice(): void {
+    priceIssuerError = undefined;
     try {
       parseCik(priceIssuer);
       showDeletePriceDialog = true;
     } catch (caught: unknown) {
+      priceIssuerError = caught instanceof Error ? caught.message : 'Enter exactly ten digits, including leading zeroes.';
       statusKind = 'alert';
-      statusMessage = caught instanceof Error ? caught.message : 'Enter a valid CIK.';
+      statusMessage = `Issuer CIK error. ${priceIssuerError}`;
+      void tick().then(() => priceIssuerInput.focus());
     }
   }
 
   async function confirmDeletePrice(): Promise<void> {
     busy = true;
     try {
+      priceIssuerError = undefined;
       const issuerCik: Cik = parseCik(priceIssuer);
       const active = await createServices();
       const count = await active.deletion.deletePriceHistory(issuerCik);
@@ -310,7 +316,9 @@
   });
 </script>
 
-<section aria-labelledby="data-management-heading">
+<svelte:head><title>Data management | FinScope Analytics</title></svelte:head>
+
+<section aria-labelledby="data-management-heading" aria-busy={busy}>
   <p class="eyebrow">Local-only personal data</p>
   <h1 id="data-management-heading">Data management</h1>
   <p>
@@ -322,15 +330,18 @@
     <label>
       <input
         type="checkbox"
+        aria-describedby="storage-data-help"
         checked={storageConsent}
         onchange={(event) => setStorageConsent(event.currentTarget.checked)}
       />
       Allow this view to open and change IndexedDB
     </label>
-    <p>Consent is checked before the database is opened. Every destructive action still requires confirmation.</p>
+    <p id="storage-data-help">Consent is checked before the database is opened. Every destructive action still requires confirmation.</p>
   </fieldset>
 
-  <div class="actions" aria-label="Local data actions">
+  <p id="local-data-action-help">Export downloads a deterministic local JSON file. Integrity check only reads local repositories. Restore first validates and previews a selected JSON package.</p>
+
+  <div class="actions" aria-label="Local data actions" aria-describedby="local-data-action-help">
     <button type="button" disabled={!storageConsent || busy} onclick={() => { void exportData(); }}>
       Export local data
     </button>
@@ -342,6 +353,7 @@
       <input
         bind:this={restoreFileInput}
         type="file"
+        aria-describedby="local-data-action-help"
         accept="application/json,.json"
         disabled={!storageConsent || busy}
         onchange={(event) => { void selectRestoreFile(event); }}
@@ -375,17 +387,32 @@
 
   <section class="destructive" aria-labelledby="delete-price-heading">
     <h2 id="delete-price-heading">Delete historical price data</h2>
-    <label for="price-delete-cik">Issuer CIK</label>
-    <input id="price-delete-cik" bind:value={priceIssuer} inputmode="numeric" autocomplete="off" />
+    <label for="price-delete-cik">Issuer CIK for price-history deletion</label>
+    <input
+      bind:this={priceIssuerInput}
+      id="price-delete-cik"
+      name="price-delete-cik"
+      bind:value={priceIssuer}
+      inputmode="numeric"
+      pattern="[0-9]{10}"
+      maxlength="10"
+      autocomplete="off"
+      aria-invalid={priceIssuerError === undefined ? undefined : 'true'}
+      aria-errormessage={priceIssuerError === undefined ? undefined : 'price-delete-cik-error'}
+      aria-describedby={priceIssuerError === undefined ? 'price-delete-cik-help' : 'price-delete-cik-help price-delete-cik-error'}
+    />
+    <p id="price-delete-cik-help">Enter the authoritative zero-padded ten-digit CIK. Only price data for this issuer is included.</p>
+    {#if priceIssuerError !== undefined}<p id="price-delete-cik-error" class="field-error">{priceIssuerError}</p>{/if}
     <button
       bind:this={deletePriceButton}
       type="button"
       disabled={!storageConsent || busy || priceIssuer.trim().length === 0}
+      aria-describedby="price-delete-cik-help price-delete-consequence"
       onclick={requestDeletePrice}
     >
       Delete price history
     </button>
-    <p>Fundamental bundles, analyses and snapshots are not included in this transaction.</p>
+    <p id="price-delete-consequence">Fundamental bundles, analyses and snapshots are not included in this transaction. A confirmation dialog names the affected data before deletion.</p>
   </section>
 
   <section class="destructive" aria-labelledby="delete-all-heading">
@@ -406,6 +433,7 @@
     role={statusKind}
     aria-live={statusKind === 'alert' ? 'assertive' : 'polite'}
     aria-atomic="true"
+    tabindex="-1"
   >
     {statusMessage}
   </p>
@@ -445,6 +473,7 @@
     padding: 1rem;
   }
   label { font-weight: 650; }
+  .field-error { font-weight: 700; }
   fieldset label { display: flex; gap: 0.7rem; align-items: flex-start; }
   .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
   button, input, .file-action { min-block-size: 2.75rem; font: inherit; }

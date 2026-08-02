@@ -60,8 +60,11 @@
   }
 </script>
 
+<svelte:head><title>Price analysis | FinScope Analytics</title></svelte:head>
+
 <section
   aria-labelledby="price-analysis-heading"
+  aria-describedby="price-analysis-disclosure"
   data-testid="price-analysis-view"
   data-fundamental-input-fingerprint={$priceWorkspace.persistence.fundamental.fingerprints.fundamentalInputFingerprint}
   data-fundamental-analysis-fingerprint={$priceWorkspace.persistence.fundamental.fingerprints.fundamentalAnalysisFingerprint}
@@ -70,7 +73,7 @@
 >
   <p class="eyebrow">Descriptive historical overlay</p>
   <h1 id="price-analysis-heading">Historical price analysis</h1>
-  <p class="disclosure">
+  <p class="disclosure" id="price-analysis-disclosure">
     Price is an optional overlay and is never part of the fundamental bundle. No valuation is generated.
   </p>
 
@@ -119,8 +122,9 @@
 
       <div class="evaluation-field">
         <label for="price-evaluation-date">Evaluation date for displayed age</label>
-        <input id="price-evaluation-date" type="date" bind:value={evaluationDate} />
-        <p>
+        <input id="price-evaluation-date" type="date" bind:value={evaluationDate} aria-describedby="price-evaluation-help price-display-age-status" />
+        <p id="price-evaluation-help">The evaluation date changes presentation only; it does not alter stored observations or fingerprints.</p>
+        <p id="price-display-age-status" role="status" aria-live="polite" aria-atomic="true">
           Display age: <strong data-testid="price-display-age">{displayAgeDays === undefined ? 'Unavailable' : `${displayAgeDays} days`}</strong>.
           This presentation-only value is not stored in the overlay and does not change either price fingerprint.
         </p>
@@ -129,9 +133,9 @@
 
     <section class="metrics" aria-labelledby="price-metrics-heading">
       <h2 id="price-metrics-heading">Eight historical price metrics</h2>
-      <p>Each value is available in this table independently of the chart.</p>
-      <div class="table-wrap">
-        <table aria-label="Eight historical price metrics">
+      <p id="price-metrics-instructions">Each value, state and quality classification is available in this table independently of the chart or color.</p>
+      <div class="table-wrap" role="region" aria-label="Historical price metrics table" aria-describedby="price-metrics-instructions" tabindex="0">
+        <table>
           <caption>Descriptive price metrics for overlay version {pointer.overlayVersion}</caption>
           <thead>
             <tr><th scope="col">Metric</th><th scope="col">Value or state</th><th scope="col">Quality</th></tr>

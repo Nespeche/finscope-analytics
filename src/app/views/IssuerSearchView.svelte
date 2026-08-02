@@ -49,15 +49,18 @@
   let candidates: readonly IssuerIdentity[] = [];
   let message = 'Search by ticker alias or authoritative CIK.';
   let messageKind: 'status' | 'error' = 'status';
+  let queryError: string | undefined;
 
   function selectIssuer(issuer: IssuerIdentity): void {
     selectedIssuer = issuer;
     candidates = [];
     messageKind = 'status';
+    queryError = undefined;
     message = `${issuer.legalName} selected by CIK ${issuer.cik}.`;
   }
 
   function submitSearch(): void {
+    queryError = undefined;
     const result = resolveIssuer(query, issuerCatalog);
     if (result.status === 'resolved') {
       selectIssuer(result.issuer);
@@ -67,14 +70,18 @@
     if (result.status === 'ambiguous') {
       candidates = result.candidates;
       messageKind = 'error';
-      message = result.issue.message;
+      queryError = `${result.issue.message} Choose one of the listed CIK-specific candidates.`;
+      message = queryError;
       return;
     }
     candidates = [];
     messageKind = 'error';
-    message = 'No issuer matched. Correct the ticker or enter a CIK.';
+    queryError = 'No issuer matched. Correct the ticker alias or enter a zero-padded ten-digit CIK.';
+    message = queryError;
   }
 </script>
+
+<svelte:head><title>Issuer search | FinScope Analytics</title></svelte:head>
 
 <section aria-labelledby="issuer-search-heading">
   <p class="eyebrow">Local identity resolution</p>
@@ -89,11 +96,13 @@
         name="issuer-query"
         autocomplete="off"
         bind:value={query}
+        aria-invalid={queryError === undefined ? undefined : 'true'}
+        aria-errormessage={queryError === undefined ? undefined : 'issuer-search-status'}
         aria-describedby="issuer-search-help issuer-search-status"
       />
       <button type="submit">Find issuer</button>
     </div>
-    <small id="issuer-search-help">Examples: AAPL, ALPHA, or 0000320193.</small>
+    <small id="issuer-search-help">Examples: AAPL, ALPHA, or 0000320193. Tickers are aliases; selection is confirmed by legal name and CIK.</small>
   </form>
 
   <p
@@ -107,7 +116,8 @@
   {#if candidates.length > 0}
     <section aria-labelledby="candidate-heading">
       <h2 id="candidate-heading">Choose the authoritative CIK</h2>
-      <IssuerCandidateList {candidates} onSelect={selectIssuer} />
+      <p id="candidate-instructions">The alias is ambiguous. Compare legal name, CIK and profile before selecting.</p>
+      <div aria-describedby="candidate-instructions"><IssuerCandidateList {candidates} onSelect={selectIssuer} /></div>
     </section>
   {/if}
 
@@ -174,5 +184,9 @@
 
   dd {
     margin: 0;
+  }
+
+  .field-error {
+    font-weight: 700;
   }
 </style>

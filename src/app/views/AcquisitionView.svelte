@@ -22,6 +22,7 @@
   let completedUnits = 0;
   const totalUnits = 2;
   let lastSnapshot = 'No active local snapshot';
+  let cikError: string | undefined;
 
   $: busy = state === 'checking' || state === 'acquiring';
   $: showRetry = state === 'failed' || state === 'partial' || state === 'cancelled';
@@ -52,10 +53,12 @@
 
   async function startAcquisition(): Promise<void> {
     if (busy) return;
+    cikError = undefined;
     const normalizedCik = validateCik(cik);
     if (normalizedCik === undefined) {
       state = 'failed';
-      statusMessage = 'Enter a zero-padded ten-digit CIK before updating.';
+      cikError = 'Enter exactly ten digits, including leading zeroes; for example 0000320193.';
+      statusMessage = `Issuer CIK error. ${cikError}`;
       return;
     }
     if (!networkConsent) {
@@ -103,6 +106,8 @@
   }
 </script>
 
+<svelte:head><title>SEC acquisition | FinScope Analytics</title></svelte:head>
+
 <section aria-labelledby="acquisition-heading" aria-busy={busy}>
   <p class="eyebrow">Manual, consented acquisition</p>
   <h1 id="acquisition-heading">Acquire SEC filings and Company Facts</h1>
@@ -119,9 +124,11 @@
     maxlength="10"
     bind:value={cik}
     disabled={busy}
-    aria-describedby="acquisition-cik-help"
+    aria-invalid={cikError === undefined ? undefined : 'true'}
+    aria-errormessage={cikError === undefined ? undefined : 'acquisition-status'}
+    aria-describedby="acquisition-cik-help acquisition-status"
   />
-  <small id="acquisition-cik-help">Use the authoritative zero-padded ten-digit CIK.</small>
+  <small id="acquisition-cik-help">Use the authoritative zero-padded ten-digit CIK. Updating contacts the SEC only after consent and confirmation.</small>
 
   <NetworkConsent
     granted={networkConsent}
@@ -129,7 +136,9 @@
     onConsentChange={updateConsent}
   />
 
-  <div class="actions" aria-label="SEC acquisition actions">
+  <p id="acquisition-action-consequences">Update creates a candidate only; Cancel preserves the prior active snapshot and enables retry.</p>
+
+  <div class="actions" aria-label="SEC acquisition actions" aria-describedby="acquisition-action-consequences">
     <button type="button" onclick={() => { void startAcquisition(); }} disabled={busy}>
       {showRetry ? 'Retry acquisition' : 'Update fundamentals'}
     </button>
@@ -182,6 +191,10 @@
   small {
     display: block;
     margin-block-start: 0.25rem;
+  }
+
+  .field-error {
+    font-weight: 700;
   }
 
   .actions {

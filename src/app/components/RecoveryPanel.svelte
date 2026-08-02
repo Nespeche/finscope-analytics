@@ -21,6 +21,10 @@
   let statusMessage = '';
   let panel: HTMLElement | undefined;
 
+  function humanize(value: string): string {
+    return value.replaceAll('_', ' ').replaceAll('-', ' ');
+  }
+
   function inspectVisibleIssues(): void {
     if (document.querySelector('[data-testid="corruption-recovery"]') !== null) {
       issue = repositoryCorruptionIssue;
@@ -78,16 +82,17 @@
 </script>
 
 {#if issue}
-  <section bind:this={panel} class="recovery-panel" aria-labelledby="recovery-panel-heading" data-testid="recovery-panel">
+  <section bind:this={panel} class="recovery-panel" aria-labelledby="recovery-panel-heading" aria-describedby="recovery-panel-description recovery-panel-state" data-testid="recovery-panel">
     <h2 id="recovery-panel-heading">Recovery options</h2>
-    <p><strong>{issue.title}.</strong> {issue.message}</p>
-    <p><strong>State:</strong> {issue.pipelineState}</p>
-    <p><strong>Blocked:</strong> {issue.blockedOperations.join(', ')}</p>
-    <p><strong>Preserved:</strong> {issue.preservedCapabilities.join(', ')}</p>
-    <div class="actions" aria-label="Available recovery actions">
+    <p id="recovery-panel-description"><strong>{issue.title}.</strong> {issue.message}</p>
+    <p id="recovery-panel-state"><strong>Current state:</strong> {humanize(issue.pipelineState)}.</p>
+    <p><strong>Blocked operations:</strong> {issue.blockedOperations.map(humanize).join(', ')}.</p>
+    <p><strong>Preserved capabilities:</strong> {issue.preservedCapabilities.map(humanize).join(', ')}.</p>
+    <p id="recovery-action-help">Choose one action to move to the named view. Focus moves to the exact recovery control or heading.</p>
+    <div class="actions" aria-label={`Recovery actions for ${issue.title}`} aria-describedby="recovery-action-help">
       {#each issue.recoveryActions as actionId}
         {@const operation = getRecoveryOperation(actionId)}
-        <button type="button" onclick={() => { void activate(actionId); }}>
+        <button type="button" aria-label={`${actionId === 'use_last_snapshot' ? 'Recover with last snapshot' : operation.label} for ${issue.title}`} onclick={() => { void activate(actionId); }}>
           {actionId === 'use_last_snapshot' ? 'Recover with last snapshot' : operation.label}
         </button>
       {/each}

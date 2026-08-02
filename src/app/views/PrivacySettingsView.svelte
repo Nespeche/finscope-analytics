@@ -21,6 +21,7 @@
   let statusKind: 'status' | 'alert' = 'status';
   let refreshControl: HTMLInputElement;
   let storageControl: HTMLInputElement;
+  let busy = false;
 
   function setRefreshConsent(granted: boolean): void {
     const record = consentRepository.set('refreshConsent', granted);
@@ -43,14 +44,22 @@
   }
 
   async function runMemoryAnalysis(): Promise<void> {
-    const result = await consentRepository.runPersistentWrite(() => 'saved-locally');
-    statusKind = 'status';
-    statusMessage = result.mode === 'persisted'
-      ? 'Analysis completed and saved locally with storage consent.'
-      : 'Analysis completed in memory only. Storage consent is not required for analysis.';
+    if (busy) return;
+    busy = true;
+    try {
+      const result = await consentRepository.runPersistentWrite(() => 'saved-locally');
+      statusKind = 'status';
+      statusMessage = result.mode === 'persisted'
+        ? 'Analysis completed and saved locally with storage consent.'
+        : 'Analysis completed in memory only. Storage consent is not required for analysis.';
+    } finally {
+      busy = false;
+    }
   }
 
   async function requestRefresh(): Promise<void> {
+    if (busy) return;
+    busy = true;
     try {
       const result = await consentRepository.runLifecycleRefresh(async () => {
         const response = await fetch('/consent-network-probe', {
@@ -67,11 +76,15 @@
     } catch (caught: unknown) {
       statusKind = 'alert';
       statusMessage = caught instanceof Error ? caught.message : 'Refresh failed.';
+    } finally {
+      busy = false;
     }
   }
 </script>
 
-<section aria-labelledby="privacy-settings-heading">
+<svelte:head><title>Privacy settings | FinScope Analytics</title></svelte:head>
+
+<section aria-labelledby="privacy-settings-heading" aria-busy={busy}>
   <p class="eyebrow">Local-first privacy controls</p>
   <h1 id="privacy-settings-heading">Privacy and consent</h1>
   <p>
@@ -118,11 +131,13 @@
     </button>
   </fieldset>
 
-  <div class="actions" aria-label="Consent verification actions">
-    <button type="button" onclick={() => { void runMemoryAnalysis(); }}>
+  <p id="consent-action-help">Run local analysis never requires network access. Check for updates contacts the configured endpoint only after refresh consent and this explicit action.</p>
+
+  <div class="actions" aria-label="Consent verification actions" aria-describedby="consent-action-help">
+    <button type="button" disabled={busy} aria-busy={busy ? 'true' : undefined} onclick={() => { void runMemoryAnalysis(); }}>
       Run local analysis
     </button>
-    <button type="button" onclick={() => { void requestRefresh(); }}>
+    <button type="button" disabled={busy} aria-busy={busy ? 'true' : undefined} onclick={() => { void requestRefresh(); }}>
       Check for updates
     </button>
   </div>
