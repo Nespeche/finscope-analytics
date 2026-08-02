@@ -12,59 +12,23 @@
   },
   "operation": {
     "id": "B18",
-    "kind": "BATCH",
-    "branch": "agent/b18-restore-delete-quarantine-data-ui",
-    "stage": "completed",
+    "kind": "RELEASE_REMEDIATION",
+    "branch": "agent/b18-completed-release",
+    "stage": "candidate",
     "activeBatchId": "B18",
     "nextBatchId": "B19",
     "completedTasksThroughOnClosure": "T080",
     "qualificationCommands": [
       {
-        "id": "npm-ci",
-        "category": "dependencies",
-        "command": "npm ci",
+        "id": "package-completed-release",
+        "category": "package",
+        "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
         "required": true
       },
       {
-        "id": "playwright-chromium",
-        "category": "browser",
-        "command": "npm exec playwright install chromium",
-        "required": true
-      },
-      {
-        "id": "typecheck",
-        "category": "static",
-        "command": "npm run typecheck",
-        "required": true
-      },
-      {
-        "id": "test-integration",
-        "category": "integration",
-        "command": "npm run test:integration -- tests/integration/persistence/corruption-quarantine.test.ts tests/integration/persistence/delete.test.ts tests/integration/persistence/restore-rollback.test.ts",
-        "required": true
-      },
-      {
-        "id": "test-e2e",
-        "category": "e2e",
-        "command": "npm run test:e2e -- tests/e2e/data-management.spec.ts tests/e2e/persistence-lifecycle.spec.ts",
-        "required": true
-      },
-      {
-        "id": "regression-vitest",
-        "category": "regression",
-        "command": "npm run test",
-        "required": true
-      },
-      {
-        "id": "regression-browser",
-        "category": "regression",
-        "command": "npm run test:browser",
-        "required": true
-      },
-      {
-        "id": "build",
-        "category": "build",
-        "command": "npm run build",
+        "id": "verify-completed-package",
+        "category": "package-authentication",
+        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.21_B18_completed.zip .finscope-release/FS_v0.21.21_B18_completed.zip.sha256",
         "required": true
       }
     ]
@@ -94,7 +58,7 @@
     "evidencePrefix": "FinScope_B18_release_evidence",
     "promptName": "PROMPT_IMPLEMENTACION_B19.md",
     "title": "FinScope B18 completed — restore, deletion, quarantine and data management UI",
-    "notes": "B18 implements atomic restore and deletion, deterministic corruption quarantine and the accessible local data-management UI. B19 remains pending and convergenceAuthorized=false."
+    "notes": "B18 completed with authenticated candidate and closure evidence. This Release publishes the immutable completed ZIP and sidecar after package, upload/download and closure-artifact authentication. B19 remains pending as the only active and authorized batch; convergenceAuthorized=false."
   },
   "productState": {
     "activeBatchId": "B19",
