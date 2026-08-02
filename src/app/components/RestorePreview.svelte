@@ -75,7 +75,7 @@
           checked={conflictPolicy === 'reject'}
           onchange={() => onpolicychange?.('reject')}
         />
-        Reject restore
+        Reject restore when conflicts exist
       </label>
       <label>
         <input
