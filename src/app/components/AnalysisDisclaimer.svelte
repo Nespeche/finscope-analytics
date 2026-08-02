@@ -9,7 +9,7 @@
 <aside class="analysis-disclaimer" aria-labelledby="analysis-disclaimer-heading" data-testid="analysis-disclaimer">
   <h2 id="analysis-disclaimer-heading">Research scope</h2>
   <p>
-    FinScope provides deterministic, descriptive fundamental research. It is not personalized investment advice and does not issue buy, sell or hold instructions, target prices, forecasts, return promises or confidence scores.
+    FinScope provides deterministic, descriptive fundamental research. It is not personalized investment advice and does not issue buy, sell or hold instructions, price objectives, forecasts, return promises or confidence scores.
   </p>
   <p>
     Historical prices are an optional descriptive overlay. They never change fundamental facts, metrics, insights, fingerprints or the active fundamental snapshot.

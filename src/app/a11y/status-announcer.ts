@@ -8,14 +8,13 @@ const installedDocuments = new WeakSet<Document>();
 const busyStates = new Set<RefreshPipelineState>(['checking', 'acquiring', 'normalizing', 'analyzing']);
 const disabledStates = new Set<RefreshPipelineState>(['failed', 'cancelled']);
 
-function createAnnouncer(document: Document, role: 'status' | 'alert', testId: string): HTMLElement {
+function createAnnouncer(document: Document, politeness: 'polite' | 'assertive', testId: string): HTMLElement {
   const existing = document.querySelector<HTMLElement>(`[data-testid="${testId}"]`);
   if (existing !== null) return existing;
   const element = document.createElement('div');
   element.dataset['testid'] = testId;
   element.dataset['a11yAnnouncer'] = 'true';
-  element.setAttribute('role', role);
-  element.setAttribute('aria-live', role === 'alert' ? 'assertive' : 'polite');
+  element.setAttribute('aria-live', politeness);
   element.setAttribute('aria-atomic', 'true');
   element.className = 'visually-hidden';
   document.body.append(element);
@@ -33,8 +32,8 @@ export function installAppPlugin({ document, window }: AppPluginContext): AppPlu
   if (installedDocuments.has(document)) return () => {};
   installedDocuments.add(document);
 
-  const polite = createAnnouncer(document, 'status', 'a11y-polite-announcer');
-  const assertive = createAnnouncer(document, 'alert', 'a11y-assertive-announcer');
+  const polite = createAnnouncer(document, 'polite', 'a11y-polite-announcer');
+  const assertive = createAnnouncer(document, 'assertive', 'a11y-assertive-announcer');
   let lastPolite = '';
   let lastAssertive = '';
 
