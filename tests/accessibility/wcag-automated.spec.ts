@@ -216,7 +216,7 @@ test('status, busy and error announcements', async ({ page }) => {
 
   await openRoute(page, 'Price import');
   await expect(page.locator('#price-import-status')).toHaveAttribute('role', 'status');
-  await expect(page.locator('#price-import-status')).toHaveAttribute('aria-atomic', 'true');
+  await expect(page.locator('#price-import-status')).toHaveAttribute('aria-live', 'polite');
 });
 
 test('reflow, focus visibility, targets and reduced motion', async ({ page }) => {
