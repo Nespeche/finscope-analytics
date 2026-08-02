@@ -14,7 +14,7 @@
     "id": "B18",
     "kind": "BATCH",
     "branch": "agent/b18-restore-delete-quarantine-data-ui",
-    "stage": "candidate",
+    "stage": "closure",
     "activeBatchId": "B18",
     "nextBatchId": "B19",
     "completedTasksThroughOnClosure": "T080",
@@ -70,15 +70,15 @@
     ]
   },
   "candidate": {
-    "sha": null,
-    "runId": null,
-    "artifactId": null,
-    "artifactName": null,
-    "artifactDigest": null
+    "sha": "bc80cad07e51bc7e93d196e8854c78b873ca5e6b",
+    "runId": "30725871924",
+    "artifactId": 8826336502,
+    "artifactName": "finscope-github-validation-bc80cad07e51-PASS",
+    "artifactDigest": "sha256:5b4ca38a913ae9fdb1be0028d1706e55fbf298b1b13d4446254dfff48b03d320"
   },
   "closure": {
     "status": "PENDING",
-    "candidateSha": null,
+    "candidateSha": "bc80cad07e51bc7e93d196e8854c78b873ca5e6b",
     "commitSha": null,
     "runId": null,
     "artifactId": null,
