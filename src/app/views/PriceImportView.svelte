@@ -417,7 +417,7 @@
   }
 </script>
 
-<section aria-labelledby="price-import-heading" data-testid="price-import-view">
+<section aria-labelledby="price-import-heading" data-testid="price-import-view" aria-busy={busy}>
   <p class="eyebrow">Optional local price overlay</p>
   <h1 id="price-import-heading">Import historical prices</h1>
   <p>
@@ -442,14 +442,16 @@
     class:error-status={statusKind === 'error'}
     role={statusKind === 'error' ? 'alert' : 'status'}
     aria-live={statusKind === 'error' ? 'assertive' : 'polite'}
+    aria-atomic="true"
     tabindex="-1"
   >
     {statusMessage}
   </div>
 
   <form onsubmit={(event) => { event.preventDefault(); createPreview(); }}>
-    <fieldset>
+    <fieldset aria-describedby="price-import-method-help">
       <legend>Import method</legend>
+      <p id="price-import-method-help">Choose one source. Changing method clears field errors and invalidates any existing preview without changing persisted data.</p>
       <label>
         <input
           type="radio"
@@ -475,7 +477,7 @@
     <div class="configuration-grid">
       <div class="field">
         <label for="price-frequency">Frequency</label>
-        <select id="price-frequency" bind:value={frequency} onchange={() => invalidatePreview('Frequency changed. Recreate the preview.')}>
+        <select id="price-frequency" aria-describedby="price-frequency-help" bind:value={frequency} onchange={() => invalidatePreview('Frequency changed. Recreate the preview.')}>
           <option value="irregular">Irregular</option>
           <option value="daily">Daily</option>
           <option value="weekly">Weekly</option>
@@ -483,21 +485,24 @@
           <option value="quarterly">Quarterly</option>
           <option value="annual">Annual</option>
         </select>
+        <p id="price-frequency-help">Declare the observation frequency represented by the imported series.</p>
       </div>
       <div class="field">
         <label for="price-adjustment">Adjustment disclosure</label>
-        <select id="price-adjustment" bind:value={adjustmentStatus} onchange={() => invalidatePreview('Adjustment disclosure changed. Recreate the preview.')}>
+        <select id="price-adjustment" aria-describedby="price-adjustment-help" bind:value={adjustmentStatus} onchange={() => invalidatePreview('Adjustment disclosure changed. Recreate the preview.')}>
           <option value="unadjusted">Unadjusted</option>
           <option value="adjusted">Adjusted</option>
           <option value="unknown">Unknown</option>
         </select>
+        <p id="price-adjustment-help">State whether prices are adjusted, unadjusted, or unknown; this disclosure is retained in the overlay.</p>
       </div>
       <div class="field">
         <label for="price-duplicate-resolution">Duplicate-date resolution</label>
-        <select id="price-duplicate-resolution" bind:value={duplicateResolution} onchange={() => invalidatePreview('Duplicate-date policy changed. Recreate the preview.')}>
+        <select id="price-duplicate-resolution" aria-describedby="price-duplicate-help" bind:value={duplicateResolution} onchange={() => invalidatePreview('Duplicate-date policy changed. Recreate the preview.')}>
           <option value="reject">Reject duplicates</option>
           <option value="keep_last">Keep last value</option>
         </select>
+        <p id="price-duplicate-help">Reject duplicate dates or deterministically keep the last value before preview.</p>
       </div>
     </div>
 
@@ -515,6 +520,7 @@
               autocomplete="off"
               bind:value={manualDate}
               aria-invalid={manualDateError === undefined ? undefined : 'true'}
+              aria-errormessage={manualDateError === undefined ? undefined : 'manual-price-date-error'}
               aria-describedby={manualDateError === undefined ? 'manual-price-date-description' : 'manual-price-date-description manual-price-date-error'}
             />
             <p id="manual-price-date-description">Use a real ISO calendar date.</p>
@@ -530,6 +536,7 @@
               autocomplete="off"
               bind:value={manualPrice}
               aria-invalid={manualPriceError === undefined ? undefined : 'true'}
+              aria-errormessage={manualPriceError === undefined ? undefined : 'manual-price-value-error'}
               aria-describedby={manualPriceError === undefined ? 'manual-price-value-description' : 'manual-price-value-description manual-price-value-error'}
             />
             <p id="manual-price-value-description">Enter a positive canonical decimal, for example 175.25.</p>
@@ -563,10 +570,11 @@
             type="file"
             accept=".csv,text/csv"
             aria-invalid={csvError === undefined ? undefined : 'true'}
+            aria-errormessage={csvError === undefined ? undefined : 'historical-price-csv-error'}
             aria-describedby={csvError === undefined ? 'historical-price-csv-description' : 'historical-price-csv-description historical-price-csv-error'}
             onchange={(event) => { void handleCsvFile(event); }}
           />
-          <p id="historical-price-csv-description">UTF-8 CSV with exactly the required date and close columns.</p>
+          <p id="historical-price-csv-description">Choose a UTF-8 CSV with a header and exactly the required date and close columns. The file is parsed locally; no data is persisted until preview and confirmation succeed.</p>
           {#if csvError !== undefined}<p id="historical-price-csv-error" class="field-error" role="alert">{csvError}</p>{/if}
           {#if selectedFileName.length > 0}<p>Selected file: <strong>{selectedFileName}</strong></p>{/if}
         </div>
@@ -605,11 +613,13 @@
     <button
       type="button"
       class="destructive"
-      aria-disabled={activePointer === undefined ? 'true' : undefined}
+      disabled={activePointer === undefined || busy}
+      aria-describedby="delete-price-overlay-help"
       onclick={requestDelete}
     >
       Delete price overlay
     </button>
+    <p id="delete-price-overlay-help">Deletes only the active historical price overlay and its price analysis after confirmation. Fundamental artifacts and pointers remain unchanged.</p>
   </section>
 
   <section class="isolation" aria-labelledby="price-isolation-heading">
@@ -782,6 +792,7 @@
     border-width: 3px;
   }
 
+  button:disabled,
   button[aria-disabled='true'] {
     opacity: 0.65;
   }
