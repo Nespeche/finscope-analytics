@@ -110,7 +110,7 @@ test('data management declares destructive consequences, CIK errors and busy sta
   await expect(page.getByRole('heading', { name: 'Data management' })).toBeVisible();
   const cik = page.locator('#price-delete-cik');
   await expect(cik).toBeVisible();
-  await expect(page.locator('label[for="price-delete-cik"]')).toHaveText('Issuer CIK for price deletion');
+  await expect(page.locator('label[for="price-delete-cik"]')).toHaveText('Issuer CIK');
   await cik.fill('123');
   await page.getByLabel(/Allow this view to open and change IndexedDB/u).check();
   await page.getByRole('button', { name: 'Delete price history' }).click();
@@ -122,7 +122,7 @@ test('data management declares destructive consequences, CIK errors and busy sta
   await expect(page.getByRole('region', { name: 'Data management' })).toHaveAttribute('aria-busy', 'false');
 });
 
-test('fact lineage, charts and recovery actions expose equivalent text and reachable names', async ({ page }) => {
+test('fact lineage, optional-price states and recovery actions expose equivalent text and reachable names', async ({ page }) => {
   await page.goto('/');
   await activateRoute(page, 'Facts');
   await expect(page.locator('[data-fact-state="normalized"]')).toContainText('Raw SEC fact');
@@ -130,9 +130,10 @@ test('fact lineage, charts and recovery actions expose equivalent text and reach
   await expect(page.locator('[data-fact-state="unavailable"]')).toContainText('Unavailable');
 
   await activateRoute(page, 'Price analysis');
-  const chart = page.getByRole('img', { name: 'Historical price line chart' });
-  await expect(chart).toHaveAttribute('aria-describedby', 'historical-price-chart-description');
-  await expect(page.getByRole('table', { name: 'Historical price observations' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Historical price analysis' })).toBeVisible();
+  await expect(page.getByTestId('fundamental-only-status')).toContainText('remains complete');
+  await expect(page.getByRole('heading', { name: 'No active price overlay' })).toBeVisible();
+  await expect(page.getByText('Price is an optional overlay and is never part of the fundamental bundle. No valuation is generated.', { exact: true })).toBeVisible();
 
   await activateRoute(page, 'Data management');
   await page.getByLabel(/Allow this view to open and change IndexedDB/u).check();
