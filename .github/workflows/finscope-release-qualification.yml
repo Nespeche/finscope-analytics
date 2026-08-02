@@ -43,13 +43,21 @@ jobs:
           set -euo pipefail
           handoff=implementation-control/GITHUB_HANDOFF.json
           kind=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.kind")
+          stage=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.stage")
           pending=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.pending")
           test "$kind" = RELEASE_REMEDIATION && enabled=true || enabled=false
           test "$pending" = true && publish=true || publish=false
+          if test "$publish" = true && test "$stage" != completed; then
+            closure_auth=true
+          else
+            closure_auth=false
+          fi
           echo "enabled=$enabled" >> "$GITHUB_OUTPUT"
           echo "publish=$publish" >> "$GITHUB_OUTPUT"
+          echo "closure_auth=$closure_auth" >> "$GITHUB_OUTPUT"
           test "$enabled" = true || echo "Release qualification is not applicable to operation kind: $kind"
           test "$publish" = true || echo "Qualification-only remediation: no completed Release publication is pending."
+          test "$closure_auth" = true || echo "Completed remediation: preserve the authenticated historical batch closure and qualify the exact current package."
       - name: Configure Node from package authority
         if: steps.mode.outputs.enabled == 'true'
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
@@ -111,7 +119,7 @@ jobs:
             bash -lc "$command"
           done < <(node -e "const h=require('./implementation-control/GITHUB_HANDOFF.json'); for (const item of h.operation.qualificationCommands.filter((entry)=>entry.required)) console.log(Buffer.from(item.command).toString('base64'))")
       - name: Authenticate closure artifact contents
-        if: steps.mode.outputs.enabled == 'true' && steps.mode.outputs.publish == 'true'
+        if: steps.mode.outputs.enabled == 'true' && steps.mode.outputs.closure_auth == 'true'
         id: closure
         env:
           GH_TOKEN: ${{ github.token }}
