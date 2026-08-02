@@ -2,63 +2,99 @@
   "schemaVersion": "1.2.0",
   "repository": "Nespeche/finscope-analytics",
   "baseline": {
-    "tag": "v0.21.22-B18-completed",
-    "commitSha": "0388f1417630f3284caab6076950739bff68d59d",
-    "zipName": "FS_v0.21.22_B18_completed.zip",
-    "sidecarName": "FS_v0.21.22_B18_completed.zip.sha256",
-    "zipSha256": "1588cb6c69559b41580f75f95979dbae84b480c99c917070f39ef165f6fe79bb",
+    "tag": "v0.21.23-B19-completed",
+    "commitSha": "50764173c7bd395625ddca91506670b4af97f348",
+    "zipName": "FS_v0.21.23_B19_completed.zip",
+    "sidecarName": "FS_v0.21.23_B19_completed.zip.sha256",
+    "zipSha256": "6d882c88dc29271d0ebfec416e3f8b25e608b7e5952cc2362901cf468d323916",
     "root": "FinScope_v0.21.4/",
     "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
   },
   "operation": {
-    "id": "B19",
-    "kind": "RELEASE_REMEDIATION",
-    "branch": "agent/b19-completed-release",
+    "id": "B20",
+    "kind": "BATCH",
+    "branch": "agent/b20-wcag-cross-cutting-closure",
     "stage": "candidate",
-    "activeBatchId": "B19",
-    "nextBatchId": "B20",
-    "completedTasksThroughOnClosure": "T085",
+    "activeBatchId": "B20",
+    "nextBatchId": "B21",
+    "completedTasksThroughOnClosure": "T088",
     "qualificationCommands": [
       {
-        "id": "package-completed-release",
-        "category": "package",
-        "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
         "required": true
       },
       {
-        "id": "verify-completed-package",
-        "category": "package-authentication",
-        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.23_B19_completed.zip .finscope-release/FS_v0.21.23_B19_completed.zip.sha256",
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-e2e",
+        "category": "e2e",
+        "command": "npm run test:e2e -- tests/e2e/accessibility/names-errors.spec.ts",
+        "required": true
+      },
+      {
+        "id": "test-accessibility",
+        "category": "accessibility",
+        "command": "npm run test:accessibility -- tests/accessibility/wcag-automated.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
         "required": true
       }
     ]
   },
   "candidate": {
-    "sha": "52e2f934beef1cf31fa662ea5cb0f2ab42f13ff4",
-    "runId": "30733785638",
-    "artifactId": 8828860313,
-    "artifactName": "finscope-github-validation-52e2f934beef-PASS",
-    "artifactDigest": "sha256:88e322205ed1d0b38cae1381203996ce70e92324ee4ab1216cfe958e4d44a100"
+    "sha": null,
+    "runId": null,
+    "artifactId": null,
+    "artifactName": null,
+    "artifactDigest": null
   },
   "closure": {
-    "status": "COMPLETED",
-    "candidateSha": "52e2f934beef1cf31fa662ea5cb0f2ab42f13ff4",
-    "commitSha": "cc2375b9c7fdddb23ab4f2b10d7c3c8b3240eff5",
-    "runId": "30751376156",
-    "artifactId": 8834548923,
-    "artifactName": "finscope-closure-cc2375b9c7fd-PASS",
-    "artifactDigest": "sha256:ab173d322c5d594d41e45203a37113b33fee3e539e96d54d5c34fc37adc44958"
+    "status": "PENDING",
+    "candidateSha": null,
+    "commitSha": null,
+    "runId": null,
+    "artifactId": null,
+    "artifactName": null,
+    "artifactDigest": null
   },
   "release": {
     "pending": true,
-    "tag": "v0.21.23-B19-completed",
-    "packageRevision": "v0.21.23_B19_completed",
-    "zipName": "FS_v0.21.23_B19_completed.zip",
-    "sidecarName": "FS_v0.21.23_B19_completed.zip.sha256",
-    "evidencePrefix": "FinScope_B19_release_evidence",
-    "promptName": "PROMPT_IMPLEMENTACION_B20.md",
-    "title": "FinScope B19 completed — context, recovery and accessibility foundation",
-    "notes": "B19 completed with authenticated candidate and closure evidence. This Release publishes the immutable completed ZIP and sidecar after package, upload/download and closure-artifact authentication. B20 remains pending as the next active and authorized batch; convergenceAuthorized=false."
+    "tag": "v0.21.24-B20-completed",
+    "packageRevision": "v0.21.24_B20_completed",
+    "zipName": "FS_v0.21.24_B20_completed.zip",
+    "sidecarName": "FS_v0.21.24_B20_completed.zip.sha256",
+    "evidencePrefix": "FinScope_B20_release_evidence",
+    "promptName": "PROMPT_IMPLEMENTACION_B21.md",
+    "title": "FinScope B20 completed — cross-cutting WCAG closure",
+    "notes": "B20 closes cross-cutting WCAG evidence without claiming manual conformance until exact-head manual validation. B21 remains pending and convergenceAuthorized=false."
   },
   "productState": {
     "activeBatchId": "B20",
