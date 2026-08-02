@@ -136,13 +136,20 @@ test('fact lineage, optional-price states and recovery actions expose equivalent
   await expect(page.getByText('Price is an optional overlay and is never part of the fundamental bundle. No valuation is generated.', { exact: true })).toBeVisible();
 
   await activateRoute(page, 'Data management');
-  await page.getByLabel(/Allow this view to open and change IndexedDB/u).check();
-  await page.getByRole('button', { name: 'Check local data integrity' }).click();
+  await page.evaluate(() => {
+    window.dispatchEvent(new CustomEvent('finscope:recovery-issue', {
+      detail: {
+        code: 'repository_corruption',
+        message: 'Corrupted records are quarantined and excluded from active data and exports.',
+      },
+    }));
+  });
   const recovery = page.getByRole('region', { name: 'Recovery options' });
   await expect(recovery).toBeVisible();
+  await expect(recovery).toContainText('Local repository corruption');
   const recoveryButtons = recovery.getByRole('button');
   await expect(recoveryButtons).toHaveCount(3);
   for (let index = 0; index < 3; index += 1) {
-    await expect(recoveryButtons.nth(index)).toHaveAccessibleName(/for /u);
+    await expect(recoveryButtons.nth(index)).toHaveAccessibleName(/for Local repository corruption/u);
   }
 });
