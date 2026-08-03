@@ -41,6 +41,17 @@
     analysisProfile: 'us-gaap-industrial-v1',
   });
 
+  const initialFundamentalContext: FundamentalDisplayContext = Object.freeze({
+    issuerName: defaultIssuer.legalName,
+    issuerCik: defaultIssuer.cik,
+    symbol: 'AAPL',
+    venueMic: 'XNAS',
+    currency: 'USD',
+    reportingPeriod: 'FY 2025',
+    analysisProfile: defaultIssuer.analysisProfile,
+    snapshotId: 'fundamental-snapshot-0000320193-fy2025',
+  });
+
   export function createFundamentalDisplayContext(
     issuer: IssuerIdentity,
   ): FundamentalDisplayContext {
@@ -55,14 +66,14 @@
       symbol: market.symbol,
       venueMic: market.venueMic,
       currency: market.currency,
-      reportingPeriod: 'FY 2025',
+      reportingPeriod: 'Not selected',
       analysisProfile: issuer.analysisProfile,
-      snapshotId: `fundamental-snapshot-${issuer.cik}-fy2025`,
+      snapshotId: 'No local snapshot',
     });
   }
 
   export const activeFundamentalContext = writable<FundamentalDisplayContext>(
-    createFundamentalDisplayContext(defaultIssuer),
+    initialFundamentalContext,
   );
 
   export function setActiveIssuerContext(issuer: IssuerIdentity): void {
@@ -185,8 +196,8 @@
         <div><dt>Legal name</dt><dd>{selectedIssuer.legalName}</dd></div>
         <div><dt>CIK</dt><dd>{selectedIssuer.cik}</dd></div>
         <div><dt>Profile</dt><dd>{selectedIssuer.analysisProfile}</dd></div>
-        <div><dt>Period</dt><dd>FY 2025</dd></div>
-        <div><dt>Snapshot</dt><dd>fundamental-snapshot-{selectedIssuer.cik}-fy2025</dd></div>
+        <div><dt>Period</dt><dd>Not selected</dd></div>
+        <div><dt>Snapshot</dt><dd>No local snapshot</dd></div>
       </dl>
     </aside>
   {/if}
