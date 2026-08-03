@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "remediationId": "b21-clean-completed-package-remediation",
+  "remediationMode": "MAINTENANCE_REMEDIATION",
+  "status": "COMPLETED",
+  "branch": "agent/b21-clean-completed-package-remediation",
+  "candidate": {
+    "sha": "7be25f475d3fc4ee3075ac4b56818554d3c92db4",
+    "runId": 30840461597,
+    "artifactId": 8866567897,
+    "artifactName": "finscope-github-validation-7be25f475d3f-PASS",
+    "artifactDigest": "sha256:df7d474b82e682ed0f40a4f3c44b7a065bff7a3d0d6f5bf2d9ab810020062b6d"
+  },
+  "closureRequestSha": "62252e6ac2ca48f74790b1947321c99be1155a2e",
+  "closureRunId": 30842289780,
+  "completedAt": "2026-08-03T18:40:18.155Z",
+  "productStateUnchanged": true,
+  "tasksUnchanged": true,
+  "batchesUnchanged": true,
+  "specifyByteIdentical": true,
+  "b21Status": "COMPLETED",
+  "b22Status": "PENDING",
+  "convergenceAuthorized": false
+}

@@ -671,3 +671,11 @@
 - local verification now fails closed on apply/control-plane outcomes and rechecks allowlists, candidate evidence and immutable product/control-plane scopes;
 - `Finalize-GitHubRemediationClosure.mjs` performs the only remediation push with an exact request-SHA lease and confirms the remote closure SHA;
 - final PASS evidence is emitted only after remote confirmation; B21 remains `COMPLETED`, B22 remains `PENDING`, and `convergenceAuthorized=false`.
+
+
+## 2026-08-03 — Authenticated remediation closure
+
+- remediation: `b21-clean-completed-package-remediation`;
+- candidate: `7be25f475d3fc4ee3075ac4b56818554d3c92db4`, run `30840461597`, artifact `8866567897`;
+- closure request: `62252e6ac2ca48f74790b1947321c99be1155a2e`, run `30842289780`;
+- B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.
