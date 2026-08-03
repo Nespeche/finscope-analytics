@@ -725,3 +725,11 @@
 - el backend ZIP y el proceso empaquetador quedan acotados a 120000 ms; la prueba dispone de 150000 ms para que toda terminación controlada preceda al cleanup;
 - no se agregan retries ni se eliminan aserciones; cualquier timeout falla cerrado con `ZIP_CREATE_FAILED:ZIP_BACKEND_TIMEOUT`;
 - producto, tareas, batches, `IMPLEMENTATION_STATE.json` y `.specify` permanecen sin cambios.
+
+
+## 2026-08-03 — Authenticated remediation closure
+
+- remediation: `b21-clean-completed-package-remediation`;
+- candidate: `41174f21268ae71e8301313a229e1faaab69fbe5`, run `30856160876`, artifact `8872559141`;
+- closure request: `48fbe9111be2a64a88ae35d228440ce851b36788`, run `30856525648`;
+- B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.

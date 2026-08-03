@@ -199,8 +199,8 @@
         "kind": "REMEDIATION_CLOSURE",
         "remediationId": "b21-clean-completed-package-remediation",
         "branch": "agent/b21-clean-completed-package-remediation",
-        "stage": "closure",
-        "status": "PENDING",
+        "stage": "completed",
+        "status": "COMPLETED",
         "candidate": {
           "sha": "41174f21268ae71e8301313a229e1faaab69fbe5",
           "runId": 30856160876,
@@ -209,7 +209,10 @@
           "artifactDigest": "sha256:8c9343a343335047d3407fd551fdba609773f8b4a27115a953e5e260e9868840"
         },
         "closure": {
-          "requestedAt": "2026-08-03T21:52:30.004Z"
+          "candidateSha": "41174f21268ae71e8301313a229e1faaab69fbe5",
+          "requestSha": "48fbe9111be2a64a88ae35d228440ce851b36788",
+          "runId": 30856525648,
+          "completedAt": "2026-08-03T21:54:09.839Z"
         },
         "requestAllowedPaths": [
           "implementation-control/GITHUB_HANDOFF.json",
