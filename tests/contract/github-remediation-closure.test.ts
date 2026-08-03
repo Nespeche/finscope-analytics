@@ -35,11 +35,35 @@ const candidate = {
   artifactName: 'finscope-github-validation-candidate-PASS', artifactDigest: `sha256:${'2'.repeat(64)}`,
 };
 
-function pendingInput() {
+function remediationInput() {
   const handoff = structuredClone(handoffDocument) as any;
   const remediation = handoff.remediations.find((entry: any) => entry.id === 'b21-clean-completed-package-remediation')!;
-  remediation.closurePolicy = { ...remediation.closurePolicy, stage: 'closure', status: 'PENDING', candidate: { ...candidate }, closure: { requestedAt: '2026-08-03T12:00:00.000Z' } };
   return { handoff, state: structuredClone(stateDocument), remediation };
+}
+
+function candidateInput() {
+  const value = remediationInput();
+  Object.assign(value.remediation.closurePolicy, { stage: 'candidate', status: 'NOT_REQUESTED', candidate: null, closure: null });
+  return value;
+}
+
+function pendingInput() {
+  const value = remediationInput();
+  Object.assign(value.remediation.closurePolicy, {
+    stage: 'closure', status: 'PENDING', candidate: { ...candidate }, closure: { requestedAt: '2026-08-03T12:00:00.000Z' },
+  });
+  return value;
+}
+
+function completedInput() {
+  const value = remediationInput();
+  Object.assign(value.remediation.closurePolicy, {
+    stage: 'completed', status: 'COMPLETED', candidate: { ...candidate },
+    closure: {
+      candidateSha: candidate.sha, requestSha: '3'.repeat(40), runId: 303, completedAt: '2026-08-03T13:00:00.000Z',
+    },
+  });
+  return value;
 }
 
 function runInfo(overrides = {}) {
@@ -147,7 +171,13 @@ describe('remediation closure routing and authentication', () => {
   });
 
   it('returns NOT_APPLICABLE during candidate stage', () => {
-    expect(resolveGitHubClosureContext({ branch, handoff: structuredClone(handoffDocument) })).toMatchObject({ closureType: 'NOT_APPLICABLE', policyStage: 'candidate', policyStatus: 'NOT_REQUESTED' });
+    const value = candidateInput();
+    expect(resolveGitHubClosureContext({ branch, handoff: value.handoff })).toMatchObject({ closureType: 'NOT_APPLICABLE', policyStage: 'candidate', policyStatus: 'NOT_REQUESTED' });
+  });
+
+  it('returns NOT_APPLICABLE during completed stage', () => {
+    const value = completedInput();
+    expect(resolveGitHubClosureContext({ branch, handoff: value.handoff })).toMatchObject({ closureType: 'NOT_APPLICABLE', policyStage: 'completed', policyStatus: 'COMPLETED' });
   });
 
   it('fails closed on the wrong branch for a pending remediation', () => {

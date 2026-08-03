@@ -679,3 +679,12 @@
 - candidate: `7be25f475d3fc4ee3075ac4b56818554d3c92db4`, run `30840461597`, artifact `8866567897`;
 - closure request: `62252e6ac2ca48f74790b1947321c99be1155a2e`, run `30842289780`;
 - B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.
+
+
+## 2026-08-03 — Post-closure lifecycle certification correction
+
+- authenticated closure `2c44c4a6c97dd37f638d21c16c4c15cec7fe61fe`, run `30842289780`, artifact `8867265160`, remains valid historical evidence;
+- that closure is superseded exclusively by this post-closure certification correction because exact-head candidate, closure, and completed lifecycle tests must use controlled fixtures;
+- no product, tasks, batches, gates, release, or `.specify` bytes changed;
+- the replacement candidate must pass a new authenticated closure before it can be promoted;
+- the prior human closure authorization was consumed and no new closure is requested or authorized by this correction.
