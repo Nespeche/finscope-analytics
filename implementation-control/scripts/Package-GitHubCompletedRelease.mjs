@@ -20,10 +20,11 @@ const execGit = promisify(execFile);
 function temporaryReason(path) {
   const lower = path.toLocaleLowerCase('en-US');
   const name = lower.split('/').at(-1) ?? lower;
+  const normativeReport = lower.startsWith('implementation-control/reports/') || /^specs\/[^/]+\/reports\//u.test(lower);
   if (/^github-context.*\.json$/u.test(name)) return 'GITHUB_CONTEXT_OUTPUT';
   if (['github_output', 'github_env'].includes(name)) return 'GITHUB_ACTIONS_COMMAND_FILE';
   if (/(?:~|\.tmp|\.temp|\.bak|\.swp)$/u.test(name)) return 'TEMPORARY_SUFFIX';
-  if (/\.(?:log|trace)$/u.test(name) || /(?:diagnostic|intermediate)/u.test(name)) return 'TRANSIENT_DIAGNOSTIC';
+  if (!normativeReport && (/\.(?:log|trace)$/u.test(name) || /(?:diagnostic|intermediate)/u.test(name))) return 'TRANSIENT_DIAGNOSTIC';
   if (/(^|\/)(?:node_modules|dist|coverage|playwright-report|test-results|\.wrangler|\.vite|\.cache|__pycache__)(\/|$)/u.test(lower)) return 'REGENERABLE_DIRECTORY';
   if (/(^|\/)\.finscope-/u.test(lower)) return 'UNAUTHORIZED_FINSCOPE_OUTPUT';
   if (/\.zip$/u.test(lower)) return 'NESTED_ZIP';
