@@ -25,7 +25,7 @@
     "id": "B21",
     "kind": "RELEASE_REMEDIATION",
     "branch": "agent/b21-completed-release",
-    "stage": "closure",
+    "stage": "candidate",
     "activeBatchId": "B21",
     "baselineRole": "CURRENT_COMPLETED_BASELINE",
     "nextBatchId": "B22",
