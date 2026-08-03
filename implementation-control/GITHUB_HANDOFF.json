@@ -24,7 +24,7 @@
   "operation": {
     "id": "B21",
     "kind": "RELEASE_REMEDIATION",
-    "branch": "agent/b21-completed-release",
+    "branch": "agent/b21-release-publication-fix",
     "stage": "candidate",
     "activeBatchId": "B21",
     "baselineRole": "CURRENT_COMPLETED_BASELINE",

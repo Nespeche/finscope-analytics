@@ -35,8 +35,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node implementation-control/scripts/Resolve-GitHubContext.mjs "$GITHUB_REF_NAME" > github-context.json
           handoff=implementation-control/GITHUB_HANDOFF.json
+          operation_branch=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.branch")
+          node implementation-control/scripts/Resolve-GitHubContext.mjs "$operation_branch" > github-context.json
           kind=$(node -p "JSON.parse(require('fs').readFileSync('github-context.json')).mode")
           stage=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.stage")
           pending=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.pending")
