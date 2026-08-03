@@ -127,7 +127,7 @@
         { "id": "routing-context-contract", "category": "routing", "command": "npm run test:contract -- tests/contract/github-transition-routing.test.ts", "required": true },
         { "id": "completed-package-contract", "category": "package-contract", "command": "npm run test:contract -- tests/contract/github-completed-package-remediation.test.ts", "required": true },
         { "id": "evidence-schema-contract", "category": "schema-contract", "command": "npm run test:contract -- tests/contract/github-evidence-schema.test.ts", "required": true },
-        { "id": "ajv-draft-2020-12-contract", "category": "schema-contract", "command": "npm run test:contract -- tests/contract/github-evidence-schema.test.ts -t \"runner-shaped evidence\"", "required": true },
+        { "id": "ajv-draft-2020-12-contract", "category": "schema-contract", "command": "npm run test:contract -- tests/contract/github-evidence-schema.test.ts", "required": true },
         { "id": "regression-vitest", "category": "regression", "command": "npm run test", "required": true },
         { "id": "build", "category": "build", "command": "npm run build", "required": true },
         { "id": "clean-package-dry-run", "category": "package", "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release", "required": true },
