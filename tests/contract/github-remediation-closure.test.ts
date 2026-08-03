@@ -13,6 +13,7 @@ import {
   assertExactAllowedPaths,
   buildCompletedRemediationPolicy,
   collectClosureChangedFiles,
+  resolveRemediationClosureReportPaths,
   resolveRemediationClosureRequest,
   validateRemediationArtifactMetadata,
   validateRemediationCandidateEvidence,
@@ -232,6 +233,48 @@ describe('remediation closure routing and authentication', () => {
   it('accepts an exact candidate evidence document', () => {
     const value = pendingInput();
     expect(validateRemediationCandidateEvidence({ evidence: candidateEvidence(value.remediation), remediation: value.remediation, candidate, handoff: value.handoff })).toBe(true);
+  });
+
+  it('derives the report pair from each active remediation closure policy', () => {
+    const clean = remediationInput().remediation.closurePolicy.allowedPaths;
+    expect(resolveRemediationClosureReportPaths(clean)).toEqual({
+      basePath: 'implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE',
+      jsonPath: 'implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE.json',
+      markdownPath: 'implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE.md',
+    });
+
+    const handoff = structuredClone(handoffDocument) as any;
+    const final = handoff.remediations.find((entry: any) => entry.id === 'b21-final-release-promotion-remediation')!;
+    expect(resolveRemediationClosureReportPaths(final.closurePolicy.allowedPaths)).toEqual({
+      basePath: 'implementation-control/reports/B21_FINAL_RELEASE_PROMOTION_REMEDIATION_CLOSURE',
+      jsonPath: 'implementation-control/reports/B21_FINAL_RELEASE_PROMOTION_REMEDIATION_CLOSURE.json',
+      markdownPath: 'implementation-control/reports/B21_FINAL_RELEASE_PROMOTION_REMEDIATION_CLOSURE.md',
+    });
+  });
+
+  it('rejects incomplete, crossed or ambiguous remediation report declarations', () => {
+    const common = ['implementation-control/GITHUB_HANDOFF.json', 'implementation-control/CHANGE_LEDGER.md'];
+    expect(() => resolveRemediationClosureReportPaths([
+      ...common,
+      'implementation-control/reports/B21_FINAL_RELEASE_PROMOTION_REMEDIATION_CLOSURE.json',
+    ])).toThrow(/REMEDIATION_CLOSURE_REPORT_PATHS_INVALID/u);
+    expect(() => resolveRemediationClosureReportPaths([
+      ...common,
+      'implementation-control/reports/B21_FINAL_RELEASE_PROMOTION_REMEDIATION_CLOSURE.json',
+      'implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE.md',
+    ])).toThrow(/REMEDIATION_CLOSURE_REPORT_PATHS_INVALID/u);
+    expect(() => resolveRemediationClosureReportPaths([
+      ...common,
+      'implementation-control/reports/B21_FINAL_RELEASE_PROMOTION_REMEDIATION_CLOSURE.json',
+      'implementation-control/reports/B21_FINAL_RELEASE_PROMOTION_REMEDIATION_CLOSURE.md',
+      'implementation-control/reports/B21_EXTRA_REMEDIATION_CLOSURE.json',
+    ])).toThrow(/REMEDIATION_CLOSURE_REPORT_PATHS_INVALID/u);
+  });
+
+  it('does not hardcode one historical remediation report destination', async () => {
+    const source = await readFile('implementation-control/scripts/Apply-GitHubRemediationClosure.mjs', 'utf8');
+    expect(source).toContain('resolveRemediationClosureReportPaths(route.allowedPaths)');
+    expect(source).not.toContain("const reportBase = join(root, 'implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE')");
   });
 
   it('contains an explicit candidate ancestry check', async () => {
