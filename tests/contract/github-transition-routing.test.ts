@@ -139,10 +139,13 @@ describe('GitHub transition context routing', () => {
       batchId: 'B22',
       baselineTag: 'v0.21.25-B20-completed',
     });
+    expect(result.commands.map((entry: { id: string }) => entry.id)).toContain('closure-contract');
     expect(result.commands.map((entry: { id: string }) => entry.id)).toContain('verify-clean-package');
     expect(validateRemediationScope([
       'implementation-control/GITHUB_HANDOFF.json',
+      'implementation-control/scripts/Apply-GitHubRemediationClosure.mjs',
       'implementation-control/scripts/Package-GitHubCompletedRelease.mjs',
+      'tests/contract/github-remediation-closure.test.ts',
       'tests/contract/github-transition-routing.test.ts',
     ], result.allowedPaths)).toMatchObject({ valid: true });
   });
