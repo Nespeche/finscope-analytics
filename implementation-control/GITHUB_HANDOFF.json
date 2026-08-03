@@ -160,7 +160,7 @@
    "mode": "MAINTENANCE_REMEDIATION",
    "branch": "agent/b21-final-release-promotion-remediation",
    "baselineRole": "CURRENT_COMPLETED_BASELINE",
-   "allowedPaths": ["DOCUMENTATION_INDEX.md","PROMPT_IMPLEMENTACION_B22.md","START_HERE_CHATGPT.md","V0.21_PHASE_STATUS.md","implementation-control/CHANGE_LEDGER.md","implementation-control/GITHUB_HANDOFF.json","implementation-control/IMPLEMENTATION_STATE.json","implementation-control/scripts/Package-GitHubCompletedRelease.mjs","implementation-control/scripts/Resolve-GitHubContext.mjs","implementation-control/scripts/Run-GitHubReleaseTransfer.mjs","tests/contract/github-completed-package-remediation.test.ts","tests/contract/github-transition-routing.test.ts"],
+   "allowedPaths": ["DOCUMENTATION_INDEX.md","PROMPT_IMPLEMENTACION_B22.md","START_HERE_CHATGPT.md","V0.21_PHASE_STATUS.md","implementation-control/CHANGE_LEDGER.md","implementation-control/GITHUB_HANDOFF.json","implementation-control/IMPLEMENTATION_STATE.json","implementation-control/scripts/Apply-GitHubRemediationClosure.mjs","implementation-control/scripts/Package-GitHubCompletedRelease.mjs","implementation-control/scripts/Resolve-GitHubContext.mjs","implementation-control/scripts/Run-GitHubReleaseTransfer.mjs","tests/contract/github-completed-package-remediation.test.ts","tests/contract/github-remediation-closure.test.ts","tests/contract/github-transition-routing.test.ts"],
    "closurePolicy": {
     "kind": "REMEDIATION_CLOSURE",
     "remediationId": "b21-final-release-promotion-remediation",
@@ -177,6 +177,7 @@
     {"id":"typecheck","category":"static","command":"npm run typecheck","required":true},
     {"id":"control-plane","category":"control-plane","command":"node implementation-control/scripts/Validate-ControlPlaneState.mjs .","required":true},
     {"id":"routing-contract","category":"routing","command":"npm run test:contract -- tests/contract/github-transition-routing.test.ts","required":true},
+    {"id":"closure-contract","category":"closure-contract","command":"npm run test:contract -- tests/contract/github-remediation-closure.test.ts","required":true},
     {"id":"completed-package-contract","category":"package-contract","command":"npm run test:contract -- tests/contract/github-completed-package-remediation.test.ts","required":true},
     {"id":"regression-vitest","category":"regression","command":"npm run test","required":true},
     {"id":"build","category":"build","command":"npm run build","required":true},
