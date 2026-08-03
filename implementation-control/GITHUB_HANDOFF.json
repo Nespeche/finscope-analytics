@@ -14,7 +14,7 @@
     "id": "B20",
     "kind": "BATCH",
     "branch": "agent/b20-wcag-cross-cutting-closure-v2",
-    "stage": "candidate",
+    "stage": "closure",
     "activeBatchId": "B20",
     "nextBatchId": "B21",
     "completedTasksThroughOnClosure": "T088",
@@ -70,15 +70,15 @@
     ]
   },
   "candidate": {
-    "sha": null,
-    "runId": null,
-    "artifactId": null,
-    "artifactName": null,
-    "artifactDigest": null
+    "sha": "69ed435b2f05ae2d6498846416d2e3750807ef36",
+    "runId": 30776552229,
+    "artifactId": 8842295323,
+    "artifactName": "finscope-github-validation-69ed435b2f05-PASS",
+    "artifactDigest": "sha256:fb8cbcfaa7ee07ec1c9295bba32d50dca55a88ec0834e1ad8a98af2c0033df91"
   },
   "closure": {
     "status": "PENDING",
-    "candidateSha": null,
+    "candidateSha": "69ed435b2f05ae2d6498846416d2e3750807ef36",
     "commitSha": null,
     "runId": null,
     "artifactId": null,
@@ -94,7 +94,7 @@
     "evidencePrefix": "FinScope_B20_release_evidence",
     "promptName": "PROMPT_IMPLEMENTACION_B21.md",
     "title": "FinScope B20 completed — cross-cutting WCAG closure",
-    "notes": "B20 establishes deterministic and auditable WCAG 2.2 A/AA evidence. Applicable manual criteria remain pending exact-head human validation; B21 remains pending and convergenceAuthorized=false."
+    "notes": "B20 establishes deterministic and auditable WCAG 2.2 A/AA evidence. Exact-head automated, Codex-assisted and operator-declared human confirmations passed with zero FAIL and zero BLOCKED; B21 remains pending and convergenceAuthorized=false."
   },
   "productState": {
     "activeBatchId": "B20",
