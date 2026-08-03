@@ -153,9 +153,9 @@
         { "id": "typecheck", "category": "static", "command": "npm run typecheck", "required": true },
         { "id": "control-plane-initial", "category": "control-plane", "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .", "required": true },
         { "id": "routing-context-contract", "category": "routing", "command": "npm run test:contract -- tests/contract/github-transition-routing.test.ts", "required": true },
-        { "id": "batch-closure-regression", "category": "closure-contract", "command": "npm run test:contract -- tests/contract/github-remediation-closure.test.ts -t \"batch closure\"", "required": true },
+        { "id": "batch-closure-regression", "category": "closure-contract", "command": "npm run test:contract -- tests/contract/github-remediation-closure.test.ts", "required": true },
         { "id": "remediation-closure-contract", "category": "closure-contract", "command": "npm run test:contract -- tests/contract/github-remediation-closure.test.ts", "required": true },
-        { "id": "remediation-evidence-schema-contract", "category": "schema-contract", "command": "npm run test:contract -- tests/contract/github-remediation-closure.test.ts -t \"evidence schema\"", "required": true },
+        { "id": "remediation-evidence-schema-contract", "category": "schema-contract", "command": "npm run test:contract -- tests/contract/github-remediation-closure.test.ts", "required": true },
         { "id": "completed-package-contract", "category": "package-contract", "command": "npm run test:contract -- tests/contract/github-completed-package-remediation.test.ts", "required": true },
         { "id": "evidence-schema-contract", "category": "schema-contract", "command": "npm run test:contract -- tests/contract/github-evidence-schema.test.ts", "required": true },
         { "id": "ajv-draft-2020-12-contract", "category": "schema-contract", "command": "npm run test:contract -- tests/contract/github-evidence-schema.test.ts", "required": true },
@@ -171,6 +171,17 @@
     }
   ],
   "rejectedEvidence": [
+    {
+      "classification": "REJECTED_DISCOVERY_INVALID",
+      "runId": 30831435223,
+      "artifactId": 8863072687,
+      "artifactName": "finscope-github-validation-24a42b66c5a3-_FAILED",
+      "artifactDigest": "sha256:9478c743b366cf0ce93640e31ce72d1c16108cd5e5f40f10b5df5707ff82002d",
+      "commitSha": "24a42b66c5a304edeae9bfac41a608d86e198bd9",
+      "reason": "COMMAND_FAILED:batch-closure-regression:INVALID_DISCOVERY",
+      "secondaryReason": "FILTERED_VITEST_RUN_REPORTED_31_SKIPPED",
+      "disposition": "REJECTED_NOT_PROMOTABLE"
+    },
     {
       "classification": "REJECTED_EVIDENCE_SCHEMA_INVALID",
       "runId": 30819570907,

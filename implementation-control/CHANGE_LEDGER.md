@@ -561,6 +561,13 @@
 - schema Draft 2020-12, validación dependency-free/Ajv, contratos negativos y routing del workflow preservan B21 `COMPLETED`, B22 `PENDING`, producto y `.specify` sin cambios;
 - no se solicita ni aplica el cierre en este candidato.
 
+## 2026-08-03 — Evidencia candidata 24a42b6 rechazada
+
+- run `30831435223`, artifact `_FAILED` `8863072687`, digest `sha256:9478c743b366cf0ce93640e31ce72d1c16108cd5e5f40f10b5df5707ff82002d`;
+- `primaryFailure=COMMAND_FAILED` en `batch-closure-regression`: Vitest devolvió exit 0, pero el filtro declaró 31 tests `skipped` y el discovery fail-closed lo rechazó;
+- todos los comandos dependientes quedaron `NOT_RUN`;
+- se eliminan los filtros de los comandos literales de regresión batch y schema para ejecutar el contrato completo sin tests omitidos; se requiere commit y workflow nuevos.
+
 ## 2026-08-03 — Remediación técnica del paquete B21 contaminado
 
 - operación tipada `MAINTENANCE_REMEDIATION` en `agent/b21-clean-completed-package-remediation`;
