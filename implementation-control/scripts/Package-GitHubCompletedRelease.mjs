@@ -44,7 +44,7 @@ async function rejectTemporaryFiles(directory, phase) {
 const headResult = await run('git rev-parse HEAD', { cwd: root });
 const releaseCommitSha = headResult.exitCode === 0 ? headResult.stdout.toString('utf8').trim().toLowerCase() : '';
 if (!/^[0-9a-f]{40}$/u.test(releaseCommitSha)) throw new Error('RELEASE_CHECKED_OUT_SHA_INVALID');
-if (process.env.GITHUB_SHA && process.env.GITHUB_SHA.toLowerCase() !== releaseCommitSha) throw new Error('RELEASE_CHECKOUT_COMMIT_MISMATCH');
+if (process.env.FINSCOPE_EXPECTED_COMMIT_SHA && process.env.FINSCOPE_EXPECTED_COMMIT_SHA.toLowerCase() !== releaseCommitSha) throw new Error('RELEASE_CHECKOUT_COMMIT_MISMATCH');
 for (const command of ['git status --porcelain=v1 --untracked-files=all', 'git diff --exit-code', 'git diff --cached --exit-code']) {
   const inspection = await run(command, { cwd: root });
   if (inspection.exitCode !== 0 || inspection.stdout.length > 0) throw new Error(`RELEASE_WORKTREE_NOT_CLEAN:${command}:${inspection.stdout.toString('utf8')}`);
