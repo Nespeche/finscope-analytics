@@ -2,6 +2,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import { canonicalTreeHash, evidenceFiles, now, parseDiscovery, readJson, root, run, setOutput, shaBytes, shaFile, validateJsonFile, writeJson, writeManifest } from './GitHub-Common.mjs';
 import { loadAndResolveGitHubContext, validateRemediationScope } from './Resolve-GitHubContext.mjs';
+import { validateEvidenceWithAjv } from './Validate-GitHubEvidenceSchema.mjs';
 
 const evidenceDir=join(root,'.finscope-evidence','validation'); await mkdir(join(evidenceDir,'logs'),{recursive:true});
 const startedAt=now(); const handoff=await readJson(join(root,'implementation-control/GITHUB_HANDOFF.json')); const state=await readJson(join(root,'implementation-control/IMPLEMENTATION_STATE.json'));
@@ -56,11 +57,27 @@ for(const definition of selectedCommands){
   executedCommands.push({...definition,status,cwd:root,startedAt:result.startedAt,finishedAt:result.finishedAt,durationMs:result.durationMs,exitCode:result.exitCode,stdoutPath,stderrPath,stdoutSha256:shaBytes(result.stdout),stderrSha256:shaBytes(result.stderr),discovery,reason:status==='PASS'?null:(result.exitCode!==0?`EXIT_${result.exitCode}`:'INVALID_DISCOVERY')});
   if(status==='FAIL') fail('COMMAND_FAILED',`${definition.id}:${result.exitCode}:${JSON.stringify(discovery)}`);
 }
-const evidencePath=join(evidenceDir,'github-validation-evidence.json');
-selfTests.push({id:'EVIDENCE_SCHEMA_REREAD',expected:'PASS',observed:'PENDING',result:'PASS'});
+const evidencePath=join(evidenceDir,'github-validation-evidence.json'); const evidenceSchemaPath=join(root,'implementation-control/schemas/github-validation-evidence.schema.json');
+const commandResultSchemaTest={type:'array',items:{$ref:'#/$defs/commandResult'},$defs:(await readJson(evidenceSchemaPath)).$defs};
+const exercisedResult=executedCommands[0]??{id:'probe',category:'contract',command:'true',required:true,status:'PASS',cwd:root,startedAt:now(),finishedAt:now(),durationMs:0,exitCode:0,stdoutPath:'probe.stdout',stderrPath:'probe.stderr',stdoutSha256:'0'.repeat(64),stderrSha256:'0'.repeat(64),discovery:{required:false,discovered:0,passed:0,skipped:0,pending:0,valid:true},reason:null};
+let commandRefExercised=false;
+try { const {validateSchemaSubset}=await import('./GitHub-Common.mjs'); const valid=validateSchemaSubset(commandResultSchemaTest,[exercisedResult]); const invalid=validateSchemaSubset(commandResultSchemaTest,[{...exercisedResult,unexpected:true}]); commandRefExercised=valid.length===0&&invalid.some((item)=>item.includes('$/0:additional:unexpected')); } catch {}
+record('COMMAND_RESULT_REF_EXERCISED','PASS',commandRefExercised?'PASS':'FAIL',commandRefExercised?'PASS':'FAIL');
+if(!commandRefExercised) fail('COMMAND_RESULT_REF_NOT_EXERCISED','The generated command result did not pass the local $ref and tamper checks.');
+record('EVIDENCE_SCHEMA_DEPENDENCY_FREE','PASS','PENDING','FAIL');
+record('EVIDENCE_SCHEMA_AJV_2020_12','PASS','PENDING','FAIL');
+record('EVIDENCE_FINAL_BYTES_REVALIDATED','PASS','PENDING','FAIL');
 const evidence={schemaVersion:'1.0.0',result:primaryFailure?'FAIL':'PASS',mode,repository:process.env.GITHUB_REPOSITORY||handoff.repository,branch,commitSha,runId:process.env.GITHUB_RUN_ID??null,activeBatchId:batchId,batchAuthoritySource:context?.batchAuthoritySource??null,baselineRole:context?.baselineRole??null,operationMatched:context?.operationMatched??false,remediationScope,browserRequired:releaseRemediation||mode==='BATCH_CLOSURE'||context?.remediationMatched?false:Boolean(batch.localValidation?.browserRequired),startedAt,finishedAt:now(),controlPlane,releaseBaseline:{result:releaseBaseline.result,tag:releaseBaseline.tag,zipName:releaseBaseline.zipName,sidecarName:releaseBaseline.sidecarName,zipSha256:releaseBaseline.zipSha256,assetIds:releaseBaseline.assetIds??[],root:releaseBaseline.root,failure:releaseBaseline.failure??null},specify,derivedBatchCommands:declaredCommands,executedCommands,selfTests,primaryFailure,files:[]};
 await writeJson(evidencePath,evidence); evidence.files=(await evidenceFiles(evidenceDir)).filter((item)=>item.path!=='github-validation-evidence.json'); await writeJson(evidencePath,evidence);
-try{ await validateJsonFile(join(root,'implementation-control/schemas/github-validation-evidence.schema.json'),evidencePath); selfTests.find((item)=>item.id==='EVIDENCE_SCHEMA_REREAD').observed='PASS'; evidence.selfTests=selfTests; await writeJson(evidencePath,evidence); await validateJsonFile(join(root,'implementation-control/schemas/github-validation-evidence.schema.json'),evidencePath); }catch(error){ const schemaTest=selfTests.find((item)=>item.id==='EVIDENCE_SCHEMA_REREAD'); schemaTest.observed='FAIL'; schemaTest.result='FAIL'; fail('EVIDENCE_SCHEMA_INVALID',String(error)); evidence.result='FAIL'; evidence.primaryFailure=primaryFailure; evidence.selfTests=selfTests; await writeJson(evidencePath,evidence); }
+let dependencyFreePassed=false; let ajvPassed=false;
+try{ await validateJsonFile(evidenceSchemaPath,evidencePath); dependencyFreePassed=true; }catch{}
+try{ await validateEvidenceWithAjv(evidenceSchemaPath,evidencePath); ajvPassed=true; }catch{}
+for(const [id,passed] of [['EVIDENCE_SCHEMA_DEPENDENCY_FREE',dependencyFreePassed],['EVIDENCE_SCHEMA_AJV_2020_12',ajvPassed]]) { const item=selfTests.find((entry)=>entry.id===id); item.observed=passed?'PASS':'FAIL'; item.result=passed?'PASS':'FAIL'; }
+const preliminaryPassed=dependencyFreePassed&&ajvPassed; const byteTest=selfTests.find((entry)=>entry.id==='EVIDENCE_FINAL_BYTES_REVALIDATED'); byteTest.observed=preliminaryPassed?'PASS':'FAIL'; byteTest.result=preliminaryPassed?'PASS':'FAIL';
+if(!preliminaryPassed) fail('EVIDENCE_SCHEMA_INVALID',`dependencyFree=${dependencyFreePassed};ajv2020=${ajvPassed}`);
+evidence.result=primaryFailure?'FAIL':'PASS'; evidence.primaryFailure=primaryFailure; evidence.selfTests=selfTests; await writeJson(evidencePath,evidence);
+try{ await validateJsonFile(evidenceSchemaPath,evidencePath); await validateEvidenceWithAjv(evidenceSchemaPath,evidencePath); }
+catch(error){ fail('EVIDENCE_FINAL_BYTES_INVALID',String(error)); evidence.result='FAIL'; evidence.primaryFailure=primaryFailure; byteTest.observed='FAIL'; byteTest.result='FAIL'; evidence.selfTests=selfTests; await writeJson(evidencePath,evidence); await validateJsonFile(evidenceSchemaPath,evidencePath); await validateEvidenceWithAjv(evidenceSchemaPath,evidencePath); }
 await writeManifest(evidenceDir); const artifactName=`finscope-github-validation-${commitSha.slice(0,12)}-${evidence.result==='PASS'?'PASS':'_FAILED'}`;
 await setOutput('artifact_name',artifactName); await setOutput('evidence_dir',relative(root,evidenceDir).replaceAll('\\','/')); await setOutput('result',evidence.result);
 console.log(JSON.stringify({artifactName,result:evidence.result,primaryFailure},null,2));

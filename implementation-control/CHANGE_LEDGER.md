@@ -1,5 +1,12 @@
 # Change Ledger — FinScope Analytics
 
+## 2026-08-03 — B21 evidence schema remediation r2
+
+- Se conserva como `REJECTED_EVIDENCE_SCHEMA_INVALID` el artifact `8858252413` del commit `e6d71f7785ac7efab4375366526f2f206969dea9`; no es promovible.
+- `commandResult.required` queda declarado y obligatorio sin relajar `additionalProperties=false`.
+- El validador dependency-free resuelve JSON Pointer local fail-closed, detecta referencias ausentes y ciclos, y se contrasta con Ajv Draft 2020-12 sobre los bytes finales antes del manifest.
+- B21 y T001–T095 permanecen `COMPLETED`; B22 permanece `PENDING` y no iniciado; `.specify` no cambia.
+
 ## v0.21.1 — Preparación de orquestación de implementación
 
 - Baseline fuente: `FinScope_Analytics_SpecDev_ChatGPT_v0.21_post_analysis_remediated.zip`.

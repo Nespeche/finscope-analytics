@@ -81,20 +81,50 @@ export async function verifyManifest(directory, filename='EVIDENCE_MANIFEST.sha2
   return lines.length;
 }
 
-export function validateSchemaSubset(schema, value, path='$') {
+function decodeJsonPointerToken(token) {
+  if (/(?:~[^01]|~$)/u.test(token)) throw new Error(`SCHEMA_REF_INVALID_ESCAPE:${token}`);
+  return token.replaceAll('~1', '/').replaceAll('~0', '~');
+}
+
+function resolveLocalSchemaRef(rootSchema, reference) {
+  if (typeof reference !== 'string' || !reference.startsWith('#/')) throw new Error(`SCHEMA_REF_UNSUPPORTED:${String(reference)}`);
+  let current=rootSchema;
+  for (const rawToken of reference.slice(2).split('/')) {
+    const token=decodeJsonPointerToken(rawToken);
+    if (!current || typeof current!=='object' || !Object.hasOwn(current,token)) throw new Error(`SCHEMA_REF_NOT_FOUND:${reference}`);
+    current=current[token];
+  }
+  if (!current || typeof current!=='object' || Array.isArray(current)) throw new Error(`SCHEMA_REF_INVALID_TARGET:${reference}`);
+  return current;
+}
+
+export function validateSchemaSubset(schema, value, path='$', rootSchema=schema, refStack=[]) {
+  if (schema && Object.hasOwn(schema,'$ref')) {
+    const reference=schema.$ref;
+    if (refStack.includes(reference)) throw new Error(`SCHEMA_REF_CYCLE:${[...refStack,reference].join('->')}`);
+    const referenced=resolveLocalSchemaRef(rootSchema,reference);
+    const referencedErrors=validateSchemaSubset(referenced,value,path,rootSchema,[...refStack,reference]);
+    const siblingSchema=Object.fromEntries(Object.entries(schema).filter(([key])=>key!=='$ref'));
+    return Object.keys(siblingSchema).length
+      ? [...referencedErrors,...validateSchemaSubset(siblingSchema,value,path,rootSchema,refStack)]
+      : referencedErrors;
+  }
   const errors=[]; const type=Array.isArray(value)?'array':value===null?'null':Number.isInteger(value)?'integer':typeof value;
   const types=schema.type?(Array.isArray(schema.type)?schema.type:[schema.type]):[];
   if(types.length && !types.includes(type) && !(type==='integer'&&types.includes('number'))) return [`${path}:type=${type}`];
   if(Object.hasOwn(schema,'const') && JSON.stringify(value)!==JSON.stringify(schema.const)) errors.push(`${path}:const`);
   if(schema.enum && !schema.enum.some((item)=>JSON.stringify(item)===JSON.stringify(value))) errors.push(`${path}:enum`);
   if(typeof value==='string'){ if(schema.minLength&&value.length<schema.minLength) errors.push(`${path}:minLength`); if(schema.pattern&&!new RegExp(schema.pattern,'u').test(value)) errors.push(`${path}:pattern`); }
-  if(Array.isArray(value)){ if(schema.minItems&&value.length<schema.minItems) errors.push(`${path}:minItems`); if(schema.items) value.forEach((item,index)=>errors.push(...validateSchemaSubset(schema.items,item,`${path}/${index}`))); }
-  if(value&&typeof value==='object'&&!Array.isArray(value)){ const props=schema.properties??{}; for(const required of schema.required??[]) if(!Object.hasOwn(value,required)) errors.push(`${path}:missing:${required}`); for(const [key,child] of Object.entries(props)) if(Object.hasOwn(value,key)) errors.push(...validateSchemaSubset(child,value[key],`${path}/${key}`)); if(schema.additionalProperties===false) for(const key of Object.keys(value)) if(!Object.hasOwn(props,key)) errors.push(`${path}:additional:${key}`); }
+  if(Array.isArray(value)){ if(schema.minItems&&value.length<schema.minItems) errors.push(`${path}:minItems`); if(schema.items) value.forEach((item,index)=>errors.push(...validateSchemaSubset(schema.items,item,`${path}/${index}`,rootSchema,refStack))); }
+  if(value&&typeof value==='object'&&!Array.isArray(value)){ const props=schema.properties??{}; for(const required of schema.required??[]) if(!Object.hasOwn(value,required)) errors.push(`${path}:missing:${required}`); for(const [key,child] of Object.entries(props)) if(Object.hasOwn(value,key)) errors.push(...validateSchemaSubset(child,value[key],`${path}/${key}`,rootSchema,refStack)); if(schema.additionalProperties===false) for(const key of Object.keys(value)) if(!Object.hasOwn(props,key)) errors.push(`${path}:additional:${key}`); }
   return errors;
 }
 
 export async function validateJsonFile(schemaPath, documentPath) {
-  const [schema,document]=await Promise.all([readJson(schemaPath),readJson(documentPath)]); const errors=validateSchemaSubset(schema,document); if(errors.length) throw new Error(`SCHEMA_INVALID:${errors.slice(0,20).join('|')}`); return true;
+  const [schema,document]=await Promise.all([readJson(schemaPath),readJson(documentPath)]); let errors;
+  try { errors=validateSchemaSubset(schema,document,'$',schema,[]); }
+  catch(error) { throw new Error(`SCHEMA_INVALID:${String(error.message??error)}`); }
+  if(errors.length) throw new Error(`SCHEMA_INVALID:${errors.slice(0,20).join('|')}`); return true;
 }
 
 export async function evidenceFiles(directory) {

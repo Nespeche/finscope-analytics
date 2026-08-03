@@ -16,6 +16,8 @@ Chromium se instala únicamente cuando la autoridad resuelta declara `browserReq
 
 Siempre se produce un artifact con `github-validation-evidence.json`, logs, preflight, manifest y hashes. El nombre termina en `PASS` o `_FAILED`. La evidencia se relee contra `github-validation-evidence.schema.json` antes del gate final.
 
+Para `github-validation-evidence.json`, el gate final exige dos validaciones sobre los mismos bytes finales: el validador dependency-free con resolución fail-closed de `$ref` locales y Ajv Draft 2020-12. El manifest se escribe únicamente después de ambas. Los resultados `EVIDENCE_SCHEMA_DEPENDENCY_FREE`, `EVIDENCE_SCHEMA_AJV_2020_12`, `EVIDENCE_FINAL_BYTES_REVALIDATED` y `COMMAND_RESULT_REF_EXERCISED` deben derivarse de controles ejecutados; una divergencia nunca se promociona a PASS.
+
 ## 4. Autopruebas operativas
 
 Cada ejecución demuestra colecciones nula, vacía, 0, 1 y N; traversal negativo; hash negativo; suite vacía negativa; identidad de Git HEAD; baseline Release; `.specify`; schema y manifest de evidencia. Las pruebas de bootstrap GH0 permanecen preservadas como historial, no como condición hardcodeada de lotes futuros.

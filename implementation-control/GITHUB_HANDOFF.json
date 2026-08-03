@@ -109,10 +109,15 @@
         "implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md",
         "implementation-control/GITHUB_RELEASE_PROTOCOL.md",
         "implementation-control/GITHUB_VALIDATION_PROTOCOL.md",
+        "implementation-control/schemas/github-validation-evidence.schema.json",
+        "implementation-control/scripts/GitHub-Common.mjs",
         "implementation-control/scripts/Package-GitHubCompletedRelease.mjs",
         "implementation-control/scripts/Run-GitHubReleaseTransfer.mjs",
+        "implementation-control/scripts/Run-GitHubValidation.mjs",
+        "implementation-control/scripts/Validate-GitHubEvidenceSchema.mjs",
         "implementation-control/scripts/Verify-GitHubCompletedPackage.mjs",
         "tests/contract/github-completed-package-remediation.test.ts",
+        "tests/contract/github-evidence-schema.test.ts",
         "tests/contract/github-transition-routing.test.ts"
       ],
       "commands": [
@@ -121,6 +126,8 @@
         { "id": "control-plane-initial", "category": "control-plane", "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .", "required": true },
         { "id": "routing-context-contract", "category": "routing", "command": "npm run test:contract -- tests/contract/github-transition-routing.test.ts", "required": true },
         { "id": "completed-package-contract", "category": "package-contract", "command": "npm run test:contract -- tests/contract/github-completed-package-remediation.test.ts", "required": true },
+        { "id": "evidence-schema-contract", "category": "schema-contract", "command": "npm run test:contract -- tests/contract/github-evidence-schema.test.ts", "required": true },
+        { "id": "ajv-draft-2020-12-contract", "category": "schema-contract", "command": "npm run test:contract -- tests/contract/github-evidence-schema.test.ts -t \"runner-shaped evidence\"", "required": true },
         { "id": "regression-vitest", "category": "regression", "command": "npm run test", "required": true },
         { "id": "build", "category": "build", "command": "npm run build", "required": true },
         { "id": "clean-package-dry-run", "category": "package", "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release", "required": true },
@@ -129,6 +136,19 @@
         { "id": "control-plane-final", "category": "control-plane", "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .", "required": true },
         { "id": "specify-byte-identity", "category": "integrity", "command": "git diff --exit-code b04cb4db010ab3a9575fa45c166e6e28f4246699 -- .specify", "required": true }
       ]
+    }
+  ],
+  "rejectedEvidence": [
+    {
+      "classification": "REJECTED_EVIDENCE_SCHEMA_INVALID",
+      "runId": 30819570907,
+      "artifactId": 8858252413,
+      "artifactName": "finscope-github-validation-e6d71f7785ac-PASS",
+      "artifactDigest": "sha256:80d71c73660f077afb403a744052c079c8d95c38ed60fc597dac4f542bf4d86f",
+      "commitSha": "e6d71f7785ac7efab4375366526f2f206969dea9",
+      "reason": "COMMAND_RESULT_REQUIRED_PROPERTY_NOT_DECLARED",
+      "secondaryReason": "DEPENDENCY_FREE_VALIDATOR_DID_NOT_RESOLVE_LOCAL_REF",
+      "disposition": "REJECTED_NOT_PROMOTABLE"
     }
   ],
   "candidate": {
