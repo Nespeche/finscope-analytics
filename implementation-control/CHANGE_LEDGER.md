@@ -688,3 +688,11 @@
 - no product, tasks, batches, gates, release, or `.specify` bytes changed;
 - the replacement candidate must pass a new authenticated closure before it can be promoted;
 - the prior human closure authorization was consumed and no new closure is requested or authorized by this correction.
+
+
+## 2026-08-03 — Authenticated remediation closure
+
+- remediation: `b21-clean-completed-package-remediation`;
+- candidate: `69e3806a821986bffb7760ddd5dbe221eab4c598`, run `30845191439`, artifact `8868396936`;
+- closure request: `ec292173372ed35b0adcf4534d7ffcf2848ef91d`, run `30846500890`;
+- B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.
