@@ -53,4 +53,25 @@ Una respuesta general sin rutas, comandos, resultados esperados, condición de d
 4. Para una rama presente en `GITHUB_HANDOFF.remediations`, exigir coincidencia exacta, modo reconocido, baseline completed vigente, allowlist de rutas íntegra y comandos literales dedicados.
 5. Para mantenimiento no normativo exigir `mode=MAINTENANCE_REMEDIATION`; no ejecutar comandos funcionales de B21 ni alterar `.specify`, tareas, lotes o gates.
 6. Verificar el diff contra `allowedPaths` antes de `npm ci`; cualquier ruta adicional debe producir `MAINTENANCE_SCOPE_MISMATCH` y dejar los comandos posteriores `NOT_RUN`.
+
+# Remediación de paquete completed contaminado
+
+1. Escribir cualquier resultado de `Resolve-GitHubContext.mjs` bajo `$RUNNER_TEMP/finscope-context`, conservar su ruta en una variable y limpiarlo con `if: always()`.
+2. Exigir worktree limpio y extraer el commit exacto desde objetos Git; nunca copiar el workspace físico.
+3. Aplicar denylist antes de inventory, antes de manifest y dentro del verificador.
+4. Verificar paths y bytes ordinarios contra Git y permitir diferencias solo para outputs generados cerrados.
+5. Tras publicar, reautenticar los cinco assets y subir evidencia post-publicación; ante fallo preservar el Release publicado y el artifact `_FAILED`.
+6. Una revisión completed posterior debe usar identidad inmutable nueva y autorización humana independiente.
+
+# Cierre de una remediación declarada
+
+1. Resolver `node implementation-control/scripts/Resolve-GitHubContext.mjs "$GITHUB_HEAD_REF" --closure` hacia `$RUNNER_TEMP/finscope-context`.
+2. En `candidate/NOT_REQUESTED`, registrar `NOT_APPLICABLE` y detener el cierre sin invocar ningún aplicador.
+3. Una futura solicitud humana debe cambiar únicamente las rutas de `closurePolicy.requestAllowedPaths`, declarar `closure/PENDING` y cargar el candidato propio exacto.
+4. Despachar `Apply-GitHubBatchClosure.mjs` solo para `BATCH_CLOSURE` y `Apply-GitHubRemediationClosure.mjs` solo para `REMEDIATION_CLOSURE`; el aplicador de remediación crea el commit local y no ejecuta push.
+5. Para una remediación, autenticar ancestry, run, artifact, digest, manifest, ambos validadores de schema, comandos requeridos y baseline B20; comprobar B21 `COMPLETED`, B22 `PENDING` y `convergenceAuthorized=false`.
+6. Ejecutar control plane y verificación local; cualquier outcome distinto de `success`, contexto faltante o cambio en tareas, `IMPLEMENTATION_STATE`, batches, producto o `.specify` bloquea la finalización.
+7. Ejecutar `Finalize-GitHubRemediationClosure.mjs` solo tras PASS local. Debe exigir que HEAD local sea el closure SHA, que la rama remota siga en request SHA, usar `force-with-lease` y volver a confirmar el closure SHA remoto.
+8. Generar y subir evidencia PASS únicamente después de esa confirmación remota. Permitir únicamente `GITHUB_HANDOFF.json`, `CHANGE_LEDGER.md` y los dos reportes declarados por la `closurePolicy`. No promover tareas o lotes.
+9. Conservar artifacts `_FAILED`, corregir mediante commit nuevo y workflow completo nuevo; no usar `Re-run jobs`.
 5. Conservar cualquier evidencia `_FAILED`; corregir con commit nuevo y ejecución completa nueva, sin `Re-run jobs`.

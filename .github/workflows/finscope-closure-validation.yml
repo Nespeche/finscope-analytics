@@ -21,34 +21,94 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Resolve fail-closed GitHub context
-        run: node implementation-control/scripts/Resolve-GitHubContext.mjs "$GITHUB_HEAD_REF" > "$RUNNER_TEMP/github-context.json"
       - name: Configure Node from package authority
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
           node-version-file: package.json
           package-manager-cache: false
-      - name: Apply authenticated closure payload when requested
-        id: apply
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: node implementation-control/scripts/Apply-GitHubBatchClosure.mjs
-      - name: Prepare normative package-root alias
+      - name: Resolve context
+        id: context
         shell: bash
         run: |
           set -euo pipefail
-          root_alias="$RUNNER_TEMP/FinScope_v0.21.4"
-          rm -rf "$root_alias"
-          ln -s "$GITHUB_WORKSPACE" "$root_alias"
-          echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
-      - name: Validate control plane
-        run: node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
-      - name: Verify candidate identity, artifact and closure allowlist
-        id: closure
+          context_dir="$RUNNER_TEMP/finscope-context"
+          mkdir -p "$context_dir"
+          node implementation-control/scripts/Resolve-GitHubContext.mjs "$GITHUB_HEAD_REF" --closure > "$context_dir/github-closure-context.json"
+          closure_type="$(node -e 'const fs=require("fs");const value=JSON.parse(fs.readFileSync(process.argv[1],"utf8"));process.stdout.write(value.closureType)' "$context_dir/github-closure-context.json")"
+          case "$closure_type" in
+            NOT_APPLICABLE|BATCH_CLOSURE|REMEDIATION_CLOSURE) ;;
+            *) echo "CLOSURE_TYPE_INVALID:$closure_type" >&2; exit 1 ;;
+          esac
+          echo "closure_type=$closure_type" >> "$GITHUB_OUTPUT"
+          echo "context_dir=$context_dir" >> "$GITHUB_OUTPUT"
+      - name: npm ci
+        run: npm ci
+      - name: Prepare local closure commit
+        id: apply
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
+          FINSCOPE_CLOSURE_CONTEXT_DIR: ${{ steps.context.outputs.context_dir }}
+          CLOSURE_TYPE: ${{ steps.context.outputs.closure_type }}
+        shell: bash
+        run: |
+          set +e
+          case "$CLOSURE_TYPE" in
+            BATCH_CLOSURE)
+              node implementation-control/scripts/Apply-GitHubBatchClosure.mjs
+              ;;
+            REMEDIATION_CLOSURE)
+              node implementation-control/scripts/Apply-GitHubRemediationClosure.mjs
+              ;;
+            NOT_APPLICABLE)
+              echo "CLOSURE_NOT_REQUESTED"
+              ;;
+            *)
+              echo "CLOSURE_TYPE_INVALID:$CLOSURE_TYPE" >&2
+              exit 1
+              ;;
+          esac >"$FINSCOPE_CLOSURE_CONTEXT_DIR/apply.stdout.log" 2>"$FINSCOPE_CLOSURE_CONTEXT_DIR/apply.stderr.log"
+          code=$?
+          printf '%s\n' "$code" > "$FINSCOPE_CLOSURE_CONTEXT_DIR/apply.exit-code"
+          cat "$FINSCOPE_CLOSURE_CONTEXT_DIR/apply.stdout.log"
+          cat "$FINSCOPE_CLOSURE_CONTEXT_DIR/apply.stderr.log" >&2
+          exit "$code"
+      - name: Validate control plane
+        id: control
+        continue-on-error: true
+        run: node implementation-control/scripts/Validate-ControlPlaneState.mjs .
+      - name: Verify local closure
+        id: local
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FINSCOPE_CLOSURE_TYPE: ${{ steps.context.outputs.closure_type }}
+          FINSCOPE_CLOSURE_CONTEXT_DIR: ${{ steps.context.outputs.context_dir }}
+          FINSCOPE_VERIFICATION_PHASE: local
+          APPLY_OUTCOME: ${{ steps.apply.outcome }}
+          CONTROL_PLANE_OUTCOME: ${{ steps.control.outcome }}
         run: node implementation-control/scripts/Verify-GitHubClosure.mjs
-      - name: Upload closure evidence
+      - name: Finalize conditional push
+        id: finalize
+        if: always() && steps.context.outputs.closure_type == 'REMEDIATION_CLOSURE' && steps.local.outputs.result == 'PASS'
+        continue-on-error: true
+        env:
+          FINSCOPE_CLOSURE_CONTEXT_DIR: ${{ steps.context.outputs.context_dir }}
+        run: node implementation-control/scripts/Finalize-GitHubRemediationClosure.mjs
+      - name: Verify remote closure
+        id: closure
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FINSCOPE_CLOSURE_TYPE: ${{ steps.context.outputs.closure_type }}
+          FINSCOPE_CLOSURE_CONTEXT_DIR: ${{ steps.context.outputs.context_dir }}
+          FINSCOPE_VERIFICATION_PHASE: remote
+          APPLY_OUTCOME: ${{ steps.apply.outcome }}
+          CONTROL_PLANE_OUTCOME: ${{ steps.control.outcome }}
+          LOCAL_VERIFY_OUTCOME: ${{ steps.local.outcome }}
+          FINALIZE_OUTCOME: ${{ steps.finalize.outcome }}
+        run: node implementation-control/scripts/Verify-GitHubClosure.mjs
+      - name: Upload final evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
@@ -57,8 +117,17 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 30
-      - name: Enforce closure result
+      - name: Enforce result
         if: always()
         env:
           RESULT: ${{ steps.closure.outputs.result }}
-        run: test "$RESULT" = PASS || test "$RESULT" = NOT_APPLICABLE
+        shell: bash
+        run: |
+          case "$RESULT" in
+            PASS) echo "AUTHENTICATED_CLOSURE_PASS" ;;
+            NOT_APPLICABLE) echo "CLOSURE_NOT_APPLICABLE" ;;
+            *) echo "CLOSURE_FAILED:${RESULT:-missing}" >&2; exit 1 ;;
+          esac
+      - name: Cleanup
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/finscope-context"

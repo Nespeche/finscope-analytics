@@ -16,9 +16,19 @@ Chromium se instala únicamente cuando la autoridad resuelta declara `browserReq
 
 Siempre se produce un artifact con `github-validation-evidence.json`, logs, preflight, manifest y hashes. El nombre termina en `PASS` o `_FAILED`. La evidencia se relee contra `github-validation-evidence.schema.json` antes del gate final.
 
+Para `github-validation-evidence.json`, el gate final exige dos validaciones sobre los mismos bytes finales: el validador dependency-free con resolución fail-closed de `$ref` locales y Ajv Draft 2020-12. El manifest se escribe únicamente después de ambas. Los resultados `EVIDENCE_SCHEMA_DEPENDENCY_FREE`, `EVIDENCE_SCHEMA_AJV_2020_12`, `EVIDENCE_FINAL_BYTES_REVALIDATED` y `COMMAND_RESULT_REF_EXERCISED` deben derivarse de controles ejecutados; una divergencia nunca se promociona a PASS.
+
 ## 4. Autopruebas operativas
 
 Cada ejecución demuestra colecciones nula, vacía, 0, 1 y N; traversal negativo; hash negativo; suite vacía negativa; identidad de Git HEAD; baseline Release; `.specify`; schema y manifest de evidencia. Las pruebas de bootstrap GH0 permanecen preservadas como historial, no como condición hardcodeada de lotes futuros.
+
+## 5. Cierres autenticados independientes
+
+`BATCH_CLOSURE` conserva la autoridad histórica de `handoff.operation` y solo puede promover un lote real `PENDING`. `REMEDIATION_CLOSURE` se resuelve exclusivamente desde la `closurePolicy` de una entrada inequívoca de `handoff.remediations`; nunca consume `handoff.operation`, `handoff.candidate` ni `handoff.closure` como fallback.
+
+En una remediación, `candidate/NOT_REQUESTED` produce `NOT_APPLICABLE`. Solo `closure/PENDING`, con candidato propio completo, habilita `Apply-GitHubRemediationClosure.mjs`. El aplicador autentica run y artifact vivos, digest, manifest, schema dependency-free y Ajv Draft 2020-12, comandos requeridos, ancestry, allowlists e invariantes B21/B22; genera el cierre y crea únicamente el commit local preparado. Después, el control plane y `Verify-GitHubClosure.mjs` deben validar localmente la allowlist y la inmutabilidad de tareas, `IMPLEMENTATION_STATE`, batches, producto y `.specify`. Solo un PASS local permite a `Finalize-GitHubRemediationClosure.mjs` actualizar la rama con `force-with-lease` ligado al request SHA. La evidencia final se genera tras una nueva consulta remota que confirme el closure SHA.
+
+La evidencia `REMEDIATION_CLOSURE` se valida contra `github-remediation-closure-evidence.schema.json` con el validador dependency-free y Ajv Draft 2020-12 sobre los bytes finales. Un PASS exige `localValidation=PASS`, `controlPlaneValidation=PASS`, `remotePushValidation=PASS`, `remoteBranchVerified=true` y `remoteHeadSha=closureSha`. `NOT_APPLICABLE` es un resultado distinto y nunca se presenta como cierre `PASS`.
 # Resolución autoritativa de contexto
 
 Antes de `npm ci`, todo workflow debe ejecutar `Resolve-GitHubContext.mjs` con la rama exacta. Solo una operación reconocida, completa, compatible con su stage y cuya `operation.branch` coincida exactamente puede aportar autoridad. En cualquier rama ordinaria, el lote procede de `IMPLEMENTATION_STATE.activeBatchId`, debe coincidir con `nextAuthorizedBatchId`, permanecer `PENDING`, no estar completado y tener dependencias y gates compatibles.
@@ -28,3 +38,7 @@ El baseline `CURRENT_COMPLETED_BASELINE` es distinto del `HISTORICAL_OPERATION_B
 Las remediaciones se declaran en la colección tipada `GITHUB_HANDOFF.remediations`. Cada entrada fija un `id`, modo reconocido, rama exacta, rol de baseline, allowlist de rutas y comandos literales. `CONTROL_PLANE_REMEDIATION` se reserva para cambios del plano de control y `MAINTENANCE_REMEDIATION` para dependencias, build, seguridad y tooling no normativo.
 
 Antes de `npm ci`, el runner compara el diff exacto del PR con `allowedPaths`. Una ruta no declarada produce `MAINTENANCE_SCOPE_MISMATCH`; una declaración desconocida, incompleta, duplicada o ambigua falla sin fallback a `BATCH`. Los comandos restantes quedan `NOT_RUN` con causa enlazada a `primaryFailure`.
+
+## Paquetes completed
+
+El verificador distingue archivos ordinarios y outputs finales generados. Con acceso al repositorio autenticado, cada archivo ordinario debe existir con bytes idénticos en el commit indicado; la evidencia registra `gitTreeComparisonExecuted`, commit, conteo comparado, outputs permitidos y paths rechazados. Sin acceso Git puede ejecutar controles portátiles, pero debe declarar la comparación Git como no ejecutada. `github-context*.json`, archivos de comandos Actions, temporales, logs, diagnósticos, caches, resultados de tests, `.finscope-*` no autorizados y ZIPs anidados fallan antes de considerar inventario o manifest.

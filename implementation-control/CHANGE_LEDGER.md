@@ -1,5 +1,20 @@
 # Change Ledger — FinScope Analytics
 
+## 2026-08-03 — B21 closure request parser remediation candidate
+
+- La autorización de cierre previa queda consumida; `b21-clean-completed-package-remediation` vuelve exclusivamente a `candidate/NOT_REQUESTED`, sin candidato ni cierre cargados.
+- Se preservan como evidencia histórica no promovible del commit `787e79c55b2db7b831589e5e9d5cbd8c64fcb5a9`: Closure Validation run `30838147836`, artifact `8865666079` (`finscope-closure-787e79c55b2d-_FAILED`, `sha256:a871fe85f1cf586ae19fc815f6a67b343fc83a7b5a421f8f1dcde2e242f2c5bd`) por `REMEDIATION_CLOSURE_ALLOWLIST_VIOLATION:mplementation-control/CHANGE_LEDGER.md`; y PR Validation run `30838147170`, artifact `8865666299` (`finscope-github-validation-787e79c55b2d-_FAILED`, `sha256:16277122e898c0bded1bb9f345008d27432e76510b3130cee1dbff7294aa3bfe`) por fixture de batch closure acoplada al estado mutable de remediación.
+- La recopilación de paths de cierre usa salidas Git NUL-delimited sin `trim`, conserva el primer carácter, incorpora tracked/staged/unstaged/untracked, deduplica y ordena determinísticamente.
+- Los tests de routing aíslan el handoff de batch y conservan la serialización fail-closed ante una remediación `closure/PENDING`; el verificador de cierre promueve la causa real de apply y conserva `APPLY_CONTEXT_MISSING` como detalle secundario con logs sanitizados, acotados y manifestados.
+- B21 permanece `COMPLETED`; B22 permanece `PENDING` y no iniciado; `activeBatchId=B22`; `nextAuthorizedBatchId=B22`; `convergenceAuthorized=false`; producto y `.specify` no cambian.
+
+## 2026-08-03 — B21 evidence schema remediation r2
+
+- Se conserva como `REJECTED_EVIDENCE_SCHEMA_INVALID` el artifact `8858252413` del commit `e6d71f7785ac7efab4375366526f2f206969dea9`; no es promovible.
+- `commandResult.required` queda declarado y obligatorio sin relajar `additionalProperties=false`.
+- El validador dependency-free resuelve JSON Pointer local fail-closed, detecta referencias ausentes y ciclos, y se contrasta con Ajv Draft 2020-12 sobre los bytes finales antes del manifest.
+- B21 y T001–T095 permanecen `COMPLETED`; B22 permanece `PENDING` y no iniciado; `.specify` no cambia.
+
 ## v0.21.1 — Preparación de orquestación de implementación
 
 - Baseline fuente: `FinScope_Analytics_SpecDev_ChatGPT_v0.21_post_analysis_remediated.zip`.
@@ -546,6 +561,39 @@
 - cierre limitado a la allowlist y `convergenceAuthorized=false`.
 
 
+## 2026-08-03 — Soporte fail-closed para cierre de remediaciones
+
+- se separan explícitamente `BATCH_CLOSURE`, `REMEDIATION_CLOSURE` y `NOT_APPLICABLE`;
+- la remediación `b21-clean-completed-package-remediation` recibe `closurePolicy` propia en `candidate/NOT_REQUESTED`, sin candidato ni cierre cargados;
+- el aplicador de remediación autentica únicamente candidato, run y artifact propios y limita toda mutación a cuatro rutas declaradas;
+- schema Draft 2020-12, validación dependency-free/Ajv, contratos negativos y routing del workflow preservan B21 `COMPLETED`, B22 `PENDING`, producto y `.specify` sin cambios;
+- no se solicita ni aplica el cierre en este candidato.
+
+## 2026-08-03 — Evidencia candidata 24a42b6 rechazada
+
+- run `30831435223`, artifact `_FAILED` `8863072687`, digest `sha256:9478c743b366cf0ce93640e31ce72d1c16108cd5e5f40f10b5df5707ff82002d`;
+- `primaryFailure=COMMAND_FAILED` en `batch-closure-regression`: Vitest devolvió exit 0, pero el filtro declaró 31 tests `skipped` y el discovery fail-closed lo rechazó;
+- todos los comandos dependientes quedaron `NOT_RUN`;
+- se eliminan los filtros de los comandos literales de regresión batch y schema para ejecutar el contrato completo sin tests omitidos; se requiere commit y workflow nuevos.
+
+## 2026-08-03 — Remediación técnica del paquete B21 contaminado
+
+- operación tipada `MAINTENANCE_REMEDIATION` en `agent/b21-clean-completed-package-remediation`;
+- baseline B20 permanece activo; el Release B21 publicado queda rechazado como Fuentes por `github-context.json`;
+- staging cambiado a blobs del commit Git exacto, con denylist independiente y verificación de procedencia byte a byte;
+- contexto del resolver movido a `$RUNNER_TEMP` con cleanup `always`;
+- publicación reforzada con reautenticación completa de cinco assets y preservación fail-closed del Release publicado;
+- sin cambios de producto, B22, tareas, lotes, gates o `.specify`; `convergenceAuthorized=false`.
+
+## 2026-08-03 — Gate pre-merge de autoridad de publicación B21
+
+- `v0.21.26-B21-completed` permanece rechazado como baseline y preservado como evidencia histórica;
+- `release.pending=false` impide reutilizar accidentalmente su identidad publicada;
+- el cierre `a3230e9f61c0ef69f87ec1600432067e4bf1a9c5` fue válido y queda supersedido exclusivamente por esta corrección pre-merge;
+- cualquier publicación futura requiere identidad inmutable nueva: tag, revisión, ZIP y sidecar nuevos;
+- B21 permanece `COMPLETED`, B22 permanece `PENDING`, y producto, tareas, batches y `.specify` no cambian; `convergenceAuthorized=false`.
+
+
 ## 2026-07-31 — B13 candidate PASS y cierre GitHub-first
 
 - baseline autenticado: `FS_v0.21.14_B12_completed.zip` (`d5a278507e880c49e10adae9f087eb6b9bb6c05b57d61253b8662afa300c8d9a`);
@@ -625,3 +673,63 @@
 - todos los comandos obligatorios del mirror B21 PASS;
 - T090, T091, T092, T093, T094, T095 y B21 pasan a `COMPLETED`; B22 queda `PENDING`;
 - cierre limitado a la allowlist y `convergenceAuthorized=false`.
+## 2026-08-03 — Atomic remediation-closure support
+
+- `Apply-GitHubRemediationClosure.mjs` prepares and commits the closure locally without pushing;
+- local verification now fails closed on apply/control-plane outcomes and rechecks allowlists, candidate evidence and immutable product/control-plane scopes;
+- `Finalize-GitHubRemediationClosure.mjs` performs the only remediation push with an exact request-SHA lease and confirms the remote closure SHA;
+- final PASS evidence is emitted only after remote confirmation; B21 remains `COMPLETED`, B22 remains `PENDING`, and `convergenceAuthorized=false`.
+
+
+## 2026-08-03 — Authenticated remediation closure
+
+- remediation: `b21-clean-completed-package-remediation`;
+- candidate: `7be25f475d3fc4ee3075ac4b56818554d3c92db4`, run `30840461597`, artifact `8866567897`;
+- closure request: `62252e6ac2ca48f74790b1947321c99be1155a2e`, run `30842289780`;
+- B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.
+
+
+## 2026-08-03 — Post-closure lifecycle certification correction
+
+- authenticated closure `2c44c4a6c97dd37f638d21c16c4c15cec7fe61fe`, run `30842289780`, artifact `8867265160`, remains valid historical evidence;
+- that closure is superseded exclusively by this post-closure certification correction because exact-head candidate, closure, and completed lifecycle tests must use controlled fixtures;
+- no product, tasks, batches, gates, release, or `.specify` bytes changed;
+- the replacement candidate must pass a new authenticated closure before it can be promoted;
+- the prior human closure authorization was consumed and no new closure is requested or authorized by this correction.
+
+
+## 2026-08-03 — Authenticated remediation closure
+
+- remediation: `b21-clean-completed-package-remediation`;
+- candidate: `69e3806a821986bffb7760ddd5dbe221eab4c598`, run `30845191439`, artifact `8868396936`;
+- closure request: `ec292173372ed35b0adcf4534d7ffcf2848ef91d`, run `30846500890`;
+- B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.
+
+## 2026-08-03 — B21 pre-merge Release gate r1 FAIL y corrección ZIP Windows
+
+- candidato local preservado: `5a67550c3eead25ce4b7b79855ab13224b82bd55`;
+- validación local: `13/19 PASS`; fallo primario en `clean-package-dry-run`; comandos 15–19 no ejecutados;
+- error autenticado: `ZIP_CREATE_FAILED: tar: Cannot connect to C: resolve failed`;
+- no hubo push, GitHub Actions, merge, tag ni Release;
+- causa: el fallback resolvió GNU tar mediante PATH y le entregó una ruta absoluta `C:\\...`, interpretada como identidad remota;
+- `--force-local` por sí solo no acredita que el resultado sea un ZIP real;
+- corrección: Info-ZIP cuando está disponible o `%SystemRoot%\System32\tar.exe` en Windows, siempre mediante vector de argumentos y salida relativa;
+- la firma ZIP se autentica antes del sidecar y del verificador completed;
+- producto, tareas, batches, `IMPLEMENTATION_STATE.json` y `.specify` permanecen sin cambios.
+
+## 2026-08-03 — B21 completed-package contract timeout remediado
+
+- el FAIL R2 expiró en el timeout implícito de Vitest de 5000 ms mientras ejecutaba el empaquetado ZIP real;
+- una reproducción con 30000 ms también expiró y mostró `EBUSY` durante cleanup porque el proceso hijo aún retenía el ZIP;
+- la ejecución directa del empaquetador terminó `PASS` en 60696 ms, con firma `504b0304`, sidecar correcto y verificador completed `PASS`;
+- el backend ZIP y el proceso empaquetador quedan acotados a 120000 ms; la prueba dispone de 150000 ms para que toda terminación controlada preceda al cleanup;
+- no se agregan retries ni se eliminan aserciones; cualquier timeout falla cerrado con `ZIP_CREATE_FAILED:ZIP_BACKEND_TIMEOUT`;
+- producto, tareas, batches, `IMPLEMENTATION_STATE.json` y `.specify` permanecen sin cambios.
+
+
+## 2026-08-03 — Authenticated remediation closure
+
+- remediation: `b21-clean-completed-package-remediation`;
+- candidate: `41174f21268ae71e8301313a229e1faaab69fbe5`, run `30856160876`, artifact `8872559141`;
+- closure request: `48fbe9111be2a64a88ae35d228440ce851b36788`, run `30856525648`;
+- B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.

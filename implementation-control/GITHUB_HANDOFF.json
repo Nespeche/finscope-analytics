@@ -62,12 +62,42 @@
         "tests/contract/github-transition-routing.test.ts"
       ],
       "commands": [
-        { "id": "npm-ci", "category": "dependencies", "command": "npm ci", "required": true },
-        { "id": "typecheck", "category": "static", "command": "npm run typecheck", "required": true },
-        { "id": "control-plane", "category": "control-plane", "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .", "required": true },
-        { "id": "transition-contract", "category": "contract", "command": "npm run test:contract -- tests/contract/control-plane-integrity.test.ts tests/contract/github-transition-routing.test.ts", "required": true },
-        { "id": "regression-vitest", "category": "regression", "command": "npm run test", "required": true },
-        { "id": "build", "category": "build", "command": "npm run build", "required": true }
+        {
+          "id": "npm-ci",
+          "category": "dependencies",
+          "command": "npm ci",
+          "required": true
+        },
+        {
+          "id": "typecheck",
+          "category": "static",
+          "command": "npm run typecheck",
+          "required": true
+        },
+        {
+          "id": "control-plane",
+          "category": "control-plane",
+          "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .",
+          "required": true
+        },
+        {
+          "id": "transition-contract",
+          "category": "contract",
+          "command": "npm run test:contract -- tests/contract/control-plane-integrity.test.ts tests/contract/github-transition-routing.test.ts",
+          "required": true
+        },
+        {
+          "id": "regression-vitest",
+          "category": "regression",
+          "command": "npm run test",
+          "required": true
+        },
+        {
+          "id": "build",
+          "category": "build",
+          "command": "npm run build",
+          "required": true
+        }
       ]
     },
     {
@@ -85,14 +115,256 @@
         "vite.config.ts"
       ],
       "commands": [
-        { "id": "npm-ci", "category": "dependencies", "command": "npm ci", "required": true },
-        { "id": "typecheck", "category": "static", "command": "npm run typecheck", "required": true },
-        { "id": "control-plane", "category": "control-plane", "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .", "required": true },
-        { "id": "maintenance-contract", "category": "contract", "command": "npm run test:contract -- tests/contract/app-composition.test.ts tests/contract/dependency-inventory.test.ts tests/contract/vite-build-config.test.ts tests/contract/control-plane-integrity.test.ts tests/contract/github-transition-routing.test.ts", "required": true },
-        { "id": "dependency-audit", "category": "security", "command": "npm audit --audit-level=high", "required": true },
-        { "id": "regression-vitest", "category": "regression", "command": "npm run test", "required": true },
-        { "id": "build", "category": "build", "command": "npm run build", "required": true }
+        {
+          "id": "npm-ci",
+          "category": "dependencies",
+          "command": "npm ci",
+          "required": true
+        },
+        {
+          "id": "typecheck",
+          "category": "static",
+          "command": "npm run typecheck",
+          "required": true
+        },
+        {
+          "id": "control-plane",
+          "category": "control-plane",
+          "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .",
+          "required": true
+        },
+        {
+          "id": "maintenance-contract",
+          "category": "contract",
+          "command": "npm run test:contract -- tests/contract/app-composition.test.ts tests/contract/dependency-inventory.test.ts tests/contract/vite-build-config.test.ts tests/contract/control-plane-integrity.test.ts tests/contract/github-transition-routing.test.ts",
+          "required": true
+        },
+        {
+          "id": "dependency-audit",
+          "category": "security",
+          "command": "npm audit --audit-level=high",
+          "required": true
+        },
+        {
+          "id": "regression-vitest",
+          "category": "regression",
+          "command": "npm run test",
+          "required": true
+        },
+        {
+          "id": "build",
+          "category": "build",
+          "command": "npm run build",
+          "required": true
+        }
       ]
+    },
+    {
+      "id": "b21-clean-completed-package-remediation",
+      "mode": "MAINTENANCE_REMEDIATION",
+      "branch": "agent/b21-clean-completed-package-remediation",
+      "baselineRole": "CURRENT_COMPLETED_BASELINE",
+      "allowedPaths": [
+        ".github/workflows/finscope-closure-validation.yml",
+        ".github/workflows/finscope-completed-release.yml",
+        ".github/workflows/finscope-pr-validation.yml",
+        ".github/workflows/finscope-release-qualification.yml",
+        "implementation-control/CHANGE_LEDGER.md",
+        "implementation-control/GITHUB_HANDOFF.json",
+        "implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md",
+        "implementation-control/GITHUB_RELEASE_PROTOCOL.md",
+        "implementation-control/GITHUB_VALIDATION_PROTOCOL.md",
+        "implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE.json",
+        "implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE.md",
+        "implementation-control/schemas/github-remediation-closure-evidence.schema.json",
+        "implementation-control/schemas/github-validation-evidence.schema.json",
+        "implementation-control/scripts/GitHub-Common.mjs",
+        "implementation-control/scripts/Apply-GitHubRemediationClosure.mjs",
+        "implementation-control/scripts/Finalize-GitHubRemediationClosure.mjs",
+        "implementation-control/scripts/Package-GitHubCompletedRelease.mjs",
+        "implementation-control/scripts/Resolve-GitHubContext.mjs",
+        "implementation-control/scripts/Run-GitHubReleaseTransfer.mjs",
+        "implementation-control/scripts/Run-GitHubValidation.mjs",
+        "implementation-control/scripts/Validate-GitHubEvidenceSchema.mjs",
+        "implementation-control/scripts/Verify-GitHubClosure.mjs",
+        "implementation-control/scripts/Verify-GitHubCompletedPackage.mjs",
+        "tests/contract/github-completed-package-remediation.test.ts",
+        "tests/contract/github-evidence-schema.test.ts",
+        "tests/contract/github-remediation-closure.test.ts",
+        "tests/contract/control-plane-integrity.test.ts",
+        "tests/contract/github-transition-routing.test.ts",
+        "tests/contract/schema-registry.test.ts"
+      ],
+      "closurePolicy": {
+        "kind": "REMEDIATION_CLOSURE",
+        "remediationId": "b21-clean-completed-package-remediation",
+        "branch": "agent/b21-clean-completed-package-remediation",
+        "stage": "completed",
+        "status": "COMPLETED",
+        "candidate": {
+          "sha": "41174f21268ae71e8301313a229e1faaab69fbe5",
+          "runId": 30856160876,
+          "artifactId": 8872559141,
+          "artifactName": "finscope-github-validation-41174f21268a-PASS",
+          "artifactDigest": "sha256:8c9343a343335047d3407fd551fdba609773f8b4a27115a953e5e260e9868840"
+        },
+        "closure": {
+          "candidateSha": "41174f21268ae71e8301313a229e1faaab69fbe5",
+          "requestSha": "48fbe9111be2a64a88ae35d228440ce851b36788",
+          "runId": 30856525648,
+          "completedAt": "2026-08-03T21:54:09.839Z"
+        },
+        "requestAllowedPaths": [
+          "implementation-control/GITHUB_HANDOFF.json",
+          "implementation-control/CHANGE_LEDGER.md"
+        ],
+        "allowedPaths": [
+          "implementation-control/GITHUB_HANDOFF.json",
+          "implementation-control/CHANGE_LEDGER.md",
+          "implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE.json",
+          "implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE.md"
+        ]
+      },
+      "commands": [
+        {
+          "id": "npm-ci",
+          "category": "dependencies",
+          "command": "npm ci",
+          "required": true
+        },
+        {
+          "id": "typecheck",
+          "category": "static",
+          "command": "npm run typecheck",
+          "required": true
+        },
+        {
+          "id": "control-plane-initial",
+          "category": "control-plane",
+          "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .",
+          "required": true
+        },
+        {
+          "id": "routing-context-contract",
+          "category": "routing",
+          "command": "npm run test:contract -- tests/contract/github-transition-routing.test.ts",
+          "required": true
+        },
+        {
+          "id": "batch-closure-regression",
+          "category": "closure-contract",
+          "command": "npm run test:contract -- tests/contract/github-remediation-closure.test.ts",
+          "required": true
+        },
+        {
+          "id": "remediation-closure-contract",
+          "category": "closure-contract",
+          "command": "npm run test:contract -- tests/contract/github-remediation-closure.test.ts",
+          "required": true
+        },
+        {
+          "id": "remediation-closure-atomicity-concurrency",
+          "category": "closure-atomicity",
+          "command": "npm run test:contract -- tests/contract/github-remediation-closure.test.ts",
+          "required": true
+        },
+        {
+          "id": "remediation-evidence-schema-contract",
+          "category": "schema-contract",
+          "command": "npm run test:contract -- tests/contract/github-remediation-closure.test.ts",
+          "required": true
+        },
+        {
+          "id": "completed-package-contract",
+          "category": "package-contract",
+          "command": "npm run test:contract -- tests/contract/github-completed-package-remediation.test.ts",
+          "required": true
+        },
+        {
+          "id": "evidence-schema-contract",
+          "category": "schema-contract",
+          "command": "npm run test:contract -- tests/contract/github-evidence-schema.test.ts",
+          "required": true
+        },
+        {
+          "id": "ajv-draft-2020-12-contract",
+          "category": "schema-contract",
+          "command": "npm run test:contract -- tests/contract/github-evidence-schema.test.ts",
+          "required": true
+        },
+        {
+          "id": "regression-vitest",
+          "category": "regression",
+          "command": "npm run test",
+          "required": true
+        },
+        {
+          "id": "build",
+          "category": "build",
+          "command": "npm run build",
+          "required": true
+        },
+        {
+          "id": "clean-package-dry-run",
+          "category": "package",
+          "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
+          "required": true
+        },
+        {
+          "id": "verify-clean-package",
+          "category": "package-authentication",
+          "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.26_B21_completed.zip .finscope-release/FS_v0.21.26_B21_completed.zip.sha256 --git-root . --commit \"$(git rev-parse HEAD)\" --tag v0.21.26-B21-completed",
+          "required": true
+        },
+        {
+          "id": "reject-historical-b21",
+          "category": "historical-package-authentication",
+          "command": "mkdir -p \"$RUNNER_TEMP/finscope-rejected-b21\" && gh release download v0.21.26-B21-completed --repo Nespeche/finscope-analytics --pattern 'FS_v0.21.26_B21_completed.zip*' --dir \"$RUNNER_TEMP/finscope-rejected-b21\" --clobber && set +e; node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs \"$RUNNER_TEMP/finscope-rejected-b21/FS_v0.21.26_B21_completed.zip\" \"$RUNNER_TEMP/finscope-rejected-b21/FS_v0.21.26_B21_completed.zip.sha256\" --git-root . --commit b04cb4db010ab3a9575fa45c166e6e28f4246699 --tag v0.21.26-B21-completed >\"$RUNNER_TEMP/finscope-rejected-b21/verification.stdout.log\" 2>\"$RUNNER_TEMP/finscope-rejected-b21/verification.stderr.log\"; code=$?; set -e; [ \"$code\" -ne 0 ] && grep -F 'COMPLETED_PACKAGE_TEMPORARY_FILE:github-context.json:GITHUB_CONTEXT_OUTPUT' \"$RUNNER_TEMP/finscope-rejected-b21/verification.stderr.log\"",
+          "required": true
+        },
+        {
+          "id": "control-plane-final",
+          "category": "control-plane",
+          "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .",
+          "required": true
+        },
+        {
+          "id": "specify-byte-identity",
+          "category": "integrity",
+          "command": "git diff --exit-code b04cb4db010ab3a9575fa45c166e6e28f4246699 -- .specify",
+          "required": true
+        },
+        {
+          "id": "batch-product-invariants",
+          "category": "integrity",
+          "command": "npm run test:contract -- tests/contract/control-plane-integrity.test.ts",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "rejectedEvidence": [
+    {
+      "classification": "REJECTED_DISCOVERY_INVALID",
+      "runId": 30831435223,
+      "artifactId": 8863072687,
+      "artifactName": "finscope-github-validation-24a42b66c5a3-_FAILED",
+      "artifactDigest": "sha256:9478c743b366cf0ce93640e31ce72d1c16108cd5e5f40f10b5df5707ff82002d",
+      "commitSha": "24a42b66c5a304edeae9bfac41a608d86e198bd9",
+      "reason": "COMMAND_FAILED:batch-closure-regression:INVALID_DISCOVERY",
+      "secondaryReason": "FILTERED_VITEST_RUN_REPORTED_31_SKIPPED",
+      "disposition": "REJECTED_NOT_PROMOTABLE"
+    },
+    {
+      "classification": "REJECTED_EVIDENCE_SCHEMA_INVALID",
+      "runId": 30819570907,
+      "artifactId": 8858252413,
+      "artifactName": "finscope-github-validation-e6d71f7785ac-PASS",
+      "artifactDigest": "sha256:80d71c73660f077afb403a744052c079c8d95c38ed60fc597dac4f542bf4d86f",
+      "commitSha": "e6d71f7785ac7efab4375366526f2f206969dea9",
+      "reason": "COMMAND_RESULT_REQUIRED_PROPERTY_NOT_DECLARED",
+      "secondaryReason": "DEPENDENCY_FREE_VALIDATOR_DID_NOT_RESOLVE_LOCAL_REF",
+      "disposition": "REJECTED_NOT_PROMOTABLE"
     }
   ],
   "candidate": {
@@ -112,7 +384,7 @@
     "artifactDigest": "sha256:adb7b055cc9b69774bde5c98580a91e6e0eb7dc6b55c380588dcff23ea070fa3"
   },
   "release": {
-    "pending": true,
+    "pending": false,
     "tag": "v0.21.26-B21-completed",
     "packageRevision": "v0.21.26_B21_completed",
     "zipName": "FS_v0.21.26_B21_completed.zip",

@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { basename, join, resolve } from 'node:path';
 import { readJson, root, run, setOutput } from './GitHub-Common.mjs';
 
@@ -41,7 +41,10 @@ async function download(url, destination, authorized = true) {
 }
 
 async function deleteRelease(releaseId, tag) {
-  if (releaseId) await api('DELETE', `releases/${releaseId}`).catch(() => {});
+  if (!releaseId) return;
+  const release = await api('GET', `releases/${releaseId}`).catch(() => null);
+  if (!release?.draft) return;
+  await api('DELETE', `releases/${releaseId}`).catch(() => {});
   if (tag) await api('DELETE', `git/refs/tags/${encodeURIComponent(tag)}`).catch(() => {});
 }
 async function createDraft(tag, title, notes) {
@@ -140,7 +143,7 @@ async function stageRelease(qualification) {
     const crc = await run(`unzip -tqq "${join(downloadDirectory, handoff.release.zipName)}"`, { cwd: root });
     assert(crc.exitCode === 0, 'RELEASE_ZIP_CRC_FAILED', crc.stderr.toString('utf8'));
     const packageVerification = await run(
-      `node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs "${join(downloadDirectory, handoff.release.zipName)}" "${join(downloadDirectory, handoff.release.sidecarName)}"`,
+      `node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs "${join(downloadDirectory, handoff.release.zipName)}" "${join(downloadDirectory, handoff.release.sidecarName)}" --git-root "${root}" --commit "${commitSha}" --tag "${tag}"`,
       { cwd: root },
     );
     await writeFile(join(output, 'release-package-verification.stdout.log'), packageVerification.stdout);
@@ -175,6 +178,60 @@ async function stageRelease(qualification) {
   }
 }
 
+async function authenticatePublishedRelease(releaseId, tag) {
+  const checkedAt = new Date().toISOString();
+  const evidenceName = `${handoff.release.evidencePrefix}_${process.env.GITHUB_RUN_ID}.json`;
+  const names = [handoff.release.zipName, handoff.release.sidecarName, evidenceName, 'GITHUB_RELEASE_HANDOFF.json', handoff.release.promptName];
+  const byTag = await api('GET', `releases/tags/${encodeURIComponent(tag)}`);
+  assert(byTag.id === releaseId, 'POST_PUBLISH_RELEASE_ID_MISMATCH');
+  assert(!byTag.draft && !byTag.prerelease && byTag.tag_name === tag, 'POST_PUBLISH_RELEASE_STATE_INVALID');
+  const commit = await api('GET', `commits/${encodeURIComponent(tag)}`);
+  assert(commit.sha === commitSha, 'POST_PUBLISH_RELEASE_COMMIT_MISMATCH', JSON.stringify({ actual: commit.sha, expected: commitSha }));
+  const assets = await api('GET', `releases/${releaseId}/assets?per_page=100`);
+  assert(assets.length === 5 && new Set(assets.map((asset) => asset.name)).size === 5, 'POST_PUBLISH_ASSET_SET_INVALID');
+  assert(names.every((name) => assets.some((asset) => asset.name === name)), 'POST_PUBLISH_ASSET_NAME_MISMATCH');
+  const directory = join(output, '.post-publication-reauthentication');
+  await rm(directory, { recursive: true, force: true });
+  await mkdir(directory, { recursive: true });
+  const assetEvidence = [];
+  for (const name of names) {
+    const asset = assets.find((entry) => entry.name === name);
+    assert(asset.state === 'uploaded', 'POST_PUBLISH_ASSET_STATE_INVALID', name);
+    const source = join(output, name);
+    const downloaded = join(directory, name);
+    await download(`https://api.github.com/repos/${repository}/releases/assets/${asset.id}`, downloaded);
+    const [sourceBytes, downloadedBytes, sourceStat] = await Promise.all([readFile(source), readFile(downloaded), stat(source)]);
+    const sha256 = createHash('sha256').update(downloadedBytes).digest('hex');
+    assert(sourceBytes.equals(downloadedBytes), 'POST_PUBLISH_ASSET_BYTES_MISMATCH', name);
+    assert(asset.size === sourceStat.size && asset.size === downloadedBytes.length, 'POST_PUBLISH_ASSET_SIZE_MISMATCH', name);
+    assert(asset.digest === `sha256:${sha256}`, 'POST_PUBLISH_ASSET_DIGEST_MISMATCH', name);
+    assetEvidence.push({ id: asset.id, name, state: asset.state, size: asset.size, githubDigest: asset.digest, downloadedSha256: sha256, bytesEqual: true, createdAt: asset.created_at, updatedAt: asset.updated_at });
+  }
+  const sidecar = (await readFile(join(directory, handoff.release.sidecarName), 'utf8')).trim();
+  const binding = /^([0-9a-f]{64})  (.+)$/u.exec(sidecar);
+  assert(binding && binding[2] === handoff.release.zipName, 'POST_PUBLISH_SIDECAR_INVALID');
+  const zipBytes = await readFile(join(directory, handoff.release.zipName));
+  assert(createHash('sha256').update(zipBytes).digest('hex') === binding[1], 'POST_PUBLISH_ZIP_HASH_MISMATCH');
+  const crc = await run(`unzip -tqq "${join(directory, handoff.release.zipName)}"`, { cwd: root });
+  assert(crc.exitCode === 0, 'POST_PUBLISH_ZIP_CRC_FAILED', crc.stderr.toString('utf8'));
+  const verifier = await run(`node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs "${join(directory, handoff.release.zipName)}" "${join(directory, handoff.release.sidecarName)}" --git-root "${root}" --commit "${commitSha}" --tag "${tag}"`, { cwd: root });
+  await writeFile(join(output, 'post-publication-package-verification.stdout.log'), verifier.stdout);
+  await writeFile(join(output, 'post-publication-package-verification.stderr.log'), verifier.stderr);
+  assert(verifier.exitCode === 0, 'POST_PUBLISH_PACKAGE_VERIFIER_FAILED', verifier.stderr.toString('utf8'));
+  const packageVerification = JSON.parse(verifier.stdout.toString('utf8'));
+  assert(packageVerification.result === 'PASS' && packageVerification.gitTreeComparisonExecuted === true, 'POST_PUBLISH_PACKAGE_VERIFIER_RESULT_INVALID');
+  const evidence = {
+    schemaVersion: '1.0.0', result: 'PASS', primaryFailure: null, releaseId, tag, commitSha,
+    workflowRunId: process.env.GITHUB_RUN_ID, runAttempt: process.env.GITHUB_RUN_ATTEMPT,
+    assets: assetEvidence, sidecarBinding: true, crc: 'PASS', packageVerifier: packageVerification,
+    gitTreeComparison: { executed: packageVerification.gitTreeComparisonExecuted, commit: packageVerification.gitCommitCompared, ordinaryFilesCompared: packageVerification.ordinaryFilesCompared },
+    controlPlane: 'PASS', specify: packageVerification.specify, checkedAt,
+  };
+  await writeFile(join(output, 'POST_PUBLICATION_REAUTHENTICATION.json'), `${JSON.stringify(evidence, null, 2)}\n`);
+  await writeFile(join(output, 'POST_PUBLICATION_REAUTHENTICATION.md'), `# Post-publication reauthentication\n\n- Result: **PASS**\n- Release ID: \`${releaseId}\`\n- Tag: \`${tag}\`\n- Commit: \`${commitSha}\`\n- Assets: 5/5 authenticated\n- Sidecar/CRC/package verifier/Git comparison/control plane/.specify: PASS\n- Checked: \`${checkedAt}\`\n`);
+  return evidence;
+}
+
 if (mode === 'qualify') {
   await stageRelease(true);
 } else if (mode === 'prepare') {
@@ -183,13 +240,16 @@ if (mode === 'qualify') {
   const releaseId = Number(process.env.RELEASE_ID);
   const tag = process.env.RELEASE_TAG;
   assert(releaseId && tag, 'PUBLISH_REFERENCE_MISSING');
-  const published = await api('PATCH', `releases/${releaseId}`, { draft: false, prerelease: false });
-  assert(!published.draft && !published.prerelease && published.tag_name === tag, 'RELEASE_PUBLICATION_FAILED');
-  const byTag = await api('GET', `releases/tags/${encodeURIComponent(tag)}`);
-  assert(byTag.id === releaseId, 'RELEASE_TAG_LOOKUP_MISMATCH');
-  const commit = await api('GET', `commits/${encodeURIComponent(tag)}`);
-  assert(commit.sha === commitSha, 'RELEASE_TAG_COMMIT_MISMATCH', JSON.stringify({ actual: commit.sha, expected: commitSha }));
-  console.log(JSON.stringify({ result: 'PASS', releaseId, tag, commitSha }, null, 2));
+  try {
+    const published = await api('PATCH', `releases/${releaseId}`, { draft: false, prerelease: false });
+    assert(!published.draft && !published.prerelease && published.tag_name === tag, 'RELEASE_PUBLICATION_FAILED');
+    console.log(JSON.stringify(await authenticatePublishedRelease(releaseId, tag), null, 2));
+  } catch (error) {
+    const failure = { schemaVersion: '1.0.0', result: 'FAIL', primaryFailure: String(error?.message ?? error), releaseId, tag, commitSha, checkedAt: new Date().toISOString() };
+    await writeFile(join(output, 'POST_PUBLICATION_REAUTHENTICATION_FAILED.json'), `${JSON.stringify(failure, null, 2)}\n`);
+    await writeFile(join(output, 'POST_PUBLICATION_REAUTHENTICATION_FAILED.md'), `# Post-publication reauthentication\n\n- Result: **FAIL**\n- Primary failure: \`${failure.primaryFailure}\`\n- Published Release preserved; no asset replacement or deletion was attempted.\n`);
+    throw error;
+  }
 } else if (mode === 'cleanup') {
   await deleteRelease(Number(process.env.RELEASE_ID), process.env.RELEASE_TAG);
 } else {

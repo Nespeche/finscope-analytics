@@ -37,24 +37,21 @@ jobs:
           set -euo pipefail
           handoff=implementation-control/GITHUB_HANDOFF.json
           operation_branch=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.branch")
-          node implementation-control/scripts/Resolve-GitHubContext.mjs "$operation_branch" > github-context.json
-          kind=$(node -p "JSON.parse(require('fs').readFileSync('github-context.json')).mode")
-          stage=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.stage")
-          pending=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.pending")
-          if test "$kind" = RELEASE_REMEDIATION && test "$pending" = true; then
-            enabled=true
-          else
-            enabled=false
-          fi
-          if test "$enabled" = true && test "$stage" != completed; then
-            closure_auth=true
-          else
-            closure_auth=false
-          fi
+          context_dir="$RUNNER_TEMP/finscope-context"
+          context_file="$context_dir/github-context.json"
+          mkdir -p "$context_dir"
+          node implementation-control/scripts/Resolve-GitHubContext.mjs \
+            "$operation_branch" \
+            --release-publication > "$context_file"
+          enabled=$(node -p "JSON.parse(require('fs').readFileSync('$context_file')).enabled")
+          reason=$(node -p "JSON.parse(require('fs').readFileSync('$context_file')).reason")
           echo "enabled=$enabled" >> "$GITHUB_OUTPUT"
-          echo "closure_auth=$closure_auth" >> "$GITHUB_OUTPUT"
-          test "$enabled" = true || echo "No completed Release publication is pending; publication steps are intentionally skipped."
-          test "$closure_auth" = true || echo "Completed remediation: preserve the authenticated historical batch closure and publish the exact requalified package."
+          echo "reason=$reason" >> "$GITHUB_OUTPUT"
+          if test "$enabled" != true; then
+            echo "NOT_APPLICABLE: $reason"
+          else
+            echo "Release publication authority: $reason"
+          fi
       - name: Configure Node from package authority
         if: steps.mode.outputs.enabled == 'true'
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
@@ -119,7 +116,7 @@ jobs:
             bash -lc "$command"
           done < <(node -e "const h=require('./implementation-control/GITHUB_HANDOFF.json'); for (const item of h.operation.qualificationCommands.filter((entry)=>entry.required)) console.log(Buffer.from(item.command).toString('base64'))")
       - name: Authenticate closure artifact contents
-        if: steps.mode.outputs.enabled == 'true' && steps.mode.outputs.closure_auth == 'true'
+        if: steps.mode.outputs.enabled == 'true'
         id: closure
         env:
           GH_TOKEN: ${{ github.token }}
@@ -146,6 +143,18 @@ jobs:
           RELEASE_ID: ${{ steps.draft.outputs.release_id }}
           RELEASE_TAG: ${{ steps.draft.outputs.tag }}
         run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs publish .finscope-release
+      - name: Upload post-publication reauthentication evidence
+        if: success() && steps.mode.outputs.enabled == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: finscope-post-publication-reauthentication-${{ github.sha }}-PASS
+          path: |
+            .finscope-release/POST_PUBLICATION_REAUTHENTICATION.json
+            .finscope-release/POST_PUBLICATION_REAUTHENTICATION.md
+            .finscope-release/post-publication-package-verification.stdout.log
+            .finscope-release/post-publication-package-verification.stderr.log
+          if-no-files-found: error
+          retention-days: 30
       - name: Remove failed draft Release
         if: failure() && steps.mode.outputs.enabled == 'true'
         env:
@@ -162,3 +171,6 @@ jobs:
           if-no-files-found: warn
           include-hidden-files: true
           retention-days: 30
+      - name: Clean resolver context
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/finscope-context"

@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://finscope.local/schemas/github-remediation-closure-evidence.schema.json",
+  "title": "FinScope authenticated remediation closure evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "result",
+    "mode",
+    "repository",
+    "remediationId",
+    "remediationMode",
+    "branch",
+    "candidateSha",
+    "closureRequestSha",
+    "closureCommitSha",
+    "candidateRunId",
+    "artifactId",
+    "artifactName",
+    "artifactDigest",
+    "artifactSchemaValidation",
+    "manifestValidation",
+    "requiredCommands",
+    "candidateAncestry",
+    "changedFiles",
+    "closureAllowedPaths",
+    "productStateUnchanged",
+    "tasksUnchanged",
+    "batchesUnchanged",
+    "specifyByteIdentical",
+    "b21Status",
+    "b22Status",
+    "convergenceAuthorized",
+    "localValidation",
+    "controlPlaneValidation",
+    "remotePushValidation",
+    "remoteBranchVerified",
+    "remoteHeadSha",
+    "checkedAt",
+    "primaryFailure",
+    "details"
+  ],
+  "properties": {
+    "schemaVersion": { "const": "1.0.0" },
+    "result": { "enum": ["PASS", "FAIL", "NOT_APPLICABLE"] },
+    "mode": { "enum": ["REMEDIATION_CLOSURE", "NOT_APPLICABLE"] },
+    "repository": { "type": "string", "minLength": 1 },
+    "remediationId": { "type": ["string", "null"] },
+    "remediationMode": { "enum": ["CONTROL_PLANE_REMEDIATION", "MAINTENANCE_REMEDIATION", null] },
+    "branch": { "type": "string", "minLength": 1 },
+    "candidateSha": { "$ref": "#/$defs/nullableSha" },
+    "closureRequestSha": { "$ref": "#/$defs/nullableSha" },
+    "closureCommitSha": { "$ref": "#/$defs/nullableSha" },
+    "candidateRunId": { "type": ["integer", "null"], "minimum": 1 },
+    "artifactId": { "type": ["integer", "null"], "minimum": 1 },
+    "artifactName": { "type": ["string", "null"] },
+    "artifactDigest": { "type": ["string", "null"], "pattern": "^sha256:[0-9a-f]{64}$" },
+    "artifactSchemaValidation": { "$ref": "#/$defs/checkResult" },
+    "manifestValidation": { "$ref": "#/$defs/checkResult" },
+    "requiredCommands": { "$ref": "#/$defs/checkResult" },
+    "candidateAncestry": { "$ref": "#/$defs/checkResult" },
+    "changedFiles": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "closureAllowedPaths": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "productStateUnchanged": { "type": "boolean" },
+    "tasksUnchanged": { "type": "boolean" },
+    "batchesUnchanged": { "type": "boolean" },
+    "specifyByteIdentical": { "type": "boolean" },
+    "b21Status": { "enum": ["COMPLETED", "PENDING", "UNKNOWN"] },
+    "b22Status": { "enum": ["PENDING", "COMPLETED", "UNKNOWN"] },
+    "convergenceAuthorized": { "const": false },
+    "localValidation": { "$ref": "#/$defs/checkResult" },
+    "controlPlaneValidation": { "$ref": "#/$defs/checkResult" },
+    "remotePushValidation": { "$ref": "#/$defs/checkResult" },
+    "remoteBranchVerified": { "type": "boolean" },
+    "remoteHeadSha": { "$ref": "#/$defs/nullableSha" },
+    "checkedAt": { "type": "string", "minLength": 1 },
+    "primaryFailure": {
+      "type": ["object", "null"],
+      "required": ["code", "detail"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "detail": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "details": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/detail" }
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "result": { "const": "PASS" },
+        "mode": { "const": "REMEDIATION_CLOSURE" },
+        "remediationId": { "type": "string", "minLength": 1 },
+        "remediationMode": { "enum": ["CONTROL_PLANE_REMEDIATION", "MAINTENANCE_REMEDIATION"] },
+        "candidateSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "closureRequestSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "closureCommitSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "candidateRunId": { "type": "integer", "minimum": 1 },
+        "artifactId": { "type": "integer", "minimum": 1 },
+        "artifactName": { "type": "string", "minLength": 1 },
+        "artifactDigest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "artifactSchemaValidation": { "const": "PASS" },
+        "manifestValidation": { "const": "PASS" },
+        "requiredCommands": { "const": "PASS" },
+        "candidateAncestry": { "const": "PASS" },
+        "productStateUnchanged": { "const": true },
+        "tasksUnchanged": { "const": true },
+        "batchesUnchanged": { "const": true },
+        "specifyByteIdentical": { "const": true },
+        "b21Status": { "const": "COMPLETED" },
+        "b22Status": { "const": "PENDING" },
+        "localValidation": { "const": "PASS" },
+        "controlPlaneValidation": { "const": "PASS" },
+        "remotePushValidation": { "const": "PASS" },
+        "remoteBranchVerified": { "const": true },
+        "remoteHeadSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "primaryFailure": { "const": null }
+      },
+      "required": ["remediationId", "remediationMode", "candidateSha", "closureRequestSha", "closureCommitSha", "candidateRunId", "artifactId", "artifactName", "artifactDigest", "remoteHeadSha"]
+    },
+    {
+      "properties": {
+        "result": { "const": "FAIL" },
+        "mode": { "const": "REMEDIATION_CLOSURE" },
+        "primaryFailure": { "type": "object" }
+      }
+    },
+    {
+      "properties": {
+        "result": { "const": "NOT_APPLICABLE" },
+        "mode": { "const": "NOT_APPLICABLE" },
+        "primaryFailure": { "const": null }
+      }
+    }
+  ],
+  "$defs": {
+    "nullableSha": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "checkResult": {
+      "enum": ["PASS", "FAIL", "NOT_RUN", "NOT_APPLICABLE"]
+    },
+    "detail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "detail"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "detail": { "type": "string" }
+      }
+    }
+  }
+}

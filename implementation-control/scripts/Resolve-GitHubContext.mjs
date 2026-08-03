@@ -10,6 +10,14 @@ const fail = (code, detail) => { throw new ContextResolutionError(code, detail);
 const requiredGates = ['tasksAuthorized', 'analysisAuthorized', 'implementationAuthorized'];
 const operationStages = { BOOTSTRAP: ['candidate', 'closure'], RELEASE_REMEDIATION: ['candidate', 'closure', 'completed'] };
 const remediationModes = new Set(['CONTROL_PLANE_REMEDIATION', 'MAINTENANCE_REMEDIATION']);
+const remediationClosureStages = new Map([
+  ['candidate', 'NOT_REQUESTED'],
+  ['closure', 'PENDING'],
+  ['completed', 'COMPLETED'],
+]);
+const remediationClosureKinds = new Set(['REMEDIATION_CLOSURE']);
+const shaPattern = /^[0-9a-f]{40}$/u;
+const digestPattern = /^sha256:[0-9a-f]{64}$/u;
 
 function normalizedCommands(commands = []) {
   return commands.map(({ id, category, command, required }) => ({ id, category, command, required: Boolean(required) }));
@@ -39,6 +47,81 @@ function validateRemediation(remediation) {
     uniquePaths.add(path);
   }
   if (normalizedCommands(remediation.commands).length === 0) fail('DERIVED_COMMAND_SET_MISMATCH', `remediation ${remediation.id} has no commands`);
+  if (remediation.closurePolicy !== undefined) validateRemediationClosurePolicy(remediation);
+}
+
+function validateSafePathList(paths, code, label) {
+  if (!Array.isArray(paths) || paths.length === 0) fail(code, `${label} missing`);
+  const unique = new Set();
+  for (const path of paths) {
+    if (typeof path !== 'string' || !path || path.startsWith('/') || /^[A-Za-z]:/u.test(path) || path.split('/').includes('..')) fail(code, `unsafe ${label} path ${String(path)}`);
+    if (unique.has(path)) fail(code, `duplicate ${label} path ${path}`);
+    unique.add(path);
+  }
+}
+
+export function validateRemediationClosurePolicy(remediation) {
+  const policy = remediation?.closurePolicy;
+  if (!policy || typeof policy !== 'object' || Array.isArray(policy)) fail('REMEDIATION_CLOSURE_POLICY_INVALID', `${remediation?.id ?? 'unknown'} missing closurePolicy`);
+  const allowedKeys = new Set(['kind', 'remediationId', 'branch', 'stage', 'status', 'candidate', 'closure', 'requestAllowedPaths', 'allowedPaths']);
+  const unexpected = Object.keys(policy).filter((key) => !allowedKeys.has(key));
+  if (unexpected.length > 0) fail('REMEDIATION_CLOSURE_POLICY_INVALID', `unexpected ${unexpected.join(',')}`);
+  if (!remediationClosureKinds.has(policy.kind)) fail('REMEDIATION_CLOSURE_KIND_INVALID', String(policy.kind));
+  if (policy.remediationId !== remediation.id) fail('REMEDIATION_ID_MISMATCH', `${policy.remediationId}/${remediation.id}`);
+  if (policy.branch !== remediation.branch) fail('REMEDIATION_BRANCH_MISMATCH', `${policy.branch}/${remediation.branch}`);
+  if (!remediationClosureStages.has(policy.stage) || remediationClosureStages.get(policy.stage) !== policy.status) fail('REMEDIATION_CLOSURE_STATE_INVALID', `${policy.stage}/${policy.status}`);
+  validateSafePathList(policy.requestAllowedPaths, 'REMEDIATION_CLOSURE_POLICY_INVALID', 'requestAllowedPaths');
+  validateSafePathList(policy.allowedPaths, 'REMEDIATION_CLOSURE_POLICY_INVALID', 'allowedPaths');
+  const forbidden = ['specs/001-fundamental-analysis-platform/tasks.md', 'implementation-control/IMPLEMENTATION_STATE.json', 'implementation-control/TASK_SOURCE_LOCK.json', 'implementation-control/IMPLEMENTATION_BATCH_MAP.json'];
+  if (policy.allowedPaths.some((path) => forbidden.includes(path) || path.startsWith('implementation-control/batches/') || path.startsWith('.specify/') || path.startsWith('src/') || path.startsWith('workers/'))) fail('REMEDIATION_CLOSURE_POLICY_INVALID', 'forbidden closure path');
+  if (policy.stage === 'candidate' && (policy.candidate !== null || policy.closure !== null)) fail('REMEDIATION_CLOSURE_STATE_INVALID', 'candidate stage must not reuse candidate or closure');
+  if (policy.stage !== 'candidate') {
+    for (const field of ['sha', 'runId', 'artifactId', 'artifactName', 'artifactDigest']) if (policy.candidate?.[field] === undefined || policy.candidate?.[field] === null || policy.candidate?.[field] === '') fail('REMEDIATION_CANDIDATE_REFERENCE_INCOMPLETE', field);
+    if (!/^[0-9a-f]{40}$/u.test(policy.candidate.sha) || !/^sha256:[0-9a-f]{64}$/u.test(policy.candidate.artifactDigest)) fail('REMEDIATION_CANDIDATE_REFERENCE_INVALID');
+  }
+  if (policy.stage === 'closure' && (!policy.closure || typeof policy.closure.requestedAt !== 'string')) fail('REMEDIATION_CLOSURE_REQUEST_INVALID', 'closure request metadata missing');
+  if (policy.stage === 'completed') {
+    for (const field of ['candidateSha', 'requestSha', 'runId', 'completedAt']) if (policy.closure?.[field] === undefined || policy.closure?.[field] === null || policy.closure?.[field] === '') fail('REMEDIATION_CLOSURE_COMPLETION_INVALID', field);
+    if (policy.closure.candidateSha !== policy.candidate.sha || !/^[0-9a-f]{40}$/u.test(policy.closure.requestSha)) fail('REMEDIATION_CLOSURE_COMPLETION_INVALID', 'identity');
+  }
+  return policy;
+}
+
+export function resolveGitHubClosureContext({ branch, handoff }) {
+  if (typeof branch !== 'string' || !branch) fail('OPERATION_BRANCH_MISMATCH', 'branch missing');
+  validateOperation(handoff.operation);
+  if (!Array.isArray(handoff.remediations)) fail('OPERATION_KIND_INVALID', 'missing remediations');
+  const ids = new Set(); const branches = new Set();
+  for (const remediation of handoff.remediations) {
+    validateRemediation(remediation);
+    if (ids.has(remediation.id) || branches.has(remediation.branch)) fail('REMEDIATION_AMBIGUOUS', `${remediation.id}/${remediation.branch}`);
+    ids.add(remediation.id); branches.add(remediation.branch);
+  }
+  const matches = handoff.remediations.filter((remediation) => remediation.branch === branch);
+  if (matches.length > 1 || (matches.length === 1 && handoff.operation.branch === branch)) fail('REMEDIATION_AMBIGUOUS', branch);
+  const pending = handoff.remediations.filter((remediation) => remediation.closurePolicy?.stage === 'closure');
+  if (pending.length > 1) fail('REMEDIATION_AMBIGUOUS', 'multiple pending remediation closures');
+  if (pending.length === 1 && matches[0]?.id !== pending[0].id) fail('REMEDIATION_BRANCH_MISMATCH', `${branch}/${pending[0].branch}`);
+  if (matches.length === 1) {
+    const remediation = matches[0]; const policy = remediation.closurePolicy;
+    if (!policy) return { closureType: 'NOT_APPLICABLE', branch, remediationId: remediation.id, remediationMode: remediation.mode, policyStage: null, policyStatus: null };
+    return {
+      closureType: policy.stage === 'closure' ? 'REMEDIATION_CLOSURE' : 'NOT_APPLICABLE',
+      branch,
+      remediationId: remediation.id,
+      remediationMode: remediation.mode,
+      policyStage: policy.stage,
+      policyStatus: policy.status,
+      requestAllowedPaths: [...policy.requestAllowedPaths],
+      allowedPaths: [...policy.allowedPaths],
+      candidate: policy.candidate,
+      historicalBatchFallbackAllowed: false,
+    };
+  }
+  if (branch === handoff.operation.branch && handoff.operation.stage === 'closure') return {
+    closureType: 'BATCH_CLOSURE', branch, operationId: handoff.operation.id, activeBatchId: handoff.operation.activeBatchId,
+  };
+  return { closureType: 'NOT_APPLICABLE', branch, remediationId: null, remediationMode: null, policyStage: null, policyStatus: null };
 }
 
 export function validateRemediationScope(changedPaths, allowedPaths) {
@@ -48,6 +131,51 @@ export function validateRemediationScope(changedPaths, allowedPaths) {
   const rejected = normalized.filter((path) => !allowed.has(path));
   if (rejected.length > 0) fail('MAINTENANCE_SCOPE_MISMATCH', rejected.join(','));
   return { allowedPaths: [...allowedPaths], changedPaths: normalized, valid: true };
+}
+
+export function resolveGitHubReleasePublicationContext({ handoff }) {
+  const operation = handoff?.operation;
+  const release = handoff?.release;
+  const base = {
+    enabled: false,
+    reason: 'NOT_APPLICABLE',
+    operationKind: operation?.kind ?? null,
+    operationStage: operation?.stage ?? null,
+    releasePending: release?.pending === true,
+    operationBranch: operation?.branch ?? null,
+    tag: release?.tag ?? null,
+    zipName: release?.zipName ?? null,
+  };
+
+  if (operation?.kind !== 'RELEASE_REMEDIATION') return { ...base, reason: 'OPERATION_KIND_NOT_RELEASE_REMEDIATION' };
+  if (operation?.stage !== 'completed') return { ...base, reason: 'OPERATION_STAGE_NOT_COMPLETED' };
+  if (release?.pending !== true) return { ...base, reason: 'RELEASE_NOT_PENDING' };
+
+  const invalid = [];
+  if (typeof operation.branch !== 'string' || !operation.branch.trim()) invalid.push('operation.branch');
+  const candidate = handoff?.candidate;
+  for (const field of ['sha', 'runId', 'artifactId', 'artifactName', 'artifactDigest']) {
+    if (candidate?.[field] === undefined || candidate?.[field] === null || candidate?.[field] === '') invalid.push(`candidate.${field}`);
+  }
+  if (candidate?.sha !== undefined && !shaPattern.test(candidate.sha)) invalid.push('candidate.sha');
+  if (candidate?.artifactDigest !== undefined && !digestPattern.test(candidate.artifactDigest)) invalid.push('candidate.artifactDigest');
+
+  const closure = handoff?.closure;
+  if (closure?.status !== 'COMPLETED') invalid.push('closure.status');
+  for (const field of ['candidateSha', 'commitSha', 'runId', 'artifactId', 'artifactName', 'artifactDigest']) {
+    if (closure?.[field] === undefined || closure?.[field] === null || closure?.[field] === '') invalid.push(`closure.${field}`);
+  }
+  if (candidate?.sha && closure?.candidateSha !== candidate.sha) invalid.push('closure.candidateSha');
+  if (closure?.commitSha !== undefined && !shaPattern.test(closure.commitSha)) invalid.push('closure.commitSha');
+  if (closure?.artifactDigest !== undefined && !digestPattern.test(closure.artifactDigest)) invalid.push('closure.artifactDigest');
+
+  for (const field of ['tag', 'packageRevision', 'zipName', 'sidecarName']) {
+    if (typeof release?.[field] !== 'string' || !release[field].trim()) invalid.push(`release.${field}`);
+  }
+  if (handoff?.productState?.convergenceAuthorized !== false) invalid.push('productState.convergenceAuthorized');
+  if (invalid.length > 0) fail('RELEASE_PUBLICATION_AUTHORITY_INCOMPLETE', invalid.join(','));
+
+  return { ...base, enabled: true, reason: 'COMPLETED_RELEASE_AUTHORITY' };
 }
 
 function validateGates(state) {
@@ -136,6 +264,18 @@ export async function loadAndResolveGitHubContext(projectRoot, branch) {
 
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
   const branch = process.argv[2] ?? process.env.GITHUB_HEAD_REF ?? process.env.GITHUB_REF_NAME;
+  if (process.argv.includes('--closure')) {
+    const handoff = JSON.parse(await readFile(join(resolve(process.cwd()), 'implementation-control/GITHUB_HANDOFF.json'), 'utf8'));
+    const context = resolveGitHubClosureContext({ branch, handoff });
+    console.log(JSON.stringify(context, null, 2));
+    process.exit(0);
+  }
+  if (process.argv.includes('--release-publication')) {
+    const handoff = JSON.parse(await readFile(join(resolve(process.cwd()), 'implementation-control/GITHUB_HANDOFF.json'), 'utf8'));
+    const context = resolveGitHubReleasePublicationContext({ handoff });
+    console.log(JSON.stringify(context, null, 2));
+    process.exit(0);
+  }
   const context = await loadAndResolveGitHubContext(process.cwd(), branch);
   console.log(JSON.stringify({ ...context, derivedRequiredCommandCount: context.commands.filter(({ required }) => required).length, commandsExecuted: false }, null, 2));
 }

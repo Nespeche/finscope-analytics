@@ -1,4 +1,6 @@
-import { copyFile, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { execFile } from 'node:child_process';
+import { mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { promisify } from 'node:util';
 import { basename, dirname, join, relative, resolve } from 'node:path';
 import {
   canonicalTreeHash,
@@ -13,29 +15,109 @@ import {
 } from './GitHub-Common.mjs';
 
 const out = resolve(process.argv[2] ?? '.finscope-release');
-await rm(out, { recursive: true, force: true });
-await mkdir(out, { recursive: true });
+const execGit = promisify(execFile);
+const ZIP_BACKEND_TIMEOUT_MS = 120_000;
+
+// B21_WINDOWS_ZIP_BACKEND_FIX_V1
+async function runExecutable(executable, args, options = {}) {
+  const startedAt = now();
+  const started = Date.now();
+  try {
+    const result = await execGit(executable, args, {
+      cwd: options.cwd ?? root,
+      env: { ...process.env, ...(options.env ?? {}) },
+      encoding: 'buffer',
+      maxBuffer: 64 * 1024 * 1024,
+      timeout: options.timeoutMs ?? ZIP_BACKEND_TIMEOUT_MS,
+      killSignal: 'SIGTERM',
+      windowsHide: true,
+    });
+    return {
+      command: [executable, ...args].map((item) => JSON.stringify(String(item))).join(' '),
+      startedAt,
+      finishedAt: now(),
+      durationMs: Date.now() - started,
+      exitCode: 0,
+      timedOut: false,
+      stdout: Buffer.from(result.stdout ?? []),
+      stderr: Buffer.from(result.stderr ?? []),
+    };
+  } catch (error) {
+    const timedOut = error?.killed === true || error?.code === 'ETIMEDOUT';
+    const code = timedOut
+      ? 124
+      : Number.isInteger(error?.code)
+      ? error.code
+      : error?.code === 'ENOENT'
+        ? 127
+        : 1;
+    return {
+      command: [executable, ...args].map((item) => JSON.stringify(String(item))).join(' '),
+      startedAt,
+      finishedAt: now(),
+      durationMs: Date.now() - started,
+      exitCode: code,
+      timedOut,
+      stdout: Buffer.from(error?.stdout ?? []),
+      stderr: Buffer.from(error?.stderr ?? error?.stack ?? String(error)),
+    };
+  }
+}
+
+function temporaryReason(path) {
+  const lower = path.toLocaleLowerCase('en-US');
+  const name = lower.split('/').at(-1) ?? lower;
+  const normativeReport = lower.startsWith('implementation-control/reports/') || /^specs\/[^/]+\/reports\//u.test(lower);
+  if (/^github-context.*\.json$/u.test(name)) return 'GITHUB_CONTEXT_OUTPUT';
+  if (['github_output', 'github_env'].includes(name)) return 'GITHUB_ACTIONS_COMMAND_FILE';
+  if (/(?:~|\.tmp|\.temp|\.bak|\.swp)$/u.test(name)) return 'TEMPORARY_SUFFIX';
+  if (!normativeReport && (/\.(?:log|trace)$/u.test(name) || /(?:diagnostic|intermediate)/u.test(name))) return 'TRANSIENT_DIAGNOSTIC';
+  if (/(^|\/)(?:node_modules|dist|coverage|playwright-report|test-results|\.wrangler|\.vite|\.cache|__pycache__)(\/|$)/u.test(lower)) return 'REGENERABLE_DIRECTORY';
+  if (/(^|\/)\.finscope-/u.test(lower)) return 'UNAUTHORIZED_FINSCOPE_OUTPUT';
+  if (/\.zip$/u.test(lower)) return 'NESTED_ZIP';
+  return null;
+}
+
+async function rejectTemporaryFiles(directory, phase) {
+  const rejected = [];
+  for (const absolute of await listFiles(directory)) {
+    const path = posix(relative(directory, absolute));
+    const reason = temporaryReason(path);
+    if (reason) rejected.push({ path, reason });
+  }
+  if (rejected.length) throw new Error(`COMPLETED_PACKAGE_DENYLIST_${phase}:${JSON.stringify(rejected)}`);
+}
 
 const headResult = await run('git rev-parse HEAD', { cwd: root });
 const releaseCommitSha = headResult.exitCode === 0 ? headResult.stdout.toString('utf8').trim().toLowerCase() : '';
 if (!/^[0-9a-f]{40}$/u.test(releaseCommitSha)) throw new Error('RELEASE_CHECKED_OUT_SHA_INVALID');
+if (process.env.FINSCOPE_EXPECTED_COMMIT_SHA && process.env.FINSCOPE_EXPECTED_COMMIT_SHA.toLowerCase() !== releaseCommitSha) throw new Error('RELEASE_CHECKOUT_COMMIT_MISMATCH');
+for (const command of ['git status --porcelain=v1 --untracked-files=all', 'git diff --exit-code', 'git diff --cached --exit-code']) {
+  const inspection = await run(command, { cwd: root });
+  if (inspection.exitCode !== 0 || inspection.stdout.length > 0) throw new Error(`RELEASE_WORKTREE_NOT_CLEAN:${command}:${inspection.stdout.toString('utf8')}`);
+}
+
+await rm(out, { recursive: true, force: true });
+await mkdir(out, { recursive: true });
 
 const handoff = await readJson(join(root, 'implementation-control/GITHUB_HANDOFF.json'));
 const config = handoff.release;
 const operation = handoff.operation ?? { id: 'GH0', activeBatchId: 'B12', nextBatchId: 'B12', completedTasksThroughOnClosure: 'T048' };
 const rootName = handoff.baseline.root.replace(/\/$/u, '');
 const staging = join(out, 'staging', rootName);
-const excluded = new Set(['.git', 'node_modules', 'dist', 'coverage', 'playwright-report', 'test-results', '.wrangler', '.vite', '.finscope-evidence', '.finscope-release']);
-
 await mkdir(staging, { recursive: true });
-for (const source of await listFiles(root, [...excluded])) {
-  const rel = posix(relative(root, source));
-  if (rel.startsWith('.finscope-release/')) continue;
-  if (/\.zip(?:\.sha256)?$/iu.test(rel)) continue;
+const tree = await execGit('git', ['ls-tree', '-r', '-z', releaseCommitSha], { cwd: root, encoding: 'buffer', maxBuffer: 32 * 1024 * 1024 });
+for (const record of Buffer.from(tree.stdout).toString('utf8').split('\0').filter(Boolean)) {
+  const match = /^(\d{6}) (\w+) ([0-9a-f]{40})\t([\s\S]+)$/u.exec(record);
+  if (!match || match[2] !== 'blob') throw new Error(`RELEASE_GIT_TREE_ENTRY_INVALID:${record}`);
+  if (match[1] === '120000') throw new Error(`RELEASE_GIT_SYMLINK_FORBIDDEN:${match[4]}`);
+  const rel = posix(match[4]);
   const destination = join(staging, rel);
   await mkdir(dirname(destination), { recursive: true });
-  await copyFile(source, destination);
+  const blob = await execGit('git', ['cat-file', 'blob', match[3]], { cwd: root, encoding: 'buffer', maxBuffer: 64 * 1024 * 1024 });
+  await writeFile(destination, blob.stdout);
 }
+await rejectTemporaryFiles(staging, 'BEFORE_GENERATION');
 
 const statePath = join(staging, 'implementation-control/IMPLEMENTATION_STATE.json');
 const metadataPath = join(staging, 'PACKAGE_METADATA.json');
@@ -283,6 +365,7 @@ await writeJson(metadataPath, metadata);
 const oldInventory = await readJson(join(staging, 'PACKAGE_INVENTORY.json'));
 const oldMap = new Map((oldInventory.files ?? []).map((item) => [item.path, item]));
 const inventorySources = await listFiles(staging, ['PACKAGE_INVENTORY.json', 'FILE_MANIFEST.sha256']);
+await rejectTemporaryFiles(staging, 'BEFORE_INVENTORY');
 const inventoryFiles = [];
 function media(path) {
   if (path.endsWith('.json')) return 'application/json';
@@ -319,6 +402,7 @@ const inventory = {
 await writeJson(join(staging, 'PACKAGE_INVENTORY.json'), inventory);
 
 const manifestFiles = await listFiles(staging, ['PACKAGE_INVENTORY.json', 'FILE_MANIFEST.sha256']);
+await rejectTemporaryFiles(staging, 'BEFORE_MANIFEST');
 const lines = [];
 for (const absolute of manifestFiles) lines.push(`${await shaFile(absolute)}  ${posix(relative(staging, absolute))}`);
 await writeFile(join(staging, 'FILE_MANIFEST.sha256'), `${lines.join('\n')}\n`, 'utf8');
@@ -331,13 +415,44 @@ await writeFile(join(out, 'control-plane.stderr.log'), control.stderr);
 if (control.exitCode !== 0) throw new Error(`CONTROL_PLANE_FAILED:${control.exitCode}`);
 
 const zipPath = join(out, config.zipName);
-const zip = await run(`cd "${dirname(staging)}" && zip -X -q -r "${zipPath}" "${rootName}"`, { cwd: root });
-if (zip.exitCode !== 0) throw new Error(`ZIP_CREATE_FAILED:${zip.stderr.toString()}`);
+if (basename(config.zipName) !== config.zipName) throw new Error('ZIP_CREATE_FAILED:ZIP_NAME_NOT_BASENAME');
+const archiveCwd = dirname(staging);
+const archiveTarget = posix(relative(archiveCwd, zipPath));
+const expectedArchiveTarget = `../${config.zipName}`;
+if (archiveTarget !== expectedArchiveTarget) {
+  throw new Error(`ZIP_CREATE_FAILED:ARCHIVE_TARGET_INVALID:${archiveTarget}`);
+}
+
+const zipProbe = await runExecutable('zip', ['-v'], { cwd: root });
+let zip;
+if (zipProbe.exitCode === 0) {
+  zip = await runExecutable('zip', ['-X', '-q', '-r', archiveTarget, rootName], { cwd: archiveCwd });
+} else if (process.platform === 'win32') {
+  const windowsRoot = process.env.SystemRoot ?? process.env.WINDIR;
+  if (!windowsRoot) throw new Error('ZIP_CREATE_FAILED:WINDOWS_ROOT_UNAVAILABLE');
+  const windowsTar = join(windowsRoot, 'System32', 'tar.exe');
+  try {
+    await stat(windowsTar);
+  } catch {
+    throw new Error(`ZIP_CREATE_FAILED:WINDOWS_BSDTAR_UNAVAILABLE:${windowsTar}`);
+  }
+  zip = await runExecutable(windowsTar, ['-a', '-c', '-f', archiveTarget, rootName], { cwd: archiveCwd });
+} else {
+  throw new Error('ZIP_CREATE_FAILED:ZIP_EXECUTABLE_UNAVAILABLE');
+}
+if (zip.timedOut) throw new Error(`ZIP_CREATE_FAILED:ZIP_BACKEND_TIMEOUT:${zip.durationMs}`);
+if (zip.exitCode !== 0) throw new Error(`ZIP_CREATE_FAILED:${zip.stderr.toString('utf8')}`);
+
+const zipHeader = await readFile(zipPath);
+const zipSignature = zipHeader.subarray(0, 4).toString('hex');
+if (!new Set(['504b0304', '504b0506', '504b0708']).has(zipSignature)) {
+  throw new Error(`ZIP_CREATE_FAILED:INVALID_ZIP_SIGNATURE:${zipSignature}`);
+}
 const zipSha = await shaFile(zipPath);
 const sidecarPath = join(out, config.sidecarName);
 await writeFile(sidecarPath, `${zipSha}  ${config.zipName}\n`, 'utf8');
 
-const packageVerification = await run(`node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs "${zipPath}" "${sidecarPath}"`, { cwd: root });
+const packageVerification = await run(`node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs "${zipPath}" "${sidecarPath}" --git-root "${root}" --commit "${releaseCommitSha}" --tag "${config.tag}"`, { cwd: root });
 await writeFile(join(out, 'completed-package-verification.stdout.log'), packageVerification.stdout);
 await writeFile(join(out, 'completed-package-verification.stderr.log'), packageVerification.stderr);
 if (packageVerification.exitCode !== 0) throw new Error(`COMPLETED_PACKAGE_VERIFICATION_FAILED:${packageVerification.stderr.toString('utf8')}`);
@@ -366,6 +481,10 @@ const report = {
     inventoryItemCount: packageVerificationResult.inventoryItemCount,
     manifestItemCount: packageVerificationResult.manifestItemCount,
     sourceTasksSha256: state.sourceTasksSha256,
+    gitTreeComparisonExecuted: packageVerificationResult.gitTreeComparisonExecuted,
+    gitCommitCompared: packageVerificationResult.gitCommitCompared,
+    ordinaryFilesCompared: packageVerificationResult.ordinaryFilesCompared,
+    allowedGeneratedOutputs: packageVerificationResult.allowedGeneratedOutputs,
   },
   controlPlaneExitCode: control.exitCode,
   createdAt: now(),
