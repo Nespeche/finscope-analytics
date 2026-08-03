@@ -56,7 +56,11 @@ describe('GitHub transition context routing', () => {
   });
 
   it('rejects a historical baseline in ordinary routing', () => {
-    const value = input(); value.handoff.completedBaseline = structuredClone(value.handoff.baseline);
+    const value = input();
+    value.handoff.completedBaseline = {
+      ...structuredClone(value.handoff.completedBaseline),
+      role: 'HISTORICAL_OPERATION_BASELINE',
+    };
     expect(() => resolveGitHubContext(value)).toThrowError(/BASELINE_ROLE_MISMATCH/u);
   });
 
