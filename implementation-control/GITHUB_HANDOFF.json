@@ -23,8 +23,8 @@
   },
   "operation": {
     "id": "B21",
-    "kind": "BOOTSTRAP",
-    "branch": "agent/b21-cloudflare-worker",
+    "kind": "RELEASE_REMEDIATION",
+    "branch": "agent/b21-completed-release",
     "stage": "closure",
     "activeBatchId": "B21",
     "baselineRole": "CURRENT_COMPLETED_BASELINE",
@@ -103,13 +103,13 @@
     "artifactDigest": "sha256:ab8801f3cceccf7b55229176d6b9ca989bd4fee25fa9724096de76ad60809c00"
   },
   "closure": {
-    "status": "PENDING",
+    "status": "COMPLETED",
     "candidateSha": "ee8e1555916b2d1de8560e822a6ce4d6fe41cdff",
-    "commitSha": null,
-    "runId": null,
-    "artifactId": null,
-    "artifactName": null,
-    "artifactDigest": null
+    "commitSha": "3ab2edc52fa2a43bf52ff7b53f29423210ab64af",
+    "runId": 30813324398,
+    "artifactId": 8855660656,
+    "artifactName": "finscope-closure-3ab2edc52fa2-PASS",
+    "artifactDigest": "sha256:adb7b055cc9b69774bde5c98580a91e6e0eb7dc6b55c380588dcff23ea070fa3"
   },
   "release": {
     "pending": true,
@@ -123,9 +123,9 @@
     "notes": "B21 establishes deterministic Cloudflare Free budgets, quota degradation, redacted Worker observability, D1 and build guards, and bounded streaming evidence. B22 remains pending and convergenceAuthorized=false."
   },
   "productState": {
-    "activeBatchId": "B21",
-    "nextAuthorizedBatchId": "B21",
-    "completedTasksThrough": "T088",
+    "activeBatchId": "B22",
+    "nextAuthorizedBatchId": "B22",
+    "completedTasksThrough": "T095",
     "convergenceAuthorized": false
   }
 }
