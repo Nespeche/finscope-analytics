@@ -275,7 +275,7 @@ try {
   check('METADATA_REVISION', metadata.packageRevision === state.packageRevision, `${metadata.packageRevision}/${state.packageRevision}`);
   check('AUTHORITY_REVISION', authorityMatrix.packageRevision === state.packageRevision, `${authorityMatrix.packageRevision}/${state.packageRevision}`);
   check('METADATA_LOGICAL_NAME', metadata.logicalZipName === state.activePackageLogicalName, `${metadata.logicalZipName}/${state.activePackageLogicalName}`);
-  check('METADATA_ROOT_DIRECTORY', metadata.rootDirectory === projectRoot.split(sep).at(-1), `${metadata.rootDirectory}/${projectRoot.split(sep).at(-1)}`);
+  check('METADATA_ROOT_DIRECTORY', metadata.rootDirectory === 'FinScope_v0.21.4', `${metadata.rootDirectory}/logical-root-independent-of-checkout-directory`);
 
   const instructionText = await readText('implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt');
   check('INSTRUCTION_CHARACTER_COUNT', metadata.projectConfigurationInstructionCharacterCount === instructionText.length, `metadata=${metadata.projectConfigurationInstructionCharacterCount}; actual=${instructionText.length}`);

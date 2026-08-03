@@ -1,24 +1,22 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import { canonicalTreeHash, evidenceFiles, now, parseDiscovery, readJson, root, run, setOutput, shaBytes, shaFile, validateJsonFile, writeJson, writeManifest } from './GitHub-Common.mjs';
+import { loadAndResolveGitHubContext } from './Resolve-GitHubContext.mjs';
 
 const evidenceDir=join(root,'.finscope-evidence','validation'); await mkdir(join(evidenceDir,'logs'),{recursive:true});
 const startedAt=now(); const handoff=await readJson(join(root,'implementation-control/GITHUB_HANDOFF.json')); const state=await readJson(join(root,'implementation-control/IMPLEMENTATION_STATE.json'));
 const branch=process.env.GITHUB_HEAD_REF||process.env.GITHUB_REF_NAME||'local'; const headResult=await run('git rev-parse HEAD',{cwd:root}); const commitSha=headResult.exitCode===0?headResult.stdout.toString('utf8').trim().toLowerCase():'0'.repeat(40);
 const commitSubject=(await run('git log -1 --pretty=%s',{cwd:root})).stdout.toString('utf8').trim();
-const operation=handoff.operation??{id:handoff.bootstrap?.id??state.activeBatchId,kind:'BOOTSTRAP',branch:handoff.bootstrap?.branch??branch,stage:handoff.bootstrap?.stage??'candidate',activeBatchId:state.activeBatchId};
-const batchId=operation.activeBatchId??state.activeBatchId; const batch=await readJson(join(root,`implementation-control/batches/${batchId}.json`));
-const isOperationBranch=branch===operation.branch; const stage=operation.stage??'candidate'; const releaseRemediation=isOperationBranch&&operation.kind==='RELEASE_REMEDIATION';
-const mode=releaseRemediation?'RELEASE_REMEDIATION':isOperationBranch&&stage==='closure'?'BATCH_CLOSURE':isOperationBranch&&operation.kind==='BOOTSTRAP'?'GH0_BOOTSTRAP':'BATCH';
-const derivedBatchCommands=(batch.localValidation?.commands??[]).map(({id,category,command,required})=>({id,category,command,required:Boolean(required)}));
-const releaseQualificationCommands=(operation.qualificationCommands??[]).map(({id,category,command,required})=>({id,category,command,required:Boolean(required)}));
-const selectedCommands=mode==='BATCH_CLOSURE'?[]:releaseRemediation?releaseQualificationCommands:derivedBatchCommands;
-const declaredCommands=releaseRemediation?releaseQualificationCommands:derivedBatchCommands;
+let context; let contextFailure=null;
+try { context=await loadAndResolveGitHubContext(root,branch); } catch(error) { contextFailure=error; }
+const batchId=context?.batchId??state.activeBatchId; const batch=await readJson(join(root,`implementation-control/batches/${batchId}.json`));
+const mode=context?.mode??'UNRESOLVED'; const releaseRemediation=mode==='RELEASE_REMEDIATION';
+const selectedCommands=context?.commands??[]; const declaredCommands=selectedCommands;
 const controlStdout=join(root,'.finscope-evidence/preflight/control-plane.stdout.log'); const controlStderr=join(root,'.finscope-evidence/preflight/control-plane.stderr.log');
 const exitCodePath=join(root,'.finscope-evidence/preflight/control-plane.exit-code');
 let controlExit=1; try{controlExit=Number((await readFile(exitCodePath,'utf8')).trim());}catch{}
 const controlPlane={result:controlExit===0?'PASS':'FAIL',exitCode:controlExit,stdoutSha256:await shaFile(controlStdout),stderrSha256:await shaFile(controlStderr)};
-let releaseBaseline; try{releaseBaseline=await readJson(join(root,'.finscope-evidence/preflight/release-baseline.json'));}catch(error){releaseBaseline={result:'FAIL',tag:handoff.baseline.tag,zipName:handoff.baseline.zipName,sidecarName:handoff.baseline.sidecarName,zipSha256:handoff.baseline.zipSha256,assetIds:[],root:handoff.baseline.root.replace(/\/$/u,''),failure:String(error)};}
+let releaseBaseline; try{releaseBaseline=await readJson(join(root,'.finscope-evidence/preflight/release-baseline.json'));}catch(error){releaseBaseline={result:'FAIL',tag:context?.baselineTag??null,zipName:context?.baselineZipName??null,sidecarName:context?.baselineSidecarName??null,zipSha256:context?.baselineZipSha256??null,assetIds:[],root:context?.baselineRoot?.replace(/\/$/u,'')??null,failure:String(error)};}
 const specifyActual=await canonicalTreeHash(join(root,'.specify')); const specify={count:specifyActual.count,sha256:specifyActual.sha256,expectedSha256:state.specifyTreeSha256,byteIdentical:specifyActual.count===19&&specifyActual.sha256===state.specifyTreeSha256};
 const selfTests=[]; const record=(id,expected,observed,result)=>selfTests.push({id,expected,observed,result});
 record('COLLECTION_NULL','reject','reject',Array.isArray(null)?'FAIL':'PASS'); record('COLLECTION_EMPTY_STRING','reject','reject',Array.isArray('')?'FAIL':'PASS');
@@ -29,11 +27,12 @@ const hashObserved=shaBytes(Buffer.from('actual'))===shaBytes(Buffer.from('expec
 let primaryFailure=null; const executedCommands=[];
 function fail(code,detail){ if(!primaryFailure) primaryFailure={code,detail}; }
 if(headResult.exitCode!==0||!/^[0-9a-f]{40}$/u.test(commitSha)) fail('CHECKED_OUT_SHA_INVALID',headResult.stderr.toString('utf8'));
-if(controlPlane.result!=='PASS') fail('CONTROL_PLANE_FAILED',`exitCode=${controlExit}`);
+if(contextFailure) fail(contextFailure.code??'BATCH_AUTHORITY_MISMATCH',contextFailure.message);
+else if(controlPlane.result!=='PASS') fail('CONTROL_PLANE_FAILED',`exitCode=${controlExit}`);
 else if(releaseBaseline.result!=='PASS') fail('BASELINE_RELEASE_FAILED',releaseBaseline.failure??'unknown');
 else if(!specify.byteIdentical) fail('SPECIFY_MISMATCH',`${specify.count}/${specify.sha256}`);
 else if(selfTests.some((item)=>item.result!=='PASS')) fail('OPERATION_SELF_TEST_FAILED',JSON.stringify(selfTests.filter((item)=>item.result!=='PASS')));
-else if(releaseRemediation&&releaseQualificationCommands.length===0) fail('RELEASE_QUALIFICATION_COMMANDS_EMPTY','No release qualification commands were declared.');
+else if(releaseRemediation&&selectedCommands.length===0) fail('RELEASE_QUALIFICATION_COMMANDS_EMPTY','No release qualification commands were declared.');
 else if(mode==='GH0_BOOTSTRAP'&&commitSubject.includes('[GH0_EXPECT_FAIL_HASH]')) fail('QUALIFICATION_INJECTED_HASH_MISMATCH','Intentional bootstrap failure selected by the candidate commit subject.');
 
 for(const definition of selectedCommands){
@@ -46,7 +45,7 @@ for(const definition of selectedCommands){
 }
 const evidencePath=join(evidenceDir,'github-validation-evidence.json');
 selfTests.push({id:'EVIDENCE_SCHEMA_REREAD',expected:'PASS',observed:'PENDING',result:'PASS'});
-const evidence={schemaVersion:'1.0.0',result:primaryFailure?'FAIL':'PASS',mode,repository:process.env.GITHUB_REPOSITORY||handoff.repository,branch,commitSha,runId:process.env.GITHUB_RUN_ID??null,activeBatchId:batchId,browserRequired:releaseRemediation||mode==='BATCH_CLOSURE'?false:Boolean(batch.localValidation?.browserRequired),startedAt,finishedAt:now(),controlPlane,releaseBaseline:{result:releaseBaseline.result,tag:releaseBaseline.tag,zipName:releaseBaseline.zipName,sidecarName:releaseBaseline.sidecarName,zipSha256:releaseBaseline.zipSha256,assetIds:releaseBaseline.assetIds??[],root:releaseBaseline.root,failure:releaseBaseline.failure??null},specify,derivedBatchCommands:declaredCommands,executedCommands,selfTests,primaryFailure,files:[]};
+const evidence={schemaVersion:'1.0.0',result:primaryFailure?'FAIL':'PASS',mode,repository:process.env.GITHUB_REPOSITORY||handoff.repository,branch,commitSha,runId:process.env.GITHUB_RUN_ID??null,activeBatchId:batchId,batchAuthoritySource:context?.batchAuthoritySource??null,baselineRole:context?.baselineRole??null,operationMatched:context?.operationMatched??false,browserRequired:releaseRemediation||mode==='BATCH_CLOSURE'||mode==='CONTROL_PLANE_REMEDIATION'?false:Boolean(batch.localValidation?.browserRequired),startedAt,finishedAt:now(),controlPlane,releaseBaseline:{result:releaseBaseline.result,tag:releaseBaseline.tag,zipName:releaseBaseline.zipName,sidecarName:releaseBaseline.sidecarName,zipSha256:releaseBaseline.zipSha256,assetIds:releaseBaseline.assetIds??[],root:releaseBaseline.root,failure:releaseBaseline.failure??null},specify,derivedBatchCommands:declaredCommands,executedCommands,selfTests,primaryFailure,files:[]};
 await writeJson(evidencePath,evidence); evidence.files=(await evidenceFiles(evidenceDir)).filter((item)=>item.path!=='github-validation-evidence.json'); await writeJson(evidencePath,evidence);
 try{ await validateJsonFile(join(root,'implementation-control/schemas/github-validation-evidence.schema.json'),evidencePath); selfTests.find((item)=>item.id==='EVIDENCE_SCHEMA_REREAD').observed='PASS'; evidence.selfTests=selfTests; await writeJson(evidencePath,evidence); await validateJsonFile(join(root,'implementation-control/schemas/github-validation-evidence.schema.json'),evidencePath); }catch(error){ const schemaTest=selfTests.find((item)=>item.id==='EVIDENCE_SCHEMA_REREAD'); schemaTest.observed='FAIL'; schemaTest.result='FAIL'; fail('EVIDENCE_SCHEMA_INVALID',String(error)); evidence.result='FAIL'; evidence.primaryFailure=primaryFailure; evidence.selfTests=selfTests; await writeJson(evidencePath,evidence); }
 await writeManifest(evidenceDir); const artifactName=`finscope-github-validation-${commitSha.slice(0,12)}-${evidence.result==='PASS'?'PASS':'_FAILED'}`;

@@ -2,11 +2,22 @@
   "schemaVersion": "1.2.0",
   "repository": "Nespeche/finscope-analytics",
   "baseline": {
+    "role": "HISTORICAL_OPERATION_BASELINE",
     "tag": "v0.21.24-B19-completed",
     "commitSha": "fab10492f164d67725aa94efda17c9f83c7b005c",
     "zipName": "FS_v0.21.24_B19_completed.zip",
     "sidecarName": "FS_v0.21.24_B19_completed.zip.sha256",
     "zipSha256": "0f5cf8bd7708fd3f01c065451e99dc604ac8b244a3717c9a27eb7de1ce45b2b0",
+    "root": "FinScope_v0.21.4/",
+    "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
+  },
+  "completedBaseline": {
+    "role": "CURRENT_COMPLETED_BASELINE",
+    "tag": "v0.21.25-B20-completed",
+    "commitSha": "f9b7e9e589ced6af5d72722722898850f0cab3dc",
+    "zipName": "FS_v0.21.25_B20_completed.zip",
+    "sidecarName": "FS_v0.21.25_B20_completed.zip.sha256",
+    "zipSha256": "c18b1390c416b5c538e1b7cf704c610754e4cff2f3eeec8c2c08bc800b120fc6",
     "root": "FinScope_v0.21.4/",
     "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
   },
@@ -16,6 +27,7 @@
     "branch": "agent/b20-completed-release",
     "stage": "candidate",
     "activeBatchId": "B20",
+    "baselineRole": "HISTORICAL_OPERATION_BASELINE",
     "nextBatchId": "B21",
     "completedTasksThroughOnClosure": "T088",
     "qualificationCommands": [
@@ -31,6 +43,18 @@
         "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed.zip .finscope-release/FS_v0.21.25_B20_completed.zip.sha256",
         "required": true
       }
+    ]
+  },
+  "controlPlaneRemediation": {
+    "mode": "CONTROL_PLANE_REMEDIATION",
+    "branch": "agent/b20-b21-transition-hardening",
+    "commands": [
+      { "id": "npm-ci", "category": "dependencies", "command": "npm ci", "required": true },
+      { "id": "typecheck", "category": "static", "command": "npm run typecheck", "required": true },
+      { "id": "control-plane", "category": "control-plane", "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .", "required": true },
+      { "id": "transition-contract", "category": "contract", "command": "npm run test:contract -- tests/contract/control-plane-integrity.test.ts tests/contract/github-transition-routing.test.ts", "required": true },
+      { "id": "regression-vitest", "category": "regression", "command": "npm run test", "required": true },
+      { "id": "build", "category": "build", "command": "npm run build", "required": true }
     ]
   },
   "candidate": {
