@@ -134,10 +134,18 @@
         "kind": "REMEDIATION_CLOSURE",
         "remediationId": "b21-clean-completed-package-remediation",
         "branch": "agent/b21-clean-completed-package-remediation",
-        "stage": "candidate",
-        "status": "NOT_REQUESTED",
-        "candidate": null,
-        "closure": null,
+        "stage": "closure",
+        "status": "PENDING",
+        "candidate": {
+          "sha": "7be25f475d3fc4ee3075ac4b56818554d3c92db4",
+          "runId": 30840461597,
+          "artifactId": 8866567897,
+          "artifactName": "finscope-github-validation-7be25f475d3f-PASS",
+          "artifactDigest": "sha256:df7d474b82e682ed0f40a4f3c44b7a065bff7a3d0d6f5bf2d9ab810020062b6d"
+        },
+        "closure": {
+          "requestedAt": "2026-08-03T18:38:40.277Z"
+        },
         "requestAllowedPaths": [
           "implementation-control/GITHUB_HANDOFF.json",
           "implementation-control/CHANGE_LEDGER.md"
