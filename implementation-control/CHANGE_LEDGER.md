@@ -657,3 +657,9 @@
 - todos los comandos obligatorios del mirror B21 PASS;
 - T090, T091, T092, T093, T094, T095 y B21 pasan a `COMPLETED`; B22 queda `PENDING`;
 - cierre limitado a la allowlist y `convergenceAuthorized=false`.
+## 2026-08-03 — Atomic remediation-closure support
+
+- `Apply-GitHubRemediationClosure.mjs` prepares and commits the closure locally without pushing;
+- local verification now fails closed on apply/control-plane outcomes and rechecks allowlists, candidate evidence and immutable product/control-plane scopes;
+- `Finalize-GitHubRemediationClosure.mjs` performs the only remediation push with an exact request-SHA lease and confirms the remote closure SHA;
+- final PASS evidence is emitted only after remote confirmation; B21 remains `COMPLETED`, B22 remains `PENDING`, and `convergenceAuthorized=false`.

@@ -79,6 +79,17 @@ export function validateRemediationProductState(state) {
   return { b21Status: 'COMPLETED', b22Status: 'PENDING', convergenceAuthorized: false };
 }
 
+export function assertClosureWorkflowOutcomes({ applyOutcome, controlPlaneOutcome }) {
+  if (applyOutcome !== 'success') fail('REMEDIATION_CLOSURE_APPLY_FAILED', String(applyOutcome ?? 'missing'));
+  if (controlPlaneOutcome !== 'success') fail('REMEDIATION_CONTROL_PLANE_FAILED', String(controlPlaneOutcome ?? 'missing'));
+  return { localValidation: 'PASS', controlPlaneValidation: 'PASS' };
+}
+
+export function remediationClosureArtifactName(closureSha, result) {
+  const suffix = result === 'PASS' ? 'PASS' : result === 'NOT_APPLICABLE' ? 'NOT_APPLICABLE' : '_FAILED';
+  return `finscope-closure-${String(closureSha).slice(0, 12)}-${suffix}`;
+}
+
 export function buildCompletedRemediationPolicy(policy, { requestSha, runId, completedAt }) {
   assertCompleteRemediationCandidate(policy.candidate);
   if (policy.kind !== 'REMEDIATION_CLOSURE' || policy.stage !== 'closure' || policy.status !== 'PENDING') fail('REMEDIATION_CLOSURE_REQUEST_INVALID', `${policy.kind}/${policy.stage}/${policy.status}`);
@@ -221,10 +232,17 @@ export async function applyGitHubRemediationClosure() {
     `git commit -m "chore: close ${remediation.id} from authenticated evidence"`,
   ]) await command(commandText, 'REMEDIATION_CLOSURE_GIT_COMMAND_FAILED');
   const closureSha = (await command('git rev-parse HEAD', 'REMEDIATION_CLOSURE_COMMIT_INVALID')).toLowerCase();
-  await command(`git push origin HEAD:refs/heads/${branch}`, 'REMEDIATION_CLOSURE_PUSH_FAILED');
-  const applyContext = { result: 'PASS', closureType: 'REMEDIATION_CLOSURE', repository: handoff.repository, remediationId: remediation.id, remediationMode: remediation.mode, branch, candidate, requestSha, closureSha, runId, artifactExtractPath: extractPath, changedFiles: changed, allowedPaths: route.allowedPaths, productStateUnchanged: true, tasksUnchanged: true, batchesUnchanged: true, specifyByteIdentical: true, b21Status: 'COMPLETED', b22Status: 'PENDING', convergenceAuthorized: false };
+  const applyContext = {
+    result: 'PASS', closureType: 'REMEDIATION_CLOSURE', repository: handoff.repository,
+    remediationId: remediation.id, remediationMode: remediation.mode, branch, candidate,
+    requestSha, closureSha, candidateSha: candidate.sha, runId, artifactExtractPath: extractPath,
+    changedFiles: changed, allowedPaths: route.allowedPaths, remoteExpectedHead: requestSha,
+    prepared: true, pushed: false,
+    productStateUnchanged: true, tasksUnchanged: true, batchesUnchanged: true,
+    specifyByteIdentical: true, b21Status: 'COMPLETED', b22Status: 'PENDING', convergenceAuthorized: false,
+  };
   await writeJson(join(contextDirectory, 'remediation-closure-apply.json'), applyContext);
-  await Promise.all([setOutput('applied', 'true'), setOutput('detail', `REMEDIATION_CLOSURE_APPLIED:${closureSha}`), setOutput('closure_sha', closureSha)]);
+  await Promise.all([setOutput('applied', 'true'), setOutput('detail', `REMEDIATION_CLOSURE_PREPARED:${closureSha}`), setOutput('closure_sha', closureSha)]);
   console.log(JSON.stringify(applyContext, null, 2));
   return applyContext;
 }

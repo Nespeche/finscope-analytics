@@ -7,13 +7,20 @@ import handoffDocument from '../../implementation-control/GITHUB_HANDOFF.json';
 import stateDocument from '../../implementation-control/IMPLEMENTATION_STATE.json';
 import {
   assertCompleteRemediationCandidate,
+  assertClosureWorkflowOutcomes,
   assertExactAllowedPaths,
   buildCompletedRemediationPolicy,
   resolveRemediationClosureRequest,
   validateRemediationArtifactMetadata,
   validateRemediationCandidateEvidence,
   validateRemediationProductState,
+  remediationClosureArtifactName,
 } from '../../implementation-control/scripts/Apply-GitHubRemediationClosure.mjs';
+import {
+  assertPreparedFinalization,
+  buildConditionalPushCommand,
+  confirmRemotePush,
+} from '../../implementation-control/scripts/Finalize-GitHubRemediationClosure.mjs';
 import { resolveGitHubClosureContext } from '../../implementation-control/scripts/Resolve-GitHubContext.mjs';
 import { shaBytes, validateSchemaSubset, verifyManifest } from '../../implementation-control/scripts/GitHub-Common.mjs';
 
@@ -132,6 +139,19 @@ describe('remediation closure routing and authentication', () => {
     expect(await readFile('implementation-control/scripts/Apply-GitHubRemediationClosure.mjs', 'utf8')).toContain('git merge-base --is-ancestor');
   });
 
+  it('prepares and commits locally without pushing from the apply script', async () => {
+    const source = await readFile('implementation-control/scripts/Apply-GitHubRemediationClosure.mjs', 'utf8');
+    expect(source).toContain('git commit -m');
+    expect(source).toContain('prepared: true, pushed: false');
+    expect(source).not.toContain('git push');
+  });
+
+  it('fails closed when apply or control-plane outcomes are not success', () => {
+    expect(assertClosureWorkflowOutcomes({ applyOutcome: 'success', controlPlaneOutcome: 'success' })).toEqual({ localValidation: 'PASS', controlPlaneValidation: 'PASS' });
+    expect(() => assertClosureWorkflowOutcomes({ applyOutcome: 'failure', controlPlaneOutcome: 'success' })).toThrow(/APPLY_FAILED/u);
+    expect(() => assertClosureWorkflowOutcomes({ applyOutcome: 'success', controlPlaneOutcome: 'failure' })).toThrow(/CONTROL_PLANE_FAILED/u);
+  });
+
   it('rejects a closure request diff outside its exact allowlist', () => {
     const value = pendingInput();
     expect(() => assertExactAllowedPaths(['implementation-control/GITHUB_HANDOFF.json', 'src/app.ts'], value.remediation.closurePolicy.requestAllowedPaths, 'REMEDIATION_CLOSURE_REQUEST_ALLOWLIST_VIOLATION')).toThrow(/REQUEST_ALLOWLIST_VIOLATION/u);
@@ -183,6 +203,45 @@ describe('remediation closure routing and authentication', () => {
   });
 });
 
+describe('remediation closure atomic finalization', () => {
+  const requestSha = '3'.repeat(40); const closureSha = '4'.repeat(40);
+  const applyContext = {
+    result: 'PASS', prepared: true, pushed: false, requestSha, closureSha, candidateSha: '1'.repeat(40),
+    remoteExpectedHead: requestSha, branch,
+  };
+  const localContext = { result: 'PASS', localValidation: 'PASS', controlPlaneValidation: 'PASS', requestSha, closureSha, branch };
+
+  it('rejects a remote branch that moved away from requestSha', () => {
+    expect(() => assertPreparedFinalization({ applyContext, localContext, localHead: closureSha, remoteHead: '5'.repeat(40) })).toThrow(/REMOTE_HEAD_MOVED/u);
+  });
+
+  it('refuses finalization unless local and control-plane validation are PASS', () => {
+    expect(() => assertPreparedFinalization({ applyContext, localContext: { ...localContext, controlPlaneValidation: 'FAIL' }, localHead: closureSha, remoteHead: requestSha })).toThrow(/LOCAL_VALIDATION_NOT_PASS/u);
+  });
+
+  it('uses force-with-lease bound to requestSha and never an unleased force', () => {
+    const command = buildConditionalPushCommand({ branch, requestSha, closureSha });
+    expect(command).toContain(`--force-with-lease="refs/heads/${branch}:${requestSha}"`);
+    expect(command).not.toMatch(/\s--force\s/u);
+  });
+
+  it('accepts only a post-push remote read equal to closureSha', () => {
+    expect(confirmRemotePush(closureSha, closureSha)).toEqual({ remotePushValidation: 'PASS', remoteBranchVerified: true, remoteHeadSha: closureSha });
+    expect(() => confirmRemotePush(requestSha, closureSha)).toThrow(/REMOTE_PUSH_NOT_CONFIRMED/u);
+  });
+
+  it('queries the remote both before and after the conditional push', async () => {
+    const source = await readFile('implementation-control/scripts/Finalize-GitHubRemediationClosure.mjs', 'utf8');
+    expect(source.match(/await readRemoteBranchHead\(/gu)).toHaveLength(2);
+    expect(source.indexOf('const confirmedRemoteHead')).toBeGreaterThan(source.indexOf('buildConditionalPushCommand'));
+  });
+
+  it('never names a failed artifact PASS', () => {
+    expect(remediationClosureArtifactName(closureSha, 'FAIL')).toMatch(/_FAILED$/u);
+    expect(remediationClosureArtifactName(closureSha, 'FAIL')).not.toMatch(/-PASS$/u);
+  });
+});
+
 const remediationClosureEvidenceSchema = JSON.parse(await readFile('implementation-control/schemas/github-remediation-closure-evidence.schema.json', 'utf8'));
 
 describe('remediation closure evidence schema contract', () => {
@@ -197,6 +256,8 @@ describe('remediation closure evidence schema contract', () => {
     changedFiles: ['implementation-control/GITHUB_HANDOFF.json'], closureAllowedPaths: ['implementation-control/GITHUB_HANDOFF.json'],
     productStateUnchanged: true, tasksUnchanged: true, batchesUnchanged: true, specifyByteIdentical: true,
     b21Status: 'COMPLETED', b22Status: 'PENDING', convergenceAuthorized: false,
+    localValidation: 'PASS', controlPlaneValidation: 'PASS', remotePushValidation: 'PASS',
+    remoteBranchVerified: true, remoteHeadSha: '4'.repeat(40),
     checkedAt: '2026-08-03T13:00:00.000Z', primaryFailure: null, details: [],
   };
   const dependencyFree = (value: unknown) => validateSchemaSubset(schema, value, '$', schema, []).length === 0;
@@ -211,6 +272,9 @@ describe('remediation closure evidence schema contract', () => {
     expect(dependencyFree({ ...valid, result: 'UNKNOWN' })).toBe(false);
     expect(ajv({ ...valid, productStateUnchanged: false })).toBe(false);
     expect(dependencyFree({ ...valid, productStateUnchanged: false })).toBe(false);
+    expect(ajv({ ...valid, remoteBranchVerified: false })).toBe(false);
+    expect(dependencyFree({ ...valid, remoteHeadSha: null })).toBe(false);
+    expect(ajv({ ...valid, controlPlaneValidation: 'FAIL' })).toBe(false);
   });
 
   it('rejects a manifest with invalid bytes', async () => {

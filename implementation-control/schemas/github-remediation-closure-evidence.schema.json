@@ -32,6 +32,11 @@
     "b21Status",
     "b22Status",
     "convergenceAuthorized",
+    "localValidation",
+    "controlPlaneValidation",
+    "remotePushValidation",
+    "remoteBranchVerified",
+    "remoteHeadSha",
     "checkedAt",
     "primaryFailure",
     "details"
@@ -71,6 +76,11 @@
     "b21Status": { "enum": ["COMPLETED", "PENDING", "UNKNOWN"] },
     "b22Status": { "enum": ["PENDING", "COMPLETED", "UNKNOWN"] },
     "convergenceAuthorized": { "const": false },
+    "localValidation": { "$ref": "#/$defs/checkResult" },
+    "controlPlaneValidation": { "$ref": "#/$defs/checkResult" },
+    "remotePushValidation": { "$ref": "#/$defs/checkResult" },
+    "remoteBranchVerified": { "type": "boolean" },
+    "remoteHeadSha": { "$ref": "#/$defs/nullableSha" },
     "checkedAt": { "type": "string", "minLength": 1 },
     "primaryFailure": {
       "type": ["object", "null"],
@@ -91,6 +101,8 @@
       "properties": {
         "result": { "const": "PASS" },
         "mode": { "const": "REMEDIATION_CLOSURE" },
+        "remediationId": { "type": "string", "minLength": 1 },
+        "remediationMode": { "enum": ["CONTROL_PLANE_REMEDIATION", "MAINTENANCE_REMEDIATION"] },
         "candidateSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
         "closureRequestSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
         "closureCommitSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
@@ -108,9 +120,14 @@
         "specifyByteIdentical": { "const": true },
         "b21Status": { "const": "COMPLETED" },
         "b22Status": { "const": "PENDING" },
+        "localValidation": { "const": "PASS" },
+        "controlPlaneValidation": { "const": "PASS" },
+        "remotePushValidation": { "const": "PASS" },
+        "remoteBranchVerified": { "const": true },
+        "remoteHeadSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
         "primaryFailure": { "const": null }
       },
-      "required": ["candidateSha", "closureRequestSha", "closureCommitSha", "candidateRunId", "artifactId", "artifactName", "artifactDigest"]
+      "required": ["remediationId", "remediationMode", "candidateSha", "closureRequestSha", "closureCommitSha", "candidateRunId", "artifactId", "artifactName", "artifactDigest", "remoteHeadSha"]
     },
     {
       "properties": {

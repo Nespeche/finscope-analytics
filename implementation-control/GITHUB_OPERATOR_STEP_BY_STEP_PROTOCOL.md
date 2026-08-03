@@ -68,8 +68,10 @@ Una respuesta general sin rutas, comandos, resultados esperados, condición de d
 1. Resolver `node implementation-control/scripts/Resolve-GitHubContext.mjs "$GITHUB_HEAD_REF" --closure` hacia `$RUNNER_TEMP/finscope-context`.
 2. En `candidate/NOT_REQUESTED`, registrar `NOT_APPLICABLE` y detener el cierre sin invocar ningún aplicador.
 3. Una futura solicitud humana debe cambiar únicamente las rutas de `closurePolicy.requestAllowedPaths`, declarar `closure/PENDING` y cargar el candidato propio exacto.
-4. Despachar `Apply-GitHubBatchClosure.mjs` solo para `BATCH_CLOSURE` y `Apply-GitHubRemediationClosure.mjs` solo para `REMEDIATION_CLOSURE`.
+4. Despachar `Apply-GitHubBatchClosure.mjs` solo para `BATCH_CLOSURE` y `Apply-GitHubRemediationClosure.mjs` solo para `REMEDIATION_CLOSURE`; el aplicador de remediación crea el commit local y no ejecuta push.
 5. Para una remediación, autenticar ancestry, run, artifact, digest, manifest, ambos validadores de schema, comandos requeridos y baseline B20; comprobar B21 `COMPLETED`, B22 `PENDING` y `convergenceAuthorized=false`.
-6. Permitir únicamente `GITHUB_HANDOFF.json`, `CHANGE_LEDGER.md` y los dos reportes declarados por la `closurePolicy`. No promover tareas o lotes.
-7. Conservar artifacts `_FAILED`, corregir mediante commit nuevo y workflow completo nuevo; no usar `Re-run jobs`.
+6. Ejecutar control plane y verificación local; cualquier outcome distinto de `success`, contexto faltante o cambio en tareas, `IMPLEMENTATION_STATE`, batches, producto o `.specify` bloquea la finalización.
+7. Ejecutar `Finalize-GitHubRemediationClosure.mjs` solo tras PASS local. Debe exigir que HEAD local sea el closure SHA, que la rama remota siga en request SHA, usar `force-with-lease` y volver a confirmar el closure SHA remoto.
+8. Generar y subir evidencia PASS únicamente después de esa confirmación remota. Permitir únicamente `GITHUB_HANDOFF.json`, `CHANGE_LEDGER.md` y los dos reportes declarados por la `closurePolicy`. No promover tareas o lotes.
+9. Conservar artifacts `_FAILED`, corregir mediante commit nuevo y workflow completo nuevo; no usar `Re-run jobs`.
 5. Conservar cualquier evidencia `_FAILED`; corregir con commit nuevo y ejecución completa nueva, sin `Re-run jobs`.
