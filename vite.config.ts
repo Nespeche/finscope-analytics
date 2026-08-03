@@ -49,6 +49,17 @@ export default defineConfig({
     manifest: true,
     reportCompressedSize: true,
     sourcemap: true,
+    rolldownOptions: {
+      output: {
+        codeSplitting: {
+          groups: [{
+            name: 'vendor',
+            test: /node_modules[\\/]/,
+            priority: 10,
+          }],
+        },
+      },
+    },
   },
   server: {
     host: '127.0.0.1',

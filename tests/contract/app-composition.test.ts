@@ -21,12 +21,22 @@ describe('application composition contract', () => {
     expect(composition).toContain("import.meta.glob<AppComponentModule>('./components/*.svelte', { eager: true })");
     expect(composition).toContain("'./lifecycle/*.ts'");
     expect(composition).toContain("'./a11y/*.ts'");
+    expect(composition).toContain("'!./lifecycle/resume-refresh.ts'");
+    expect(composition).toContain("import * as resumeRefreshPlugin from './lifecycle/resume-refresh'");
+    expect(composition).toContain("'./lifecycle/resume-refresh.ts': async () => resumeRefreshPlugin");
     expect(composition).toContain("import.meta.glob<unknown>('./styles/*.css', { eager: true })");
     expect(composition).toContain("left.id.localeCompare(right.id, 'en')");
     expect(composition).toContain("left.sourcePath.localeCompare(right.sourcePath, 'en')");
     expect(composition).toContain('assertUniqueIds(routes');
     expect(composition).toContain('assertUniqueIds(components');
     expect(composition).toContain("route.id === 'home'");
+  });
+
+  it('does not request a dynamic chunk for the statically consumed resume plugin', async () => {
+    const composition = await source('src/app/composition.ts');
+    expect(composition).toContain('const discoveredPluginLoaders = import.meta.glob<AppPluginModule>');
+    expect(composition).toContain("'!./lifecycle/resume-refresh.ts'");
+    expect(composition).toContain('...discoveredPluginLoaders');
   });
 
   it('keeps ordinary components opt-in and validates complete global metadata', async () => {
