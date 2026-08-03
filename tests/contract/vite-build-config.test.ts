@@ -34,4 +34,13 @@ describe('Vite build configuration contract', () => {
     expect(config).toContain('[bundle-report] assets=');
     expect(config).toContain('[bundle-report] ${entry.fileName} ${entry.bytes}');
   });
+
+  it('separates third-party modules from the application entry chunk', async () => {
+    const config = await readSource('vite.config.ts');
+    expect(config).toContain('rolldownOptions:');
+    expect(config).toContain('codeSplitting:');
+    expect(config).toContain("name: 'vendor'");
+    expect(config).toContain('test: /node_modules[\\\\/]/');
+    expect(config).toContain('priority: 10');
+  });
 });

@@ -40,7 +40,7 @@ const expectedDevDependencies = {
   typescript: '7.0.2',
   vite: '8.1.5',
   vitest: '4.1.10',
-  wrangler: '4.112.0',
+  wrangler: '4.118.0',
 } as const;
 
 const expectedLicenses = new Map<string, string>([

@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 import type { Component } from 'svelte';
+import * as resumeRefreshPlugin from './lifecycle/resume-refresh';
 
 export type AppPlacement = 'header' | 'primary-action' | 'status' | 'recovery' | 'footer';
 
@@ -78,10 +79,15 @@ type AppPluginLoader = () => Promise<AppPluginModule>;
 
 const viewModules = import.meta.glob<ViewModule>('./views/*.svelte', { eager: true });
 const componentModules = import.meta.glob<AppComponentModule>('./components/*.svelte', { eager: true });
-const pluginLoaders = import.meta.glob<AppPluginModule>([
+const discoveredPluginLoaders = import.meta.glob<AppPluginModule>([
   './lifecycle/*.ts',
   './a11y/*.ts',
+  '!./lifecycle/resume-refresh.ts',
 ]);
+const pluginLoaders: Readonly<Record<string, AppPluginLoader>> = Object.freeze({
+  './lifecycle/resume-refresh.ts': async () => resumeRefreshPlugin,
+  ...discoveredPluginLoaders,
+});
 const styleModules = import.meta.glob<unknown>('./styles/*.css', { eager: true });
 
 const validAppPlacements = new Set<AppPlacement>([
