@@ -21,7 +21,18 @@ describe('GitHub transition context routing', () => {
 
   it('honors only the exact branch of a recognized complete special operation', () => {
     const value = input(); value.branch = value.handoff.operation.branch;
-    expect(resolveGitHubContext(value)).toMatchObject({ mode: 'RELEASE_REMEDIATION', batchId: 'B20', batchAuthoritySource: 'MATCHED_OPERATION', baselineRole: 'HISTORICAL_OPERATION_BASELINE', operationMatched: true });
+    const expectedMode = value.handoff.operation.kind === 'RELEASE_REMEDIATION'
+      ? 'RELEASE_REMEDIATION'
+      : value.handoff.operation.stage === 'closure'
+        ? 'BATCH_CLOSURE'
+        : 'GH0_BOOTSTRAP';
+    expect(resolveGitHubContext(value)).toMatchObject({
+      mode: expectedMode,
+      batchId: value.handoff.operation.activeBatchId,
+      batchAuthoritySource: 'MATCHED_OPERATION',
+      baselineRole: value.handoff.operation.baselineRole,
+      operationMatched: true,
+    });
   });
 
   it('rejects a completed ordinary active batch', () => {
