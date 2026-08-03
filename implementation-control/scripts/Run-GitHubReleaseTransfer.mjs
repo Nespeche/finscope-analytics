@@ -9,6 +9,8 @@ const handoff = await readJson(join(root, 'implementation-control/GITHUB_HANDOFF
 const token = process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN;
 const repository = process.env.GITHUB_REPOSITORY ?? handoff.repository;
 const commitSha = process.env.GITHUB_SHA;
+const workflowRunId = process.env.GITHUB_RUN_ID?.trim();
+const workflowRunAttempt = process.env.GITHUB_RUN_ATTEMPT?.trim();
 
 function assert(condition, code, detail = '') {
   if (!condition) throw new Error(`${code}${detail ? `:${detail}` : ''}`);
@@ -86,7 +88,9 @@ async function uploadAsset(releaseId, path) {
 }
 async function stageRelease(qualification) {
   assert(/^[0-9a-f]{40}$/u.test(commitSha ?? ''), 'RELEASE_COMMIT_INVALID');
-  const evidenceName = `${handoff.release.evidencePrefix}_${process.env.GITHUB_RUN_ID}.json`;
+  assert(workflowRunId, 'GITHUB_RUN_ID_MISSING');
+  assert(workflowRunAttempt, 'GITHUB_RUN_ATTEMPT_MISSING');
+  const evidenceName = `${handoff.release.evidencePrefix}_${workflowRunId}.json`;
   const packageNames = [
     handoff.release.zipName,
     handoff.release.sidecarName,
@@ -98,7 +102,7 @@ async function stageRelease(qualification) {
     frozenAssets.set(name, await readFile(join(output, name)));
   }
   const tag = qualification
-    ? `finscope-release-qualification-${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT}`
+    ? `finscope-release-qualification-${workflowRunId}-${workflowRunAttempt}`
     : handoff.release.tag;
   const release = await createDraft(
     tag,
@@ -180,7 +184,8 @@ async function stageRelease(qualification) {
 
 async function authenticatePublishedRelease(releaseId, tag) {
   const checkedAt = new Date().toISOString();
-  const evidenceName = `${handoff.release.evidencePrefix}_${process.env.GITHUB_RUN_ID}.json`;
+  assert(workflowRunId, 'GITHUB_RUN_ID_MISSING');
+  const evidenceName = `${handoff.release.evidencePrefix}_${workflowRunId}.json`;
   const names = [handoff.release.zipName, handoff.release.sidecarName, evidenceName, 'GITHUB_RELEASE_HANDOFF.json', handoff.release.promptName];
   const byTag = await api('GET', `releases/tags/${encodeURIComponent(tag)}`);
   assert(byTag.id === releaseId, 'POST_PUBLISH_RELEASE_ID_MISMATCH');
