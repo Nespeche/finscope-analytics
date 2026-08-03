@@ -368,7 +368,11 @@ await writeFile(join(out, 'control-plane.stderr.log'), control.stderr);
 if (control.exitCode !== 0) throw new Error(`CONTROL_PLANE_FAILED:${control.exitCode}`);
 
 const zipPath = join(out, config.zipName);
-const zip = await run(`cd "${dirname(staging)}" && zip -X -q -r "${zipPath}" "${rootName}"`, { cwd: root });
+const zipAvailable = (await run('zip -v', { cwd: root })).exitCode === 0;
+const zipCommand = zipAvailable
+  ? `cd "${dirname(staging)}" && zip -X -q -r "${zipPath}" "${rootName}"`
+  : `tar -a -c -f "${zipPath}" -C "${dirname(staging)}" "${rootName}"`;
+const zip = await run(zipCommand, { cwd: root });
 if (zip.exitCode !== 0) throw new Error(`ZIP_CREATE_FAILED:${zip.stderr.toString()}`);
 const zipSha = await shaFile(zipPath);
 const sidecarPath = join(out, config.sidecarName);

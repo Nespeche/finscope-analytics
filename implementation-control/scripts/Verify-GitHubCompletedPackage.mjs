@@ -104,8 +104,9 @@ equal(sidecarMatch[2], expected.zipName, 'COMPLETED_SIDECAR_BINDING_MISMATCH');
 const zipSha256 = await shaFile(zipPath);
 equal(zipSha256, sidecarMatch[1], 'COMPLETED_ZIP_SHA256_MISMATCH');
 
-await command(`unzip -tqq "${zipPath}"`, 'COMPLETED_ZIP_CRC_FAILED');
-const rawNames = (await command(`unzip -Z1 "${zipPath}"`, 'COMPLETED_ZIP_LIST_FAILED'))
+const unzipAvailable = (await run('unzip -v', { cwd: root })).exitCode === 0;
+await command(unzipAvailable ? `unzip -tqq "${zipPath}"` : `tar -tf "${zipPath}"`, 'COMPLETED_ZIP_CRC_FAILED');
+const rawNames = (await command(unzipAvailable ? `unzip -Z1 "${zipPath}"` : `tar -tf "${zipPath}"`, 'COMPLETED_ZIP_LIST_FAILED'))
   .split(/\r?\n/u)
   .filter(Boolean);
 assert(rawNames.length > 0, 'COMPLETED_ZIP_EMPTY');
@@ -116,12 +117,12 @@ for (const name of rawNames) {
   exact.add(name);
 }
 assertSafeArchivePaths(rawNames, expectedRoot);
-const zipInfo = await command(`zipinfo -l "${zipPath}"`, 'COMPLETED_ZIP_INFO_FAILED');
+const zipInfo = await command(unzipAvailable ? `zipinfo -l "${zipPath}"` : `tar -tvf "${zipPath}"`, 'COMPLETED_ZIP_INFO_FAILED');
 assert(!zipInfo.split(/\r?\n/u).some((line) => /^l/u.test(line)), 'COMPLETED_ZIP_SYMLINK_PRESENT');
 
 const work = await mkdtemp(join(tmpdir(), 'finscope-completed-package-'));
 try {
-  await command(`unzip -q "${zipPath}" -d "${work}"`, 'COMPLETED_ZIP_EXTRACTION_FAILED');
+  await command(unzipAvailable ? `unzip -q "${zipPath}" -d "${work}"` : `tar -xf "${zipPath}" -C "${work}"`, 'COMPLETED_ZIP_EXTRACTION_FAILED');
   const packageRoot = join(work, expectedRoot);
   const files = await listFiles(packageRoot);
   const paths = files.map((absolute) => posix(relative(packageRoot, absolute)));
