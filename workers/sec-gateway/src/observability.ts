@@ -14,6 +14,30 @@ export interface WorkerObservability {
   readonly record: (status: TelemetryStatus, reason: TelemetryReason) => TelemetryRecord;
 }
 
+export interface WorkerRequestMetrics {
+  readonly requestCount: 1;
+  readonly cpuMilliseconds: number;
+  readonly subrequestCount: number;
+  readonly responseBytes: number;
+  readonly errorCode: string | null;
+}
+
+export function createWorkerRequestMetrics(input: Omit<WorkerRequestMetrics, 'requestCount'>): WorkerRequestMetrics {
+  for (const [name, value] of Object.entries(input)) {
+    if (name !== 'errorCode' && (!Number.isFinite(value) || (value as number) < 0)) {
+      throw new TypeError(`INVALID_WORKER_METRIC:${name}`);
+    }
+  }
+  if (!Number.isSafeInteger(input.subrequestCount) || !Number.isSafeInteger(input.responseBytes)) {
+    throw new TypeError('INVALID_WORKER_METRIC_INTEGER');
+  }
+  return Object.freeze({ requestCount: 1 as const, ...input });
+}
+
+export function serializeWorkerRequestMetrics(metrics: WorkerRequestMetrics): string {
+  return JSON.stringify(metrics);
+}
+
 export function createRedactedTelemetrySink(
   sink: TelemetrySink,
   forbiddenValues: readonly string[],
