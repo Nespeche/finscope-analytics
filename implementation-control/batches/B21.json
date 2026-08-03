@@ -5,7 +5,7 @@
   "ordinal": 21,
   "title": "Cloudflare Free, observabilidad y rendimiento Worker",
   "domain": "cloudflare-worker",
-  "status": "COMPLETED",
+  "status": "PENDING",
   "taskCount": 6,
   "executionOrder": [
     "T090",
@@ -197,7 +197,7 @@
       ],
       "doneWhen": "official limits and internal safety margins are exact, nonessential refresh fails closed and no paid fallback is present",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "0e5a5048a0e2963129748e6cab043cf0ccd1849a321bdf2213a68906d8b02db1"
+      "sourceTaskSha256": "e2312d8a0cbe5590c2da7cccb68ecdd9a01c450d2710d4b4f6bf914c4cb66c38"
     },
     {
       "id": "T091",
@@ -243,7 +243,7 @@
       ],
       "doneWhen": "quota exhaustion preserves the prior snapshot and no paid fallback or silent service substitution is possible",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "ebf63f8f609710d1bc6abf3aa1319a800a0dd5fe309c3bd276514dd1e1c31f03"
+      "sourceTaskSha256": "92718d909c0332e524dab860f447277598590922dc8dfd1267dac3671d6b8a12"
     },
     {
       "id": "T092",
@@ -290,7 +290,7 @@
       ],
       "doneWhen": "telemetry proves one upstream subrequest, captures p95 CPU targets and contains no personal data or contact values",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "9d08a4c34f5504c61c8d4a2316a2c3582ec1e5fbee5ae8a99eb97d31230f86bf"
+      "sourceTaskSha256": "d9cc9d724765080ec4d8a1bc8f3e7ad81948e097463de277fdc144c27446bef5"
     },
     {
       "id": "T093",
@@ -336,7 +336,7 @@
       ],
       "doneWhen": "runtime reads stay within two queries and publication batches retain documented Free margins",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "dc7b0a97c5a69f8e7c35cf90d6facdb2ce84d9c6332587f463ebb2997a9b6622"
+      "sourceTaskSha256": "8b4df1df768981d53ecd3b0fc83f02904b7cef16b7b135fbb254ccd821d07113"
     },
     {
       "id": "T094",
@@ -377,7 +377,7 @@
       ],
       "doneWhen": "deployment stops before internal targets or current Free platform limits are exceeded",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "fc71335c0f4a541f0c7aeea81e4874bcab3ecf8e27f4da4c61aa84bee64d52a6"
+      "sourceTaskSha256": "9d21787521824281cf3db9b097851195ed657466d34b3955c190d441d8811d6d"
     },
     {
       "id": "T095",
@@ -427,7 +427,7 @@
       ],
       "doneWhen": "p95 CPU remains within the internal target, no body is fully buffered, memory is bounded and redirect chains cannot inflate subrequests silently",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "2e566a548812530bc07707a5318389cb2f5308558aa8fce599d4dc647ae20528"
+      "sourceTaskSha256": "21699bc6c0d4236eac3d908c5be00a498d836678554e8629d1797c68099946b4"
     }
   ],
   "completionGate": {
@@ -437,7 +437,7 @@
     "packageValidationPass": true,
     "doNotStartNextBatch": true
   },
-  "sourceTasksSha256": "3cb3400a32f8e14464cc3a1289d93aeb4fc522e4d51ed83c3c4a5a481c21cffc",
+  "sourceTasksSha256": "bd89291f6aca4817dda8d9cd3700e5f4682415574b72ad815d8de7e44a824d08",
   "localValidation": {
     "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
     "browserRequired": false,
