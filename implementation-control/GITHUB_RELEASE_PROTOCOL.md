@@ -29,3 +29,13 @@ Los assets mínimos, derivados de `GITHUB_HANDOFF.json`, son:
 El staging completed se extrae exclusivamente de los blobs del commit Git exacto. Los outputs finales generados tienen una allowlist cerrada; una denylist independiente se aplica antes de inventario, antes de manifest y en el verificador. Inventory y manifest nunca pueden legitimar un path temporal o ajeno al árbol Git.
 
 Publicar no completa la autenticación. Después de `draft=false`, el workflow vuelve a consultar el Release por tag, exige Release ID/commit y cinco assets únicos, comprueba estado, tamaño y digest GitHub, descarga nuevamente cada asset, compara bytes, sidecar y CRC, y ejecuta el verificador con comparación Git, control plane y `.specify` desde extracción limpia. El resultado JSON/Markdown se sube como artifact. Una falla preserva evidencia `_FAILED`, no reemplaza assets y no borra un Release ya publicado.
+
+## Portabilidad e identidad del archivo ZIP completed
+
+- Un completed package debe ser un ZIP real; un TAR renombrado con extensión `.zip` es inválido.
+- `release.pending=true` no sustituye la autenticación de la operación completed, del candidate ni del closure vinculados.
+- En Windows no se permite resolver `tar` mediante PATH para crear el completed package. El único fallback autorizado es `%SystemRoot%\System32\tar.exe`, invocado sin shell y con vector de argumentos.
+- El nombre de salida del archiver debe ser relativo al directorio de staging y conservar una raíz única.
+- En sistemas no Windows, la ausencia de Info-ZIP debe producir un fallo cerrado; no se admite generar un TAR con extensión ZIP.
+- Antes de calcular el sidecar y ejecutar el verificador completed, el archivo debe acreditar una firma ZIP `PK` válida.
+- Una identidad de Release rechazada permanece como evidencia histórica y nunca se reutiliza; una revisión limpia requiere tag, ZIP y sidecar nuevos.

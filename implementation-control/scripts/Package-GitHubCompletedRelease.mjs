@@ -17,6 +17,45 @@ import {
 const out = resolve(process.argv[2] ?? '.finscope-release');
 const execGit = promisify(execFile);
 
+// B21_WINDOWS_ZIP_BACKEND_FIX_V1
+async function runExecutable(executable, args, options = {}) {
+  const startedAt = now();
+  const started = Date.now();
+  try {
+    const result = await execGit(executable, args, {
+      cwd: options.cwd ?? root,
+      env: { ...process.env, ...(options.env ?? {}) },
+      encoding: 'buffer',
+      maxBuffer: 64 * 1024 * 1024,
+      windowsHide: true,
+    });
+    return {
+      command: [executable, ...args].map((item) => JSON.stringify(String(item))).join(' '),
+      startedAt,
+      finishedAt: now(),
+      durationMs: Date.now() - started,
+      exitCode: 0,
+      stdout: Buffer.from(result.stdout ?? []),
+      stderr: Buffer.from(result.stderr ?? []),
+    };
+  } catch (error) {
+    const code = Number.isInteger(error?.code)
+      ? error.code
+      : error?.code === 'ENOENT'
+        ? 127
+        : 1;
+    return {
+      command: [executable, ...args].map((item) => JSON.stringify(String(item))).join(' '),
+      startedAt,
+      finishedAt: now(),
+      durationMs: Date.now() - started,
+      exitCode: code,
+      stdout: Buffer.from(error?.stdout ?? []),
+      stderr: Buffer.from(error?.stderr ?? error?.stack ?? String(error)),
+    };
+  }
+}
+
 function temporaryReason(path) {
   const lower = path.toLocaleLowerCase('en-US');
   const name = lower.split('/').at(-1) ?? lower;
@@ -368,12 +407,38 @@ await writeFile(join(out, 'control-plane.stderr.log'), control.stderr);
 if (control.exitCode !== 0) throw new Error(`CONTROL_PLANE_FAILED:${control.exitCode}`);
 
 const zipPath = join(out, config.zipName);
-const zipAvailable = (await run('zip -v', { cwd: root })).exitCode === 0;
-const zipCommand = zipAvailable
-  ? `cd "${dirname(staging)}" && zip -X -q -r "${zipPath}" "${rootName}"`
-  : `tar -a -c -f "${zipPath}" -C "${dirname(staging)}" "${rootName}"`;
-const zip = await run(zipCommand, { cwd: root });
-if (zip.exitCode !== 0) throw new Error(`ZIP_CREATE_FAILED:${zip.stderr.toString()}`);
+if (basename(config.zipName) !== config.zipName) throw new Error('ZIP_CREATE_FAILED:ZIP_NAME_NOT_BASENAME');
+const archiveCwd = dirname(staging);
+const archiveTarget = posix(relative(archiveCwd, zipPath));
+const expectedArchiveTarget = `../${config.zipName}`;
+if (archiveTarget !== expectedArchiveTarget) {
+  throw new Error(`ZIP_CREATE_FAILED:ARCHIVE_TARGET_INVALID:${archiveTarget}`);
+}
+
+const zipProbe = await runExecutable('zip', ['-v'], { cwd: root });
+let zip;
+if (zipProbe.exitCode === 0) {
+  zip = await runExecutable('zip', ['-X', '-q', '-r', archiveTarget, rootName], { cwd: archiveCwd });
+} else if (process.platform === 'win32') {
+  const windowsRoot = process.env.SystemRoot ?? process.env.WINDIR;
+  if (!windowsRoot) throw new Error('ZIP_CREATE_FAILED:WINDOWS_ROOT_UNAVAILABLE');
+  const windowsTar = join(windowsRoot, 'System32', 'tar.exe');
+  try {
+    await stat(windowsTar);
+  } catch {
+    throw new Error(`ZIP_CREATE_FAILED:WINDOWS_BSDTAR_UNAVAILABLE:${windowsTar}`);
+  }
+  zip = await runExecutable(windowsTar, ['-a', '-c', '-f', archiveTarget, rootName], { cwd: archiveCwd });
+} else {
+  throw new Error('ZIP_CREATE_FAILED:ZIP_EXECUTABLE_UNAVAILABLE');
+}
+if (zip.exitCode !== 0) throw new Error(`ZIP_CREATE_FAILED:${zip.stderr.toString('utf8')}`);
+
+const zipHeader = await readFile(zipPath);
+const zipSignature = zipHeader.subarray(0, 4).toString('hex');
+if (!new Set(['504b0304', '504b0506', '504b0708']).has(zipSignature)) {
+  throw new Error(`ZIP_CREATE_FAILED:INVALID_ZIP_SIGNATURE:${zipSignature}`);
+}
 const zipSha = await shaFile(zipPath);
 const sidecarPath = join(out, config.sidecarName);
 await writeFile(sidecarPath, `${zipSha}  ${config.zipName}\n`, 'utf8');

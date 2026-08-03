@@ -704,3 +704,15 @@
 - candidate: `69e3806a821986bffb7760ddd5dbe221eab4c598`, run `30845191439`, artifact `8868396936`;
 - closure request: `ec292173372ed35b0adcf4534d7ffcf2848ef91d`, run `30846500890`;
 - B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.
+
+## 2026-08-03 — B21 pre-merge Release gate r1 FAIL y corrección ZIP Windows
+
+- candidato local preservado: `5a67550c3eead25ce4b7b79855ab13224b82bd55`;
+- validación local: `13/19 PASS`; fallo primario en `clean-package-dry-run`; comandos 15–19 no ejecutados;
+- error autenticado: `ZIP_CREATE_FAILED: tar: Cannot connect to C: resolve failed`;
+- no hubo push, GitHub Actions, merge, tag ni Release;
+- causa: el fallback resolvió GNU tar mediante PATH y le entregó una ruta absoluta `C:\\...`, interpretada como identidad remota;
+- `--force-local` por sí solo no acredita que el resultado sea un ZIP real;
+- corrección: Info-ZIP cuando está disponible o `%SystemRoot%\System32\tar.exe` en Windows, siempre mediante vector de argumentos y salida relativa;
+- la firma ZIP se autentica antes del sidecar y del verificador completed;
+- producto, tareas, batches, `IMPLEMENTATION_STATE.json` y `.specify` permanecen sin cambios.

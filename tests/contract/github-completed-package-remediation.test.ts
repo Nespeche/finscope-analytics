@@ -1,4 +1,5 @@
 import { execFile } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -75,4 +76,34 @@ describe.sequential('completed package contamination remediation', () => {
     expect(workflow).not.toContain('test "$kind" = RELEASE_REMEDIATION');
     expect(workflow).not.toContain('test "$pending" = true');
   });
+  it('creates a real ZIP package with a matching sidecar and PASS verification', async () => {
+    const output = await mkdtemp(join(tmpdir(), 'finscope-package-real-'));
+    createdAtRoot.push(output);
+    const handoff = JSON.parse(
+      await readFile(join(repository, 'implementation-control/GITHUB_HANDOFF.json'), 'utf8'),
+    ) as { release: { zipName: string; sidecarName: string } };
+
+    await execute(process.execPath, [packageScript, output], {
+      cwd: repository,
+      maxBuffer: 64 * 1024 * 1024,
+      windowsHide: true,
+    });
+
+    const zipPath = join(output, handoff.release.zipName);
+    const sidecarPath = join(output, handoff.release.sidecarName);
+    const zipBytes = await readFile(zipPath);
+    const signature = zipBytes.subarray(0, 4).toString('hex');
+    expect(zipBytes.subarray(0, 2).toString('ascii')).toBe('PK');
+    expect(signature).toBe('504b0304');
+
+    const digest = createHash('sha256').update(zipBytes).digest('hex');
+    const sidecar = (await readFile(sidecarPath, 'utf8')).trim();
+    expect(sidecar).toBe(`${digest}  ${handoff.release.zipName}`);
+
+    const verification = JSON.parse(
+      await readFile(join(output, 'completed-package-verification.stdout.log'), 'utf8'),
+    ) as { result?: string };
+    expect(verification.result).toBe('PASS');
+  });
+
 });
