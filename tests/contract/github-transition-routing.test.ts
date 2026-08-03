@@ -46,12 +46,12 @@ describe('GitHub transition context routing', () => {
   });
 
   it('rejects a completed ordinary active batch', () => {
-    const value = input(); value.state.batchStatus.B22 = 'COMPLETED'; value.batches.B22.status = 'COMPLETED'; value.state.completedBatchIds.push('B22');
+    const value = input(); value.handoff.release.pending = false; value.state.batchStatus.B22 = 'COMPLETED'; value.batches.B22.status = 'COMPLETED'; value.state.completedBatchIds.push('B22');
     expect(() => resolveGitHubContext(value)).toThrowError(/COMPLETED_BATCH_SELECTED/u);
   });
 
   it('rejects divergent active and next-authorized batches', () => {
-    const value = input(); value.state.nextAuthorizedBatchId = 'B23';
+    const value = input(); value.handoff.release.pending = false; value.state.nextAuthorizedBatchId = 'B23';
     expect(() => resolveGitHubContext(value)).toThrowError(/BATCH_AUTHORITY_MISMATCH/u);
   });
 
@@ -66,7 +66,7 @@ describe('GitHub transition context routing', () => {
   });
 
   it('rejects a historical baseline in ordinary routing', () => {
-    const value = input();
+    const value = input(); value.handoff.release.pending = false;
     value.handoff.completedBaseline = {
       ...structuredClone(value.handoff.completedBaseline),
       role: 'HISTORICAL_OPERATION_BASELINE',
@@ -75,7 +75,7 @@ describe('GitHub transition context routing', () => {
   });
 
   it('rejects a derived command set that no longer equals B21 authority', () => {
-    const value = input(); value.batches.B22.localValidation.commands = [];
+    const value = input(); value.handoff.release.pending = false; value.batches.B22.localValidation.commands = [];
     expect(() => resolveGitHubContext(value)).toThrowError(/DERIVED_COMMAND_SET_MISMATCH/u);
   });
 
