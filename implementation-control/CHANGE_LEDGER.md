@@ -552,6 +552,15 @@
 - T049, T050, T051, T052, T053 y B12 pasan a `COMPLETED`; B13 queda `PENDING`;
 - cierre limitado a la allowlist y `convergenceAuthorized=false`.
 
+
+## 2026-08-03 — Soporte fail-closed para cierre de remediaciones
+
+- se separan explícitamente `BATCH_CLOSURE`, `REMEDIATION_CLOSURE` y `NOT_APPLICABLE`;
+- la remediación `b21-clean-completed-package-remediation` recibe `closurePolicy` propia en `candidate/NOT_REQUESTED`, sin candidato ni cierre cargados;
+- el aplicador de remediación autentica únicamente candidato, run y artifact propios y limita toda mutación a cuatro rutas declaradas;
+- schema Draft 2020-12, validación dependency-free/Ajv, contratos negativos y routing del workflow preservan B21 `COMPLETED`, B22 `PENDING`, producto y `.specify` sin cambios;
+- no se solicita ni aplica el cierre en este candidato.
+
 ## 2026-08-03 — Remediación técnica del paquete B21 contaminado
 
 - operación tipada `MAINTENANCE_REMEDIATION` en `agent/b21-clean-completed-package-remediation`;

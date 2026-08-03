@@ -225,6 +225,7 @@ const operationalSchemaNames = [
   'authority-matrix.schema.json',
   'control-plane-validation-evidence.schema.json',
   'github-release-handoff.schema.json',
+  'github-remediation-closure-evidence.schema.json',
   'github-validation-evidence.schema.json',
   'implementation-batch-map.schema.json',
   'implementation-batch-report.schema.json',
@@ -393,7 +394,7 @@ const controlPlaneEvidenceFixture = {
 } as const;
 
 describe('operational Draft 2020-12 schema registry', () => {
-  it('compiles all ten operational schemas and validates every active JSON control document', async () => {
+  it('compiles all eleven operational schemas and validates every active JSON control document', async () => {
     const names = (await readdir(operationalSchemaDirectory))
       .filter((name) => name.endsWith('.schema.json'))
       .sort();

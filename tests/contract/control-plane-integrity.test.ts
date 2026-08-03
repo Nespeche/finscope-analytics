@@ -1,6 +1,7 @@
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { describe, expect, it } from 'vitest';
+import stateDocument from '../../implementation-control/IMPLEMENTATION_STATE.json';
 
 const execFileAsync = promisify(execFile);
 
@@ -47,5 +48,22 @@ describe('control-plane integrity', () => {
     expect(result.passCount).toBe(result.checkCount);
     expect(new Set(checkIds).size).toBe(result.checkCount);
     expect(result.checks.every(({ status }) => status === 'PASS')).toBe(true);
+  });
+
+  it('keeps remediation product and batch invariants anchored to the B20 source baseline', async () => {
+    expect(stateDocument.batchStatus.B21).toBe('COMPLETED');
+    expect(stateDocument.batchStatus.B22).toBe('PENDING');
+    expect(stateDocument.activeBatchId).toBe('B22');
+    expect(stateDocument.nextAuthorizedBatchId).toBe('B22');
+    expect(stateDocument.phaseGate.convergenceAuthorized).toBe(false);
+    await expect(execFileAsync('git', [
+      'diff', '--quiet', 'b04cb4db010ab3a9575fa45c166e6e28f4246699', '--',
+      'specs/001-fundamental-analysis-platform/tasks.md',
+      'implementation-control/IMPLEMENTATION_STATE.json',
+      'implementation-control/batches',
+      '.specify',
+      'src',
+      'workers',
+    ])).resolves.toMatchObject({ stdout: '', stderr: '' });
   });
 });

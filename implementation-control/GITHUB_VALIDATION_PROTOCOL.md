@@ -21,6 +21,14 @@ Para `github-validation-evidence.json`, el gate final exige dos validaciones sob
 ## 4. Autopruebas operativas
 
 Cada ejecución demuestra colecciones nula, vacía, 0, 1 y N; traversal negativo; hash negativo; suite vacía negativa; identidad de Git HEAD; baseline Release; `.specify`; schema y manifest de evidencia. Las pruebas de bootstrap GH0 permanecen preservadas como historial, no como condición hardcodeada de lotes futuros.
+
+## 5. Cierres autenticados independientes
+
+`BATCH_CLOSURE` conserva la autoridad histórica de `handoff.operation` y solo puede promover un lote real `PENDING`. `REMEDIATION_CLOSURE` se resuelve exclusivamente desde la `closurePolicy` de una entrada inequívoca de `handoff.remediations`; nunca consume `handoff.operation`, `handoff.candidate` ni `handoff.closure` como fallback.
+
+En una remediación, `candidate/NOT_REQUESTED` produce `NOT_APPLICABLE`. Solo `closure/PENDING`, con candidato propio completo, habilita `Apply-GitHubRemediationClosure.mjs`. El cierre autentica run y artifact vivos, digest, manifest, schema dependency-free y Ajv Draft 2020-12, comandos requeridos, ancestry, allowlists e invariantes B21/B22. Solo puede escribir la allowlist local de cierre y debe dejar tareas, estado de implementación, batches, producto y `.specify` intactos.
+
+La evidencia `REMEDIATION_CLOSURE` se valida contra `github-remediation-closure-evidence.schema.json` dos veces sobre los bytes finales. `NOT_APPLICABLE` es un resultado distinto y nunca se presenta como cierre `PASS`.
 # Resolución autoritativa de contexto
 
 Antes de `npm ci`, todo workflow debe ejecutar `Resolve-GitHubContext.mjs` con la rama exacta. Solo una operación reconocida, completa, compatible con su stage y cuya `operation.branch` coincida exactamente puede aportar autoridad. En cualquier rama ordinaria, el lote procede de `IMPLEMENTATION_STATE.activeBatchId`, debe coincidir con `nextAuthorizedBatchId`, permanecer `PENDING`, no estar completado y tener dependencias y gates compatibles.

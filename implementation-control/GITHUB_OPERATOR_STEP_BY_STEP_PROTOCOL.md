@@ -62,4 +62,14 @@ Una respuesta general sin rutas, comandos, resultados esperados, condición de d
 4. Verificar paths y bytes ordinarios contra Git y permitir diferencias solo para outputs generados cerrados.
 5. Tras publicar, reautenticar los cinco assets y subir evidencia post-publicación; ante fallo preservar el Release publicado y el artifact `_FAILED`.
 6. Una revisión completed posterior debe usar identidad inmutable nueva y autorización humana independiente.
+
+# Cierre de una remediación declarada
+
+1. Resolver `node implementation-control/scripts/Resolve-GitHubContext.mjs "$GITHUB_HEAD_REF" --closure` hacia `$RUNNER_TEMP/finscope-context`.
+2. En `candidate/NOT_REQUESTED`, registrar `NOT_APPLICABLE` y detener el cierre sin invocar ningún aplicador.
+3. Una futura solicitud humana debe cambiar únicamente las rutas de `closurePolicy.requestAllowedPaths`, declarar `closure/PENDING` y cargar el candidato propio exacto.
+4. Despachar `Apply-GitHubBatchClosure.mjs` solo para `BATCH_CLOSURE` y `Apply-GitHubRemediationClosure.mjs` solo para `REMEDIATION_CLOSURE`.
+5. Para una remediación, autenticar ancestry, run, artifact, digest, manifest, ambos validadores de schema, comandos requeridos y baseline B20; comprobar B21 `COMPLETED`, B22 `PENDING` y `convergenceAuthorized=false`.
+6. Permitir únicamente `GITHUB_HANDOFF.json`, `CHANGE_LEDGER.md` y los dos reportes declarados por la `closurePolicy`. No promover tareas o lotes.
+7. Conservar artifacts `_FAILED`, corregir mediante commit nuevo y workflow completo nuevo; no usar `Re-run jobs`.
 5. Conservar cualquier evidencia `_FAILED`; corregir con commit nuevo y ejecución completa nueva, sin `Re-run jobs`.

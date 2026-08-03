@@ -109,13 +109,19 @@ export function validateSchemaSubset(schema, value, path='$', rootSchema=schema,
       ? [...referencedErrors,...validateSchemaSubset(siblingSchema,value,path,rootSchema,refStack)]
       : referencedErrors;
   }
-  const errors=[]; const type=Array.isArray(value)?'array':value===null?'null':Number.isInteger(value)?'integer':typeof value;
+  const errors=[];
+  for (const child of schema.allOf??[]) errors.push(...validateSchemaSubset(child,value,path,rootSchema,refStack));
+  if (schema.anyOf) { const results=schema.anyOf.map((child)=>validateSchemaSubset(child,value,path,rootSchema,refStack)); if(!results.some((items)=>items.length===0)) errors.push(`${path}:anyOf`); }
+  if (schema.oneOf) { const matches=schema.oneOf.filter((child)=>validateSchemaSubset(child,value,path,rootSchema,refStack).length===0).length; if(matches!==1) errors.push(`${path}:oneOf:${matches}`); }
+  if (schema.not && validateSchemaSubset(schema.not,value,path,rootSchema,refStack).length===0) errors.push(`${path}:not`);
+  const type=Array.isArray(value)?'array':value===null?'null':Number.isInteger(value)?'integer':typeof value;
   const types=schema.type?(Array.isArray(schema.type)?schema.type:[schema.type]):[];
   if(types.length && !types.includes(type) && !(type==='integer'&&types.includes('number'))) return [`${path}:type=${type}`];
   if(Object.hasOwn(schema,'const') && JSON.stringify(value)!==JSON.stringify(schema.const)) errors.push(`${path}:const`);
   if(schema.enum && !schema.enum.some((item)=>JSON.stringify(item)===JSON.stringify(value))) errors.push(`${path}:enum`);
-  if(typeof value==='string'){ if(schema.minLength&&value.length<schema.minLength) errors.push(`${path}:minLength`); if(schema.pattern&&!new RegExp(schema.pattern,'u').test(value)) errors.push(`${path}:pattern`); }
-  if(Array.isArray(value)){ if(schema.minItems&&value.length<schema.minItems) errors.push(`${path}:minItems`); if(schema.items) value.forEach((item,index)=>errors.push(...validateSchemaSubset(schema.items,item,`${path}/${index}`,rootSchema,refStack))); }
+  if(typeof value==='number'){ if(schema.minimum!==undefined&&value<schema.minimum) errors.push(`${path}:minimum`); if(schema.maximum!==undefined&&value>schema.maximum) errors.push(`${path}:maximum`); }
+  if(typeof value==='string'){ if(schema.minLength!==undefined&&value.length<schema.minLength) errors.push(`${path}:minLength`); if(schema.maxLength!==undefined&&value.length>schema.maxLength) errors.push(`${path}:maxLength`); if(schema.pattern&&!new RegExp(schema.pattern,'u').test(value)) errors.push(`${path}:pattern`); }
+  if(Array.isArray(value)){ if(schema.minItems!==undefined&&value.length<schema.minItems) errors.push(`${path}:minItems`); if(schema.maxItems!==undefined&&value.length>schema.maxItems) errors.push(`${path}:maxItems`); if(schema.items) value.forEach((item,index)=>errors.push(...validateSchemaSubset(schema.items,item,`${path}/${index}`,rootSchema,refStack))); }
   if(value&&typeof value==='object'&&!Array.isArray(value)){ const props=schema.properties??{}; for(const required of schema.required??[]) if(!Object.hasOwn(value,required)) errors.push(`${path}:missing:${required}`); for(const [key,child] of Object.entries(props)) if(Object.hasOwn(value,key)) errors.push(...validateSchemaSubset(child,value[key],`${path}/${key}`,rootSchema,refStack)); if(schema.additionalProperties===false) for(const key of Object.keys(value)) if(!Object.hasOwn(props,key)) errors.push(`${path}:additional:${key}`); }
   return errors;
 }

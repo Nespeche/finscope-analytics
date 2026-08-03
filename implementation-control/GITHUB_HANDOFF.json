@@ -109,22 +109,53 @@
         "implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md",
         "implementation-control/GITHUB_RELEASE_PROTOCOL.md",
         "implementation-control/GITHUB_VALIDATION_PROTOCOL.md",
+        "implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE.json",
+        "implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE.md",
+        "implementation-control/schemas/github-remediation-closure-evidence.schema.json",
         "implementation-control/schemas/github-validation-evidence.schema.json",
         "implementation-control/scripts/GitHub-Common.mjs",
+        "implementation-control/scripts/Apply-GitHubRemediationClosure.mjs",
         "implementation-control/scripts/Package-GitHubCompletedRelease.mjs",
+        "implementation-control/scripts/Resolve-GitHubContext.mjs",
         "implementation-control/scripts/Run-GitHubReleaseTransfer.mjs",
         "implementation-control/scripts/Run-GitHubValidation.mjs",
         "implementation-control/scripts/Validate-GitHubEvidenceSchema.mjs",
+        "implementation-control/scripts/Verify-GitHubClosure.mjs",
         "implementation-control/scripts/Verify-GitHubCompletedPackage.mjs",
         "tests/contract/github-completed-package-remediation.test.ts",
         "tests/contract/github-evidence-schema.test.ts",
-        "tests/contract/github-transition-routing.test.ts"
+        "tests/contract/github-remediation-closure.test.ts",
+        "tests/contract/control-plane-integrity.test.ts",
+        "tests/contract/github-transition-routing.test.ts",
+        "tests/contract/schema-registry.test.ts"
       ],
+      "closurePolicy": {
+        "kind": "REMEDIATION_CLOSURE",
+        "remediationId": "b21-clean-completed-package-remediation",
+        "branch": "agent/b21-clean-completed-package-remediation",
+        "stage": "candidate",
+        "status": "NOT_REQUESTED",
+        "candidate": null,
+        "closure": null,
+        "requestAllowedPaths": [
+          "implementation-control/GITHUB_HANDOFF.json",
+          "implementation-control/CHANGE_LEDGER.md"
+        ],
+        "allowedPaths": [
+          "implementation-control/GITHUB_HANDOFF.json",
+          "implementation-control/CHANGE_LEDGER.md",
+          "implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE.json",
+          "implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE.md"
+        ]
+      },
       "commands": [
         { "id": "npm-ci", "category": "dependencies", "command": "npm ci", "required": true },
         { "id": "typecheck", "category": "static", "command": "npm run typecheck", "required": true },
         { "id": "control-plane-initial", "category": "control-plane", "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .", "required": true },
         { "id": "routing-context-contract", "category": "routing", "command": "npm run test:contract -- tests/contract/github-transition-routing.test.ts", "required": true },
+        { "id": "batch-closure-regression", "category": "closure-contract", "command": "npm run test:contract -- tests/contract/github-remediation-closure.test.ts -t \"batch closure\"", "required": true },
+        { "id": "remediation-closure-contract", "category": "closure-contract", "command": "npm run test:contract -- tests/contract/github-remediation-closure.test.ts", "required": true },
+        { "id": "remediation-evidence-schema-contract", "category": "schema-contract", "command": "npm run test:contract -- tests/contract/github-remediation-closure.test.ts -t \"evidence schema\"", "required": true },
         { "id": "completed-package-contract", "category": "package-contract", "command": "npm run test:contract -- tests/contract/github-completed-package-remediation.test.ts", "required": true },
         { "id": "evidence-schema-contract", "category": "schema-contract", "command": "npm run test:contract -- tests/contract/github-evidence-schema.test.ts", "required": true },
         { "id": "ajv-draft-2020-12-contract", "category": "schema-contract", "command": "npm run test:contract -- tests/contract/github-evidence-schema.test.ts", "required": true },
@@ -134,7 +165,8 @@
         { "id": "verify-clean-package", "category": "package-authentication", "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.26_B21_completed.zip .finscope-release/FS_v0.21.26_B21_completed.zip.sha256 --git-root . --commit \"$(git rev-parse HEAD)\" --tag v0.21.26-B21-completed", "required": true },
         { "id": "reject-historical-b21", "category": "historical-package-authentication", "command": "mkdir -p \"$RUNNER_TEMP/finscope-rejected-b21\" && gh release download v0.21.26-B21-completed --repo Nespeche/finscope-analytics --pattern 'FS_v0.21.26_B21_completed.zip*' --dir \"$RUNNER_TEMP/finscope-rejected-b21\" --clobber && set +e; node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs \"$RUNNER_TEMP/finscope-rejected-b21/FS_v0.21.26_B21_completed.zip\" \"$RUNNER_TEMP/finscope-rejected-b21/FS_v0.21.26_B21_completed.zip.sha256\" --git-root . --commit b04cb4db010ab3a9575fa45c166e6e28f4246699 --tag v0.21.26-B21-completed >\"$RUNNER_TEMP/finscope-rejected-b21/verification.stdout.log\" 2>\"$RUNNER_TEMP/finscope-rejected-b21/verification.stderr.log\"; code=$?; set -e; [ \"$code\" -ne 0 ] && grep -F 'COMPLETED_PACKAGE_TEMPORARY_FILE:github-context.json:GITHUB_CONTEXT_OUTPUT' \"$RUNNER_TEMP/finscope-rejected-b21/verification.stderr.log\"", "required": true },
         { "id": "control-plane-final", "category": "control-plane", "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .", "required": true },
-        { "id": "specify-byte-identity", "category": "integrity", "command": "git diff --exit-code b04cb4db010ab3a9575fa45c166e6e28f4246699 -- .specify", "required": true }
+        { "id": "specify-byte-identity", "category": "integrity", "command": "git diff --exit-code b04cb4db010ab3a9575fa45c166e6e28f4246699 -- .specify", "required": true },
+        { "id": "batch-product-invariants", "category": "integrity", "command": "npm run test:contract -- tests/contract/control-plane-integrity.test.ts", "required": true }
       ]
     }
   ],
