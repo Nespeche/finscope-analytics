@@ -17,8 +17,10 @@ on:
       - implementation-control/scripts/Run-GitHubReleaseTransfer.mjs
       - implementation-control/scripts/Verify-GitHubBaseline.mjs
       - implementation-control/scripts/Finalize-GitHubReleaseHandoff.mjs
+      - implementation-control/scripts/Resolve-GitHubContext.mjs
       - implementation-control/schemas/github-validation-evidence.schema.json
       - implementation-control/schemas/github-release-handoff.schema.json
+      - tests/contract/github-transition-routing.test.ts
 
 permissions:
   contents: write
@@ -41,8 +43,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          node implementation-control/scripts/Resolve-GitHubContext.mjs "$GITHUB_HEAD_REF" > github-context.json
           handoff=implementation-control/GITHUB_HANDOFF.json
-          kind=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.kind")
+          kind=$(node -p "JSON.parse(require('fs').readFileSync('github-context.json')).mode")
           stage=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.stage")
           pending=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.pending")
           test "$kind" = RELEASE_REMEDIATION && enabled=true || enabled=false
@@ -105,7 +108,7 @@ jobs:
         if: steps.mode.outputs.enabled == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-release/qualification-baseline.json
+        run: node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-release/qualification-baseline.json "$GITHUB_HEAD_REF"
       - name: Execute literal Release qualification commands
         if: steps.mode.outputs.enabled == 'true'
         env:

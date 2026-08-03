@@ -2,10 +2,18 @@ import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { assertSafeArchivePaths, canonicalTreeHash, now, readJson, root, run, shaFile, writeJson } from './GitHub-Common.mjs';
+import { loadAndResolveGitHubContext } from './Resolve-GitHubContext.mjs';
 
 const output=process.argv[2] ?? '.finscope-evidence/preflight/release-baseline.json';
 const handoff=await readJson(join(root,'implementation-control/GITHUB_HANDOFF.json'));
-const expected=handoff.baseline;
+const branch=process.argv[3] ?? process.env.GITHUB_HEAD_REF ?? process.env.GITHUB_REF_NAME;
+let context;
+try { context=await loadAndResolveGitHubContext(root,branch); } catch(error) {
+  const failure=error instanceof Error?error.message:String(error);
+  await writeJson(join(root,output),{result:'FAIL',failure,checkedAt:now()});
+  console.log(JSON.stringify({result:'FAIL',failure})); process.exit(1);
+}
+const expected={tag:context.baselineTag,commitSha:context.baselineCommitSha,zipName:context.baselineZipName,sidecarName:context.baselineSidecarName,zipSha256:context.baselineZipSha256,root:context.baselineRoot,specifyTreeSha256:context.baselineSpecifyTreeSha256};
 const report={result:'FAIL',tag:expected.tag,zipName:expected.zipName,sidecarName:expected.sidecarName,zipSha256:expected.zipSha256,assetIds:[],root:expected.root.replace(/\/$/u,''),failure:null,checkedAt:now()};
 let work;
 try{
@@ -32,19 +40,20 @@ try{
   const zipPath=join(work,expected.zipName); const sidecarPath=join(work,expected.sidecarName);
   const actual=await shaFile(zipPath); if(actual!==expected.zipSha256) throw new Error(`ZIP_HASH_MISMATCH:${actual}`);
   const sidecar=(await readFile(sidecarPath,'utf8')).trim(); if(sidecar!==`${expected.zipSha256}  ${expected.zipName}`) throw new Error('SIDECAR_BINDING_MISMATCH');
-  const test=await run(`unzip -tqq "${zipPath}"`,{cwd:root}); if(test.exitCode!==0) throw new Error('ZIP_CRC_INVALID');
-  const list=await run(`unzip -Z1 "${zipPath}"`,{cwd:root}); if(list.exitCode!==0) throw new Error('ZIP_LIST_FAILED');
+  const windows=process.platform==='win32';
+  const test=await run(windows?`tar -tf "${zipPath}"`:`unzip -tqq "${zipPath}"`,{cwd:root}); if(test.exitCode!==0) throw new Error(`ZIP_CRC_INVALID:${test.stderr.toString('utf8')}`);
+  const list=windows?test:await run(`unzip -Z1 "${zipPath}"`,{cwd:root}); if(list.exitCode!==0) throw new Error('ZIP_LIST_FAILED');
   const names=list.stdout.toString('utf8').split(/\r?\n/u).filter(Boolean); assertSafeArchivePaths(names,expected.root);
   if(names.some((name)=>/\.zip(?:\.sha256)?$/iu.test(name.startsWith(expected.root)?name.slice(expected.root.length):name))) throw new Error('NESTED_ARCHIVE_PRESENT');
-  const modes=await run(`zipinfo -l "${zipPath}"`,{cwd:root}); if(modes.exitCode!==0) throw new Error('ZIP_MODE_INSPECTION_FAILED');
+  const modes=await run(windows?`tar -tvf "${zipPath}"`:`zipinfo -l "${zipPath}"`,{cwd:root}); if(modes.exitCode!==0) throw new Error('ZIP_MODE_INSPECTION_FAILED');
   if(modes.stdout.toString('utf8').split(/\r?\n/u).some((line)=>/^l[-rwx]{9}\s/u.test(line))) throw new Error('ZIP_SYMLINK_PRESENT');
-  const extract=join(work,'extract'); await mkdir(extract); const unzip=await run(`unzip -q "${zipPath}" -d "${extract}"`,{cwd:root}); if(unzip.exitCode!==0) throw new Error('ZIP_EXTRACTION_FAILED');
+  const extract=join(work,'extract'); await mkdir(extract); const unzip=await run(windows?`tar -xf "${zipPath}" -C "${extract}"`:`unzip -q "${zipPath}" -d "${extract}"`,{cwd:root}); if(unzip.exitCode!==0) throw new Error('ZIP_EXTRACTION_FAILED');
   const packageRoot=join(extract,expected.root.replace(/\/$/u,'')); const metadata=await readJson(join(packageRoot,'PACKAGE_METADATA.json'));
   if(metadata.logicalZipName!==expected.zipName || metadata.rootDirectory!==expected.root.replace(/\/$/u,'')) throw new Error('PACKAGE_METADATA_IDENTITY_MISMATCH');
   const specify=await canonicalTreeHash(join(packageRoot,'.specify'));
   if(specify.count!==19 || specify.sha256!==expected.specifyTreeSha256) throw new Error(`SPECIFY_MISMATCH:${specify.count}:${specify.sha256}`);
   report.result='PASS';
 }catch(error){ report.failure=error instanceof Error?error.message:String(error); }
-await writeJson(join(root,output),report);
+await writeJson(join(root,output),{...report,baselineRole:context.baselineRole,batchAuthoritySource:context.batchAuthoritySource});
 if(work) await rm(work,{recursive:true,force:true});
 console.log(JSON.stringify(report));

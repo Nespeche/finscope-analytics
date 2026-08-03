@@ -45,3 +45,10 @@ Fuentes conserva solo la pareja completed activa: ZIP y sidecar. No se agregan p
 ## 7. Cumplimiento
 
 Una respuesta general sin rutas, comandos, resultados esperados, condición de detención y siguiente paso concreto es incompleta.
+# Transición automática B20 → B21
+
+1. Resolver el contexto con `node implementation-control/scripts/Resolve-GitHubContext.mjs "$GITHUB_HEAD_REF"` antes de instalar dependencias.
+2. Verificar que una rama ordinaria devuelve `mode=BATCH`, `batchId=B21`, `batchAuthoritySource=IMPLEMENTATION_STATE` y `baselineRole=CURRENT_COMPLETED_BASELINE`.
+3. Autenticar el Release indicado por el contexto resuelto, nunca `handoff.baseline` como fallback implícito.
+4. En la rama exacta de hardening exigir `mode=CONTROL_PLANE_REMEDIATION` y ejecutar solo sus comandos dedicados.
+5. Conservar cualquier evidencia `_FAILED`; corregir con commit nuevo y ejecución completa nueva, sin `Re-run jobs`.

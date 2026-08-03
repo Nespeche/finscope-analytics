@@ -15,6 +15,7 @@ on:
       - implementation-control/scripts/Verify-GitHubCompletedPackage.mjs
       - implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
       - implementation-control/scripts/Run-GitHubReleaseTransfer.mjs
+      - implementation-control/scripts/Resolve-GitHubContext.mjs
 
 permissions:
   contents: write
@@ -34,8 +35,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          node implementation-control/scripts/Resolve-GitHubContext.mjs "$GITHUB_REF_NAME" > github-context.json
           handoff=implementation-control/GITHUB_HANDOFF.json
-          kind=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.kind")
+          kind=$(node -p "JSON.parse(require('fs').readFileSync('github-context.json')).mode")
           stage=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.stage")
           pending=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.pending")
           if test "$kind" = RELEASE_REMEDIATION && test "$pending" = true; then
@@ -102,7 +104,7 @@ jobs:
             esac
           done < <(git diff --name-only "$closure" "$GITHUB_SHA")
           node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
-          node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-release/release-baseline.json
+          node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-release/release-baseline.json "$GITHUB_REF_NAME"
       - name: Execute literal Release qualification commands
         if: steps.mode.outputs.enabled == 'true'
         env:

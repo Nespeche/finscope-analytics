@@ -19,3 +19,10 @@ Siempre se produce un artifact con `github-validation-evidence.json`, logs, pref
 ## 4. Autopruebas operativas
 
 Cada ejecución demuestra colecciones nula, vacía, 0, 1 y N; traversal negativo; hash negativo; suite vacía negativa; identidad de Git HEAD; baseline Release; `.specify`; schema y manifest de evidencia. Las pruebas de bootstrap GH0 permanecen preservadas como historial, no como condición hardcodeada de lotes futuros.
+# Resolución autoritativa de contexto
+
+Antes de `npm ci`, todo workflow debe ejecutar `Resolve-GitHubContext.mjs` con la rama exacta. Solo una operación reconocida, completa, compatible con su stage y cuya `operation.branch` coincida exactamente puede aportar autoridad. En cualquier rama ordinaria, el lote procede de `IMPLEMENTATION_STATE.activeBatchId`, debe coincidir con `nextAuthorizedBatchId`, permanecer `PENDING`, no estar completado y tener dependencias y gates compatibles.
+
+El baseline `CURRENT_COMPLETED_BASELINE` es distinto del `HISTORICAL_OPERATION_BASELINE`. Para B21 ordinario se autentica exclusivamente `v0.21.25-B20-completed`; el B19 histórico solo se admite en la rama exacta de la operación que lo declara. No existe fallback por nombre de archivo.
+
+La rama `agent/b20-b21-transition-hardening` usa exclusivamente `CONTROL_PLANE_REMEDIATION` y sus seis comandos declarados. Toda contradicción falla antes de comandos y deja los restantes como `NOT_RUN` con causa enlazada a `primaryFailure`.
