@@ -46,12 +46,12 @@ describe('GitHub transition context routing', () => {
   });
 
   it('rejects a completed ordinary active batch', () => {
-    const value = input(); value.handoff.release.pending = false; value.state.batchStatus.B22 = 'COMPLETED'; value.batches.B22.status = 'COMPLETED'; value.state.completedBatchIds.push('B22');
+    const value = input(); value.state.batchStatus.B22 = 'COMPLETED'; value.batches.B22.status = 'COMPLETED'; value.state.completedBatchIds.push('B22');
     expect(() => resolveGitHubContext(value)).toThrowError(/COMPLETED_BATCH_SELECTED/u);
   });
 
   it('rejects divergent active and next-authorized batches', () => {
-    const value = input(); value.handoff.release.pending = false; value.state.nextAuthorizedBatchId = 'B23';
+    const value = input(); value.state.nextAuthorizedBatchId = 'B23';
     expect(() => resolveGitHubContext(value)).toThrowError(/BATCH_AUTHORITY_MISMATCH/u);
   });
 
@@ -66,7 +66,7 @@ describe('GitHub transition context routing', () => {
   });
 
   it('rejects a historical baseline in ordinary routing', () => {
-    const value = input(); value.handoff.release.pending = false;
+    const value = input();
     value.handoff.completedBaseline = {
       ...structuredClone(value.handoff.completedBaseline),
       role: 'HISTORICAL_OPERATION_BASELINE',
@@ -74,8 +74,8 @@ describe('GitHub transition context routing', () => {
     expect(() => resolveGitHubContext(value)).toThrowError(/BASELINE_ROLE_MISMATCH/u);
   });
 
-  it('rejects a derived command set that no longer equals B22 authority', () => {
-    const value = input(); value.handoff.release.pending = false; value.batches.B22.localValidation.commands = [];
+  it('rejects a derived command set that no longer equals B21 authority', () => {
+    const value = input(); value.batches.B22.localValidation.commands = [];
     expect(() => resolveGitHubContext(value)).toThrowError(/DERIVED_COMMAND_SET_MISMATCH/u);
   });
 
@@ -88,7 +88,7 @@ describe('GitHub transition context routing', () => {
     expect(result.commands.some((entry: { command: string }) => entry.command.includes('cloudflare/'))).toBe(false);
   });
 
-  it('routes the exact maintenance branch without inheriting B22 commands', () => {
+  it('routes the exact maintenance branch without inheriting B21 commands', () => {
     const value = input(); value.branch = 'agent/residual-risk-hardening';
     const result = resolveGitHubContext(value);
     expect(result).toMatchObject({
@@ -142,7 +142,7 @@ describe('GitHub transition context routing', () => {
     expect(result.commands.map((entry: { id: string }) => entry.id)).toContain('verify-clean-package');
     expect(validateRemediationScope([
       'implementation-control/GITHUB_HANDOFF.json',
-      'implementation-control/scripts/Package-GitHubCompletedReleaseR2.mjs',
+      'implementation-control/scripts/Package-GitHubCompletedRelease.mjs',
       'tests/contract/github-transition-routing.test.ts',
     ], result.allowedPaths)).toMatchObject({ valid: true });
   });
