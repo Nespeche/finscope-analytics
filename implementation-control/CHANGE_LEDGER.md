@@ -607,3 +607,12 @@
 - todos los comandos obligatorios del mirror B19 PASS;
 - T081, T082, T089, T083, T084, T085 y B19 pasan a `COMPLETED`; B20 queda `PENDING`;
 - cierre limitado a la allowlist y `convergenceAuthorized=false`.
+
+
+## 2026-08-03 — B20 candidate PASS y cierre GitHub-first
+
+- baseline autenticado: `FS_v0.21.24_B19_completed.zip` (`0f5cf8bd7708fd3f01c065451e99dc604ac8b244a3717c9a27eb7de1ce45b2b0`);
+- candidate exacto: `69ed435b2f05ae2d6498846416d2e3750807ef36`, run `30776552229`, artifact `8842295323`;
+- todos los comandos obligatorios del mirror B20 PASS;
+- T086, T087, T088 y B20 pasan a `COMPLETED`; B21 queda `PENDING`;
+- cierre limitado a la allowlist y `convergenceAuthorized=false`.
