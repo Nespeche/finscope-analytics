@@ -49,6 +49,7 @@ jobs:
         id: validation
         env:
           GH_TOKEN: ${{ github.token }}
+          GITHUB_BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: node implementation-control/scripts/Run-GitHubValidation.mjs
       - name: Upload PASS or FAILED evidence
         if: always()

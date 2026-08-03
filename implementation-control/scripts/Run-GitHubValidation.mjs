@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
 import { canonicalTreeHash, evidenceFiles, now, parseDiscovery, readJson, root, run, setOutput, shaBytes, shaFile, validateJsonFile, writeJson, writeManifest } from './GitHub-Common.mjs';
-import { loadAndResolveGitHubContext } from './Resolve-GitHubContext.mjs';
+import { loadAndResolveGitHubContext, validateRemediationScope } from './Resolve-GitHubContext.mjs';
 
 const evidenceDir=join(root,'.finscope-evidence','validation'); await mkdir(join(evidenceDir,'logs'),{recursive:true});
 const startedAt=now(); const handoff=await readJson(join(root,'implementation-control/GITHUB_HANDOFF.json')); const state=await readJson(join(root,'implementation-control/IMPLEMENTATION_STATE.json'));
@@ -26,6 +26,19 @@ const empty=parseDiscovery('npm run test','regression','No test files found','')
 const hashObserved=shaBytes(Buffer.from('actual'))===shaBytes(Buffer.from('expected')); record('NEGATIVE_HASH','FAIL',hashObserved?'PASS':'FAIL',!hashObserved?'PASS':'FAIL');
 let primaryFailure=null; const executedCommands=[];
 function fail(code,detail){ if(!primaryFailure) primaryFailure={code,detail}; }
+let remediationScope=null;
+if(context?.remediationMatched){
+  const baseSha=process.env.GITHUB_BASE_SHA;
+  if(!/^[0-9a-f]{40}$/iu.test(baseSha??'')) fail('MAINTENANCE_SCOPE_MISMATCH','GITHUB_BASE_SHA missing');
+  else {
+    const diff=await run(`git diff --name-only --diff-filter=ACMR ${baseSha}...${commitSha}`,{cwd:root});
+    if(diff.exitCode!==0) fail('MAINTENANCE_SCOPE_MISMATCH',diff.stderr.toString('utf8'));
+    else {
+      try { remediationScope={id:context.remediationId,...validateRemediationScope(diff.stdout.toString('utf8').split(/\r?\n/u),context.allowedPaths)}; }
+      catch(error){ fail(error.code??'MAINTENANCE_SCOPE_MISMATCH',error.message); remediationScope={id:context.remediationId,allowedPaths:context.allowedPaths,changedPaths:diff.stdout.toString('utf8').split(/\r?\n/u).filter(Boolean),valid:false}; }
+    }
+  }
+}
 if(headResult.exitCode!==0||!/^[0-9a-f]{40}$/u.test(commitSha)) fail('CHECKED_OUT_SHA_INVALID',headResult.stderr.toString('utf8'));
 if(contextFailure) fail(contextFailure.code??'BATCH_AUTHORITY_MISMATCH',contextFailure.message);
 else if(controlPlane.result!=='PASS') fail('CONTROL_PLANE_FAILED',`exitCode=${controlExit}`);
@@ -45,7 +58,7 @@ for(const definition of selectedCommands){
 }
 const evidencePath=join(evidenceDir,'github-validation-evidence.json');
 selfTests.push({id:'EVIDENCE_SCHEMA_REREAD',expected:'PASS',observed:'PENDING',result:'PASS'});
-const evidence={schemaVersion:'1.0.0',result:primaryFailure?'FAIL':'PASS',mode,repository:process.env.GITHUB_REPOSITORY||handoff.repository,branch,commitSha,runId:process.env.GITHUB_RUN_ID??null,activeBatchId:batchId,batchAuthoritySource:context?.batchAuthoritySource??null,baselineRole:context?.baselineRole??null,operationMatched:context?.operationMatched??false,browserRequired:releaseRemediation||mode==='BATCH_CLOSURE'||mode==='CONTROL_PLANE_REMEDIATION'?false:Boolean(batch.localValidation?.browserRequired),startedAt,finishedAt:now(),controlPlane,releaseBaseline:{result:releaseBaseline.result,tag:releaseBaseline.tag,zipName:releaseBaseline.zipName,sidecarName:releaseBaseline.sidecarName,zipSha256:releaseBaseline.zipSha256,assetIds:releaseBaseline.assetIds??[],root:releaseBaseline.root,failure:releaseBaseline.failure??null},specify,derivedBatchCommands:declaredCommands,executedCommands,selfTests,primaryFailure,files:[]};
+const evidence={schemaVersion:'1.0.0',result:primaryFailure?'FAIL':'PASS',mode,repository:process.env.GITHUB_REPOSITORY||handoff.repository,branch,commitSha,runId:process.env.GITHUB_RUN_ID??null,activeBatchId:batchId,batchAuthoritySource:context?.batchAuthoritySource??null,baselineRole:context?.baselineRole??null,operationMatched:context?.operationMatched??false,remediationScope,browserRequired:releaseRemediation||mode==='BATCH_CLOSURE'||context?.remediationMatched?false:Boolean(batch.localValidation?.browserRequired),startedAt,finishedAt:now(),controlPlane,releaseBaseline:{result:releaseBaseline.result,tag:releaseBaseline.tag,zipName:releaseBaseline.zipName,sidecarName:releaseBaseline.sidecarName,zipSha256:releaseBaseline.zipSha256,assetIds:releaseBaseline.assetIds??[],root:releaseBaseline.root,failure:releaseBaseline.failure??null},specify,derivedBatchCommands:declaredCommands,executedCommands,selfTests,primaryFailure,files:[]};
 await writeJson(evidencePath,evidence); evidence.files=(await evidenceFiles(evidenceDir)).filter((item)=>item.path!=='github-validation-evidence.json'); await writeJson(evidencePath,evidence);
 try{ await validateJsonFile(join(root,'implementation-control/schemas/github-validation-evidence.schema.json'),evidencePath); selfTests.find((item)=>item.id==='EVIDENCE_SCHEMA_REREAD').observed='PASS'; evidence.selfTests=selfTests; await writeJson(evidencePath,evidence); await validateJsonFile(join(root,'implementation-control/schemas/github-validation-evidence.schema.json'),evidencePath); }catch(error){ const schemaTest=selfTests.find((item)=>item.id==='EVIDENCE_SCHEMA_REREAD'); schemaTest.observed='FAIL'; schemaTest.result='FAIL'; fail('EVIDENCE_SCHEMA_INVALID',String(error)); evidence.result='FAIL'; evidence.primaryFailure=primaryFailure; evidence.selfTests=selfTests; await writeJson(evidencePath,evidence); }
 await writeManifest(evidenceDir); const artifactName=`finscope-github-validation-${commitSha.slice(0,12)}-${evidence.result==='PASS'?'PASS':'_FAILED'}`;

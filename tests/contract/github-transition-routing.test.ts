@@ -3,7 +3,7 @@ import handoffDocument from '../../implementation-control/GITHUB_HANDOFF.json';
 import stateDocument from '../../implementation-control/IMPLEMENTATION_STATE.json';
 import b20Document from '../../implementation-control/batches/B20.json';
 import b21Document from '../../implementation-control/batches/B21.json';
-import { resolveGitHubContext } from '../../implementation-control/scripts/Resolve-GitHubContext.mjs';
+import { resolveGitHubContext, validateRemediationScope } from '../../implementation-control/scripts/Resolve-GitHubContext.mjs';
 
 const input = () => ({
   branch: 'agent/b21-probe',
@@ -54,12 +54,46 @@ describe('GitHub transition context routing', () => {
     expect(() => resolveGitHubContext(value)).toThrowError(/DERIVED_COMMAND_SET_MISMATCH/u);
   });
 
-  it('runs only dedicated commands on the exact remediation branch', () => {
-    const value = input(); value.branch = value.handoff.controlPlaneRemediation.branch;
+  it('runs only dedicated commands on the exact control-plane remediation branch', () => {
+    const value = input(); value.branch = 'agent/maintenance-remediation-routing';
     const result = resolveGitHubContext(value);
     expect(result.mode).toBe('CONTROL_PLANE_REMEDIATION');
+    expect(result.remediationId).toBe('maintenance-routing-hardening');
     expect(result.commands.map((entry: { id: string }) => entry.id)).toEqual(['npm-ci', 'typecheck', 'control-plane', 'transition-contract', 'regression-vitest', 'build']);
     expect(result.commands.some((entry: { command: string }) => entry.command.includes('cloudflare/'))).toBe(false);
+  });
+
+  it('routes the exact maintenance branch without inheriting B21 commands', () => {
+    const value = input(); value.branch = 'agent/residual-risk-hardening';
+    const result = resolveGitHubContext(value);
+    expect(result).toMatchObject({
+      mode: 'MAINTENANCE_REMEDIATION',
+      batchId: 'B21',
+      batchAuthoritySource: 'IMPLEMENTATION_STATE',
+      baselineRole: 'CURRENT_COMPLETED_BASELINE',
+      remediationMatched: true,
+      remediationId: 'residual-risk-hardening',
+    });
+    expect(result.commands.map((entry: { id: string }) => entry.id)).toEqual([
+      'npm-ci', 'typecheck', 'control-plane', 'maintenance-contract', 'dependency-audit', 'regression-vitest', 'build',
+    ]);
+    expect(result.commands.some((entry: { command: string }) => entry.command.includes('d1-budget'))).toBe(false);
+  });
+
+  it('accepts only changed paths declared by the matched remediation', () => {
+    const value = input(); value.branch = 'agent/residual-risk-hardening';
+    const result = resolveGitHubContext(value);
+    expect(validateRemediationScope(['package.json', 'vite.config.ts'], result.allowedPaths)).toMatchObject({ valid: true });
+    expect(() => validateRemediationScope(['workers/sec-gateway/src/index.ts'], result.allowedPaths)).toThrowError(/MAINTENANCE_SCOPE_MISMATCH/u);
+  });
+
+  it('rejects ambiguous or incomplete remediation declarations', () => {
+    const duplicate = input(); duplicate.handoff.remediations.push(structuredClone(duplicate.handoff.remediations[0]));
+    duplicate.branch = 'agent/maintenance-remediation-routing';
+    expect(() => resolveGitHubContext(duplicate)).toThrowError(/OPERATION_BRANCH_MISMATCH/u);
+
+    const incomplete = input(); incomplete.handoff.remediations[0].allowedPaths = [];
+    expect(() => resolveGitHubContext(incomplete)).toThrowError(/OPERATION_KIND_INVALID/u);
   });
 
   it.each([
