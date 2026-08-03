@@ -1,6 +1,8 @@
+import { execFile } from 'node:child_process';
 import { mkdir, mkdtemp, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { basename, join, relative, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
+import { promisify } from 'node:util';
 import {
   assertSafeArchivePaths,
   canonicalTreeHash,
@@ -14,6 +16,16 @@ import {
 
 const zipPath = resolve(process.argv[2] ?? '');
 const sidecarPath = resolve(process.argv[3] ?? '');
+const argumentsAfterPaths = process.argv.slice(4);
+const option = (name) => {
+  const index = argumentsAfterPaths.indexOf(name);
+  return index >= 0 ? argumentsAfterPaths[index + 1] : undefined;
+};
+const gitRootOption = option('--git-root');
+const gitRoot = gitRootOption ? resolve(gitRootOption) : null;
+const gitCommit = option('--commit')?.toLowerCase() ?? null;
+const authenticatedTag = option('--tag') ?? null;
+const execGit = promisify(execFile);
 const handoff = await readJson(join(root, 'implementation-control/GITHUB_HANDOFF.json'));
 const expected = handoff.release;
 const expectedRoot = handoff.baseline.root.replace(/\/$/u, '');
@@ -52,6 +64,35 @@ function countExtensions(paths) {
   return counts;
 }
 
+const generatedOutputPaths = new Set([
+  'DOCUMENTATION_INDEX.md',
+  'FILE_MANIFEST.sha256',
+  'PACKAGE_INVENTORY.json',
+  'PACKAGE_METADATA.json',
+  'PROJECT_CONTEXT.md',
+  'START_HERE_CHATGPT.md',
+  'V0.21_PHASE_STATUS.md',
+  'implementation-control/AUTHORITY_MATRIX.json',
+  'implementation-control/GITHUB_HANDOFF.json',
+  'implementation-control/IMPLEMENTATION_BATCH_MAP.json',
+  'implementation-control/IMPLEMENTATION_BATCH_MAP.md',
+  'implementation-control/IMPLEMENTATION_STATE.json',
+  'implementation-control/TASK_SOURCE_LOCK.json',
+]);
+
+function temporaryReason(path) {
+  const lower = path.toLocaleLowerCase('en-US');
+  const name = lower.split('/').at(-1) ?? lower;
+  if (/^github-context.*\.json$/u.test(name)) return 'GITHUB_CONTEXT_OUTPUT';
+  if (['github_output', 'github_env'].includes(name)) return 'GITHUB_ACTIONS_COMMAND_FILE';
+  if (/(?:~|\.tmp|\.temp|\.bak|\.swp)$/u.test(name)) return 'TEMPORARY_SUFFIX';
+  if (/\.(?:log|trace)$/u.test(name) || /(?:diagnostic|intermediate)/u.test(name)) return 'TRANSIENT_DIAGNOSTIC';
+  if (/(^|\/)(?:node_modules|dist|coverage|playwright-report|test-results|\.wrangler|\.vite|\.cache|__pycache__)(\/|$)/u.test(lower)) return 'REGENERABLE_DIRECTORY';
+  if (/(^|\/)\.finscope-/u.test(lower)) return 'UNAUTHORIZED_FINSCOPE_OUTPUT';
+  if (/\.zip$/u.test(lower)) return 'NESTED_ZIP';
+  return null;
+}
+
 assert(zipPath && sidecarPath, 'USAGE', 'Verify-GitHubCompletedPackage.mjs <zip> <sidecar>');
 equal(basename(zipPath), expected.zipName, 'COMPLETED_ZIP_NAME_MISMATCH');
 equal(basename(sidecarPath), expected.sidecarName, 'COMPLETED_SIDECAR_NAME_MISMATCH');
@@ -85,6 +126,10 @@ try {
   const paths = files.map((absolute) => posix(relative(packageRoot, absolute)));
   const pathSet = new Set(paths);
   assert(files.length > 0, 'COMPLETED_PACKAGE_EMPTY');
+  for (const path of paths) {
+    const reason = temporaryReason(path);
+    assert(!reason, 'COMPLETED_PACKAGE_TEMPORARY_FILE', `${path}:${reason}`);
+  }
   assert(!paths.some((path) => /(^|\/)(?:node_modules|dist|coverage|playwright-report|test-results|\.wrangler|\.vite|\.finscope-evidence|\.finscope-release)(\/|$)/u.test(path)), 'COMPLETED_PACKAGE_REGENERABLE_DIRECTORY');
   assert(!paths.some((path) => /(?:^|\/)(?:\.env(?:\..*)?|id_rsa|id_ed25519|.*\.(?:pem|p12|pfx|key))$/iu.test(path) && !/\.env\.example$/iu.test(path)), 'COMPLETED_PACKAGE_SECRET_PATH');
   assert(!paths.some((path) => /(?:~|\.tmp|\.temp|\.bak|\.swp)$/iu.test(path) || /(?:^|\/)(?:\.DS_Store|Thumbs\.db)$/u.test(path)), 'COMPLETED_PACKAGE_TEMPORARY_FILE');
@@ -236,6 +281,40 @@ try {
   equal(controlResult.status, 'PASS', 'COMPLETED_CONTROL_PLANE_STATUS_MISMATCH');
   equal(controlResult.failCount, 0, 'COMPLETED_CONTROL_PLANE_FAILURES');
 
+  let gitTreeComparisonExecuted = false;
+  let gitCommitCompared = null;
+  let ordinaryFilesCompared = 0;
+  const allowedGeneratedOutputs = [...generatedOutputPaths, expected.promptName].sort((a, b) => a.localeCompare(b, 'en'));
+  if (gitRoot || gitCommit) {
+    assert(gitRoot && gitCommit, 'COMPLETED_GIT_PROVENANCE_ARGUMENTS_INCOMPLETE');
+    assert(/^[0-9a-f]{40}$/u.test(gitCommit), 'COMPLETED_GIT_COMMIT_INVALID', gitCommit);
+    const commitObject = await execGit('git', ['cat-file', '-t', gitCommit], { cwd: gitRoot, encoding: 'utf8' });
+    equal(commitObject.stdout.trim(), 'commit', 'COMPLETED_GIT_COMMIT_NOT_FOUND');
+    const treeResult = await execGit('git', ['ls-tree', '-r', '-z', gitCommit], { cwd: gitRoot, encoding: 'buffer', maxBuffer: 32 * 1024 * 1024 });
+    const tree = new Map();
+    for (const record of Buffer.from(treeResult.stdout).toString('utf8').split('\0').filter(Boolean)) {
+      const match = /^(\d{6}) (\w+) ([0-9a-f]{40})\t([\s\S]+)$/u.exec(record);
+      assert(match && match[2] === 'blob', 'COMPLETED_GIT_TREE_ENTRY_INVALID', record);
+      assert(match[1] !== '120000', 'COMPLETED_GIT_TREE_SYMLINK_FORBIDDEN', match[4]);
+      tree.set(posix(match[4]), match[3]);
+    }
+    const allowed = new Set(allowedGeneratedOutputs);
+    for (const path of paths) {
+      if (allowed.has(path)) continue;
+      const objectId = tree.get(path);
+      assert(objectId, 'COMPLETED_PACKAGE_PATH_NOT_IN_GIT_TREE', path);
+      const blob = await execGit('git', ['cat-file', 'blob', objectId], { cwd: gitRoot, encoding: 'buffer', maxBuffer: 64 * 1024 * 1024 });
+      const packageBytes = await readFile(join(packageRoot, path));
+      assert(packageBytes.equals(blob.stdout), 'COMPLETED_PACKAGE_GIT_BYTES_MISMATCH', path);
+      ordinaryFilesCompared += 1;
+    }
+    for (const path of tree.keys()) {
+      if (!allowed.has(path)) assert(pathSet.has(path), 'COMPLETED_PACKAGE_GIT_PATH_MISSING', path);
+    }
+    gitTreeComparisonExecuted = true;
+    gitCommitCompared = gitCommit;
+  }
+
   console.log(JSON.stringify({
     schemaVersion: '1.0.0',
     result: 'PASS',
@@ -253,6 +332,12 @@ try {
     nextAuthorizedBatchId: state.nextAuthorizedBatchId,
     convergenceAuthorized: false,
     controlPlaneChecks: controlResult.checkCount,
+    provenanceTag: authenticatedTag ?? expected.tag,
+    gitTreeComparisonExecuted,
+    gitCommitCompared,
+    ordinaryFilesCompared,
+    allowedGeneratedOutputs,
+    rejectedPaths: [],
   }, null, 2));
 } finally {
   await rm(work, { recursive: true, force: true });

@@ -19,3 +19,9 @@ Los assets mínimos, derivados de `GITHUB_HANDOFF.json`, son:
 - prompt del siguiente batch autorizado.
 
 `Source code (zip)` y `Source code (tar.gz)` no son baseline normativo.
+
+## Procedencia y reautenticación
+
+El staging completed se extrae exclusivamente de los blobs del commit Git exacto. Los outputs finales generados tienen una allowlist cerrada; una denylist independiente se aplica antes de inventario, antes de manifest y en el verificador. Inventory y manifest nunca pueden legitimar un path temporal o ajeno al árbol Git.
+
+Publicar no completa la autenticación. Después de `draft=false`, el workflow vuelve a consultar el Release por tag, exige Release ID/commit y cinco assets únicos, comprueba estado, tamaño y digest GitHub, descarga nuevamente cada asset, compara bytes, sidecar y CRC, y ejecuta el verificador con comparación Git, control plane y `.specify` desde extracción limpia. El resultado JSON/Markdown se sube como artifact. Una falla preserva evidencia `_FAILED`, no reemplaza assets y no borra un Release ya publicado.

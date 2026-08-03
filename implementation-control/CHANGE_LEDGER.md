@@ -545,6 +545,15 @@
 - T049, T050, T051, T052, T053 y B12 pasan a `COMPLETED`; B13 queda `PENDING`;
 - cierre limitado a la allowlist y `convergenceAuthorized=false`.
 
+## 2026-08-03 — Remediación técnica del paquete B21 contaminado
+
+- operación tipada `MAINTENANCE_REMEDIATION` en `agent/b21-clean-completed-package-remediation`;
+- baseline B20 permanece activo; el Release B21 publicado queda rechazado como Fuentes por `github-context.json`;
+- staging cambiado a blobs del commit Git exacto, con denylist independiente y verificación de procedencia byte a byte;
+- contexto del resolver movido a `$RUNNER_TEMP` con cleanup `always`;
+- publicación reforzada con reautenticación completa de cinco assets y preservación fail-closed del Release publicado;
+- sin cambios de producto, B22, tareas, lotes, gates o `.specify`; `convergenceAuthorized=false`.
+
 
 ## 2026-07-31 — B13 candidate PASS y cierre GitHub-first
 

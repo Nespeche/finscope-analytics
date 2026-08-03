@@ -3,20 +3,21 @@ import handoffDocument from '../../implementation-control/GITHUB_HANDOFF.json';
 import stateDocument from '../../implementation-control/IMPLEMENTATION_STATE.json';
 import b20Document from '../../implementation-control/batches/B20.json';
 import b21Document from '../../implementation-control/batches/B21.json';
+import b22Document from '../../implementation-control/batches/B22.json';
 import { resolveGitHubContext, validateRemediationScope } from '../../implementation-control/scripts/Resolve-GitHubContext.mjs';
 
 const input = () => ({
   branch: 'agent/b21-probe',
   handoff: structuredClone(handoffDocument),
   state: structuredClone(stateDocument),
-  batches: { B20: structuredClone(b20Document), B21: structuredClone(b21Document) },
+  batches: { B20: structuredClone(b20Document), B21: structuredClone(b21Document), B22: structuredClone(b22Document) },
 });
 
 describe('GitHub transition context routing', () => {
-  it('routes an ordinary branch to pending B21 and the B20 completed baseline', () => {
+  it('routes an ordinary branch to pending B22 and the B20 governance baseline', () => {
     const result = resolveGitHubContext(input());
-    expect(result).toMatchObject({ mode: 'BATCH', batchId: 'B21', batchAuthoritySource: 'IMPLEMENTATION_STATE', batchStatus: 'PENDING', baselineRole: 'CURRENT_COMPLETED_BASELINE', baselineTag: 'v0.21.25-B20-completed', operationMatched: false });
-    expect(result.commands).toHaveLength(7);
+    expect(result).toMatchObject({ mode: 'BATCH', batchId: 'B22', batchAuthoritySource: 'IMPLEMENTATION_STATE', batchStatus: 'PENDING', baselineRole: 'CURRENT_COMPLETED_BASELINE', baselineTag: 'v0.21.25-B20-completed', operationMatched: false });
+    expect(result.commands).toHaveLength(b22Document.localValidation.commands.length);
   });
 
   it('honors only the exact branch of a recognized complete special operation', () => {
@@ -36,12 +37,12 @@ describe('GitHub transition context routing', () => {
   });
 
   it('rejects a completed ordinary active batch', () => {
-    const value = input(); value.state.batchStatus.B21 = 'COMPLETED'; value.batches.B21.status = 'COMPLETED'; value.state.completedBatchIds.push('B21');
+    const value = input(); value.state.batchStatus.B22 = 'COMPLETED'; value.batches.B22.status = 'COMPLETED'; value.state.completedBatchIds.push('B22');
     expect(() => resolveGitHubContext(value)).toThrowError(/COMPLETED_BATCH_SELECTED/u);
   });
 
   it('rejects divergent active and next-authorized batches', () => {
-    const value = input(); value.state.nextAuthorizedBatchId = 'B22';
+    const value = input(); value.state.nextAuthorizedBatchId = 'B23';
     expect(() => resolveGitHubContext(value)).toThrowError(/BATCH_AUTHORITY_MISMATCH/u);
   });
 
@@ -65,7 +66,7 @@ describe('GitHub transition context routing', () => {
   });
 
   it('rejects a derived command set that no longer equals B21 authority', () => {
-    const value = input(); value.batches.B21.localValidation.commands = [];
+    const value = input(); value.batches.B22.localValidation.commands = [];
     expect(() => resolveGitHubContext(value)).toThrowError(/DERIVED_COMMAND_SET_MISMATCH/u);
   });
 
@@ -83,7 +84,7 @@ describe('GitHub transition context routing', () => {
     const result = resolveGitHubContext(value);
     expect(result).toMatchObject({
       mode: 'MAINTENANCE_REMEDIATION',
-      batchId: 'B21',
+      batchId: 'B22',
       batchAuthoritySource: 'IMPLEMENTATION_STATE',
       baselineRole: 'CURRENT_COMPLETED_BASELINE',
       remediationMatched: true,
@@ -100,6 +101,23 @@ describe('GitHub transition context routing', () => {
     const result = resolveGitHubContext(value);
     expect(validateRemediationScope(['package.json', 'vite.config.ts'], result.allowedPaths)).toMatchObject({ valid: true });
     expect(() => validateRemediationScope(['workers/sec-gateway/src/index.ts'], result.allowedPaths)).toThrowError(/MAINTENANCE_SCOPE_MISMATCH/u);
+  });
+
+  it('routes the B21 clean-package remediation to its closed scope and dedicated commands', () => {
+    const value = input(); value.branch = 'agent/b21-clean-completed-package-remediation';
+    const result = resolveGitHubContext(value);
+    expect(result).toMatchObject({
+      mode: 'MAINTENANCE_REMEDIATION',
+      remediationMatched: true,
+      remediationId: 'b21-clean-completed-package-remediation',
+      baselineRole: 'CURRENT_COMPLETED_BASELINE',
+    });
+    expect(result.commands.map((entry: { id: string }) => entry.id)).toContain('reject-historical-b21');
+    expect(validateRemediationScope([
+      '.github/workflows/finscope-completed-release.yml',
+      'implementation-control/scripts/Verify-GitHubCompletedPackage.mjs',
+    ], result.allowedPaths)).toMatchObject({ valid: true });
+    expect(() => validateRemediationScope(['src/app/composition.ts'], result.allowedPaths)).toThrowError(/MAINTENANCE_SCOPE_MISMATCH/u);
   });
 
   it('rejects ambiguous or incomplete remediation declarations', () => {

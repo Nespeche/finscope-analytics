@@ -22,7 +22,11 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Resolve fail-closed GitHub context
-        run: node implementation-control/scripts/Resolve-GitHubContext.mjs "$GITHUB_HEAD_REF" > "$RUNNER_TEMP/github-context.json"
+        shell: bash
+        run: |
+          context_dir="$RUNNER_TEMP/finscope-context"
+          mkdir -p "$context_dir"
+          node implementation-control/scripts/Resolve-GitHubContext.mjs "$GITHUB_HEAD_REF" > "$context_dir/github-context.json"
       - name: Configure Node from package authority
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
@@ -62,3 +66,6 @@ jobs:
         env:
           RESULT: ${{ steps.closure.outputs.result }}
         run: test "$RESULT" = PASS || test "$RESULT" = NOT_APPLICABLE
+      - name: Clean resolver context
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/finscope-context"

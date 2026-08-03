@@ -43,9 +43,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node implementation-control/scripts/Resolve-GitHubContext.mjs "$GITHUB_HEAD_REF" > github-context.json
+          context_dir="$RUNNER_TEMP/finscope-context"
+          context_file="$context_dir/github-context.json"
+          mkdir -p "$context_dir"
+          node implementation-control/scripts/Resolve-GitHubContext.mjs "$GITHUB_HEAD_REF" > "$context_file"
           handoff=implementation-control/GITHUB_HANDOFF.json
-          kind=$(node -p "JSON.parse(require('fs').readFileSync('github-context.json')).mode")
+          kind=$(node -p "JSON.parse(require('fs').readFileSync('$context_file')).mode")
           stage=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.stage")
           pending=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.pending")
           test "$kind" = RELEASE_REMEDIATION && enabled=true || enabled=false
@@ -141,3 +144,6 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 30
+      - name: Clean resolver context
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/finscope-context"

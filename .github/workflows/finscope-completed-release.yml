@@ -37,8 +37,11 @@ jobs:
           set -euo pipefail
           handoff=implementation-control/GITHUB_HANDOFF.json
           operation_branch=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.branch")
-          node implementation-control/scripts/Resolve-GitHubContext.mjs "$operation_branch" > github-context.json
-          kind=$(node -p "JSON.parse(require('fs').readFileSync('github-context.json')).mode")
+          context_dir="$RUNNER_TEMP/finscope-context"
+          context_file="$context_dir/github-context.json"
+          mkdir -p "$context_dir"
+          node implementation-control/scripts/Resolve-GitHubContext.mjs "$operation_branch" > "$context_file"
+          kind=$(node -p "JSON.parse(require('fs').readFileSync('$context_file')).mode")
           stage=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.stage")
           pending=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.pending")
           if test "$kind" = RELEASE_REMEDIATION && test "$pending" = true; then
@@ -146,6 +149,18 @@ jobs:
           RELEASE_ID: ${{ steps.draft.outputs.release_id }}
           RELEASE_TAG: ${{ steps.draft.outputs.tag }}
         run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs publish .finscope-release
+      - name: Upload post-publication reauthentication evidence
+        if: success() && steps.mode.outputs.enabled == 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: finscope-post-publication-reauthentication-${{ github.sha }}-PASS
+          path: |
+            .finscope-release/POST_PUBLICATION_REAUTHENTICATION.json
+            .finscope-release/POST_PUBLICATION_REAUTHENTICATION.md
+            .finscope-release/post-publication-package-verification.stdout.log
+            .finscope-release/post-publication-package-verification.stderr.log
+          if-no-files-found: error
+          retention-days: 30
       - name: Remove failed draft Release
         if: failure() && steps.mode.outputs.enabled == 'true'
         env:
@@ -162,3 +177,6 @@ jobs:
           if-no-files-found: warn
           include-hidden-files: true
           retention-days: 30
+      - name: Clean resolver context
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/finscope-context"

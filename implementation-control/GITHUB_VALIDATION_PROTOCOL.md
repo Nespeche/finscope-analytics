@@ -28,3 +28,7 @@ El baseline `CURRENT_COMPLETED_BASELINE` es distinto del `HISTORICAL_OPERATION_B
 Las remediaciones se declaran en la colección tipada `GITHUB_HANDOFF.remediations`. Cada entrada fija un `id`, modo reconocido, rama exacta, rol de baseline, allowlist de rutas y comandos literales. `CONTROL_PLANE_REMEDIATION` se reserva para cambios del plano de control y `MAINTENANCE_REMEDIATION` para dependencias, build, seguridad y tooling no normativo.
 
 Antes de `npm ci`, el runner compara el diff exacto del PR con `allowedPaths`. Una ruta no declarada produce `MAINTENANCE_SCOPE_MISMATCH`; una declaración desconocida, incompleta, duplicada o ambigua falla sin fallback a `BATCH`. Los comandos restantes quedan `NOT_RUN` con causa enlazada a `primaryFailure`.
+
+## Paquetes completed
+
+El verificador distingue archivos ordinarios y outputs finales generados. Con acceso al repositorio autenticado, cada archivo ordinario debe existir con bytes idénticos en el commit indicado; la evidencia registra `gitTreeComparisonExecuted`, commit, conteo comparado, outputs permitidos y paths rechazados. Sin acceso Git puede ejecutar controles portátiles, pero debe declarar la comparación Git como no ejecutada. `github-context*.json`, archivos de comandos Actions, temporales, logs, diagnósticos, caches, resultados de tests, `.finscope-*` no autorizados y ZIPs anidados fallan antes de considerar inventario o manifest.

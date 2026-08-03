@@ -53,4 +53,13 @@ Una respuesta general sin rutas, comandos, resultados esperados, condición de d
 4. Para una rama presente en `GITHUB_HANDOFF.remediations`, exigir coincidencia exacta, modo reconocido, baseline completed vigente, allowlist de rutas íntegra y comandos literales dedicados.
 5. Para mantenimiento no normativo exigir `mode=MAINTENANCE_REMEDIATION`; no ejecutar comandos funcionales de B21 ni alterar `.specify`, tareas, lotes o gates.
 6. Verificar el diff contra `allowedPaths` antes de `npm ci`; cualquier ruta adicional debe producir `MAINTENANCE_SCOPE_MISMATCH` y dejar los comandos posteriores `NOT_RUN`.
+
+# Remediación de paquete completed contaminado
+
+1. Escribir cualquier resultado de `Resolve-GitHubContext.mjs` bajo `$RUNNER_TEMP/finscope-context`, conservar su ruta en una variable y limpiarlo con `if: always()`.
+2. Exigir worktree limpio y extraer el commit exacto desde objetos Git; nunca copiar el workspace físico.
+3. Aplicar denylist antes de inventory, antes de manifest y dentro del verificador.
+4. Verificar paths y bytes ordinarios contra Git y permitir diferencias solo para outputs generados cerrados.
+5. Tras publicar, reautenticar los cinco assets y subir evidencia post-publicación; ante fallo preservar el Release publicado y el artifact `_FAILED`.
+6. Una revisión completed posterior debe usar identidad inmutable nueva y autorización humana independiente.
 5. Conservar cualquier evidencia `_FAILED`; corregir con commit nuevo y ejecución completa nueva, sin `Re-run jobs`.
