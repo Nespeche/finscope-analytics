@@ -1,5 +1,13 @@
 # Change Ledger — FinScope Analytics
 
+## 2026-08-03 — B21 closure request parser remediation candidate
+
+- La autorización de cierre previa queda consumida; `b21-clean-completed-package-remediation` vuelve exclusivamente a `candidate/NOT_REQUESTED`, sin candidato ni cierre cargados.
+- Se preservan como evidencia histórica no promovible del commit `787e79c55b2db7b831589e5e9d5cbd8c64fcb5a9`: Closure Validation run `30838147836`, artifact `8865666079` (`finscope-closure-787e79c55b2d-_FAILED`, `sha256:a871fe85f1cf586ae19fc815f6a67b343fc83a7b5a421f8f1dcde2e242f2c5bd`) por `REMEDIATION_CLOSURE_ALLOWLIST_VIOLATION:mplementation-control/CHANGE_LEDGER.md`; y PR Validation run `30838147170`, artifact `8865666299` (`finscope-github-validation-787e79c55b2d-_FAILED`, `sha256:16277122e898c0bded1bb9f345008d27432e76510b3130cee1dbff7294aa3bfe`) por fixture de batch closure acoplada al estado mutable de remediación.
+- La recopilación de paths de cierre usa salidas Git NUL-delimited sin `trim`, conserva el primer carácter, incorpora tracked/staged/unstaged/untracked, deduplica y ordena determinísticamente.
+- Los tests de routing aíslan el handoff de batch y conservan la serialización fail-closed ante una remediación `closure/PENDING`; el verificador de cierre promueve la causa real de apply y conserva `APPLY_CONTEXT_MISSING` como detalle secundario con logs sanitizados, acotados y manifestados.
+- B21 permanece `COMPLETED`; B22 permanece `PENDING` y no iniciado; `activeBatchId=B22`; `nextAuthorizedBatchId=B22`; `convergenceAuthorized=false`; producto y `.specify` no cambian.
+
 ## 2026-08-03 — B21 evidence schema remediation r2
 
 - Se conserva como `REJECTED_EVIDENCE_SCHEMA_INVALID` el artifact `8858252413` del commit `e6d71f7785ac7efab4375366526f2f206969dea9`; no es promovible.

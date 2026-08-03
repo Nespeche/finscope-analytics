@@ -1,6 +1,8 @@
-import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import { execFile } from 'node:child_process';
+import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { promisify } from 'node:util';
 import { describe, expect, it } from 'vitest';
 import Ajv2020 from 'ajv/dist/2020.js';
 import handoffDocument from '../../implementation-control/GITHUB_HANDOFF.json';
@@ -10,6 +12,7 @@ import {
   assertClosureWorkflowOutcomes,
   assertExactAllowedPaths,
   buildCompletedRemediationPolicy,
+  collectClosureChangedFiles,
   resolveRemediationClosureRequest,
   validateRemediationArtifactMetadata,
   validateRemediationCandidateEvidence,
@@ -23,8 +26,10 @@ import {
 } from '../../implementation-control/scripts/Finalize-GitHubRemediationClosure.mjs';
 import { resolveGitHubClosureContext } from '../../implementation-control/scripts/Resolve-GitHubContext.mjs';
 import { shaBytes, validateSchemaSubset, verifyManifest } from '../../implementation-control/scripts/GitHub-Common.mjs';
+import { collectApplyFailureDiagnostics } from '../../implementation-control/scripts/Verify-GitHubClosure.mjs';
 
 const branch = 'agent/b21-clean-completed-package-remediation';
+const execFileAsync = promisify(execFile);
 const candidate = {
   sha: '1'.repeat(40), runId: 101, artifactId: 202,
   artifactName: 'finscope-github-validation-candidate-PASS', artifactDigest: `sha256:${'2'.repeat(64)}`,
@@ -56,8 +61,18 @@ function candidateEvidence(remediation: any) {
 
 describe('batch closure regression', () => {
   it('preserves routing to the existing batch closure only for its exact operation branch', () => {
-    const handoff = structuredClone(handoffDocument); handoff.operation.stage = 'closure';
+    const handoff = structuredClone(handoffDocument) as any;
+    for (const remediation of handoff.remediations) {
+      if (!remediation.closurePolicy) continue;
+      Object.assign(remediation.closurePolicy, { stage: 'candidate', status: 'NOT_REQUESTED', candidate: null, closure: null });
+    }
+    handoff.operation.stage = 'closure';
     expect(resolveGitHubClosureContext({ branch: handoff.operation.branch, handoff })).toMatchObject({ closureType: 'BATCH_CLOSURE', activeBatchId: 'B21' });
+  });
+
+  it('blocks the historical batch branch while a remediation closure is pending', () => {
+    const value = pendingInput(); value.handoff.operation.stage = 'closure';
+    expect(() => resolveGitHubClosureContext({ branch: value.handoff.operation.branch, handoff: value.handoff })).toThrow(/REMEDIATION_BRANCH_MISMATCH/u);
   });
 
   it('keeps the batch applicator present and independent', async () => {
@@ -68,6 +83,60 @@ describe('batch closure regression', () => {
     expect(workflow).toContain('BATCH_CLOSURE)');
     expect(workflow).toContain('Apply-GitHubBatchClosure.mjs');
     expect(batch).toContain('CLOSURE_STATE_NOT_PENDING');
+  });
+});
+
+describe('closure changed-path collection', () => {
+  it('collects exact tracked, staged, unstaged and untracked paths from a real Git repository', async () => {
+    const repository = await mkdtemp(join(tmpdir(), 'finscope-closure-paths-'));
+    try {
+      await execFileAsync('git', ['init'], { cwd: repository });
+      await execFileAsync('git', ['config', 'user.name', 'FinScope Test'], { cwd: repository });
+      await execFileAsync('git', ['config', 'user.email', 'test@example.invalid'], { cwd: repository });
+      await mkdir(join(repository, 'implementation-control', 'reports'), { recursive: true });
+      const ledger = join(repository, 'implementation-control', 'CHANGE_LEDGER.md');
+      await writeFile(ledger, 'baseline\n', 'utf8');
+      await execFileAsync('git', ['add', '--', 'implementation-control/CHANGE_LEDGER.md'], { cwd: repository });
+      await execFileAsync('git', ['commit', '-m', 'baseline'], { cwd: repository });
+
+      await writeFile(ledger, 'baseline\nstaged\n', 'utf8');
+      await execFileAsync('git', ['add', '--', 'implementation-control/CHANGE_LEDGER.md'], { cwd: repository });
+      await writeFile(ledger, 'baseline\nstaged\nunstaged\n', 'utf8');
+      await writeFile(join(repository, 'implementation-control', 'reports', 'B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE.json'), '{}\n', 'utf8');
+      await writeFile(join(repository, 'implementation-control', 'reports', 'name with spaces.md'), 'space\n', 'utf8');
+
+      const paths = await collectClosureChangedFiles(repository);
+      expect(paths).toEqual([
+        'implementation-control/CHANGE_LEDGER.md',
+        'implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE.json',
+        'implementation-control/reports/name with spaces.md',
+      ]);
+      expect(paths).not.toContain('mplementation-control/CHANGE_LEDGER.md');
+      expect(new Set(paths).size).toBe(paths.length);
+      expect(paths).toEqual([...paths].sort());
+    } finally { await rm(repository, { recursive: true, force: true }); }
+  });
+});
+
+describe('apply failure root-cause propagation', () => {
+  it('keeps the real apply failure primary when its context document is missing', async () => {
+    const contextDirectory = await mkdtemp(join(tmpdir(), 'finscope-apply-context-'));
+    const evidenceDirectory = await mkdtemp(join(tmpdir(), 'finscope-apply-evidence-'));
+    try {
+      const secret = 'gho_supersecrettokenvalue';
+      await writeFile(join(contextDirectory, 'apply.exit-code'), '1\n', 'utf8');
+      await writeFile(join(contextDirectory, 'apply.stdout.log'), `prelude ${secret}\n`, 'utf8');
+      await writeFile(join(contextDirectory, 'apply.stderr.log'), 'RemediationClosureError: REMEDIATION_CLOSURE_ALLOWLIST_VIOLATION:implementation-control/CHANGE_LEDGER.md\n', 'utf8');
+      const diagnostic = await collectApplyFailureDiagnostics(contextDirectory, evidenceDirectory, { secrets: [secret], contextError: new Error('remediation-closure-apply.json missing') });
+      expect(diagnostic.primaryFailure.code).toBe('REMEDIATION_CLOSURE_ALLOWLIST_VIOLATION');
+      expect(diagnostic.primaryFailure.code).not.toBe('REMEDIATION_CLOSURE_APPLY_CONTEXT_MISSING');
+      expect(diagnostic.secondaryFailure.code).toBe('REMEDIATION_CLOSURE_APPLY_CONTEXT_MISSING');
+      expect(diagnostic.logs.map(({ path }) => path).sort()).toEqual(['apply.exit-code', 'apply.stderr.log', 'apply.stdout.log']);
+      expect(diagnostic.logs.every(({ sha256 }) => /^sha256:[0-9a-f]{64}$/u.test(sha256))).toBe(true);
+      expect(await readFile(join(evidenceDirectory, 'apply.stdout.log'), 'utf8')).not.toContain(secret);
+    } finally {
+      await Promise.all([rm(contextDirectory, { recursive: true, force: true }), rm(evidenceDirectory, { recursive: true, force: true })]);
+    }
   });
 });
 

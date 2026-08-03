@@ -125,6 +125,38 @@ async function command(commandText, code, options = {}) {
   return result.stdout.toString('utf8').trim();
 }
 
+function parseNulDelimitedGitPaths(bytes, code) {
+  if (!Buffer.isBuffer(bytes)) fail(code, 'stdout is not a Buffer');
+  if (bytes.length === 0) return [];
+  if (bytes.at(-1) !== 0) fail(code, 'stdout is not NUL-terminated');
+  let decoded;
+  try { decoded = new TextDecoder('utf-8', { fatal: true }).decode(bytes.subarray(0, -1)); }
+  catch (error) { fail(code, `stdout is not valid UTF-8: ${String(error)}`); }
+  const paths = decoded.split('\0');
+  if (paths.some((path) => path.length === 0)) fail(code, 'stdout contains an empty path');
+  return paths.map((path) => {
+    const normalized = path.replaceAll('\\', '/');
+    if (normalized.startsWith('/') || /^[A-Za-z]:\//u.test(normalized)) fail(code, `absolute path: ${normalized}`);
+    return normalized;
+  });
+}
+
+export async function collectClosureChangedFiles(repositoryRoot) {
+  if (typeof repositoryRoot !== 'string' || repositoryRoot.length === 0) fail('REMEDIATION_GIT_PATH_COLLECTION_INVALID', 'repositoryRoot');
+  const cwd = resolve(repositoryRoot);
+  const [tracked, untracked] = await Promise.all([
+    run('git diff --name-only -z HEAD --', { cwd }),
+    run('git ls-files --others --exclude-standard -z --', { cwd }),
+  ]);
+  if (tracked.exitCode !== 0) fail('REMEDIATION_GIT_DIFF_FAILED', tracked.stderr.toString('utf8'));
+  if (untracked.exitCode !== 0) fail('REMEDIATION_GIT_UNTRACKED_FAILED', untracked.stderr.toString('utf8'));
+  const paths = [
+    ...parseNulDelimitedGitPaths(tracked.stdout, 'REMEDIATION_GIT_DIFF_OUTPUT_INVALID'),
+    ...parseNulDelimitedGitPaths(untracked.stdout, 'REMEDIATION_GIT_UNTRACKED_OUTPUT_INVALID'),
+  ];
+  return [...new Set(paths)].sort((left, right) => left < right ? -1 : left > right ? 1 : 0);
+}
+
 async function api(repository, path) {
   return JSON.parse(await command(`gh api "repos/${repository}/${path}"`, 'REMEDIATION_GITHUB_API_FAILED'));
 }
@@ -173,10 +205,7 @@ async function validateCandidateArtifact(extractPath, remediation, candidate, ha
   return evidence;
 }
 
-async function currentChangedFiles() {
-  const status = await command('git status --porcelain=v1', 'REMEDIATION_GIT_STATUS_FAILED');
-  return status.split(/\r?\n/u).filter(Boolean).map((line) => line.slice(3).replaceAll('\\', '/'));
-}
+async function currentChangedFiles() { return collectClosureChangedFiles(root); }
 
 export async function applyGitHubRemediationClosure() {
   const handoffPath = join(root, 'implementation-control/GITHUB_HANDOFF.json');

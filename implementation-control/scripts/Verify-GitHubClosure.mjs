@@ -1,7 +1,8 @@
 import { createWriteStream } from 'node:fs';
-import { cp, mkdir, rm } from 'node:fs/promises';
+import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { get } from 'node:https';
-import { join, relative } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { join, relative, resolve } from 'node:path';
 import {
   canonicalTreeHash,
   now,
@@ -75,6 +76,65 @@ async function writeRemediationEvidence(evidence) {
   console.log(JSON.stringify(evidence, null, 2));
 }
 
+const applyLogLimit = 64 * 1024;
+const applyDetailLimit = 4 * 1024;
+
+function sanitizeApplyLog(value, secrets = []) {
+  let text = String(value).replaceAll('\0', '');
+  for (const secret of secrets.filter((entry) => typeof entry === 'string' && entry.length > 0)) text = text.replaceAll(secret, '[REDACTED]');
+  text = text
+    .replace(/\bgh[a-z]_[A-Za-z0-9_]{8,}\b/gu, '[REDACTED_GITHUB_TOKEN]')
+    .replace(/\bgithub_pat_[A-Za-z0-9_]{8,}\b/gu, '[REDACTED_GITHUB_TOKEN]')
+    .replace(/(authorization\s*:\s*(?:bearer|token)\s+)[^\s]+/giu, '$1[REDACTED]');
+  return text.length > applyLogLimit ? `${text.slice(0, applyLogLimit)}\n[TRUNCATED_AT_${applyLogLimit}_CHARACTERS]\n` : text;
+}
+
+export async function collectApplyFailureDiagnostics(contextDirectory, evidenceDirectory, options = {}) {
+  const secrets = options.secrets ?? [process.env.GH_TOKEN, process.env.GITHUB_TOKEN];
+  const names = ['apply.exit-code', 'apply.stdout.log', 'apply.stderr.log'];
+  const contents = new Map(); const logs = [];
+  await mkdir(evidenceDirectory, { recursive: true });
+  for (const name of names) {
+    try {
+      const sanitized = sanitizeApplyLog(await readFile(join(contextDirectory, name), 'utf8'), secrets);
+      const destination = join(evidenceDirectory, name);
+      await writeFile(destination, sanitized, 'utf8');
+      const sha256 = await shaFile(destination);
+      contents.set(name, sanitized); logs.push({ path: name, sha256: `sha256:${sha256}` });
+    } catch (error) {
+      if (error?.code !== 'ENOENT') throw error;
+    }
+  }
+  const combined = `${contents.get('apply.stderr.log') ?? ''}\n${contents.get('apply.stdout.log') ?? ''}`;
+  const codes = [...combined.matchAll(/\b(REMEDIATION_[A-Z0-9_]+)\b/gu)].map((match) => match[1]);
+  const code = codes.find((entry) => !['REMEDIATION_CLOSURE_APPLY_CONTEXT_MISSING', 'REMEDIATION_CLOSURE_APPLY_FAILED'].includes(entry)) ?? 'REMEDIATION_CLOSURE_APPLY_FAILED';
+  const line = combined.split(/\r?\n/u).find((entry) => entry.includes(code))?.trim() ?? `apply exited with ${contents.get('apply.exit-code')?.trim() || 'an unknown non-zero code'}`;
+  return {
+    primaryFailure: { code, detail: line.slice(0, applyDetailLimit) },
+    secondaryFailure: {
+      code: 'REMEDIATION_CLOSURE_APPLY_CONTEXT_MISSING',
+      detail: sanitizeApplyLog(String(options.contextError ?? 'remediation-closure-apply.json missing'), secrets).slice(0, applyDetailLimit),
+    },
+    logs,
+  };
+}
+
+async function recordMissingApplyContext({ error, contextDirectory, evidence, fail }) {
+  if (process.env.APPLY_OUTCOME !== 'success') {
+    try {
+      const diagnostic = await collectApplyFailureDiagnostics(contextDirectory, out, { contextError: error });
+      fail(diagnostic.primaryFailure.code, diagnostic.primaryFailure.detail);
+      for (const log of diagnostic.logs) evidence.details.push({ code: 'REMEDIATION_APPLY_LOG_SHA256', detail: JSON.stringify(log) });
+      evidence.details.push(diagnostic.secondaryFailure);
+    } catch (diagnosticError) {
+      fail('REMEDIATION_CLOSURE_APPLY_FAILED', String(diagnosticError).slice(0, applyDetailLimit));
+      evidence.details.push({ code: 'REMEDIATION_CLOSURE_APPLY_CONTEXT_MISSING', detail: sanitizeApplyLog(String(error)).slice(0, applyDetailLimit) });
+    }
+    return;
+  }
+  fail('REMEDIATION_CLOSURE_APPLY_CONTEXT_MISSING', sanitizeApplyLog(String(error)).slice(0, applyDetailLimit));
+}
+
 async function notApplicable(route) {
   const evidence = baseRemediationEvidence(route);
   const remediation = handoff.remediations?.find((entry) => entry.id === route.remediationId);
@@ -100,7 +160,7 @@ async function runRemediationLocalClosure(route) {
   const contextDirectory = process.env.FINSCOPE_CLOSURE_CONTEXT_DIR ?? join(process.env.RUNNER_TEMP ?? root, 'finscope-context');
   let context;
   try { context = await readJson(join(contextDirectory, 'remediation-closure-apply.json')); }
-  catch (error) { fail(process.env.APPLY_OUTCOME !== 'success' ? 'REMEDIATION_CLOSURE_APPLY_FAILED' : 'REMEDIATION_CLOSURE_APPLY_CONTEXT_MISSING', String(error)); }
+  catch (error) { await recordMissingApplyContext({ error, contextDirectory, evidence, fail }); }
   try {
     Object.assign(evidence, assertClosureWorkflowOutcomes({ applyOutcome: process.env.APPLY_OUTCOME, controlPlaneOutcome: process.env.CONTROL_PLANE_OUTCOME }));
   } catch (error) {
@@ -188,7 +248,7 @@ async function runRemediationRemoteClosure(route) {
   const fail = (code, detail = '') => { if (!primaryFailure) primaryFailure = { code, detail }; evidence.details.push({ code, detail }); };
   const contextDirectory = process.env.FINSCOPE_CLOSURE_CONTEXT_DIR ?? join(process.env.RUNNER_TEMP ?? root, 'finscope-context');
   let applyContext; let localContext; let pushContext;
-  try { applyContext = await readJson(join(contextDirectory, 'remediation-closure-apply.json')); } catch (error) { fail('REMEDIATION_CLOSURE_APPLY_CONTEXT_MISSING', String(error)); }
+  try { applyContext = await readJson(join(contextDirectory, 'remediation-closure-apply.json')); } catch (error) { await recordMissingApplyContext({ error, contextDirectory, evidence, fail }); }
   try { localContext = await readJson(join(contextDirectory, 'remediation-closure-local-verification.json')); } catch (error) { fail('REMEDIATION_LOCAL_VALIDATION_CONTEXT_MISSING', String(error)); }
   try { pushContext = await readJson(join(contextDirectory, 'remediation-closure-push.json')); } catch (error) { fail('REMEDIATION_PUSH_CONTEXT_MISSING', String(error)); }
   try { assertClosureWorkflowOutcomes({ applyOutcome: process.env.APPLY_OUTCOME, controlPlaneOutcome: process.env.CONTROL_PLANE_OUTCOME }); }
@@ -273,19 +333,23 @@ async function runBatchClosure() {
   await writeJson(join(out, 'github-closure-evidence.json'), evidence); await writeManifest(out); await outputs(result); console.log(JSON.stringify(evidence, null, 2));
 }
 
-if (verificationPhase === 'local') {
-  if (closureType === 'REMEDIATION_CLOSURE') await runRemediationLocalClosure(derivedRoute);
-  else if (closureType === 'BATCH_CLOSURE') {
-    let result = 'PASS';
-    try { assertClosureWorkflowOutcomes({ applyOutcome: process.env.APPLY_OUTCOME, controlPlaneOutcome: process.env.CONTROL_PLANE_OUTCOME }); }
-    catch { result = 'FAIL'; }
-    await setOutput('result', result);
-    console.log(`BATCH_CLOSURE_LOCAL_GATE_${result}`);
-  } else if (closureType === 'NOT_APPLICABLE') {
-    await setOutput('result', 'NOT_APPLICABLE');
-    console.log('CLOSURE_NOT_APPLICABLE');
-  } else throw new Error(`CLOSURE_TYPE_INVALID:${closureType}`);
-} else if (closureType === 'NOT_APPLICABLE') await notApplicable(derivedRoute);
-else if (closureType === 'BATCH_CLOSURE') await runBatchClosure();
-else if (closureType === 'REMEDIATION_CLOSURE') await runRemediationRemoteClosure(derivedRoute);
-else throw new Error(`CLOSURE_TYPE_INVALID:${closureType}`);
+async function main() {
+  if (verificationPhase === 'local') {
+    if (closureType === 'REMEDIATION_CLOSURE') await runRemediationLocalClosure(derivedRoute);
+    else if (closureType === 'BATCH_CLOSURE') {
+      let result = 'PASS';
+      try { assertClosureWorkflowOutcomes({ applyOutcome: process.env.APPLY_OUTCOME, controlPlaneOutcome: process.env.CONTROL_PLANE_OUTCOME }); }
+      catch { result = 'FAIL'; }
+      await setOutput('result', result);
+      console.log(`BATCH_CLOSURE_LOCAL_GATE_${result}`);
+    } else if (closureType === 'NOT_APPLICABLE') {
+      await setOutput('result', 'NOT_APPLICABLE');
+      console.log('CLOSURE_NOT_APPLICABLE');
+    } else throw new Error(`CLOSURE_TYPE_INVALID:${closureType}`);
+  } else if (closureType === 'NOT_APPLICABLE') await notApplicable(derivedRoute);
+  else if (closureType === 'BATCH_CLOSURE') await runBatchClosure();
+  else if (closureType === 'REMEDIATION_CLOSURE') await runRemediationRemoteClosure(derivedRoute);
+  else throw new Error(`CLOSURE_TYPE_INVALID:${closureType}`);
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) await main();
