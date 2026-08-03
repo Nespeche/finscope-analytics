@@ -50,5 +50,7 @@ Una respuesta general sin rutas, comandos, resultados esperados, condición de d
 1. Resolver el contexto con `node implementation-control/scripts/Resolve-GitHubContext.mjs "$GITHUB_HEAD_REF"` antes de instalar dependencias.
 2. Verificar que una rama ordinaria devuelve `mode=BATCH`, `batchId=B21`, `batchAuthoritySource=IMPLEMENTATION_STATE` y `baselineRole=CURRENT_COMPLETED_BASELINE`.
 3. Autenticar el Release indicado por el contexto resuelto, nunca `handoff.baseline` como fallback implícito.
-4. En la rama exacta de hardening exigir `mode=CONTROL_PLANE_REMEDIATION` y ejecutar solo sus comandos dedicados.
+4. Para una rama presente en `GITHUB_HANDOFF.remediations`, exigir coincidencia exacta, modo reconocido, baseline completed vigente, allowlist de rutas íntegra y comandos literales dedicados.
+5. Para mantenimiento no normativo exigir `mode=MAINTENANCE_REMEDIATION`; no ejecutar comandos funcionales de B21 ni alterar `.specify`, tareas, lotes o gates.
+6. Verificar el diff contra `allowedPaths` antes de `npm ci`; cualquier ruta adicional debe producir `MAINTENANCE_SCOPE_MISMATCH` y dejar los comandos posteriores `NOT_RUN`.
 5. Conservar cualquier evidencia `_FAILED`; corregir con commit nuevo y ejecución completa nueva, sin `Re-run jobs`.

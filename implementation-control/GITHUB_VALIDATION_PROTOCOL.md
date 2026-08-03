@@ -25,4 +25,6 @@ Antes de `npm ci`, todo workflow debe ejecutar `Resolve-GitHubContext.mjs` con l
 
 El baseline `CURRENT_COMPLETED_BASELINE` es distinto del `HISTORICAL_OPERATION_BASELINE`. Para B21 ordinario se autentica exclusivamente `v0.21.25-B20-completed`; el B19 histórico solo se admite en la rama exacta de la operación que lo declara. No existe fallback por nombre de archivo.
 
-La rama `agent/b20-b21-transition-hardening` usa exclusivamente `CONTROL_PLANE_REMEDIATION` y sus seis comandos declarados. Toda contradicción falla antes de comandos y deja los restantes como `NOT_RUN` con causa enlazada a `primaryFailure`.
+Las remediaciones se declaran en la colección tipada `GITHUB_HANDOFF.remediations`. Cada entrada fija un `id`, modo reconocido, rama exacta, rol de baseline, allowlist de rutas y comandos literales. `CONTROL_PLANE_REMEDIATION` se reserva para cambios del plano de control y `MAINTENANCE_REMEDIATION` para dependencias, build, seguridad y tooling no normativo.
+
+Antes de `npm ci`, el runner compara el diff exacto del PR con `allowedPaths`. Una ruta no declarada produce `MAINTENANCE_SCOPE_MISMATCH`; una declaración desconocida, incompleta, duplicada o ambigua falla sin fallback a `BATCH`. Los comandos restantes quedan `NOT_RUN` con causa enlazada a `primaryFailure`.

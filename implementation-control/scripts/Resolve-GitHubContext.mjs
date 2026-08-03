@@ -9,6 +9,7 @@ export class ContextResolutionError extends Error {
 const fail = (code, detail) => { throw new ContextResolutionError(code, detail); };
 const requiredGates = ['tasksAuthorized', 'analysisAuthorized', 'implementationAuthorized'];
 const operationStages = { BOOTSTRAP: ['candidate', 'closure'], RELEASE_REMEDIATION: ['candidate', 'closure', 'completed'] };
+const remediationModes = new Set(['CONTROL_PLANE_REMEDIATION', 'MAINTENANCE_REMEDIATION']);
 
 function normalizedCommands(commands = []) {
   return commands.map(({ id, category, command, required }) => ({ id, category, command, required: Boolean(required) }));
@@ -21,6 +22,32 @@ function validateOperation(operation) {
     if (typeof operation[field] !== 'string' || !operation[field].trim()) fail('OPERATION_KIND_INVALID', `missing ${field}`);
   }
   if (!operationStages[operation.kind].includes(operation.stage)) fail('OPERATION_KIND_INVALID', `${operation.kind}/${operation.stage}`);
+}
+
+function validateRemediation(remediation) {
+  if (!remediation || typeof remediation !== 'object') fail('OPERATION_KIND_INVALID', 'missing remediation');
+  for (const field of ['id', 'mode', 'branch', 'baselineRole']) {
+    if (typeof remediation[field] !== 'string' || !remediation[field].trim()) fail('OPERATION_KIND_INVALID', `remediation missing ${field}`);
+  }
+  if (!remediationModes.has(remediation.mode)) fail('OPERATION_KIND_INVALID', `remediation ${remediation.mode}`);
+  if (remediation.baselineRole !== 'CURRENT_COMPLETED_BASELINE') fail('BASELINE_ROLE_MISMATCH', remediation.baselineRole);
+  if (!Array.isArray(remediation.allowedPaths) || remediation.allowedPaths.length === 0) fail('OPERATION_KIND_INVALID', `remediation ${remediation.id} missing allowedPaths`);
+  const uniquePaths = new Set();
+  for (const path of remediation.allowedPaths) {
+    if (typeof path !== 'string' || !path || path.startsWith('/') || /^[A-Za-z]:/u.test(path) || path.split('/').includes('..')) fail('OPERATION_KIND_INVALID', `unsafe remediation path ${String(path)}`);
+    if (uniquePaths.has(path)) fail('OPERATION_KIND_INVALID', `duplicate remediation path ${path}`);
+    uniquePaths.add(path);
+  }
+  if (normalizedCommands(remediation.commands).length === 0) fail('DERIVED_COMMAND_SET_MISMATCH', `remediation ${remediation.id} has no commands`);
+}
+
+export function validateRemediationScope(changedPaths, allowedPaths) {
+  if (!Array.isArray(changedPaths) || !Array.isArray(allowedPaths) || allowedPaths.length === 0) fail('MAINTENANCE_SCOPE_MISMATCH', 'invalid scope inputs');
+  const allowed = new Set(allowedPaths);
+  const normalized = changedPaths.map((path) => String(path).replaceAll('\\', '/')).filter(Boolean);
+  const rejected = normalized.filter((path) => !allowed.has(path));
+  if (rejected.length > 0) fail('MAINTENANCE_SCOPE_MISMATCH', rejected.join(','));
+  return { allowedPaths: [...allowedPaths], changedPaths: normalized, valid: true };
 }
 
 function validateGates(state) {
@@ -40,19 +67,21 @@ export function resolveGitHubContext({ branch, handoff, state, batches }) {
   validateOperation(handoff.operation);
   validateGates(state);
   const operationMatched = branch === handoff.operation.branch;
-  const remediationMatched = branch === handoff.controlPlaneRemediation?.branch;
-  if (remediationMatched && operationMatched) fail('OPERATION_BRANCH_MISMATCH', 'ambiguous special branches');
+  if (!Array.isArray(handoff.remediations)) fail('OPERATION_KIND_INVALID', 'missing remediations');
+  for (const remediation of handoff.remediations) validateRemediation(remediation);
+  const matchingRemediations = handoff.remediations.filter((remediation) => remediation.branch === branch);
+  if (matchingRemediations.length > 1 || (matchingRemediations.length === 1 && operationMatched)) fail('OPERATION_BRANCH_MISMATCH', 'ambiguous special branches');
+  const remediation = matchingRemediations[0] ?? null;
 
-  let mode; let batchId; let batchAuthoritySource; let baseline; let baselineRole; let commands;
-  if (remediationMatched) {
-    if (handoff.controlPlaneRemediation?.mode !== 'CONTROL_PLANE_REMEDIATION') fail('OPERATION_KIND_INVALID', 'invalid remediation mode');
-    mode = 'CONTROL_PLANE_REMEDIATION';
+  let mode; let batchId; let batchAuthoritySource; let baseline; let baselineRole; let commands; let allowedPaths = [];
+  if (remediation) {
+    mode = remediation.mode;
     batchId = state.activeBatchId;
     batchAuthoritySource = 'IMPLEMENTATION_STATE';
-    baselineRole = 'CURRENT_COMPLETED_BASELINE';
+    baselineRole = remediation.baselineRole;
     baseline = handoff.completedBaseline;
-    commands = normalizedCommands(handoff.controlPlaneRemediation.commands);
-    if (!commands.length) fail('DERIVED_COMMAND_SET_MISMATCH', 'empty remediation commands');
+    commands = normalizedCommands(remediation.commands);
+    allowedPaths = [...remediation.allowedPaths];
   } else if (operationMatched) {
     mode = handoff.operation.kind === 'RELEASE_REMEDIATION' ? 'RELEASE_REMEDIATION' : handoff.operation.stage === 'closure' ? 'BATCH_CLOSURE' : 'GH0_BOOTSTRAP';
     batchId = handoff.operation.activeBatchId;
@@ -79,11 +108,12 @@ export function resolveGitHubContext({ branch, handoff, state, batches }) {
     for (const dependency of batch.externalDependencies ?? []) if (state.taskStatus?.[dependency] !== 'COMPLETED') fail('BATCH_AUTHORITY_MISMATCH', `dependency ${dependency}`);
   }
   validateBaseline(baseline, baselineRole);
-  const canonical = mode === 'CONTROL_PLANE_REMEDIATION' ? normalizedCommands(handoff.controlPlaneRemediation.commands) : mode === 'RELEASE_REMEDIATION' ? normalizedCommands(handoff.operation.qualificationCommands) : mode === 'BATCH_CLOSURE' ? [] : normalizedCommands(batch.localValidation?.commands);
+  const canonical = remediation ? normalizedCommands(remediation.commands) : mode === 'RELEASE_REMEDIATION' ? normalizedCommands(handoff.operation.qualificationCommands) : mode === 'BATCH_CLOSURE' ? [] : normalizedCommands(batch.localValidation?.commands);
   if (mode !== 'BATCH_CLOSURE' && commands.length === 0) fail('DERIVED_COMMAND_SET_MISMATCH', 'empty command set');
   if (JSON.stringify(commands) !== JSON.stringify(canonical)) fail('DERIVED_COMMAND_SET_MISMATCH');
   return {
     mode, branch, operationMatched, operationKind: operationMatched ? handoff.operation.kind : null,
+    remediationMatched: Boolean(remediation), remediationId: remediation?.id ?? null, allowedPaths,
     batchId, batchAuthoritySource, batchStatus: batch.status, baselineRole,
     baselineTag: baseline.tag, baselineCommitSha: baseline.commitSha, baselineZipName: baseline.zipName,
     baselineSidecarName: baseline.sidecarName, baselineZipSha256: baseline.zipSha256,
