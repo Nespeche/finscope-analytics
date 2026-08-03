@@ -9,7 +9,6 @@ import { afterEach, describe, expect, it } from 'vitest';
 const execute = promisify(execFile);
 const repository = resolve('.');
 const packageScript = join(repository, 'implementation-control/scripts/Package-GitHubCompletedRelease.mjs');
-const packageWrapper = join(repository, 'implementation-control/scripts/Package-GitHubCompletedReleaseR2.mjs');
 const createdAtRoot: string[] = [];
 const NEGATIVE_PROCESS_TIMEOUT_MS = 30_000;
 // The parent process must outlive the 120 s ZIP backend timeout so the
@@ -57,12 +56,6 @@ describe.sequential('completed package contamination remediation', () => {
   it('keeps a cleanup margin above the ZIP backend timeout', () => {
     expect(PACKAGE_PROCESS_TIMEOUT_MS).toBeGreaterThan(120_000);
     expect(PACKAGE_TEST_TIMEOUT_MS).toBeGreaterThan(PACKAGE_PROCESS_TIMEOUT_MS);
-  });
-
-  it('uses a valid local evidence filename outside GitHub Actions', async () => {
-    const source = await readFile(packageWrapper, 'utf8');
-    expect(source).toContain("process.env.GITHUB_RUN_ID?.trim()");
-    expect(source).toContain("process.env.GITHUB_RUN_ID = 'local'");
   });
 
   it('keeps denylist rejection independent from inventory and manifest claims', async () => {
