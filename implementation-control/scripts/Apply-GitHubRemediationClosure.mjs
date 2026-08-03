@@ -23,6 +23,7 @@ export class RemediationClosureError extends Error {
 const fail = (code, detail = '') => { throw new RemediationClosureError(code, detail); };
 const shaPattern = /^[0-9a-f]{40}$/u;
 const digestPattern = /^sha256:[0-9a-f]{64}$/u;
+const remediationReportBasePattern = /^implementation-control\/reports\/[A-Z0-9_]+_REMEDIATION_CLOSURE$/u;
 const normalizePaths = (paths) => paths.map((path) => String(path).replaceAll('\\', '/')).filter(Boolean);
 
 export function assertCompleteRemediationCandidate(candidate) {
@@ -41,6 +42,18 @@ export function assertExactAllowedPaths(changedPaths, allowedPaths, code = 'REME
   const denied = changed.filter((path) => !allowed.has(path));
   if (denied.length > 0) fail(code, denied.join(','));
   return changed;
+}
+
+export function resolveRemediationClosureReportPaths(allowedPaths) {
+  const reports = normalizePaths(allowedPaths).filter((path) => path.startsWith('implementation-control/reports/'));
+  if (reports.length !== 2) fail('REMEDIATION_CLOSURE_REPORT_PATHS_INVALID', reports.join(','));
+  const jsonPath = reports.find((path) => path.endsWith('.json'));
+  const markdownPath = reports.find((path) => path.endsWith('.md'));
+  if (!jsonPath || !markdownPath) fail('REMEDIATION_CLOSURE_REPORT_PATHS_INVALID', reports.join(','));
+  const jsonBase = jsonPath.slice(0, -'.json'.length);
+  const markdownBase = markdownPath.slice(0, -'.md'.length);
+  if (jsonBase !== markdownBase || !remediationReportBasePattern.test(jsonBase)) fail('REMEDIATION_CLOSURE_REPORT_PATHS_INVALID', reports.join(','));
+  return { basePath: jsonBase, jsonPath, markdownPath };
 }
 
 export function validateRemediationArtifactMetadata({ candidate, runInfo, artifactInfo, branch }) {
@@ -239,15 +252,15 @@ export async function applyGitHubRemediationClosure() {
   const completedAt = now(); const runId = Number(process.env.GITHUB_RUN_ID);
   if (!Number.isInteger(runId) || runId < 1) fail('REMEDIATION_CLOSURE_RUN_ID_INVALID');
   remediation.closurePolicy = buildCompletedRemediationPolicy(remediation.closurePolicy, { requestSha, runId, completedAt });
-  const reportBase = join(root, 'implementation-control/reports/B21_CLEAN_PACKAGE_REMEDIATION_CLOSURE');
+  const reportPaths = resolveRemediationClosureReportPaths(route.allowedPaths);
   const report = {
     schemaVersion: '1.0.0', remediationId: remediation.id, remediationMode: remediation.mode, status: 'COMPLETED', branch,
     candidate: { ...candidate }, closureRequestSha: requestSha, closureRunId: runId, completedAt,
     productStateUnchanged: true, tasksUnchanged: true, batchesUnchanged: true, specifyByteIdentical: true,
     b21Status: 'COMPLETED', b22Status: 'PENDING', convergenceAuthorized: false,
   };
-  await writeJson(`${reportBase}.json`, report);
-  await writeFile(`${reportBase}.md`, `# B21 clean-package remediation — authenticated closure\n\nResult: \`COMPLETED\`. Remediation \`${remediation.id}\`, candidate \`${candidate.sha}\`, request \`${requestSha}\`, run \`${runId}\`.\n\nThe closure did not promote tasks or batches. B21 remains \`COMPLETED\`, B22 remains \`PENDING\`, \`convergenceAuthorized=false\`, product state is unchanged, and \`.specify\` remains byte-identical.\n`, 'utf8');
+  await writeJson(join(root, reportPaths.jsonPath), report);
+  await writeFile(join(root, reportPaths.markdownPath), `# ${remediation.id} — authenticated closure\n\nResult: \`COMPLETED\`. Remediation \`${remediation.id}\`, candidate \`${candidate.sha}\`, request \`${requestSha}\`, run \`${runId}\`.\n\nThe closure did not promote tasks or batches. B21 remains \`COMPLETED\`, B22 remains \`PENDING\`, \`convergenceAuthorized=false\`, product state is unchanged, and \`.specify\` remains byte-identical.\n`, 'utf8');
   const ledgerPath = join(root, 'implementation-control/CHANGE_LEDGER.md'); const ledger = await readFile(ledgerPath, 'utf8');
   await writeFile(ledgerPath, `${ledger}\n\n## ${completedAt.slice(0, 10)} — Authenticated remediation closure\n\n- remediation: \`${remediation.id}\`;\n- candidate: \`${candidate.sha}\`, run \`${candidate.runId}\`, artifact \`${candidate.artifactId}\`;\n- closure request: \`${requestSha}\`, run \`${runId}\`;\n- B21 remains \`COMPLETED\`; B22 remains \`PENDING\`; no tasks, batches, product, or \`.specify\` bytes changed.\n`, 'utf8');
   await writeJson(handoffPath, handoff);
