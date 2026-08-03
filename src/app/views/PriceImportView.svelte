@@ -1,10 +1,15 @@
 <script module lang="ts">
-  import { writable } from 'svelte/store';
+  import { get as getStore, writable } from 'svelte/store';
   import type { RouteDefinition } from '../composition';
   import type {
+    FundamentalArtifacts,
     PriceEventResult,
     PricePersistenceState,
   } from '../../domain/orchestration/price-events';
+  import {
+    activeFundamentalContext,
+    type FundamentalDisplayContext,
+  } from './IssuerSearchView.svelte';
 
   export const routeDefinition = {
     id: 'price-import',
@@ -13,48 +18,63 @@
     requiredCapabilities: ['historical_price_import', 'historical_price_overlay', 'evidence'],
   } as const satisfies RouteDefinition;
 
-  export const fundamentalDisplayContext = Object.freeze({
-    issuerName: 'Apple Inc.',
-    issuerCik: '0000320193',
-    symbol: 'AAPL',
-    venueMic: 'XNAS',
-    currency: 'USD',
-    reportingPeriod: 'FY 2025',
-    analysisProfile: 'us-gaap-industrial-v1',
-    snapshotId: 'fundamental-snapshot-0000320193-fy2025',
+  let currentFundamentalDisplayContext = getStore(activeFundamentalContext);
+
+  export const fundamentalDisplayContext: FundamentalDisplayContext = Object.freeze({
+    get issuerName() { return currentFundamentalDisplayContext.issuerName; },
+    get issuerCik() { return currentFundamentalDisplayContext.issuerCik; },
+    get symbol() { return currentFundamentalDisplayContext.symbol; },
+    get venueMic() { return currentFundamentalDisplayContext.venueMic; },
+    get currency() { return currentFundamentalDisplayContext.currency; },
+    get reportingPeriod() { return currentFundamentalDisplayContext.reportingPeriod; },
+    get analysisProfile() { return currentFundamentalDisplayContext.analysisProfile; },
+    get snapshotId() { return currentFundamentalDisplayContext.snapshotId; },
   });
 
-  const fundamentalArtifacts = Object.freeze({
-    bundles: Object.freeze({
-      'fundamental-bundle-0000320193-fy2025': Object.freeze({
-        bundleId: 'fundamental-bundle-0000320193-fy2025',
-        issuerCik: fundamentalDisplayContext.issuerCik,
-        reportingPeriod: fundamentalDisplayContext.reportingPeriod,
+  function contextKey(context: FundamentalDisplayContext): string {
+    const period = context.reportingPeriod.toLocaleLowerCase('en-US').replace(/[^a-z0-9]+/gu, '');
+    return `${context.issuerCik}-${period}`;
+  }
+
+  function createFundamentalArtifacts(
+    context: FundamentalDisplayContext,
+  ): FundamentalArtifacts {
+    const key = contextKey(context);
+    const bundleId = `fundamental-bundle-${key}`;
+    const analysisId = `fundamental-analysis-${key}`;
+    return Object.freeze({
+      bundles: Object.freeze({
+        [bundleId]: Object.freeze({
+          bundleId,
+          issuerCik: context.issuerCik,
+          reportingPeriod: context.reportingPeriod,
+        }),
       }),
-    }),
-    analyses: Object.freeze({
-      'fundamental-analysis-0000320193-fy2025': Object.freeze({
-        analysisId: 'fundamental-analysis-0000320193-fy2025',
-        analysisKind: 'fundamental',
+      analyses: Object.freeze({
+        [analysisId]: Object.freeze({
+          analysisId,
+          analysisKind: 'fundamental',
+          issuerCik: context.issuerCik,
+        }),
       }),
-    }),
-    snapshots: Object.freeze({
-      [fundamentalDisplayContext.snapshotId]: Object.freeze({
-        snapshotId: fundamentalDisplayContext.snapshotId,
-        issuerCik: fundamentalDisplayContext.issuerCik,
+      snapshots: Object.freeze({
+        [context.snapshotId]: Object.freeze({
+          snapshotId: context.snapshotId,
+          issuerCik: context.issuerCik,
+        }),
       }),
-    }),
-    activeSnapshotPointers: Object.freeze({
-      [fundamentalDisplayContext.issuerCik]: Object.freeze({
-        snapshotId: fundamentalDisplayContext.snapshotId,
-        generation: 1,
+      activeSnapshotPointers: Object.freeze({
+        [context.issuerCik]: Object.freeze({
+          snapshotId: context.snapshotId,
+          generation: 1,
+        }),
       }),
-    }),
-    fingerprints: Object.freeze({
-      fundamentalInputFingerprint: `sha256:${'1'.repeat(64)}`,
-      fundamentalAnalysisFingerprint: `sha256:${'2'.repeat(64)}`,
-    }),
-  });
+      fingerprints: Object.freeze({
+        fundamentalInputFingerprint: `sha256:${'1'.repeat(64)}`,
+        fundamentalAnalysisFingerprint: `sha256:${'2'.repeat(64)}`,
+      }),
+    });
+  }
 
   export interface PriceWorkspaceSnapshot {
     readonly persistence: PricePersistenceState;
@@ -63,10 +83,12 @@
     readonly unaffected: readonly string[];
   }
 
-  function initialWorkspace(): PriceWorkspaceSnapshot {
+  function initialWorkspace(
+    context: FundamentalDisplayContext = currentFundamentalDisplayContext,
+  ): PriceWorkspaceSnapshot {
     return Object.freeze({
       persistence: Object.freeze({
-        fundamental: fundamentalArtifacts,
+        fundamental: createFundamentalArtifacts(context),
         priceOverlays: Object.freeze({}),
         priceAnalyses: Object.freeze({}),
         activePricePointers: Object.freeze({}),
@@ -76,10 +98,21 @@
     });
   }
 
-  export const priceWorkspace = writable<PriceWorkspaceSnapshot>(initialWorkspace());
+  export const priceWorkspace = writable<PriceWorkspaceSnapshot>(
+    initialWorkspace(currentFundamentalDisplayContext),
+  );
+
+  activeFundamentalContext.subscribe((nextContext) => {
+    if (nextContext.issuerCik !== currentFundamentalDisplayContext.issuerCik) {
+      currentFundamentalDisplayContext = nextContext;
+      priceWorkspace.set(initialWorkspace(nextContext));
+      return;
+    }
+    currentFundamentalDisplayContext = nextContext;
+  });
 
   export function resetPriceWorkspace(): void {
-    priceWorkspace.set(initialWorkspace());
+    priceWorkspace.set(initialWorkspace(currentFundamentalDisplayContext));
   }
 </script>
 

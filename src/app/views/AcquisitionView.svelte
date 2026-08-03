@@ -22,6 +22,7 @@
   let completedUnits = 0;
   const totalUnits = 2;
   let lastSnapshot = 'No active local snapshot';
+  let cikError: string | undefined;
 
   $: busy = state === 'checking' || state === 'acquiring';
   $: showRetry = state === 'failed' || state === 'partial' || state === 'cancelled';
@@ -54,10 +55,12 @@
     if (busy) return;
     const normalizedCik = validateCik(cik);
     if (normalizedCik === undefined) {
+      cikError = 'Enter exactly ten digits, including leading zeroes when required.';
       state = 'failed';
-      statusMessage = 'Enter a zero-padded ten-digit CIK before updating.';
+      statusMessage = 'The issuer CIK is invalid. Correct the field before updating.';
       return;
     }
+    cikError = undefined;
     if (!networkConsent) {
       state = 'idle';
       statusMessage = 'Grant network consent, then choose Update fundamentals again.';
@@ -119,9 +122,14 @@
     maxlength="10"
     bind:value={cik}
     disabled={busy}
-    aria-describedby="acquisition-cik-help"
+    aria-invalid={cikError === undefined ? undefined : 'true'}
+    aria-errormessage={cikError === undefined ? undefined : 'acquisition-cik-error'}
+    aria-describedby={cikError === undefined ? 'acquisition-cik-help' : 'acquisition-cik-help acquisition-cik-error'}
   />
-  <small id="acquisition-cik-help">Use the authoritative zero-padded ten-digit CIK.</small>
+  <small id="acquisition-cik-help">Use the authoritative zero-padded ten-digit CIK. Starting acquisition performs two consented SEC requests; cancellation or failure preserves the current snapshot.</small>
+  {#if cikError !== undefined}
+    <p id="acquisition-cik-error" class="field-error" role="alert">{cikError}</p>
+  {/if}
 
   <NetworkConsent
     granted={networkConsent}
@@ -138,9 +146,10 @@
     </button>
   </div>
 
-  <div class="progress" aria-label="Acquisition progress">
-    <progress max={totalUnits} value={completedUnits}>{completedUnits} of {totalUnits}</progress>
-    <span>{completedUnits} of {totalUnits} required SEC resources completed</span>
+  <div class="progress" aria-labelledby="acquisition-progress-heading" aria-describedby="acquisition-progress-description">
+    <h2 id="acquisition-progress-heading" class="visually-hidden">Acquisition progress</h2>
+    <progress max={totalUnits} value={completedUnits} aria-label={`Completed ${completedUnits} of ${totalUnits} SEC resources`}>{completedUnits} of {totalUnits}</progress>
+    <span id="acquisition-progress-description">{completedUnits} of {totalUnits} required SEC resources completed</span>
   </div>
 
   <p
@@ -167,6 +176,9 @@
   label {
     font-weight: 700;
   }
+
+  .field-error { font-weight: 700; }
+  .visually-hidden { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 
   .eyebrow {
     letter-spacing: 0.04em;

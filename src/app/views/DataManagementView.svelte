@@ -63,6 +63,8 @@
   let showDeleteAllDialog = false;
   let showDeletePriceDialog = false;
   let priceIssuer = '';
+  let priceIssuerError: string | undefined;
+  let priceIssuerValidationAlertActive = false;
   let busy = false;
   let statusKind: 'status' | 'alert' = 'status';
   let statusMessage = 'Grant storage consent to inspect or change local data.';
@@ -277,13 +279,28 @@
     }
   }
 
+  function clearPriceIssuerValidation(): void {
+    priceIssuerError = undefined;
+    if (priceIssuerValidationAlertActive) {
+      priceIssuerValidationAlertActive = false;
+      statusKind = 'status';
+      statusMessage = 'Issuer CIK changed. Validate the ten-digit value before opening the deletion confirmation.';
+    }
+  }
+
   function requestDeletePrice(): void {
     try {
       parseCik(priceIssuer);
+      priceIssuerError = undefined;
+      priceIssuerValidationAlertActive = false;
+      statusKind = 'status';
+      statusMessage = 'Issuer CIK validated. Review the deletion scope and confirm in the dialog.';
       showDeletePriceDialog = true;
-    } catch (caught: unknown) {
+    } catch {
+      priceIssuerError = 'Enter the authoritative zero-padded ten-digit CIK before deleting price history.';
+      priceIssuerValidationAlertActive = true;
       statusKind = 'alert';
-      statusMessage = caught instanceof Error ? caught.message : 'Enter a valid CIK.';
+      statusMessage = 'The issuer CIK is invalid. Correct the field before opening the deletion confirmation.';
     }
   }
 
@@ -310,7 +327,7 @@
   });
 </script>
 
-<section aria-labelledby="data-management-heading">
+<section aria-labelledby="data-management-heading" aria-busy={busy}>
   <p class="eyebrow">Local-only personal data</p>
   <h1 id="data-management-heading">Data management</h1>
   <p>
@@ -324,20 +341,23 @@
         type="checkbox"
         checked={storageConsent}
         onchange={(event) => setStorageConsent(event.currentTarget.checked)}
+        aria-describedby="data-storage-consent-help"
       />
       Allow this view to open and change IndexedDB
     </label>
-    <p>Consent is checked before the database is opened. Every destructive action still requires confirmation.</p>
+    <p id="data-storage-consent-help">Consent is checked before the database is opened. Every destructive action still requires confirmation, and revoking consent closes IndexedDB without deleting valid records.</p>
   </fieldset>
 
   <div class="actions" aria-label="Local data actions">
-    <button type="button" disabled={!storageConsent || busy} onclick={() => { void exportData(); }}>
+    <button type="button" disabled={!storageConsent || busy} aria-describedby="export-local-data-help" onclick={() => { void exportData(); }}>
       Export local data
     </button>
-    <button type="button" disabled={!storageConsent || busy} onclick={() => { void inspectIntegrity(); }}>
+    <span id="export-local-data-help" class="visually-hidden">Downloads a local JSON backup without any network request.</span>
+    <button type="button" disabled={!storageConsent || busy} aria-describedby="integrity-check-help" onclick={() => { void inspectIntegrity(); }}>
       Check local data integrity
     </button>
-    <label class="file-action" aria-disabled={!storageConsent || busy}>
+    <span id="integrity-check-help" class="visually-hidden">Validates local snapshot and price records; corrupt records are quarantined without deletion.</span>
+    <label class="file-action" aria-disabled={!storageConsent || busy} aria-describedby="restore-file-help">
       Preview restore file
       <input
         bind:this={restoreFileInput}
@@ -347,6 +367,7 @@
         onchange={(event) => { void selectRestoreFile(event); }}
       />
     </label>
+    <span id="restore-file-help" class="visually-hidden">Selects a local JSON backup for validation and preview; no data is changed until explicit confirmation.</span>
   </div>
 
   {#if restorePreview}
@@ -376,25 +397,41 @@
   <section class="destructive" aria-labelledby="delete-price-heading">
     <h2 id="delete-price-heading">Delete historical price data</h2>
     <label for="price-delete-cik">Issuer CIK</label>
-    <input id="price-delete-cik" bind:value={priceIssuer} inputmode="numeric" autocomplete="off" />
+    <input
+      id="price-delete-cik"
+      bind:value={priceIssuer}
+      inputmode="numeric"
+      autocomplete="off"
+      maxlength="10"
+      aria-invalid={priceIssuerError === undefined ? undefined : 'true'}
+      aria-errormessage={priceIssuerError === undefined ? undefined : 'price-delete-cik-error'}
+      aria-describedby={priceIssuerError === undefined ? 'price-delete-cik-help' : 'price-delete-cik-help price-delete-cik-error'}
+      oninput={clearPriceIssuerValidation}
+    />
+    <p id="price-delete-cik-help">Enter exactly ten digits. Only historical price overlays, price analyses, their pointer and related price commit records for this issuer will be deleted.</p>
+    {#if priceIssuerError !== undefined}
+      <p id="price-delete-cik-error" class="field-error" role="alert">{priceIssuerError}</p>
+    {/if}
     <button
       bind:this={deletePriceButton}
       type="button"
       disabled={!storageConsent || busy || priceIssuer.trim().length === 0}
+      aria-describedby="delete-price-consequence"
       onclick={requestDeletePrice}
     >
       Delete price history
     </button>
-    <p>Fundamental bundles, analyses and snapshots are not included in this transaction.</p>
+    <p id="delete-price-consequence"><strong>Preserved:</strong> fundamental bundles, analyses and snapshots are not included in this transaction.</p>
   </section>
 
   <section class="destructive" aria-labelledby="delete-all-heading">
     <h2 id="delete-all-heading">Delete all personal data</h2>
-    <p>A deterministic local backup is offered before the atomic deletion transaction begins.</p>
+    <p id="delete-all-consequence">A deterministic local backup is offered before the atomic deletion transaction begins. Confirmation permanently removes all local personal data in one transaction.</p>
     <button
       bind:this={deleteAllButton}
       type="button"
       disabled={!storageConsent || busy}
+      aria-describedby="delete-all-consequence"
       onclick={() => { void prepareDeleteAll(); }}
     >
       Export backup and delete all data
@@ -436,10 +473,13 @@
 <style>
   section { display: grid; gap: 1rem; max-inline-size: 72ch; }
   .eyebrow { font-weight: 700; text-transform: uppercase; }
+  .field-error { font-weight: 700; }
+  .visually-hidden { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   h1, h2, p, ul { margin-block: 0; }
   fieldset, .destructive, .recovery {
     display: grid;
     gap: 0.75rem;
+    min-inline-size: 0;
     border: 2px solid currentColor;
     border-radius: 0.5rem;
     padding: 1rem;
@@ -447,7 +487,7 @@
   label { font-weight: 650; }
   fieldset label { display: flex; gap: 0.7rem; align-items: flex-start; }
   .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-  button, input, .file-action { min-block-size: 2.75rem; font: inherit; }
+  button, input, .file-action { min-block-size: 2.75rem; max-inline-size: 100%; font: inherit; }
   button, .file-action { border: 2px solid currentColor; border-radius: 0.375rem; padding: 0.625rem 1rem; }
   .file-action { display: inline-flex; align-items: center; cursor: pointer; }
   .file-action input { position: absolute; inline-size: 1px; block-size: 1px; clip-path: inset(50%); }

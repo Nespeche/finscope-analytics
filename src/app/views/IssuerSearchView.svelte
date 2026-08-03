@@ -1,5 +1,7 @@
 <script module lang="ts">
+  import { writable } from 'svelte/store';
   import type { RouteDefinition } from '../composition';
+  import type { IssuerIdentity } from '../../domain/identity/issuer-resolver';
 
   export const routeDefinition = {
     id: 'issuer-search',
@@ -7,6 +9,76 @@
     order: 10,
     requiredCapabilities: ['issuer_identity', 'evidence'],
   } as const satisfies RouteDefinition;
+
+  export interface FundamentalDisplayContext {
+    readonly issuerName: string;
+    readonly issuerCik: IssuerIdentity['cik'];
+    readonly symbol: string;
+    readonly venueMic: string;
+    readonly currency: string;
+    readonly reportingPeriod: string;
+    readonly analysisProfile: string;
+    readonly snapshotId: string;
+  }
+
+  interface MarketContext {
+    readonly symbol: string;
+    readonly venueMic: string;
+    readonly currency: string;
+  }
+
+  const marketContextByCik: Readonly<Record<string, MarketContext>> = Object.freeze({
+    '0000320193': Object.freeze({ symbol: 'AAPL', venueMic: 'XNAS', currency: 'USD' }),
+    '0001652044': Object.freeze({ symbol: 'GOOGL', venueMic: 'XNAS', currency: 'USD' }),
+    '0001855612': Object.freeze({ symbol: 'ALPHA', venueMic: 'XNAS', currency: 'USD' }),
+  });
+
+  const defaultIssuer: IssuerIdentity = Object.freeze({
+    cik: '0000320193' as IssuerIdentity['cik'],
+    legalName: 'Apple Inc.',
+    accountingStandard: 'us_gaap',
+    entityType: 'operating_company',
+    analysisProfile: 'us-gaap-industrial-v1',
+  });
+
+  const initialFundamentalContext: FundamentalDisplayContext = Object.freeze({
+    issuerName: defaultIssuer.legalName,
+    issuerCik: defaultIssuer.cik,
+    symbol: 'AAPL',
+    venueMic: 'XNAS',
+    currency: 'USD',
+    reportingPeriod: 'FY 2025',
+    analysisProfile: defaultIssuer.analysisProfile,
+    snapshotId: 'fundamental-snapshot-0000320193-fy2025',
+  });
+
+  export function createFundamentalDisplayContext(
+    issuer: IssuerIdentity,
+  ): FundamentalDisplayContext {
+    const market = marketContextByCik[issuer.cik] ?? Object.freeze({
+      symbol: 'Not selected',
+      venueMic: 'Not selected',
+      currency: 'Not selected',
+    });
+    return Object.freeze({
+      issuerName: issuer.legalName,
+      issuerCik: issuer.cik,
+      symbol: market.symbol,
+      venueMic: market.venueMic,
+      currency: market.currency,
+      reportingPeriod: 'Not selected',
+      analysisProfile: issuer.analysisProfile,
+      snapshotId: 'No local snapshot',
+    });
+  }
+
+  export const activeFundamentalContext = writable<FundamentalDisplayContext>(
+    initialFundamentalContext,
+  );
+
+  export function setActiveIssuerContext(issuer: IssuerIdentity): void {
+    activeFundamentalContext.set(createFundamentalDisplayContext(issuer));
+  }
 </script>
 
 <script lang="ts">
@@ -50,9 +122,12 @@
   let message = 'Search by ticker alias or authoritative CIK.';
   let messageKind: 'status' | 'error' = 'status';
 
+  $: queryHasError = messageKind === 'error';
+
   function selectIssuer(issuer: IssuerIdentity): void {
     selectedIssuer = issuer;
     candidates = [];
+    setActiveIssuerContext(issuer);
     messageKind = 'status';
     message = `${issuer.legalName} selected by CIK ${issuer.cik}.`;
   }
@@ -89,16 +164,19 @@
         name="issuer-query"
         autocomplete="off"
         bind:value={query}
-        aria-describedby="issuer-search-help issuer-search-status"
+        aria-invalid={queryHasError ? 'true' : undefined}
+        aria-errormessage={queryHasError ? 'issuer-search-status' : undefined}
+        aria-describedby={queryHasError ? 'issuer-search-help issuer-search-status' : 'issuer-search-help'}
       />
       <button type="submit">Find issuer</button>
     </div>
-    <small id="issuer-search-help">Examples: AAPL, ALPHA, or 0000320193.</small>
+    <small id="issuer-search-help">Enter a ticker alias or the authoritative zero-padded ten-digit CIK. Examples: AAPL, ALPHA, or 0000320193. Ambiguous aliases require selecting the legal name and CIK from the result list.</small>
   </form>
 
   <p
     id="issuer-search-status"
-    aria-live="polite"
+    aria-live={messageKind === 'error' ? 'assertive' : 'polite'}
+    aria-atomic="true"
     role={messageKind === 'error' ? 'alert' : 'status'}
   >
     {message}

@@ -93,7 +93,8 @@
     <p id="refresh-consent-help">
       When disabled, opening, resuming and choosing refresh remain local-only and produce zero network requests.
     </p>
-    <button type="button" onclick={() => setRefreshConsent(false)} disabled={!refreshConsent}>
+    <p id="refresh-consent-consequence">Revocation takes effect immediately: lifecycle and manual refresh actions make zero network requests, while valid local analysis remains available.</p>
+    <button type="button" onclick={() => setRefreshConsent(false)} disabled={!refreshConsent} aria-describedby="refresh-consent-consequence">
       Revoke refresh consent
     </button>
   </fieldset>
@@ -113,12 +114,14 @@
     <p id="storage-consent-help">
       Analysis can always run in memory. Local persistence is attempted only while this consent is granted.
     </p>
-    <button type="button" onclick={() => setStorageConsent(false)} disabled={!storageConsent}>
+    <p id="storage-consent-consequence">Revocation prevents new local writes and closes future persistence access; it does not delete valid local records.</p>
+    <button type="button" onclick={() => setStorageConsent(false)} disabled={!storageConsent} aria-describedby="storage-consent-consequence">
       Revoke storage consent
     </button>
   </fieldset>
 
-  <div class="actions" aria-label="Consent verification actions">
+  <div class="actions" aria-label="Consent verification actions" aria-describedby="consent-action-help">
+    <p id="consent-action-help">These controls demonstrate local-only analysis and the refresh-consent boundary; neither changes consent automatically.</p>
     <button type="button" onclick={() => { void runMemoryAnalysis(); }}>
       Run local analysis
     </button>

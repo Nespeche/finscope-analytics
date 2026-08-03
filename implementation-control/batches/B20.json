@@ -5,7 +5,7 @@
   "ordinal": 20,
   "title": "Cierre transversal WCAG",
   "domain": "a11y-closure",
-  "status": "PENDING",
+  "status": "COMPLETED",
   "taskCount": 3,
   "executionOrder": [
     "T086",
@@ -189,7 +189,7 @@
       ],
       "doneWhen": "no placeholder-only label, duplicate name, chart-only meaning, unassociated error or silent status remains",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "91116d4260f05623e6a8b2fa9d27dcc04b9571e6fdf11d61426e099cc83fad12"
+      "sourceTaskSha256": "8baba1e2b9e9da4822d0327741e10d8a85ab7d00ceb87615c6a36926383970a0"
     },
     {
       "id": "T087",
@@ -252,7 +252,7 @@
       ],
       "doneWhen": "every applicable automated criterion links to its matrix ID, AC and exact UI evidence while axe remains supplemental",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "e44abf190ba59e87a9226d35c2fe50d8f61641ac4125bfd10dfdd768b8862e5a"
+      "sourceTaskSha256": "8da033b3df27ca7244157bcfbd4fd081273dbf4f05fa58bf34d9dd979a6cf145"
     },
     {
       "id": "T088",
@@ -314,7 +314,7 @@
       ],
       "doneWhen": "55/55 criteria retain applicability, 12 justified N/A items with reopen triggers, oracle, evidence and result",
       "executability": "EXECUTABLE",
-      "sourceTaskSha256": "12e27961a6555a4d67312d2cf735003f2a81a80e3e5f08770e00f94061ea1576"
+      "sourceTaskSha256": "848a25390077ebce99c93d2af0db17a63d1839280c283b7942b780a572765077"
     }
   ],
   "completionGate": {
@@ -324,7 +324,7 @@
     "packageValidationPass": true,
     "doNotStartNextBatch": true
   },
-  "sourceTasksSha256": "88d74002fbbafa4f7b675788b93515ed4f0089e83a09fb9a5ba6f4a1fd0bd62a",
+  "sourceTasksSha256": "bd89291f6aca4817dda8d9cd3700e5f4682415574b72ad815d8de7e44a824d08",
   "localValidation": {
     "mode": "USER_LOCAL_EXECUTION_OR_CAPABLE_AUTHORING_ENVIRONMENT",
     "browserRequired": true,

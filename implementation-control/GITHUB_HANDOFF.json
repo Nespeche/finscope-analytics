@@ -2,63 +2,99 @@
   "schemaVersion": "1.2.0",
   "repository": "Nespeche/finscope-analytics",
   "baseline": {
-    "tag": "v0.21.22-B18-completed",
-    "commitSha": "0388f1417630f3284caab6076950739bff68d59d",
-    "zipName": "FS_v0.21.22_B18_completed.zip",
-    "sidecarName": "FS_v0.21.22_B18_completed.zip.sha256",
-    "zipSha256": "1588cb6c69559b41580f75f95979dbae84b480c99c917070f39ef165f6fe79bb",
+    "tag": "v0.21.24-B19-completed",
+    "commitSha": "fab10492f164d67725aa94efda17c9f83c7b005c",
+    "zipName": "FS_v0.21.24_B19_completed.zip",
+    "sidecarName": "FS_v0.21.24_B19_completed.zip.sha256",
+    "zipSha256": "0f5cf8bd7708fd3f01c065451e99dc604ac8b244a3717c9a27eb7de1ce45b2b0",
     "root": "FinScope_v0.21.4/",
     "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
   },
   "operation": {
-    "id": "B19",
-    "kind": "RELEASE_REMEDIATION",
-    "branch": "agent/b19-release-reauthentication",
-    "stage": "completed",
-    "activeBatchId": "B19",
-    "nextBatchId": "B20",
-    "completedTasksThroughOnClosure": "T085",
+    "id": "B20",
+    "kind": "BATCH",
+    "branch": "agent/b20-wcag-cross-cutting-closure-v2",
+    "stage": "closure",
+    "activeBatchId": "B20",
+    "nextBatchId": "B21",
+    "completedTasksThroughOnClosure": "T088",
     "qualificationCommands": [
       {
-        "id": "package-completed-release",
-        "category": "package",
-        "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
         "required": true
       },
       {
-        "id": "verify-completed-package",
-        "category": "package-authentication",
-        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.24_B19_completed.zip .finscope-release/FS_v0.21.24_B19_completed.zip.sha256",
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-e2e",
+        "category": "e2e",
+        "command": "npm run test:e2e -- tests/e2e/accessibility/names-errors.spec.ts",
+        "required": true
+      },
+      {
+        "id": "test-accessibility",
+        "category": "accessibility",
+        "command": "npm run test:accessibility -- tests/accessibility/wcag-automated.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
         "required": true
       }
     ]
   },
   "candidate": {
-    "sha": "52e2f934beef1cf31fa662ea5cb0f2ab42f13ff4",
-    "runId": "30733785638",
-    "artifactId": 8828860313,
-    "artifactName": "finscope-github-validation-52e2f934beef-PASS",
-    "artifactDigest": "sha256:88e322205ed1d0b38cae1381203996ce70e92324ee4ab1216cfe958e4d44a100"
+    "sha": "69ed435b2f05ae2d6498846416d2e3750807ef36",
+    "runId": 30776552229,
+    "artifactId": 8842295323,
+    "artifactName": "finscope-github-validation-69ed435b2f05-PASS",
+    "artifactDigest": "sha256:fb8cbcfaa7ee07ec1c9295bba32d50dca55a88ec0834e1ad8a98af2c0033df91"
   },
   "closure": {
-    "status": "COMPLETED",
-    "candidateSha": "52e2f934beef1cf31fa662ea5cb0f2ab42f13ff4",
-    "commitSha": "cc2375b9c7fdddb23ab4f2b10d7c3c8b3240eff5",
-    "runId": "30751376156",
-    "artifactId": 8834548923,
-    "artifactName": "finscope-closure-cc2375b9c7fd-PASS",
-    "artifactDigest": "sha256:ab173d322c5d594d41e45203a37113b33fee3e539e96d54d5c34fc37adc44958"
+    "status": "PENDING",
+    "candidateSha": "69ed435b2f05ae2d6498846416d2e3750807ef36",
+    "commitSha": null,
+    "runId": null,
+    "artifactId": null,
+    "artifactName": null,
+    "artifactDigest": null
   },
   "release": {
     "pending": true,
-    "tag": "v0.21.24-B19-completed",
-    "packageRevision": "v0.21.24_B19_completed",
-    "zipName": "FS_v0.21.24_B19_completed.zip",
-    "sidecarName": "FS_v0.21.24_B19_completed.zip.sha256",
-    "evidencePrefix": "FinScope_B19_release_evidence",
-    "promptName": "PROMPT_IMPLEMENTACION_B20.md",
-    "title": "FinScope B19 completed — reauthenticated immutable Release",
-    "notes": "Immutable B19 completed revision re-published after the prior v0.21.23 asset digest metadata failed exact baseline authentication. Product behavior, tests and .specify are unchanged. B20 remains pending/authorized and convergenceAuthorized=false."
+    "tag": "v0.21.25-B20-completed",
+    "packageRevision": "v0.21.25_B20_completed",
+    "zipName": "FS_v0.21.25_B20_completed.zip",
+    "sidecarName": "FS_v0.21.25_B20_completed.zip.sha256",
+    "evidencePrefix": "FinScope_B20_release_evidence",
+    "promptName": "PROMPT_IMPLEMENTACION_B21.md",
+    "title": "FinScope B20 completed — cross-cutting WCAG closure",
+    "notes": "B20 establishes deterministic and auditable WCAG 2.2 A/AA evidence. Exact-head automated, Codex-assisted and operator-declared human confirmations passed with zero FAIL and zero BLOCKED; B21 remains pending and convergenceAuthorized=false."
   },
   "productState": {
     "activeBatchId": "B20",
