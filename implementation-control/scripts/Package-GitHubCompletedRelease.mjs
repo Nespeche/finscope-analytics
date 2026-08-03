@@ -16,6 +16,7 @@ import {
 
 const out = resolve(process.argv[2] ?? '.finscope-release');
 const execGit = promisify(execFile);
+const ZIP_BACKEND_TIMEOUT_MS = 120_000;
 
 // B21_WINDOWS_ZIP_BACKEND_FIX_V1
 async function runExecutable(executable, args, options = {}) {
@@ -27,6 +28,8 @@ async function runExecutable(executable, args, options = {}) {
       env: { ...process.env, ...(options.env ?? {}) },
       encoding: 'buffer',
       maxBuffer: 64 * 1024 * 1024,
+      timeout: options.timeoutMs ?? ZIP_BACKEND_TIMEOUT_MS,
+      killSignal: 'SIGTERM',
       windowsHide: true,
     });
     return {
@@ -35,11 +38,15 @@ async function runExecutable(executable, args, options = {}) {
       finishedAt: now(),
       durationMs: Date.now() - started,
       exitCode: 0,
+      timedOut: false,
       stdout: Buffer.from(result.stdout ?? []),
       stderr: Buffer.from(result.stderr ?? []),
     };
   } catch (error) {
-    const code = Number.isInteger(error?.code)
+    const timedOut = error?.killed === true || error?.code === 'ETIMEDOUT';
+    const code = timedOut
+      ? 124
+      : Number.isInteger(error?.code)
       ? error.code
       : error?.code === 'ENOENT'
         ? 127
@@ -50,6 +57,7 @@ async function runExecutable(executable, args, options = {}) {
       finishedAt: now(),
       durationMs: Date.now() - started,
       exitCode: code,
+      timedOut,
       stdout: Buffer.from(error?.stdout ?? []),
       stderr: Buffer.from(error?.stderr ?? error?.stack ?? String(error)),
     };
@@ -432,6 +440,7 @@ if (zipProbe.exitCode === 0) {
 } else {
   throw new Error('ZIP_CREATE_FAILED:ZIP_EXECUTABLE_UNAVAILABLE');
 }
+if (zip.timedOut) throw new Error(`ZIP_CREATE_FAILED:ZIP_BACKEND_TIMEOUT:${zip.durationMs}`);
 if (zip.exitCode !== 0) throw new Error(`ZIP_CREATE_FAILED:${zip.stderr.toString('utf8')}`);
 
 const zipHeader = await readFile(zipPath);

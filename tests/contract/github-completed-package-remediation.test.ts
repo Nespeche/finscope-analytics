@@ -10,6 +10,9 @@ const execute = promisify(execFile);
 const repository = resolve('.');
 const packageScript = join(repository, 'implementation-control/scripts/Package-GitHubCompletedRelease.mjs');
 const createdAtRoot: string[] = [];
+const NEGATIVE_PROCESS_TIMEOUT_MS = 30_000;
+const PACKAGE_PROCESS_TIMEOUT_MS = 120_000;
+const PACKAGE_TEST_TIMEOUT_MS = 150_000;
 
 afterEach(async () => {
   await Promise.all(createdAtRoot.splice(0).map((path) => rm(path, { force: true, recursive: true })));
@@ -20,7 +23,12 @@ async function expectDirtyWorkspaceRejected(name: string) {
   const output = await mkdtemp(join(tmpdir(), 'finscope-package-negative-'));
   createdAtRoot.push(contaminant, output);
   await writeFile(contaminant, 'must not enter a completed package\n', 'utf8');
-  await expect(execute(process.execPath, [packageScript, output], { cwd: repository })).rejects.toMatchObject({
+  await expect(execute(process.execPath, [packageScript, output], {
+    cwd: repository,
+    timeout: NEGATIVE_PROCESS_TIMEOUT_MS,
+    killSignal: 'SIGTERM',
+    windowsHide: true,
+  })).rejects.toMatchObject({
     stderr: expect.stringContaining('RELEASE_WORKTREE_NOT_CLEAN'),
   });
 }
@@ -38,6 +46,8 @@ describe.sequential('completed package contamination remediation', () => {
     const source = await readFile(packageScript, 'utf8');
     expect(source).toContain("['ls-tree', '-r', '-z', releaseCommitSha]");
     expect(source).toContain("['cat-file', 'blob', match[3]]");
+    expect(source).toContain('const ZIP_BACKEND_TIMEOUT_MS = 120_000;');
+    expect(source).toContain('ZIP_CREATE_FAILED:ZIP_BACKEND_TIMEOUT');
     expect(source).not.toContain('copyFile(source, destination)');
   });
 
@@ -86,6 +96,8 @@ describe.sequential('completed package contamination remediation', () => {
     await execute(process.execPath, [packageScript, output], {
       cwd: repository,
       maxBuffer: 64 * 1024 * 1024,
+      timeout: PACKAGE_PROCESS_TIMEOUT_MS,
+      killSignal: 'SIGTERM',
       windowsHide: true,
     });
 
@@ -104,6 +116,6 @@ describe.sequential('completed package contamination remediation', () => {
       await readFile(join(output, 'completed-package-verification.stdout.log'), 'utf8'),
     ) as { result?: string };
     expect(verification.result).toBe('PASS');
-  });
+  }, PACKAGE_TEST_TIMEOUT_MS);
 
 });

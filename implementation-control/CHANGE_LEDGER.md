@@ -716,3 +716,12 @@
 - corrección: Info-ZIP cuando está disponible o `%SystemRoot%\System32\tar.exe` en Windows, siempre mediante vector de argumentos y salida relativa;
 - la firma ZIP se autentica antes del sidecar y del verificador completed;
 - producto, tareas, batches, `IMPLEMENTATION_STATE.json` y `.specify` permanecen sin cambios.
+
+## 2026-08-03 — B21 completed-package contract timeout remediado
+
+- el FAIL R2 expiró en el timeout implícito de Vitest de 5000 ms mientras ejecutaba el empaquetado ZIP real;
+- una reproducción con 30000 ms también expiró y mostró `EBUSY` durante cleanup porque el proceso hijo aún retenía el ZIP;
+- la ejecución directa del empaquetador terminó `PASS` en 60696 ms, con firma `504b0304`, sidecar correcto y verificador completed `PASS`;
+- el backend ZIP y el proceso empaquetador quedan acotados a 120000 ms; la prueba dispone de 150000 ms para que toda terminación controlada preceda al cleanup;
+- no se agregan retries ni se eliminan aserciones; cualquier timeout falla cerrado con `ZIP_CREATE_FAILED:ZIP_BACKEND_TIMEOUT`;
+- producto, tareas, batches, `IMPLEMENTATION_STATE.json` y `.specify` permanecen sin cambios.
