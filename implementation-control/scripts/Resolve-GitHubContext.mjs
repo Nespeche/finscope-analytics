@@ -218,6 +218,9 @@ export function resolveGitHubContext({ branch, handoff, state, batches }) {
     baseline = handoff.baseline;
     commands = mode === 'BATCH_CLOSURE' ? [] : normalizedCommands(handoff.operation.qualificationCommands ?? batches[batchId]?.localValidation?.commands);
   } else {
+    if (handoff.release?.pending === true) {
+      fail('COMPLETED_RELEASE_PENDING', `${handoff.release.tag ?? 'missing-tag'}/${handoff.operation.stage}`);
+    }
     mode = 'BATCH';
     batchId = state.activeBatchId;
     batchAuthoritySource = 'IMPLEMENTATION_STATE';
