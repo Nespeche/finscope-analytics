@@ -199,21 +199,10 @@
         "kind": "REMEDIATION_CLOSURE",
         "remediationId": "b21-clean-completed-package-remediation",
         "branch": "agent/b21-clean-completed-package-remediation",
-        "stage": "completed",
-        "status": "COMPLETED",
-        "candidate": {
-          "sha": "69e3806a821986bffb7760ddd5dbe221eab4c598",
-          "runId": 30845191439,
-          "artifactId": 8868396936,
-          "artifactName": "finscope-github-validation-69e3806a8219-PASS",
-          "artifactDigest": "sha256:cee490ca6de41430d36d4ee0cfc32edc8c19d94699c5691d6acc15931f3c1f05"
-        },
-        "closure": {
-          "candidateSha": "69e3806a821986bffb7760ddd5dbe221eab4c598",
-          "requestSha": "ec292173372ed35b0adcf4534d7ffcf2848ef91d",
-          "runId": 30846500890,
-          "completedAt": "2026-08-03T19:36:33.256Z"
-        },
+        "stage": "candidate",
+        "status": "NOT_REQUESTED",
+        "candidate": null,
+        "closure": null,
         "requestAllowedPaths": [
           "implementation-control/GITHUB_HANDOFF.json",
           "implementation-control/CHANGE_LEDGER.md"
@@ -384,7 +373,7 @@
     "artifactDigest": "sha256:adb7b055cc9b69774bde5c98580a91e6e0eb7dc6b55c380588dcff23ea070fa3"
   },
   "release": {
-    "pending": true,
+    "pending": false,
     "tag": "v0.21.26-B21-completed",
     "packageRevision": "v0.21.26_B21_completed",
     "zipName": "FS_v0.21.26_B21_completed.zip",

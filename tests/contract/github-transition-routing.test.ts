@@ -4,7 +4,7 @@ import stateDocument from '../../implementation-control/IMPLEMENTATION_STATE.jso
 import b20Document from '../../implementation-control/batches/B20.json';
 import b21Document from '../../implementation-control/batches/B21.json';
 import b22Document from '../../implementation-control/batches/B22.json';
-import { resolveGitHubContext, validateRemediationScope } from '../../implementation-control/scripts/Resolve-GitHubContext.mjs';
+import { resolveGitHubContext, resolveGitHubReleasePublicationContext, validateRemediationScope } from '../../implementation-control/scripts/Resolve-GitHubContext.mjs';
 
 const input = () => ({
   branch: 'agent/b21-probe',
@@ -12,6 +12,8 @@ const input = () => ({
   state: structuredClone(stateDocument),
   batches: { B20: structuredClone(b20Document), B21: structuredClone(b21Document), B22: structuredClone(b22Document) },
 });
+
+const releaseInput = () => structuredClone(handoffDocument) as any;
 
 describe('GitHub transition context routing', () => {
   it('routes an ordinary branch to pending B22 and the B20 governance baseline', () => {
@@ -135,5 +137,86 @@ describe('GitHub transition context routing', () => {
   ])('rejects an %s operation without silent fallback', (_label, mutate) => {
     const value = input(); mutate(value);
     expect(() => resolveGitHubContext(value)).toThrowError(/OPERATION_KIND_INVALID/u);
+  });
+});
+
+describe('completed Release publication authority', () => {
+  it.each(['candidate', 'closure'])('does not publish a %s RELEASE_REMEDIATION even when pending and tagged', (stage) => {
+    const handoff = releaseInput();
+    handoff.operation.stage = stage;
+    handoff.release.pending = true;
+    expect(resolveGitHubReleasePublicationContext({ handoff })).toMatchObject({
+      enabled: false,
+      reason: 'OPERATION_STAGE_NOT_COMPLETED',
+      operationKind: 'RELEASE_REMEDIATION',
+      operationStage: stage,
+      releasePending: true,
+      tag: 'v0.21.26-B21-completed',
+    });
+  });
+
+  it('does not publish a completed operation when release.pending is false', () => {
+    const handoff = releaseInput();
+    handoff.operation.stage = 'completed';
+    handoff.release.pending = false;
+    expect(resolveGitHubReleasePublicationContext({ handoff })).toMatchObject({ enabled: false, reason: 'RELEASE_NOT_PENDING' });
+  });
+
+  it('enables only a completed pending operation with complete immutable identity', () => {
+    const handoff = releaseInput();
+    handoff.operation.stage = 'completed';
+    handoff.release.pending = true;
+    handoff.release.tag = 'v0.21.27-B21-completed-r2';
+    handoff.release.packageRevision = 'v0.21.27_B21_completed_r2';
+    handoff.release.zipName = 'FS_v0.21.27_B21_completed_r2.zip';
+    handoff.release.sidecarName = 'FS_v0.21.27_B21_completed_r2.zip.sha256';
+    expect(resolveGitHubReleasePublicationContext({ handoff })).toMatchObject({
+      enabled: true,
+      reason: 'COMPLETED_RELEASE_AUTHORITY',
+      operationBranch: 'agent/b21-release-publication-fix',
+      tag: 'v0.21.27-B21-completed-r2',
+      zipName: 'FS_v0.21.27_B21_completed_r2.zip',
+    });
+  });
+
+  it('fails closed for an incomplete candidate after completed publication intent', () => {
+    const handoff = releaseInput();
+    handoff.operation.stage = 'completed';
+    handoff.release.pending = true;
+    delete handoff.candidate.artifactId;
+    expect(() => resolveGitHubReleasePublicationContext({ handoff })).toThrowError(/RELEASE_PUBLICATION_AUTHORITY_INCOMPLETE:candidate\.artifactId/u);
+  });
+
+  it('fails closed for an incomplete closure after completed publication intent', () => {
+    const handoff = releaseInput();
+    handoff.operation.stage = 'completed';
+    handoff.release.pending = true;
+    delete handoff.closure.commitSha;
+    expect(() => resolveGitHubReleasePublicationContext({ handoff })).toThrowError(/RELEASE_PUBLICATION_AUTHORITY_INCOMPLETE:closure\.commitSha/u);
+  });
+
+  it('never enables MAINTENANCE_REMEDIATION', () => {
+    const handoff = releaseInput();
+    handoff.operation.kind = 'MAINTENANCE_REMEDIATION';
+    handoff.operation.stage = 'completed';
+    handoff.release.pending = true;
+    expect(resolveGitHubReleasePublicationContext({ handoff })).toMatchObject({
+      enabled: false,
+      reason: 'OPERATION_KIND_NOT_RELEASE_REMEDIATION',
+    });
+  });
+
+  it('classifies the current handoff as NOT_APPLICABLE without mutating historical Release identity', () => {
+    const handoff = releaseInput();
+    const releaseBefore = structuredClone(handoff.release);
+    const result = resolveGitHubReleasePublicationContext({ handoff });
+    expect(result).toMatchObject({ enabled: false, releasePending: false, tag: 'v0.21.26-B21-completed' });
+    expect(handoff.release).toEqual(releaseBefore);
+    expect(handoff.release).toMatchObject({
+      pending: false,
+      tag: 'v0.21.26-B21-completed',
+      zipName: 'FS_v0.21.26_B21_completed.zip',
+      sidecarName: 'FS_v0.21.26_B21_completed.zip.sha256',
+    });
   });
 });

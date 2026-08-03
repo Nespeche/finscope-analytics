@@ -67,4 +67,12 @@ describe.sequential('completed package contamination remediation', () => {
       expect(workflow).not.toMatch(/> github-context\.json/u);
     }
   });
+
+  it('delegates publication authority to the executable completed-state resolver', async () => {
+    const workflow = await readFile(join(repository, '.github/workflows/finscope-completed-release.yml'), 'utf8');
+    expect(workflow).toContain('--release-publication');
+    expect(workflow).toContain('NOT_APPLICABLE: $reason');
+    expect(workflow).not.toContain('test "$kind" = RELEASE_REMEDIATION');
+    expect(workflow).not.toContain('test "$pending" = true');
+  });
 });

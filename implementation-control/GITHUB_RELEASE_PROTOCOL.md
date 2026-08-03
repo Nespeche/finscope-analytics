@@ -8,6 +8,10 @@
 
 Después del merge autorizado, `FinScope Completed Release` verifica que el árbol de `main` coincide con el cierre aprobado. Genera staging con raíz única, conserva `.github`, excluye `.git`, `node_modules`, `dist`, caches, reports temporales y ZIPs anidados, actualiza metadata/inventario/manifiesto, valida control plane y `.specify`, crea ZIP completed y sidecar, y publica assets solo si todos los gates dan PASS.
 
+`release.pending=true` no constituye autoridad de publicación por sí solo. El resolver habilita el workflow únicamente para una operación `RELEASE_REMEDIATION` en stage `completed`, con rama no vacía, candidate completo, closure `COMPLETED` autenticado y vinculado al mismo candidate SHA, commit de cierre válido, identidad completa de Release y `convergenceAuthorized=false`. Los stages `candidate` y `closure`, las operaciones de mantenimiento y cualquier `pending=false` se clasifican `NOT_APPLICABLE`; una intención `completed`/`pending=true` incompleta falla de forma cerrada.
+
+La identidad publicada es inmutable: tag, revisión de paquete, ZIP y sidecar nunca se reutilizan. Un Release rechazado permanece intacto como evidencia histórica y se desactiva mediante `release.pending=false`; no se elimina ni se convierte en baseline. Una revisión limpia posterior debe declarar un tag, ZIP y sidecar nuevos antes de volver a solicitar publicación.
+
 El Release se crea primero como draft. Luego se genera `GITHUB_RELEASE_HANDOFF.json` con tag, commit, release ID, run IDs, artifact IDs y hashes; se valida contra su schema, se cargan los assets y recién entonces se publica. Un fallo nunca publica el Release.
 
 Los assets mínimos, derivados de `GITHUB_HANDOFF.json`, son:

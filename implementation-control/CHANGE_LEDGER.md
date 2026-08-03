@@ -585,6 +585,14 @@
 - publicación reforzada con reautenticación completa de cinco assets y preservación fail-closed del Release publicado;
 - sin cambios de producto, B22, tareas, lotes, gates o `.specify`; `convergenceAuthorized=false`.
 
+## 2026-08-03 — Gate pre-merge de autoridad de publicación B21
+
+- `v0.21.26-B21-completed` permanece rechazado como baseline y preservado como evidencia histórica;
+- `release.pending=false` impide reutilizar accidentalmente su identidad publicada;
+- el cierre `a3230e9f61c0ef69f87ec1600432067e4bf1a9c5` fue válido y queda supersedido exclusivamente por esta corrección pre-merge;
+- cualquier publicación futura requiere identidad inmutable nueva: tag, revisión, ZIP y sidecar nuevos;
+- B21 permanece `COMPLETED`, B22 permanece `PENDING`, y producto, tareas, batches y `.specify` no cambian; `convergenceAuthorized=false`.
+
 
 ## 2026-07-31 — B13 candidate PASS y cierre GitHub-first
 

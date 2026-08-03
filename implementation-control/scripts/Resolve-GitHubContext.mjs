@@ -16,6 +16,8 @@ const remediationClosureStages = new Map([
   ['completed', 'COMPLETED'],
 ]);
 const remediationClosureKinds = new Set(['REMEDIATION_CLOSURE']);
+const shaPattern = /^[0-9a-f]{40}$/u;
+const digestPattern = /^sha256:[0-9a-f]{64}$/u;
 
 function normalizedCommands(commands = []) {
   return commands.map(({ id, category, command, required }) => ({ id, category, command, required: Boolean(required) }));
@@ -131,6 +133,51 @@ export function validateRemediationScope(changedPaths, allowedPaths) {
   return { allowedPaths: [...allowedPaths], changedPaths: normalized, valid: true };
 }
 
+export function resolveGitHubReleasePublicationContext({ handoff }) {
+  const operation = handoff?.operation;
+  const release = handoff?.release;
+  const base = {
+    enabled: false,
+    reason: 'NOT_APPLICABLE',
+    operationKind: operation?.kind ?? null,
+    operationStage: operation?.stage ?? null,
+    releasePending: release?.pending === true,
+    operationBranch: operation?.branch ?? null,
+    tag: release?.tag ?? null,
+    zipName: release?.zipName ?? null,
+  };
+
+  if (operation?.kind !== 'RELEASE_REMEDIATION') return { ...base, reason: 'OPERATION_KIND_NOT_RELEASE_REMEDIATION' };
+  if (operation?.stage !== 'completed') return { ...base, reason: 'OPERATION_STAGE_NOT_COMPLETED' };
+  if (release?.pending !== true) return { ...base, reason: 'RELEASE_NOT_PENDING' };
+
+  const invalid = [];
+  if (typeof operation.branch !== 'string' || !operation.branch.trim()) invalid.push('operation.branch');
+  const candidate = handoff?.candidate;
+  for (const field of ['sha', 'runId', 'artifactId', 'artifactName', 'artifactDigest']) {
+    if (candidate?.[field] === undefined || candidate?.[field] === null || candidate?.[field] === '') invalid.push(`candidate.${field}`);
+  }
+  if (candidate?.sha !== undefined && !shaPattern.test(candidate.sha)) invalid.push('candidate.sha');
+  if (candidate?.artifactDigest !== undefined && !digestPattern.test(candidate.artifactDigest)) invalid.push('candidate.artifactDigest');
+
+  const closure = handoff?.closure;
+  if (closure?.status !== 'COMPLETED') invalid.push('closure.status');
+  for (const field of ['candidateSha', 'commitSha', 'runId', 'artifactId', 'artifactName', 'artifactDigest']) {
+    if (closure?.[field] === undefined || closure?.[field] === null || closure?.[field] === '') invalid.push(`closure.${field}`);
+  }
+  if (candidate?.sha && closure?.candidateSha !== candidate.sha) invalid.push('closure.candidateSha');
+  if (closure?.commitSha !== undefined && !shaPattern.test(closure.commitSha)) invalid.push('closure.commitSha');
+  if (closure?.artifactDigest !== undefined && !digestPattern.test(closure.artifactDigest)) invalid.push('closure.artifactDigest');
+
+  for (const field of ['tag', 'packageRevision', 'zipName', 'sidecarName']) {
+    if (typeof release?.[field] !== 'string' || !release[field].trim()) invalid.push(`release.${field}`);
+  }
+  if (handoff?.productState?.convergenceAuthorized !== false) invalid.push('productState.convergenceAuthorized');
+  if (invalid.length > 0) fail('RELEASE_PUBLICATION_AUTHORITY_INCOMPLETE', invalid.join(','));
+
+  return { ...base, enabled: true, reason: 'COMPLETED_RELEASE_AUTHORITY' };
+}
+
 function validateGates(state) {
   for (const gate of requiredGates) if (state.phaseGate?.[gate] !== true) fail('GATE_AUTHORITY_MISMATCH', gate);
   if (state.phaseGate?.convergenceAuthorized !== false) fail('CONVERGENCE_UNEXPECTEDLY_AUTHORIZED');
@@ -220,6 +267,12 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
   if (process.argv.includes('--closure')) {
     const handoff = JSON.parse(await readFile(join(resolve(process.cwd()), 'implementation-control/GITHUB_HANDOFF.json'), 'utf8'));
     const context = resolveGitHubClosureContext({ branch, handoff });
+    console.log(JSON.stringify(context, null, 2));
+    process.exit(0);
+  }
+  if (process.argv.includes('--release-publication')) {
+    const handoff = JSON.parse(await readFile(join(resolve(process.cwd()), 'implementation-control/GITHUB_HANDOFF.json'), 'utf8'));
+    const context = resolveGitHubReleasePublicationContext({ handoff });
     console.log(JSON.stringify(context, null, 2));
     process.exit(0);
   }
