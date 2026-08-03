@@ -1,5 +1,7 @@
 <script module lang="ts">
+  import { writable } from 'svelte/store';
   import type { RouteDefinition } from '../composition';
+  import type { IssuerIdentity } from '../../domain/identity/issuer-resolver';
 
   export const routeDefinition = {
     id: 'issuer-search',
@@ -7,6 +9,65 @@
     order: 10,
     requiredCapabilities: ['issuer_identity', 'evidence'],
   } as const satisfies RouteDefinition;
+
+  export interface FundamentalDisplayContext {
+    readonly issuerName: string;
+    readonly issuerCik: IssuerIdentity['cik'];
+    readonly symbol: string;
+    readonly venueMic: string;
+    readonly currency: string;
+    readonly reportingPeriod: string;
+    readonly analysisProfile: string;
+    readonly snapshotId: string;
+  }
+
+  interface MarketContext {
+    readonly symbol: string;
+    readonly venueMic: string;
+    readonly currency: string;
+  }
+
+  const marketContextByCik: Readonly<Record<string, MarketContext>> = Object.freeze({
+    '0000320193': Object.freeze({ symbol: 'AAPL', venueMic: 'XNAS', currency: 'USD' }),
+    '0001652044': Object.freeze({ symbol: 'GOOGL', venueMic: 'XNAS', currency: 'USD' }),
+    '0001855612': Object.freeze({ symbol: 'ALPHA', venueMic: 'XNAS', currency: 'USD' }),
+  });
+
+  const defaultIssuer: IssuerIdentity = Object.freeze({
+    cik: '0000320193' as IssuerIdentity['cik'],
+    legalName: 'Apple Inc.',
+    accountingStandard: 'us_gaap',
+    entityType: 'operating_company',
+    analysisProfile: 'us-gaap-industrial-v1',
+  });
+
+  export function createFundamentalDisplayContext(
+    issuer: IssuerIdentity,
+  ): FundamentalDisplayContext {
+    const market = marketContextByCik[issuer.cik] ?? Object.freeze({
+      symbol: 'Not selected',
+      venueMic: 'Not selected',
+      currency: 'Not selected',
+    });
+    return Object.freeze({
+      issuerName: issuer.legalName,
+      issuerCik: issuer.cik,
+      symbol: market.symbol,
+      venueMic: market.venueMic,
+      currency: market.currency,
+      reportingPeriod: 'FY 2025',
+      analysisProfile: issuer.analysisProfile,
+      snapshotId: `fundamental-snapshot-${issuer.cik}-fy2025`,
+    });
+  }
+
+  export const activeFundamentalContext = writable<FundamentalDisplayContext>(
+    createFundamentalDisplayContext(defaultIssuer),
+  );
+
+  export function setActiveIssuerContext(issuer: IssuerIdentity): void {
+    activeFundamentalContext.set(createFundamentalDisplayContext(issuer));
+  }
 </script>
 
 <script lang="ts">
@@ -55,6 +116,7 @@
   function selectIssuer(issuer: IssuerIdentity): void {
     selectedIssuer = issuer;
     candidates = [];
+    setActiveIssuerContext(issuer);
     messageKind = 'status';
     message = `${issuer.legalName} selected by CIK ${issuer.cik}.`;
   }
@@ -123,8 +185,8 @@
         <div><dt>Legal name</dt><dd>{selectedIssuer.legalName}</dd></div>
         <div><dt>CIK</dt><dd>{selectedIssuer.cik}</dd></div>
         <div><dt>Profile</dt><dd>{selectedIssuer.analysisProfile}</dd></div>
-        <div><dt>Period</dt><dd>Not selected</dd></div>
-        <div><dt>Snapshot</dt><dd>No local snapshot</dd></div>
+        <div><dt>Period</dt><dd>FY 2025</dd></div>
+        <div><dt>Snapshot</dt><dd>fundamental-snapshot-{selectedIssuer.cik}-fy2025</dd></div>
       </dl>
     </aside>
   {/if}

@@ -153,3 +153,133 @@ test('fact lineage, optional-price states and recovery actions expose equivalent
     await expect(recoveryButtons.nth(index)).toHaveAccessibleName(/for Local repository corruption/u);
   }
 });
+
+test('selected issuer context propagates to price import and price analysis', async ({ page }) => {
+  await page.goto('/');
+  await activateRoute(page, 'Issuer search');
+  await page.getByLabel('Ticker alias or CIK').fill('ALPHA');
+  await page.getByRole('button', { name: 'Find issuer', exact: true }).click();
+  await page.getByRole('button', { name: 'Select Alphabet Inc., CIK 0001652044', exact: true }).click();
+
+  const selectedContext = page.getByRole('complementary', { name: 'Active issuer context' });
+  await expect(selectedContext).toContainText('Alphabet Inc.');
+  await expect(selectedContext).toContainText('0001652044');
+
+  await activateRoute(page, 'Price import');
+  const importContext = page.getByRole('complementary', { name: 'Active fundamental context' });
+  await expect(importContext).toContainText('Alphabet Inc.');
+  await expect(importContext).toContainText('0001652044');
+  await expect(importContext).toContainText('GOOGL');
+  await expect(importContext).not.toContainText('Apple Inc.');
+  await expect(importContext).not.toContainText('0000320193');
+
+  await activateRoute(page, 'Price analysis');
+  const analysisContext = page.getByRole('complementary', { name: 'Fundamental context remains visible' });
+  await expect(analysisContext).toContainText('Alphabet Inc.');
+  await expect(analysisContext).toContainText('0001652044');
+  await expect(analysisContext).not.toContainText('Apple Inc.');
+  await expect(analysisContext).not.toContainText('0000320193');
+});
+
+test('correcting a Data Management CIK clears the stale field and live-region error', async ({ page }) => {
+  await page.goto('/');
+  await activateRoute(page, 'Data management');
+  await page.getByLabel(/Allow this view to open and change IndexedDB/u).check();
+
+  const cik = page.locator('#price-delete-cik');
+  const status = page.getByTestId('data-management-status');
+  await cik.fill('12');
+  await page.getByRole('button', { name: 'Delete price history', exact: true }).click();
+  await expect(cik).toHaveAttribute('aria-invalid', 'true');
+  await expect(cik).toHaveAttribute('aria-errormessage', 'price-delete-cik-error');
+  await expect(status).toHaveAttribute('role', 'alert');
+  await expect(status).toContainText('invalid');
+
+  await cik.fill('0000320193');
+  await expect(cik).not.toHaveAttribute('aria-invalid');
+  await expect(cik).not.toHaveAttribute('aria-errormessage');
+  await expect(page.locator('#price-delete-cik-error')).toHaveCount(0);
+  await expect(status).toHaveAttribute('role', 'status');
+  await expect(status).not.toContainText('invalid');
+
+  const invoker = page.getByRole('button', { name: 'Delete price history', exact: true });
+  await invoker.click();
+  const dialog = page.getByRole('dialog', { name: 'Delete historical price data?' });
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole('button', { name: 'Cancel', exact: true }).click();
+  await expect(invoker).toBeFocused();
+  await expect(status).toHaveAttribute('role', 'status');
+  await expect(status).not.toContainText('invalid');
+});
+
+test('320 CSS px reflow has no effective page-level horizontal scroll', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 720 });
+  await page.goto('/');
+
+  for (const route of ['Home', ...routes]) {
+    if (route !== 'Home') await activateRoute(page, route);
+    const result = await page.evaluate(() => {
+      const viewportWidth = window.innerWidth;
+      const root = document.documentElement;
+      const body = document.body;
+      const scrollingElement = document.scrollingElement;
+      const initialScrollLeft = scrollingElement?.scrollLeft ?? 0;
+      if (scrollingElement !== null) scrollingElement.scrollLeft = 999;
+      const effectiveScrollLeft = scrollingElement?.scrollLeft ?? 0;
+      if (scrollingElement !== null) scrollingElement.scrollLeft = initialScrollLeft;
+
+      function hasLocalHorizontalScroll(element: HTMLElement): boolean {
+        let ancestor = element.parentElement;
+        while (ancestor !== null && ancestor !== body) {
+          const style = getComputedStyle(ancestor);
+          if (
+            (style.overflowX === 'auto' || style.overflowX === 'scroll')
+            && ancestor.scrollWidth > ancestor.clientWidth + 1
+          ) return true;
+          ancestor = ancestor.parentElement;
+        }
+        return false;
+      }
+
+      const offenders = [...document.querySelectorAll<HTMLElement>('body *')]
+        .filter((element) => {
+          const style = getComputedStyle(element);
+          const rect = element.getBoundingClientRect();
+          return style.display !== 'none'
+            && style.visibility !== 'hidden'
+            && style.position !== 'fixed'
+            && style.clipPath === 'none'
+            && rect.width > 1
+            && rect.height > 1
+            && (rect.left < -1 || rect.right > viewportWidth + 1)
+            && !hasLocalHorizontalScroll(element);
+        })
+        .slice(0, 20)
+        .map((element) => {
+          const rect = element.getBoundingClientRect();
+          return {
+            tag: element.tagName,
+            id: element.id,
+            className: element.className,
+            left: rect.left,
+            right: rect.right,
+            width: rect.width,
+          };
+        });
+
+      return {
+        viewportWidth,
+        clientWidth: root.clientWidth,
+        rootScrollWidth: root.scrollWidth,
+        bodyScrollWidth: body.scrollWidth,
+        effectiveScrollLeft,
+        offenders,
+      };
+    });
+
+    expect(result.rootScrollWidth, `${route}: document must fit the 320px viewport`).toBeLessThanOrEqual(result.viewportWidth + 1);
+    expect(result.bodyScrollWidth, `${route}: body must fit the 320px viewport`).toBeLessThanOrEqual(result.viewportWidth + 1);
+    expect(result.effectiveScrollLeft, `${route}: page-level horizontal scroll must not be effective`).toBe(0);
+    expect(result.offenders, `${route}: no visible element may escape the viewport outside a local scroll region`).toEqual([]);
+  }
+});

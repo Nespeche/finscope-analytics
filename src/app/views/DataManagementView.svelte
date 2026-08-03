@@ -64,6 +64,7 @@
   let showDeletePriceDialog = false;
   let priceIssuer = '';
   let priceIssuerError: string | undefined;
+  let priceIssuerValidationAlertActive = false;
   let busy = false;
   let statusKind: 'status' | 'alert' = 'status';
   let statusMessage = 'Grant storage consent to inspect or change local data.';
@@ -278,13 +279,26 @@
     }
   }
 
+  function clearPriceIssuerValidation(): void {
+    priceIssuerError = undefined;
+    if (priceIssuerValidationAlertActive) {
+      priceIssuerValidationAlertActive = false;
+      statusKind = 'status';
+      statusMessage = 'Issuer CIK changed. Validate the ten-digit value before opening the deletion confirmation.';
+    }
+  }
+
   function requestDeletePrice(): void {
     try {
       parseCik(priceIssuer);
       priceIssuerError = undefined;
+      priceIssuerValidationAlertActive = false;
+      statusKind = 'status';
+      statusMessage = 'Issuer CIK validated. Review the deletion scope and confirm in the dialog.';
       showDeletePriceDialog = true;
     } catch {
       priceIssuerError = 'Enter the authoritative zero-padded ten-digit CIK before deleting price history.';
+      priceIssuerValidationAlertActive = true;
       statusKind = 'alert';
       statusMessage = 'The issuer CIK is invalid. Correct the field before opening the deletion confirmation.';
     }
@@ -392,7 +406,7 @@
       aria-invalid={priceIssuerError === undefined ? undefined : 'true'}
       aria-errormessage={priceIssuerError === undefined ? undefined : 'price-delete-cik-error'}
       aria-describedby={priceIssuerError === undefined ? 'price-delete-cik-help' : 'price-delete-cik-help price-delete-cik-error'}
-      oninput={() => { priceIssuerError = undefined; }}
+      oninput={clearPriceIssuerValidation}
     />
     <p id="price-delete-cik-help">Enter exactly ten digits. Only historical price overlays, price analyses, their pointer and related price commit records for this issuer will be deleted.</p>
     {#if priceIssuerError !== undefined}
@@ -465,6 +479,7 @@
   fieldset, .destructive, .recovery {
     display: grid;
     gap: 0.75rem;
+    min-inline-size: 0;
     border: 2px solid currentColor;
     border-radius: 0.5rem;
     padding: 1rem;
@@ -472,7 +487,7 @@
   label { font-weight: 650; }
   fieldset label { display: flex; gap: 0.7rem; align-items: flex-start; }
   .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-  button, input, .file-action { min-block-size: 2.75rem; font: inherit; }
+  button, input, .file-action { min-block-size: 2.75rem; max-inline-size: 100%; font: inherit; }
   button, .file-action { border: 2px solid currentColor; border-radius: 0.375rem; padding: 0.625rem 1rem; }
   .file-action { display: inline-flex; align-items: center; cursor: pointer; }
   .file-action input { position: absolute; inline-size: 1px; block-size: 1px; clip-path: inset(50%); }
