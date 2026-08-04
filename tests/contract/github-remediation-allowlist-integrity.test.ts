@@ -13,6 +13,7 @@ const REQUEST_REQUIRED_PATHS = [
 const SHA_PATTERN = /^[0-9a-f]{40}$/iu;
 const DIGEST_PATTERN = /^sha256:[0-9a-f]{64}$/iu;
 const ISO_UTC_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/u;
+const CANDIDATE_REQUIRED_FIELDS = ['sha', 'runId', 'artifactId', 'artifactName', 'artifactDigest'] as const;
 
 function fail(code: string): never {
   throw new Error(code);
@@ -51,6 +52,10 @@ function assertExactPaths(value: unknown, code: string) {
 
 function assertCandidate(value: unknown) {
   assertCondition(isRecord(value), 'CANDIDATE_INCOMPLETE');
+  assertCondition(
+    CANDIDATE_REQUIRED_FIELDS.every((field) => Object.prototype.hasOwnProperty.call(value, field)),
+    'CANDIDATE_INCOMPLETE',
+  );
   assertCondition(typeof value.sha === 'string' && SHA_PATTERN.test(value.sha), 'CANDIDATE_SHA_INVALID');
   assertCondition(Number.isInteger(value.runId) && value.runId > 0, 'CANDIDATE_RUN_ID_INVALID');
   assertCondition(Number.isInteger(value.artifactId) && value.artifactId > 0, 'CANDIDATE_ARTIFACT_ID_INVALID');
