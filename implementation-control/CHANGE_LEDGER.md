@@ -733,3 +733,11 @@
 - candidate: `41174f21268ae71e8301313a229e1faaab69fbe5`, run `30856160876`, artifact `8872559141`;
 - closure request: `48fbe9111be2a64a88ae35d228440ce851b36788`, run `30856525648`;
 - B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.
+
+
+## 2026-08-04 — Authenticated remediation closure
+
+- remediation: `b21-final-release-promotion-remediation`;
+- candidate: `490cd0e0cd8b65054a1f4e259aaa7163f635aa97`, run `30862865157`, artifact `8875011330`;
+- closure request: `7e7e66110e47f35569e3c262775aa867c0752992`, run `30864997129`;
+- B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.
