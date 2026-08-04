@@ -24,6 +24,22 @@ Además, ese HEAD contiene cambios ejecutables posteriores al cierre autenticado
 del candidato `490cd0e0cd8b65054a1f4e259aaa7163f635aa97`; por ello la evidencia anterior
 no puede promover el nuevo árbol.
 
+## Continuidad del hold tras el cierre autenticado
+
+El cierre `e2ada789f260e71e03fd3c0b1ad8f9486b096932`, run `30933284189`,
+permanece como evidencia histórica autenticada `PASS`, pero no es promovible
+porque la PR Validation posterior sobre `1741c3bb2cc9793b49cc632bd1c3b570a38dca1e`
+falló en `allowlist-integrity-contract`.
+
+El artifact `8902033963`, `finscope-github-validation-1741c3bb2cc9-_FAILED`,
+digest `sha256:c80813d0e1277f8cb0157e02405593e60c3d17366b1b5cbe0756bf2820857e8d`,
+queda preservado como `REJECTED_NOT_PROMOTABLE`. La causa registrada es
+`POST_CLOSURE_STATE_COUPLED_CONTRACT_REMEDIATION`.
+
+La remediación `b21-final-release-promotion-remediation` vuelve exclusivamente
+a `candidate/NOT_REQUESTED`, sin candidato ni cierre cargados. El hold continúa
+activo hasta una PR Validation completa `PASS` vinculada al nuevo HEAD exacto.
+
 ## Gate obligatorio
 
 1. Restablecer la remediación a `candidate/NOT_REQUESTED`.
