@@ -757,3 +757,14 @@
 - candidate: `370718c42a8b1f558580c53e6e257e0cc0505b55`, run `30923907829`, artifact `8898272190`;
 - closure request: `1741c3bb2cc9793b49cc632bd1c3b570a38dca1e`, run `30933284189`;
 - B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.
+
+
+<!-- B21_PUSH_NORMAL_OPERATOR_POLICY_V1 -->
+## 2026-08-04 — Normal fast-forward closure finalization and operator-selection remediation
+
+- autorización: corregir la causa primaria del bloqueo de cierre B21 y la ambigüedad de selección de operador;
+- estado preservado: `b21-final-release-promotion-remediation` continúa en `candidate/NOT_REQUESTED`; no se solicita ni ejecuta cierre;
+- operador: ChatGPT para custodia/auditoría y mutación GitHub únicamente cuando pueda garantizar atomicidad; VS Code para mutación local multarchivo; Codex solo por solicitud explícita del usuario;
+- push: se elimina `force-with-lease` y se exige push normal fast-forward con comprobación remota previa, ancestry y confirmación remota posterior;
+- impacto: este cambio modifica bytes ejecutables y exige un nuevo candidate SHA, una PR Validation completa y artifact PASS nuevos antes de cualquier solicitud de cierre;
+- prohibiciones conservadas: no Ready for Review, merge, tag, Release, reemplazo de Fuentes, B22 ni convergencia.

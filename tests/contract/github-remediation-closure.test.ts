@@ -531,10 +531,11 @@ describe('remediation closure atomic finalization', () => {
     expect(() => assertPreparedFinalization({ applyContext, localContext: { ...localContext, controlPlaneValidation: 'FAIL' }, localHead: closureSha, remoteHead: requestSha })).toThrow(/LOCAL_VALIDATION_NOT_PASS/u);
   });
 
-  it('uses force-with-lease bound to requestSha and never an unleased force', () => {
+  it('uses a normal fast-forward push and never any force option', () => {
     const command = buildConditionalPushCommand({ branch, requestSha, closureSha });
-    expect(command).toContain(`--force-with-lease="refs/heads/${branch}:${requestSha}"`);
-    expect(command).not.toMatch(/\s--force\s/u);
+    expect(command).toBe(`git push --porcelain origin "${closureSha}:refs/heads/${branch}"`);
+    expect(command).not.toMatch(/--force/u);
+    expect(command).not.toMatch(/force-with-lease/u);
   });
 
   it('accepts only a post-push remote read equal to closureSha', () => {
@@ -545,6 +546,9 @@ describe('remediation closure atomic finalization', () => {
   it('queries the remote both before and after the conditional push', async () => {
     const source = await readFile('implementation-control/scripts/Finalize-GitHubRemediationClosure.mjs', 'utf8');
     expect(source.match(/await readRemoteBranchHead\(/gu)).toHaveLength(2);
+    expect(source).toContain('git merge-base --is-ancestor');
+    expect(source).toContain('FINSCOPE_REQUIRED_PUSH_MODE');
+    expect(source).not.toContain('--force-with-lease');
     expect(source.indexOf('const confirmedRemoteHead')).toBeGreaterThan(source.indexOf('buildConditionalPushCommand'));
   });
 
