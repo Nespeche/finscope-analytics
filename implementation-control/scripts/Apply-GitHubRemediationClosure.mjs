@@ -24,6 +24,12 @@ const fail = (code, detail = '') => { throw new RemediationClosureError(code, de
 const shaPattern = /^[0-9a-f]{40}$/u;
 const digestPattern = /^sha256:[0-9a-f]{64}$/u;
 const remediationReportBasePattern = /^implementation-control\/reports\/[A-Z0-9_]+_REMEDIATION_CLOSURE$/u;
+const requestLedgerStart = '<!-- FINSCOPE_REMEDIATION_CLOSURE_REQUEST_V1 -->';
+const requestLedgerEnd = '<!-- /FINSCOPE_REMEDIATION_CLOSURE_REQUEST_V1 -->';
+const mandatoryRequestPaths = [
+  'implementation-control/GITHUB_HANDOFF.json',
+  'implementation-control/CHANGE_LEDGER.md',
+];
 const normalizePaths = (paths) => paths.map((path) => String(path).replaceAll('\\', '/')).filter(Boolean);
 
 export function assertCompleteRemediationCandidate(candidate) {
@@ -42,6 +48,91 @@ export function assertExactAllowedPaths(changedPaths, allowedPaths, code = 'REME
   const denied = changed.filter((path) => !allowed.has(path));
   if (denied.length > 0) fail(code, denied.join(','));
   return changed;
+}
+
+export function assertRequiredPathsPresent(changedPaths, requiredPaths, code = 'REMEDIATION_CLOSURE_REQUIRED_PATH_MISSING') {
+  const changed = new Set(normalizePaths(changedPaths));
+  const required = normalizePaths(requiredPaths);
+  if (required.length === 0 || new Set(required).size !== required.length) fail('REMEDIATION_CLOSURE_REQUIRED_PATH_DECLARATION_INVALID', required.join(','));
+  const missing = required.filter((path) => !changed.has(path));
+  if (missing.length > 0) fail(code, missing.join(','));
+  return required;
+}
+
+function validateRequestPathDeclaration(allowedPaths, requiredPaths) {
+  const allowed = normalizePaths(allowedPaths); const required = normalizePaths(requiredPaths);
+  const allowedSet = new Set(allowed); const requiredSet = new Set(required);
+  if (allowed.length === 0 || allowedSet.size !== allowed.length || required.length === 0 || requiredSet.size !== required.length) fail('REMEDIATION_CLOSURE_REQUIRED_PATH_DECLARATION_INVALID');
+  const outside = required.filter((path) => !allowedSet.has(path));
+  const mandatoryMissing = mandatoryRequestPaths.filter((path) => !requiredSet.has(path));
+  if (outside.length > 0 || mandatoryMissing.length > 0) fail('REMEDIATION_CLOSURE_REQUIRED_PATH_DECLARATION_INVALID', [...outside, ...mandatoryMissing].join(','));
+  return { allowedPaths: allowed, requiredPaths: required };
+}
+
+export function extractAddedPatchText(patchText) {
+  if (typeof patchText !== 'string') fail('REMEDIATION_CLOSURE_LEDGER_PATCH_INVALID', 'patch missing');
+  return patchText.split(/\r?\n/u)
+    .filter((line) => line.startsWith('+') && !line.startsWith('+++'))
+    .map((line) => line.slice(1))
+    .join('\n');
+}
+
+function expectedLedgerAuthorization(remediation) {
+  const policy = remediation?.closurePolicy; const closure = policy?.closure; const candidate = policy?.candidate;
+  assertCompleteRemediationCandidate(candidate);
+  if (policy?.stage !== 'closure' || policy?.status !== 'PENDING') fail('REMEDIATION_CLOSURE_REQUEST_INVALID', `${policy?.stage}/${policy?.status}`);
+  if (!closure || typeof closure !== 'object') fail('REMEDIATION_CLOSURE_AUTHORIZATION_INCOMPLETE', 'closure');
+  if (typeof closure.authorizationText !== 'string' || !closure.authorizationText.trim()) fail('REMEDIATION_CLOSURE_AUTHORIZATION_INCOMPLETE', 'authorizationText');
+  if (typeof closure.requestedAt !== 'string' || Number.isNaN(Date.parse(closure.requestedAt))) fail('REMEDIATION_CLOSURE_AUTHORIZATION_INCOMPLETE', 'requestedAt');
+  if (!Array.isArray(closure.postClosureProhibitions) || closure.postClosureProhibitions.length === 0 || closure.postClosureProhibitions.some((value) => typeof value !== 'string' || !value.trim())) fail('REMEDIATION_CLOSURE_AUTHORIZATION_INCOMPLETE', 'postClosureProhibitions');
+  validateRequestPathDeclaration(policy.requestAllowedPaths, closure.requestRequiredPaths);
+  return {
+    authorizationText: closure.authorizationText,
+    remediationId: remediation.id,
+    candidateSha: candidate.sha,
+    workflowRunId: candidate.runId,
+    artifactId: candidate.artifactId,
+    artifactName: candidate.artifactName,
+    artifactDigest: candidate.artifactDigest,
+    timestamp: closure.requestedAt,
+    postClosureProhibitions: closure.postClosureProhibitions,
+  };
+}
+
+export function validateRemediationClosureAuthorizationLedger({ ledgerAddedText, remediation }) {
+  if (typeof ledgerAddedText !== 'string' || !ledgerAddedText.trim()) fail('REMEDIATION_CLOSURE_LEDGER_AUTHORIZATION_MISSING');
+  const escapedStart = requestLedgerStart.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
+  const escapedEnd = requestLedgerEnd.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&');
+  const blockPattern = new RegExp(`${escapedStart}\\s*\\x60\\x60\\x60json\\s*([\\s\\S]*?)\\s*\\x60\\x60\\x60\\s*${escapedEnd}`, 'gu');
+  const matches = [...ledgerAddedText.matchAll(blockPattern)];
+  if (matches.length !== 1) fail('REMEDIATION_CLOSURE_LEDGER_AUTHORIZATION_INVALID', `blocks=${matches.length}`);
+  let actual;
+  try { actual = JSON.parse(matches[0][1]); }
+  catch (error) { fail('REMEDIATION_CLOSURE_LEDGER_AUTHORIZATION_INVALID', String(error)); }
+  if (!actual || typeof actual !== 'object' || Array.isArray(actual)) fail('REMEDIATION_CLOSURE_LEDGER_AUTHORIZATION_INVALID', 'object required');
+  const expected = expectedLedgerAuthorization(remediation);
+  const expectedKeys = Object.keys(expected).sort(); const actualKeys = Object.keys(actual).sort();
+  if (JSON.stringify(actualKeys) !== JSON.stringify(expectedKeys)) fail('REMEDIATION_CLOSURE_LEDGER_AUTHORIZATION_INVALID', `keys=${actualKeys.join(',')}`);
+  for (const key of expectedKeys) if (JSON.stringify(actual[key]) !== JSON.stringify(expected[key])) fail('REMEDIATION_CLOSURE_LEDGER_AUTHORIZATION_MISMATCH', key);
+  return true;
+}
+
+export function validateRemediationClosureRequestAtomicity({
+  remediation,
+  commitCount,
+  rangePaths,
+  requestCommitPaths,
+  ledgerAddedText,
+}) {
+  const policy = remediation?.closurePolicy;
+  const { allowedPaths, requiredPaths } = validateRequestPathDeclaration(policy?.requestAllowedPaths, policy?.closure?.requestRequiredPaths);
+  if (commitCount !== 1) fail('REMEDIATION_CLOSURE_REQUEST_NOT_ATOMIC', `commitCount=${String(commitCount)}`);
+  assertExactAllowedPaths(rangePaths, allowedPaths, 'REMEDIATION_CLOSURE_REQUEST_ALLOWLIST_VIOLATION');
+  assertExactAllowedPaths(requestCommitPaths, allowedPaths, 'REMEDIATION_CLOSURE_REQUEST_ALLOWLIST_VIOLATION');
+  assertRequiredPathsPresent(rangePaths, requiredPaths);
+  assertRequiredPathsPresent(requestCommitPaths, requiredPaths, 'REMEDIATION_CLOSURE_REQUIRED_PATH_NOT_IN_REQUEST_COMMIT');
+  validateRemediationClosureAuthorizationLedger({ ledgerAddedText, remediation });
+  return { result: 'PASS', commitCount, allowedPaths, requiredPaths };
 }
 
 export function resolveRemediationClosureReportPaths(allowedPaths) {
@@ -112,6 +203,7 @@ export function buildCompletedRemediationPolicy(policy, { requestSha, runId, com
     stage: 'completed',
     status: 'COMPLETED',
     closure: {
+      ...policy.closure,
       candidateSha: policy.candidate.sha,
       requestSha,
       runId: Number(runId),
@@ -127,6 +219,7 @@ export function resolveRemediationClosureRequest({ branch, handoff, state, reque
   if (!remediation) fail('REMEDIATION_NOT_FOUND', route.remediationId ?? branch);
   if (remediation.closurePolicy.kind !== 'REMEDIATION_CLOSURE') fail('REMEDIATION_CLOSURE_KIND_INVALID');
   assertCompleteRemediationCandidate(remediation.closurePolicy.candidate);
+  expectedLedgerAuthorization(remediation);
   if (!shaPattern.test(requestSha)) fail('REMEDIATION_CLOSURE_REQUEST_SHA_INVALID', String(requestSha));
   validateRemediationProductState(state);
   return { route, remediation, candidate: remediation.closurePolicy.candidate };
@@ -233,8 +326,22 @@ export async function applyGitHubRemediationClosure() {
   }
   const { route, remediation, candidate } = resolveRemediationClosureRequest({ branch, handoff, state, requestSha });
   await command(`git merge-base --is-ancestor "${candidate.sha}" "${requestSha}"`, 'REMEDIATION_CANDIDATE_NOT_ANCESTOR');
-  const requestFiles = (await command(`git diff --name-only "${candidate.sha}" "${requestSha}"`, 'REMEDIATION_CLOSURE_REQUEST_DIFF_FAILED')).split(/\r?\n/u).filter(Boolean);
-  assertExactAllowedPaths(requestFiles, route.requestAllowedPaths, 'REMEDIATION_CLOSURE_REQUEST_ALLOWLIST_VIOLATION');
+  const [commitCountText, rangeFilesText, requestCommitFilesText, ledgerPatch] = await Promise.all([
+    command(`git rev-list --count "${candidate.sha}..${requestSha}"`, 'REMEDIATION_CLOSURE_REQUEST_HISTORY_FAILED'),
+    command(`git diff --name-only "${candidate.sha}" "${requestSha}" --`, 'REMEDIATION_CLOSURE_REQUEST_DIFF_FAILED'),
+    command(`git diff-tree --no-commit-id --name-only -r "${requestSha}" --`, 'REMEDIATION_CLOSURE_REQUEST_COMMIT_DIFF_FAILED'),
+    command(`git diff --unified=0 --no-color "${requestSha}^" "${requestSha}" -- implementation-control/CHANGE_LEDGER.md`, 'REMEDIATION_CLOSURE_LEDGER_DIFF_FAILED'),
+  ]);
+  const commitCount = Number(commitCountText);
+  const rangeFiles = rangeFilesText.split(/\r?\n/u).filter(Boolean);
+  const requestCommitFiles = requestCommitFilesText.split(/\r?\n/u).filter(Boolean);
+  validateRemediationClosureRequestAtomicity({
+    remediation,
+    commitCount,
+    rangePaths: rangeFiles,
+    requestCommitPaths: requestCommitFiles,
+    ledgerAddedText: extractAddedPatchText(ledgerPatch),
+  });
   const [runInfo, artifactInfo] = await Promise.all([
     api(handoff.repository, `actions/runs/${candidate.runId}`),
     api(handoff.repository, `actions/artifacts/${candidate.artifactId}`),
@@ -279,6 +386,7 @@ export async function applyGitHubRemediationClosure() {
     remediationId: remediation.id, remediationMode: remediation.mode, branch, candidate,
     requestSha, closureSha, candidateSha: candidate.sha, runId, artifactExtractPath: extractPath,
     changedFiles: changed, allowedPaths: route.allowedPaths, remoteExpectedHead: requestSha,
+    requestValidation: { commitCount, requiredPaths: remediation.closurePolicy.closure.requestRequiredPaths, ledgerAuthorization: 'PASS' },
     prepared: true, pushed: false,
     productStateUnchanged: true, tasksUnchanged: true, batchesUnchanged: true,
     specifyByteIdentical: true, b21Status: 'COMPLETED', b22Status: 'PENDING', convergenceAuthorized: false,
