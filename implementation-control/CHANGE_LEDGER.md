@@ -749,3 +749,11 @@
 {"authorizationText":"Autorizo solicitar y ejecutar exclusivamente el cierre autenticado de b21-final-release-promotion-remediation para el candidato exacto 370718c42a8b1f558580c53e6e257e0cc0505b55, asociado al PR Validation run 30923907829 y al artifact 8898272190, name finscope-github-validation-370718c42a8b-PASS, digest sha256:6f82fa9bc247faab9a81a2a1d077603c1c20b74b988b9f0e9b3036f727e25de1. No autorizo Ready for Review, merge, tag, Release, reemplazo de Fuentes, B22 ni convergencia.","remediationId":"b21-final-release-promotion-remediation","candidateSha":"370718c42a8b1f558580c53e6e257e0cc0505b55","workflowRunId":30923907829,"artifactId":8898272190,"artifactName":"finscope-github-validation-370718c42a8b-PASS","artifactDigest":"sha256:6f82fa9bc247faab9a81a2a1d077603c1c20b74b988b9f0e9b3036f727e25de1","timestamp":"2026-08-04T17:18:11.288Z","postClosureProhibitions":["No marcar el PR como Ready for Review.","No fusionar el PR.","No crear, modificar ni eliminar tags.","No crear, publicar, sobrescribir ni eliminar Releases.","No reemplazar los archivos de Fuentes.","No iniciar B22 ni lotes posteriores.","No ejecutar convergencia."]}
 ```
 <!-- /FINSCOPE_REMEDIATION_CLOSURE_REQUEST_V1 -->
+
+
+## 2026-08-04 — Authenticated remediation closure
+
+- remediation: `b21-final-release-promotion-remediation`;
+- candidate: `370718c42a8b1f558580c53e6e257e0cc0505b55`, run `30923907829`, artifact `8898272190`;
+- closure request: `1741c3bb2cc9793b49cc632bd1c3b570a38dca1e`, run `30933284189`;
+- B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.
