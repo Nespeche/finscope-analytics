@@ -136,10 +136,10 @@ jobs:
             implementation-control/scripts/Verify-GitHubClosure.mjs \
             implementation-control/scripts/Verify-GitHubClosureArtifact.mjs \
             implementation-control/scripts/Verify-GitHubCompletedPackage.mjs \
-            PACKAGE_METADATA.json PACKAE_INVENTORY.json FILE_MANIFEST.sha256
+            PACKAGE_METADATA.json PACKAGE_INVENTORY.json FILE_MANIFEST.sha256
           test "$(git diff --cached --name-only | wc -l | tr -d ' ')" = "16"
           git commit -m "fix(control-plane): materialize B20 closure mechanism candidate r3"
           test "$(git rev-parse HEAD^)" = "$EVENT_HEAD"
           git push origin \
-            "HEAD:befs/heads/maintenance/b20-post-restore-control-plane-hardening" \
+            "HEAD:refs/heads/maintenance/b20-post-restore-control-plane-hardening" \
             "--force-with-lease=refs/heads/maintenance/b20-post-restore-control-plane-hardening:$EVENT_HEAD"
