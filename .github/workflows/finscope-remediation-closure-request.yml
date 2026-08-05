@@ -18,7 +18,7 @@ permissions:
 jobs:
   materialize-candidate:
     name: materialize-candidate
-    if: github.repository == 'Nespeche/finscope-analytics' && github.actor == github.repository_owner
+    if: github.repository == 'Nespeche/finscope-analytics'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout exact construction HEAD
@@ -31,7 +31,7 @@ jobs:
         with:
           node-version-file: package.json
           package-manager-cache: false
-      - name: Authenticate PR, branch and exact remote HEAD
+      - name: Authenticate owner-authored commit, PR, branch and exact remote HEAD
         env:
           GH_TOKEN: ${{ github.token }}
           EVENT_HEAD: ${{ github.sha }}
@@ -43,12 +43,16 @@ jobs:
           test "$(git rev-parse HEAD)" = "$EVENT_HEAD"
           test "$(git ls-remote origin refs/heads/maintenance/b20-post-restore-control-plane-hardening | cut -f1)" = "$EVENT_HEAD"
           node --input-type=module <<'NODE'
-          const response = await fetch('https://api.github.com/repos/Nespeche/finscope-analytics/pulls/46', {
-            headers: { Authorization: `Bearer ${process.env.GH_TOKEN}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
-          });
+          const headers = { Authorization: `Bearer ${process.env.GH_TOKEN}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
+          const commitResponse = await fetch(`https://api.github.com/repos/Nespeche/finscope-analytics/commits/${process.env.EVENT_HEAD}`, { headers });
+          if (!commitResponse.ok) throw new Error(`COMMIT_LOOKUP_FAILED:${commitResponse.status}`);
+          const commit = await commitResponse.json();
+          const response = await fetch('https://api.github.com/repos/Nespeche/finscope-analytics/pulls/46', { headers });
           if (!response.ok) throw new Error(`PR_LOOKUP_FAILED:${response.status}`);
           const pr = await response.json();
           const assert = (value, code) => { if (!value) throw new Error(code); };
+          assert(commit.author?.login === 'Nespeche', 'COMMIT_NOT_OWNER_AUTHORED');
+          assert(commit.sha === process.env.EVENT_HEAD, 'COMMIT_SHA_MISMATCH');
           assert(pr.state === 'open', 'PR_NOT_OPEN');
           assert(pr.draft === true, 'PR_NOT_DRAFT');
           assert(pr.number === 46, 'PR_NUMBER_MISMATCH');
