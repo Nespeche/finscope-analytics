@@ -60,6 +60,112 @@ jobs:
           git fetch origin "$HEAD_BRANCH"
           test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
           test "$(git rev-parse FETCH_HEAD)" = "$EXPECTED_HEAD_SHA"
+      - name: Align authoritative state and candidate metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from 'node:fs';
+          const read = (path) => JSON.parse(readFileSync(path, 'utf8'));
+          const writePretty = (path, value) => writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+          const writeCompact = (path, value) => writeFileSync(path, `${JSON.stringify(value)}\n`, 'utf8');
+
+          const statePath = 'implementation-control/IMPLEMENTATION_STATE.json';
+          const metadataPath = 'PACKAGE_METADATA.json';
+          const state = read(statePath);
+          const metadata = read(metadataPath);
+
+          state.sourceBaseline = {
+            logicalName: 'FS_v0.21.25_B20_completed.zip',
+            sha256: 'c18b1390c416b5c538e1b7cf704c610754e4cff2f3eeec8c2c08bc800b120fc6',
+            role: 'ACTIVE_COMPLETED_BASELINE_USED_FOR_B20_POST_RESTORE_HARDENING',
+          };
+          state.implementationStatus = 'BLOCKED';
+          state.completedTaskIds = [...new Set((state.completedTaskIds ?? []).filter((id) => id !== 'T089').concat('T089'))]
+            .sort((a, b) => Number(a.slice(1)) - Number(b.slice(1)));
+          state.taskStatus = { ...state.taskStatus, T089: 'COMPLETED' };
+          state.openFindings = [{
+            id: 'B20-POST-RESTORE-RELEASE-RECOVERY-HOLD',
+            severity: 'BLOCKING_HOLD',
+            scope: 'B20 completed Release/control-plane realignment',
+            status: 'OPEN',
+            description: 'B21 remains PENDING but is not executable until the special remediation is closed, merged, published under separate authorization, re-downloaded, reauthenticated and substituted in Sources.',
+            owner: 'ChatGPT governance + GitHub evidence + Codex operator',
+            closureCondition: 'Complete b20-post-restore-control-plane-hardening with exact-head PASS evidence, independent closure/merge/Release authorizations and post-publication asset reauthentication.',
+          }];
+          state.updatedBy = 'b20-post-restore-control-plane-hardening candidate';
+          state.updatedOn = '2026-08-05';
+          state.validationWorkflow = {
+            ...state.validationWorkflow,
+            candidatePromotionRule: 'Exact-head candidate and closure checks must PASS; Ready/merge, tag/Release and Sources replacement require separate explicit authorizations and post-publication reauthentication.',
+            pendingRuntimeValidationBatches: [],
+          };
+          writePretty(statePath, state);
+
+          metadata.generatedOn = '2026-08-05';
+          metadata.phase = 'implementation_B20_completed_release_recovery';
+          metadata.result = 'CANDIDATE';
+          metadata.implementationReadiness = 'B20_COMPLETED_B21_BLOCKED_RELEASE_RECOVERY';
+          metadata.sourceBaseline = {
+            logicalName: 'FS_v0.21.25_B20_completed.zip',
+            sha256: 'c18b1390c416b5c538e1b7cf704c610754e4cff2f3eeec8c2c08bc800b120fc6',
+            sidecarMatch: true,
+            crcValid: true,
+            singleRoot: true,
+            safeExtraction: true,
+            role: 'ACTIVE_COMPLETED_BASELINE_USED_FOR_B20_POST_RESTORE_HARDENING',
+          };
+          metadata.inputCandidate = {
+            logicalName: 'b20-post-restore-control-plane-hardening',
+            sha256: null,
+            sidecarMatch: null,
+            disposition: 'CANDIDATE_NOT_PROMOTABLE_AWAITING_EXACT_HEAD_EVIDENCE',
+          };
+          metadata.inputEvidence = {
+            status: 'HISTORICAL_PASS_AUTHENTICATED',
+            logicalName: 'finscope-github-validation-69ed435b2f05-PASS',
+            sha256: 'fb8cbcfaa7ee07ec1c9295bba32d50dca55a88ec0834e1ad8a98af2c0033df91',
+            sidecarMatch: null,
+            effect: 'CONFIRMS_T089_COMPLETED_BOUNDARY_ONLY; DOES_NOT_PROMOTE_CURRENT_BYTES',
+          };
+          metadata.implementationState = {
+            status: 'BLOCKED',
+            completedBatches: [...state.completedBatchIds],
+            activeBatchId: 'B21',
+            nextAuthorizedBatchId: 'B21',
+            completedTasksThrough: 'T089',
+            nextBatchStatus: { B21: 'PENDING' },
+            blockedByReleaseRecoveryHold: true,
+            b21Executable: false,
+          };
+          metadata.validationModel = {
+            ...metadata.validationModel,
+            candidateStatus: 'CANDIDATE',
+            externalEvidenceVerified: false,
+            requiredCommandCount: 10,
+            recommendedWindowsInputRoot: 'C:\\FS\\B20-hardening\\input',
+            recommendedWindowsWorkRoot: 'C:\\FS\\B20-hardening\\work',
+          };
+          metadata.windowsExtractionPolicy = {
+            ...metadata.windowsExtractionPolicy,
+            mode: 'GITHUB_FIRST_RELEASE_RECOVERY_CANDIDATE',
+            recommendedInputRoot: 'C:\\FS\\B20-hardening\\input',
+            recommendedWorkRoot: 'C:\\FS\\B20-hardening\\work',
+          };
+          metadata.nextPhase = 'Complete only the B20 post-restore hardening gates. Do not start B21, T090–T095 or convergence.';
+          metadata.remediationOperation = {
+            id: 'b20-post-restore-control-plane-hardening',
+            stage: 'candidate',
+            hold: true,
+            promotable: false,
+            replacesSources: false,
+            rejectedPackageSha256: 'a906ec783e78a235a2b30a09bd40b061cbbd826479893247e1a76759908db55f',
+            rejectedPackageDisposition: 'REJECTED_NOT_PROMOTABLE',
+          };
+          const change = 'Realigned the B20 completed task boundary through T089, made candidate/closure/qualification read-only, made Release publication manual, and hardened deterministic inventory/package verification.';
+          metadata.changes = [...new Set([...(metadata.changes ?? []), change])];
+          writeCompact(metadataPath, metadata);
+          NODE
       - name: Materialize deterministic tracked derivatives
         shell: bash
         run: |
