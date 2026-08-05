@@ -133,7 +133,7 @@ async function writeDerived() {
     extractionValidated: true,
     finalZipSha256RecordedExternally: true,
   });
-  await writeJson(join(root, METADATA_PATH), metadata);
+  await writeFile(join(root, METADATA_PATH), `${JSON.stringify(metadata)}\n`, 'utf8');
 
   const sourcePaths = paths.filter((path) => !DERIVED_EXCLUSIONS.has(path));
   const files = [];
@@ -151,7 +151,7 @@ async function writeDerived() {
     ],
     files,
   };
-  await writeJson(join(root, INVENTORY_PATH), inventory);
+  await writeFile(join(root, INVENTORY_PATH), `${JSON.stringify(inventory)}\n`, 'utf8');
   await writeFile(join(root, MANIFEST_PATH), `${files.map((item) => `${item.sha256}  ${item.path}`).join('\n')}\n`, 'utf8');
   console.log(JSON.stringify({ result: 'DERIVED_FILES_WRITTEN', itemCount: files.length, fileCount: paths.length, instructionCharacters: instructionText.length }, null, 2));
 }
