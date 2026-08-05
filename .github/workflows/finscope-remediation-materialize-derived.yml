@@ -55,10 +55,53 @@ jobs:
           git fetch origin "$HEAD_BRANCH"
           test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
           test "$(git rev-parse FETCH_HEAD)" = "$EXPECTED_HEAD_SHA"
-      - name: Materialize deterministic tracked derivatives
+      - name: Materialize immutable Release identity and deterministic derivatives
         shell: bash
         run: |
           set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from 'node:fs';
+          const handoffPath = 'implementation-control/GITHUB_HANDOFF.json';
+          const statePath = 'implementation-control/IMPLEMENTATION_STATE.json';
+          const metadataPath = 'PACKAGE_METADATA.json';
+          const handoff = JSON.parse(readFileSync(handoffPath, 'utf8'));
+          const state = JSON.parse(readFileSync(statePath, 'utf8'));
+          const metadata = JSON.parse(readFileSync(metadataPath, 'utf8'));
+          const release = handoff.release;
+          const assert = (condition, code) => { if (!condition) throw new Error(code); };
+          assert(handoff.operation?.id === 'b20-post-restore-control-plane-hardening', 'UNEXPECTED_OPERATION');
+          assert(handoff.operation?.stage === 'candidate', 'UNEXPECTED_OPERATION_STAGE');
+          assert(release?.tag !== handoff.baseline?.tag, 'RELEASE_TAG_REUSES_COMPLETED_BASELINE');
+          assert(release?.zipName !== handoff.baseline?.zipName, 'RELEASE_ZIP_REUSES_COMPLETED_BASELINE');
+          assert(release?.sidecarName !== handoff.baseline?.sidecarName, 'RELEASE_SIDECAR_REUSES_COMPLETED_BASELINE');
+          assert(release?.packageRevision === state.packageRevision, 'AUTHORITY_REVISION_MISMATCH');
+          assert(typeof release?.releaseRevision === 'string' && release.releaseRevision.length > 0, 'RELEASE_REVISION_MISSING');
+          Object.assign(metadata, {
+            packageId: `FinScope-Analytics-${release.tag.replace(/^v/u, '')}`,
+            packageVersion: release.packageRevision,
+            packageRevision: state.packageRevision,
+            releaseRevision: release.releaseRevision,
+            logicalZipName: release.zipName,
+            finalSha256Sidecar: release.sidecarName,
+            identityModel: {
+              authorityRevision: state.packageRevision,
+              releaseRevision: release.releaseRevision,
+              activeSourceBaselineTag: handoff.baseline.tag,
+              activeSourceBaselineLogicalName: handoff.baseline.zipName,
+              immutableReleaseIdentityRequired: true,
+              completedReleaseIdentityReuseForbidden: true
+            }
+          });
+          Object.assign(metadata.windowsExtractionPolicy, {
+            mode: 'GITHUB_FIRST_RELEASE_RECOVERY_CANDIDATE',
+            releaseTag: release.tag,
+            zipName: release.zipName,
+            sidecarName: release.sidecarName
+          });
+          state.activePackageLogicalName = release.zipName;
+          writeFileSync(metadataPath, `${JSON.stringify(metadata)}\n`, 'utf8');
+          writeFileSync(statePath, `${JSON.stringify(state, null, 2)}\n`, 'utf8');
+          NODE
           node implementation-control/scripts/Package-GitHubCompletedRelease.mjs --write-derived
           changed="$(git diff --name-only)"
           test -n "$changed"
@@ -68,8 +111,8 @@ jobs:
               *) echo "UNAUTHORIZED_DERIVED_PATH:$path" >&2; exit 1 ;;
             esac
           done <<< "$changed"
-          for path in PACKAGE_INVENTORY.json FILE_MANIFEST.sha256; do
-            grep -Fxq "$path" <<< "$changed" || { echo "REQUIRED_DERIVED_INDEX_NOT_CHANGED:$path" >&2; exit 1; }
+          for path in implementation-control/IMPLEMENTATION_STATE.json PACKAGE_METADATA.json PACKAGE_INVENTORY.json FILE_MANIFEST.sha256; do
+            grep -Fxq "$path" <<< "$changed" || { echo "REQUIRED_DERIVED_PATH_NOT_CHANGED:$path" >&2; exit 1; }
           done
       - name: Validate materialized control plane
         shell: bash
@@ -90,7 +133,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add implementation-control/IMPLEMENTATION_STATE.json PACKAGE_METADATA.json PACKAGE_INVENTORY.json FILE_MANIFEST.sha256
           git diff --cached --quiet && { echo DERIVED_COMMIT_EMPTY >&2; exit 1; }
-          git commit -m "chore: regenerate B20 hardening derived indexes"
+          git commit -m "chore: materialize immutable B20 hardening identity"
           git fetch origin "$HEAD_BRANCH"
           test "$(git rev-parse FETCH_HEAD)" = "$EXPECTED_HEAD_SHA"
           git push --force-with-lease="refs/heads/${HEAD_BRANCH}:${EXPECTED_HEAD_SHA}" origin "HEAD:refs/heads/${HEAD_BRANCH}"

@@ -27,4 +27,6 @@ B01–B20 y T001–T089 están `COMPLETED`. B21 está `PENDING`, con `activeBatc
 
 Baseline normativo en Fuentes: `FS_v0.21.25_B20_completed.zip`, SHA-256 `c18b1390c416b5c538e1b7cf704c610754e4cff2f3eeec8c2c08bc800b120fc6`; raíz `FinScope_v0.21.4/`; `.specify` contiene 19 archivos y permanece byte-inmutable.
 
+Objetivo inmutable de la remediación: tag `v0.21.25-B20-completed-r2`, ZIP `FS_v0.21.25_B20_completed_r2.zip` y sidecar `FS_v0.21.25_B20_completed_r2.zip.sha256`. Es candidato no promovible hasta completar todos los gates y no altera la pareja activa de Fuentes.
+
 El hash `a906ec783e78a235a2b30a09bd40b061cbbd826479893247e1a76759908db55f` es `REJECTED_NOT_PROMOTABLE` y no constituye baseline ni evidencia PASS.

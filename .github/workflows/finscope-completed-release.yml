@@ -47,6 +47,9 @@ jobs:
           assert(handoff.release?.pending === true, 'RELEASE_NOT_PENDING');
           assert(handoff.release?.authorizationStatus === 'AUTHORIZED', 'RELEASE_AUTHORIZATION_NOT_RECORDED');
           assert(handoff.remediation?.hold === true, 'RECOVERY_HOLD_MISSING');
+          assert(handoff.release?.tag !== handoff.baseline?.tag, 'RELEASE_TAG_REUSES_COMPLETED_BASELINE');
+          assert(handoff.release?.zipName !== handoff.baseline?.zipName, 'RELEASE_ZIP_REUSES_COMPLETED_BASELINE');
+          assert(handoff.release?.sidecarName !== handoff.baseline?.sidecarName, 'RELEASE_SIDECAR_REUSES_COMPLETED_BASELINE');
           NODE
       - name: Configure Node from package authority
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
@@ -75,7 +78,7 @@ jobs:
         run: |
           set -euo pipefail
           node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release
-          node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed.zip .finscope-release/FS_v0.21.25_B20_completed.zip.sha256
+          node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed_r2.zip .finscope-release/FS_v0.21.25_B20_completed_r2.zip.sha256
       - name: Authenticate closure artifact contents
         env:
           GH_TOKEN: ${{ github.token }}

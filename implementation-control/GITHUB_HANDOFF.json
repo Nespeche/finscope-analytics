@@ -77,7 +77,7 @@
       {
         "id": "verify-remediation-candidate",
         "category": "package-authentication",
-        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed.zip .finscope-release/FS_v0.21.25_B20_completed.zip.sha256",
+        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed_r2.zip .finscope-release/FS_v0.21.25_B20_completed_r2.zip.sha256",
         "required": true
       }
     ]
@@ -102,14 +102,15 @@
   "release": {
     "pending": true,
     "authorizationStatus": "NOT_AUTHORIZED",
-    "tag": "v0.21.25-B20-completed",
+    "tag": "v0.21.25-B20-completed-r2",
     "packageRevision": "v0.21.25_B20_completed",
-    "zipName": "FS_v0.21.25_B20_completed.zip",
-    "sidecarName": "FS_v0.21.25_B20_completed.zip.sha256",
+    "zipName": "FS_v0.21.25_B20_completed_r2.zip",
+    "sidecarName": "FS_v0.21.25_B20_completed_r2.zip.sha256",
     "evidencePrefix": "FinScope_B20_hardening_release_evidence",
     "promptName": "PROMPT_IMPLEMENTACION_B21.md",
-    "title": "FinScope B20 completed — post-restore control-plane hardening",
-    "notes": "Publication is a separate, explicit gate. Candidate, closure and qualification workflows are read-only."
+    "title": "FinScope B20 completed r2 — post-restore control-plane hardening",
+    "notes": "Fresh immutable Release identity for post-restore hardening. The existing v0.21.25-B20-completed Release and c18b... Sources pair remain unchanged until this revision is independently authorized, published, downloaded and reauthenticated.",
+    "releaseRevision": "v0.21.25_B20_completed_r2"
   },
   "remediation": {
     "hold": true,
