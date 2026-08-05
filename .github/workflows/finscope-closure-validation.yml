@@ -4,10 +4,19 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - README.md
+      - START_HERE_CHATGPT.md
+      - DOCUMENTATION_INDEX.md
+      - V0.21_PHASE_STATUS.md
+      - PACKAGE_METADATA.json
+      - PACKAGE_INVENTORY.json
+      - FILE_MANIFEST.sha256
+      - PROMPT_IMPLEMENTACION_B21.md
       - implementation-control/GITHUB_HANDOFF.json
+      - implementation-control/IMPLEMENTATION_STATE.json
 
 permissions:
-  contents: write
+  contents: read
   actions: read
   pull-requests: read
 
@@ -26,11 +35,6 @@ jobs:
         with:
           node-version-file: package.json
           package-manager-cache: false
-      - name: Apply authenticated closure payload when requested
-        id: apply
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: node implementation-control/scripts/Apply-GitHubBatchClosure.mjs
       - name: Prepare normative package-root alias
         shell: bash
         run: |
@@ -39,7 +43,7 @@ jobs:
           rm -rf "$root_alias"
           ln -s "$GITHUB_WORKSPACE" "$root_alias"
           echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
-      - name: Validate control plane
+      - name: Validate control plane without mutation
         run: node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
       - name: Verify candidate identity, artifact and closure allowlist
         id: closure
