@@ -1,14 +1,14 @@
 name: FinScope B20 r3 Candidate Materializer
 
 on:
-  push:
-    branches:
-      - maintenance/b20-post-restore-control-plane-hardening
+  pull_request:
+    types: [synchronize]
+    branches: [main]
     paths:
       - .github/workflows/finscope-remediation-closure-request.yml
 
 concurrency:
-  group: finscope-b20-r3-candidate-materializer
+  group: finscope-b20-r3-candidate-materializer-pr-${{ github.event.pull_request.number }}
   cancel-in-progress: false
 
 permissions:
@@ -18,28 +18,34 @@ permissions:
 jobs:
   materialize-candidate:
     name: materialize-candidate
-    if: github.repository == 'Nespeche/finscope-analytics'
+    if: >-
+      github.repository == 'Nespeche/finscope-analytics' &&
+      github.event.pull_request.number == 46 &&
+      github.event.pull_request.base.ref == 'main' &&
+      github.event.pull_request.head.ref == 'maintenance/b20-post-restore-control-plane-hardening' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.state == 'open' &&
+      github.event.pull_request.draft == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout exact construction HEAD
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 0
-          ref: ${{ github.sha }}
+          ref: ${{ github.event.pull_request.head.sha }}
       - name: Configure Node from package authority
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
           node-version-file: package.json
           package-manager-cache: false
-      - name: Authenticate owner-authored commit, PR, branch and exact remote HEAD
+      - name: Authenticate owner-authored commit, PR and exact remote HEAD
         env:
           GH_TOKEN: ${{ github.token }}
-          EVENT_HEAD: ${{ github.sha }}
+          EVENT_HEAD: ${{ github.event.pull_request.head.sha }}
         shell: bash
         run: |
           set -euo pipefail
           test "$GITHUB_REPOSITORY" = "Nespeche/finscope-analytics"
-          test "$GITHUB_REF_NAME" = "maintenance/b20-post-restore-control-plane-hardening"
           test "$(git rev-parse HEAD)" = "$EVENT_HEAD"
           test "$(git ls-remote origin refs/heads/maintenance/b20-post-restore-control-plane-hardening | cut -f1)" = "$EVENT_HEAD"
           node --input-type=module <<'NODE'
@@ -61,6 +67,7 @@ jobs:
           assert(pr.head?.repo?.full_name === 'Nespeche/finscope-analytics', 'PR_HEAD_REPOSITORY_MISMATCH');
           assert(pr.head?.sha === process.env.EVENT_HEAD, 'REMOTE_HEAD_CHANGED');
           assert(!(pr.body ?? '').includes('B20_CLOSURE_BINDING_JSON_BEGIN'), 'CLOSURE_BINDING_PRESENT');
+          assert(!(pr.body ?? '').split(/\r?\n/u).some((line) => line.trim() === 'AUTHORIZE_B20_POST_RESTORE_CLOSURE_COMMIT'), 'CLOSURE_LITERAL_PRESENT');
           NODE
       - name: Reconstruct and authenticate final candidate bytes
         env:
@@ -123,7 +130,7 @@ jobs:
           git diff --check
       - name: Commit final candidate with force-with-lease
         env:
-          EVENT_HEAD: ${{ github.sha }}
+          EVENT_HEAD: ${{ github.event.pull_request.head.sha }}
         shell: bash
         run: |
           set -euo pipefail
