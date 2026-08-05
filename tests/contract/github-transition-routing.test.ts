@@ -16,10 +16,17 @@ const input = () => ({
 const releaseInput = () => structuredClone(handoffDocument) as any;
 
 describe('GitHub transition context routing', () => {
-  it('routes an ordinary branch to pending B22 and the B20 governance baseline', () => {
-    const result = resolveGitHubContext(input());
+  it('routes an ordinary branch to pending B22 only after the completed Release hold is cleared', () => {
+    const value = input(); value.handoff.release.pending = false;
+    const result = resolveGitHubContext(value);
     expect(result).toMatchObject({ mode: 'BATCH', batchId: 'B22', batchAuthoritySource: 'IMPLEMENTATION_STATE', batchStatus: 'PENDING', baselineRole: 'CURRENT_COMPLETED_BASELINE', baselineTag: 'v0.21.25-B20-completed', operationMatched: false });
     expect(result.commands).toHaveLength(b22Document.localValidation.commands.length);
+  });
+
+  it('blocks ordinary B22 routing while completed Release promotion is pending', () => {
+    const value = input();
+    expect(value.handoff.release.pending).toBe(true);
+    expect(() => resolveGitHubContext(value)).toThrowError(/COMPLETED_RELEASE_PENDING/u);
   });
 
   it('honors only the exact branch of a recognized complete special operation', () => {
@@ -39,12 +46,12 @@ describe('GitHub transition context routing', () => {
   });
 
   it('rejects a completed ordinary active batch', () => {
-    const value = input(); value.state.batchStatus.B22 = 'COMPLETED'; value.batches.B22.status = 'COMPLETED'; value.state.completedBatchIds.push('B22');
+    const value = input(); value.handoff.release.pending = false; value.state.batchStatus.B22 = 'COMPLETED'; value.batches.B22.status = 'COMPLETED'; value.state.completedBatchIds.push('B22');
     expect(() => resolveGitHubContext(value)).toThrowError(/COMPLETED_BATCH_SELECTED/u);
   });
 
   it('rejects divergent active and next-authorized batches', () => {
-    const value = input(); value.state.nextAuthorizedBatchId = 'B23';
+    const value = input(); value.handoff.release.pending = false; value.state.nextAuthorizedBatchId = 'B23';
     expect(() => resolveGitHubContext(value)).toThrowError(/BATCH_AUTHORITY_MISMATCH/u);
   });
 
@@ -59,7 +66,7 @@ describe('GitHub transition context routing', () => {
   });
 
   it('rejects a historical baseline in ordinary routing', () => {
-    const value = input();
+    const value = input(); value.handoff.release.pending = false;
     value.handoff.completedBaseline = {
       ...structuredClone(value.handoff.completedBaseline),
       role: 'HISTORICAL_OPERATION_BASELINE',
@@ -68,7 +75,7 @@ describe('GitHub transition context routing', () => {
   });
 
   it('rejects a derived command set that no longer equals B21 authority', () => {
-    const value = input(); value.batches.B22.localValidation.commands = [];
+    const value = input(); value.handoff.release.pending = false; value.batches.B22.localValidation.commands = [];
     expect(() => resolveGitHubContext(value)).toThrowError(/DERIVED_COMMAND_SET_MISMATCH/u);
   });
 
@@ -122,6 +129,27 @@ describe('GitHub transition context routing', () => {
     expect(() => validateRemediationScope(['src/app/composition.ts'], result.allowedPaths)).toThrowError(/MAINTENANCE_SCOPE_MISMATCH/u);
   });
 
+  it('routes the final B21 Release promotion remediation despite the ordinary release hold', () => {
+    const value = input(); value.branch = 'agent/b21-final-release-promotion-remediation';
+    const result = resolveGitHubContext(value);
+    expect(result).toMatchObject({
+      mode: 'MAINTENANCE_REMEDIATION',
+      remediationMatched: true,
+      remediationId: 'b21-final-release-promotion-remediation',
+      batchId: 'B22',
+      baselineTag: 'v0.21.25-B20-completed',
+    });
+    expect(result.commands.map((entry: { id: string }) => entry.id)).toContain('closure-contract');
+    expect(result.commands.map((entry: { id: string }) => entry.id)).toContain('verify-clean-package');
+    expect(validateRemediationScope([
+      'implementation-control/GITHUB_HANDOFF.json',
+      'implementation-control/scripts/Apply-GitHubRemediationClosure.mjs',
+      'implementation-control/scripts/Package-GitHubCompletedRelease.mjs',
+      'tests/contract/github-remediation-closure.test.ts',
+      'tests/contract/github-transition-routing.test.ts',
+    ], result.allowedPaths)).toMatchObject({ valid: true });
+  });
+
   it('rejects ambiguous or incomplete remediation declarations', () => {
     const duplicate = input(); duplicate.handoff.remediations.push(structuredClone(duplicate.handoff.remediations[0]));
     duplicate.branch = 'agent/maintenance-remediation-routing';
@@ -151,7 +179,7 @@ describe('completed Release publication authority', () => {
       operationKind: 'RELEASE_REMEDIATION',
       operationStage: stage,
       releasePending: true,
-      tag: 'v0.21.26-B21-completed',
+      tag: 'v0.21.27-B21-completed-r2',
     });
   });
 
@@ -173,7 +201,7 @@ describe('completed Release publication authority', () => {
     expect(resolveGitHubReleasePublicationContext({ handoff })).toMatchObject({
       enabled: true,
       reason: 'COMPLETED_RELEASE_AUTHORITY',
-      operationBranch: 'agent/b21-release-publication-fix',
+      operationBranch: 'agent/b21-final-completed-release',
       tag: 'v0.21.27-B21-completed-r2',
       zipName: 'FS_v0.21.27_B21_completed_r2.zip',
     });
@@ -206,17 +234,17 @@ describe('completed Release publication authority', () => {
     });
   });
 
-  it('classifies the current handoff as NOT_APPLICABLE without mutating historical Release identity', () => {
+  it('classifies the staged replacement as NOT_APPLICABLE until independent publication authorization', () => {
     const handoff = releaseInput();
     const releaseBefore = structuredClone(handoff.release);
     const result = resolveGitHubReleasePublicationContext({ handoff });
-    expect(result).toMatchObject({ enabled: false, releasePending: false, tag: 'v0.21.26-B21-completed' });
+    expect(result).toMatchObject({ enabled: false, reason: 'OPERATION_STAGE_NOT_COMPLETED', releasePending: true, tag: 'v0.21.27-B21-completed-r2' });
     expect(handoff.release).toEqual(releaseBefore);
     expect(handoff.release).toMatchObject({
-      pending: false,
-      tag: 'v0.21.26-B21-completed',
-      zipName: 'FS_v0.21.26_B21_completed.zip',
-      sidecarName: 'FS_v0.21.26_B21_completed.zip.sha256',
+      pending: true,
+      tag: 'v0.21.27-B21-completed-r2',
+      zipName: 'FS_v0.21.27_B21_completed_r2.zip',
+      sidecarName: 'FS_v0.21.27_B21_completed_r2.zip.sha256',
     });
   });
 });

@@ -733,3 +733,71 @@
 - candidate: `41174f21268ae71e8301313a229e1faaab69fbe5`, run `30856160876`, artifact `8872559141`;
 - closure request: `48fbe9111be2a64a88ae35d228440ce851b36788`, run `30856525648`;
 - B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.
+
+
+## 2026-08-04 — Authenticated remediation closure
+
+- remediation: `b21-final-release-promotion-remediation`;
+- candidate: `490cd0e0cd8b65054a1f4e259aaa7163f635aa97`, run `30862865157`, artifact `8875011330`;
+- closure request: `7e7e66110e47f35569e3c262775aa867c0752992`, run `30864997129`;
+- B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.
+
+## 2026-08-04 — Authenticated remediation closure request
+
+<!-- FINSCOPE_REMEDIATION_CLOSURE_REQUEST_V1 -->
+```json
+{"authorizationText":"Autorizo solicitar y ejecutar exclusivamente el cierre autenticado de b21-final-release-promotion-remediation para el candidato exacto 370718c42a8b1f558580c53e6e257e0cc0505b55, asociado al PR Validation run 30923907829 y al artifact 8898272190, name finscope-github-validation-370718c42a8b-PASS, digest sha256:6f82fa9bc247faab9a81a2a1d077603c1c20b74b988b9f0e9b3036f727e25de1. No autorizo Ready for Review, merge, tag, Release, reemplazo de Fuentes, B22 ni convergencia.","remediationId":"b21-final-release-promotion-remediation","candidateSha":"370718c42a8b1f558580c53e6e257e0cc0505b55","workflowRunId":30923907829,"artifactId":8898272190,"artifactName":"finscope-github-validation-370718c42a8b-PASS","artifactDigest":"sha256:6f82fa9bc247faab9a81a2a1d077603c1c20b74b988b9f0e9b3036f727e25de1","timestamp":"2026-08-04T17:18:11.288Z","postClosureProhibitions":["No marcar el PR como Ready for Review.","No fusionar el PR.","No crear, modificar ni eliminar tags.","No crear, publicar, sobrescribir ni eliminar Releases.","No reemplazar los archivos de Fuentes.","No iniciar B22 ni lotes posteriores.","No ejecutar convergencia."]}
+```
+<!-- /FINSCOPE_REMEDIATION_CLOSURE_REQUEST_V1 -->
+
+
+## 2026-08-04 — Authenticated remediation closure
+
+- remediation: `b21-final-release-promotion-remediation`;
+- candidate: `370718c42a8b1f558580c53e6e257e0cc0505b55`, run `30923907829`, artifact `8898272190`;
+- closure request: `1741c3bb2cc9793b49cc632bd1c3b570a38dca1e`, run `30933284189`;
+- B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.
+
+
+<!-- B21_PUSH_NORMAL_OPERATOR_POLICY_V1 -->
+## 2026-08-04 — Normal fast-forward closure finalization and operator-selection remediation
+
+- autorización: corregir la causa primaria del bloqueo de cierre B21 y la ambigüedad de selección de operador;
+- estado preservado: `b21-final-release-promotion-remediation` continúa en `candidate/NOT_REQUESTED`; no se solicita ni ejecuta cierre;
+- operador: ChatGPT para custodia/auditoría y mutación GitHub únicamente cuando pueda garantizar atomicidad; VS Code para mutación local multarchivo; Codex solo por solicitud explícita del usuario;
+- push: se elimina `force-with-lease` y se exige push normal fast-forward con comprobación remota previa, ancestry y confirmación remota posterior;
+- impacto: este cambio modifica bytes ejecutables y exige un nuevo candidate SHA, una PR Validation completa y artifact PASS nuevos antes de cualquier solicitud de cierre;
+- prohibiciones conservadas: no Ready for Review, merge, tag, Release, reemplazo de Fuentes, B22 ni convergencia.
+
+<!-- FINSCOPE_REMEDIATION_CLOSURE_REQUEST_V1 -->
+```json
+{
+  "authorizationText": "Autorizo exclusivamente la solicitud atómica de cierre autenticado de la remediación b21-final-release-promotion-remediation para el candidato exacto 36cdc06a98453f97d14b7b7518f5541eb68f0b09, PR Validation run 30961170712, artifact 8913000777, nombre finscope-github-validation-36cdc06a9845-PASS y digest sha256:6ff47f3a7b8850ac438e204a66b9d8354bad1a18889a2b8a447eb5b6f686c58e. Esta autorización no incluye Ready for Review, merge, tag, Release, reemplazo de Fuentes, B22, lotes posteriores ni convergencia.",
+  "remediationId": "b21-final-release-promotion-remediation",
+  "candidateSha": "36cdc06a98453f97d14b7b7518f5541eb68f0b09",
+  "workflowRunId": 30961170712,
+  "artifactId": 8913000777,
+  "artifactName": "finscope-github-validation-36cdc06a9845-PASS",
+  "artifactDigest": "sha256:6ff47f3a7b8850ac438e204a66b9d8354bad1a18889a2b8a447eb5b6f686c58e",
+  "timestamp": "2026-08-05T00:19:07.502Z",
+  "postClosureProhibitions": [
+    "Ready for Review",
+    "merge",
+    "tag",
+    "Release",
+    "Sources replacement",
+    "B22",
+    "later batches",
+    "convergence"
+  ]
+}
+```
+<!-- /FINSCOPE_REMEDIATION_CLOSURE_REQUEST_V1 -->
+
+
+## 2026-08-05 — Authenticated remediation closure
+
+- remediation: `b21-final-release-promotion-remediation`;
+- candidate: `36cdc06a98453f97d14b7b7518f5541eb68f0b09`, run `30961170712`, artifact `8913000777`;
+- closure request: `12555b8ce483e3320a4a3247816c6e3a4a3e88ef`, run `30962907039`;
+- B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.

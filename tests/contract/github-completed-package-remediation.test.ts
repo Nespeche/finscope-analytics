@@ -11,7 +11,9 @@ const repository = resolve('.');
 const packageScript = join(repository, 'implementation-control/scripts/Package-GitHubCompletedRelease.mjs');
 const createdAtRoot: string[] = [];
 const NEGATIVE_PROCESS_TIMEOUT_MS = 30_000;
-const PACKAGE_PROCESS_TIMEOUT_MS = 120_000;
+// The parent process must outlive the 120 s ZIP backend timeout so the
+// packager can emit its fail-closed error and complete cleanup deterministically.
+const PACKAGE_PROCESS_TIMEOUT_MS = 135_000;
 const PACKAGE_TEST_TIMEOUT_MS = 150_000;
 
 afterEach(async () => {
@@ -51,6 +53,11 @@ describe.sequential('completed package contamination remediation', () => {
     expect(source).not.toContain('copyFile(source, destination)');
   });
 
+  it('keeps a cleanup margin above the ZIP backend timeout', () => {
+    expect(PACKAGE_PROCESS_TIMEOUT_MS).toBeGreaterThan(120_000);
+    expect(PACKAGE_TEST_TIMEOUT_MS).toBeGreaterThan(PACKAGE_PROCESS_TIMEOUT_MS);
+  });
+
   it('keeps denylist rejection independent from inventory and manifest claims', async () => {
     const verifier = await readFile(join(repository, 'implementation-control/scripts/Verify-GitHubCompletedPackage.mjs'), 'utf8');
     const denylistIndex = verifier.indexOf("'COMPLETED_PACKAGE_TEMPORARY_FILE'");
@@ -68,6 +75,8 @@ describe.sequential('completed package contamination remediation', () => {
     expect(transfer).toContain("if (!release?.draft) return");
     expect(transfer).toContain('POST_PUBLISH_ASSET_BYTES_MISMATCH');
     expect(transfer).toContain('gitTreeComparisonExecuted === true');
+    expect(transfer).toContain("assert(workflowRunId, 'GITHUB_RUN_ID_MISSING')");
+    expect(transfer).toContain("assert(workflowRunAttempt, 'GITHUB_RUN_ATTEMPT_MISSING')");
   });
 
   it('writes resolver output outside the checkout and always cleans it', async () => {

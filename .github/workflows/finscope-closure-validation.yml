@@ -88,12 +88,13 @@ jobs:
           APPLY_OUTCOME: ${{ steps.apply.outcome }}
           CONTROL_PLANE_OUTCOME: ${{ steps.control.outcome }}
         run: node implementation-control/scripts/Verify-GitHubClosure.mjs
-      - name: Finalize conditional push
+      - name: Finalize normal fast-forward push
         id: finalize
         if: always() && steps.context.outputs.closure_type == 'REMEDIATION_CLOSURE' && steps.local.outputs.result == 'PASS'
         continue-on-error: true
         env:
           FINSCOPE_CLOSURE_CONTEXT_DIR: ${{ steps.context.outputs.context_dir }}
+          FINSCOPE_REQUIRED_PUSH_MODE: normal-fast-forward
         run: node implementation-control/scripts/Finalize-GitHubRemediationClosure.mjs
       - name: Verify remote closure
         id: closure

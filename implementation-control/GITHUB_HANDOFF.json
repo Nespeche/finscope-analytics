@@ -24,7 +24,7 @@
   "operation": {
     "id": "B21",
     "kind": "RELEASE_REMEDIATION",
-    "branch": "agent/b21-release-publication-fix",
+    "branch": "agent/b21-final-completed-release",
     "stage": "candidate",
     "activeBatchId": "B21",
     "baselineRole": "CURRENT_COMPLETED_BASELINE",
@@ -40,7 +40,7 @@
       {
         "id": "verify-completed-package",
         "category": "package-authentication",
-        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.26_B21_completed.zip .finscope-release/FS_v0.21.26_B21_completed.zip.sha256",
+        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.27_B21_completed_r2.zip .finscope-release/FS_v0.21.27_B21_completed_r2.zip.sha256",
         "required": true
       }
     ]
@@ -341,9 +341,170 @@
           "required": true
         }
       ]
+    },
+    {
+      "id": "b21-final-release-promotion-remediation",
+      "mode": "MAINTENANCE_REMEDIATION",
+      "branch": "agent/b21-final-release-promotion-remediation",
+      "baselineRole": "CURRENT_COMPLETED_BASELINE",
+      "allowedPaths": [
+        ".github/workflows/finscope-closure-validation.yml",
+        "DOCUMENTATION_INDEX.md",
+        "PROMPT_IMPLEMENTACION_B22.md",
+        "START_HERE_CHATGPT.md",
+        "V0.21_PHASE_STATUS.md",
+        "implementation-control/CHANGE_LEDGER.md",
+        "implementation-control/GITHUB_HANDOFF.json",
+        "implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md",
+        "implementation-control/GITHUB_VALIDATION_PROTOCOL.md",
+        "implementation-control/IMPLEMENTATION_STATE.json",
+        "implementation-control/reports/B21_FINAL_RELEASE_PROMOTION_REMEDIATION_CLOSURE.json",
+        "implementation-control/reports/B21_FINAL_RELEASE_PROMOTION_REMEDIATION_CLOSURE.md",
+        "implementation-control/reports/B21_RELEASE_PROMOTION_RECOVERY_GATE.md",
+        "implementation-control/scripts/Apply-GitHubRemediationClosure.mjs",
+        "implementation-control/scripts/Finalize-GitHubRemediationClosure.mjs",
+        "implementation-control/scripts/Package-GitHubCompletedRelease.mjs",
+        "implementation-control/scripts/Resolve-GitHubContext.mjs",
+        "implementation-control/scripts/Run-GitHubReleaseTransfer.mjs",
+        "tests/contract/github-completed-package-remediation.test.ts",
+        "tests/contract/github-remediation-allowlist-integrity.test.ts",
+        "tests/contract/github-remediation-closure.test.ts",
+        "tests/contract/github-transition-routing.test.ts"
+      ],
+      "closurePolicy": {
+        "kind": "REMEDIATION_CLOSURE",
+        "remediationId": "b21-final-release-promotion-remediation",
+        "branch": "agent/b21-final-release-promotion-remediation",
+        "stage": "completed",
+        "status": "COMPLETED",
+        "candidate": {
+          "sha": "36cdc06a98453f97d14b7b7518f5541eb68f0b09",
+          "runId": 30961170712,
+          "artifactId": 8913000777,
+          "artifactName": "finscope-github-validation-36cdc06a9845-PASS",
+          "artifactDigest": "sha256:6ff47f3a7b8850ac438e204a66b9d8354bad1a18889a2b8a447eb5b6f686c58e"
+        },
+        "closure": {
+          "authorizationText": "Autorizo exclusivamente la solicitud atómica de cierre autenticado de la remediación b21-final-release-promotion-remediation para el candidato exacto 36cdc06a98453f97d14b7b7518f5541eb68f0b09, PR Validation run 30961170712, artifact 8913000777, nombre finscope-github-validation-36cdc06a9845-PASS y digest sha256:6ff47f3a7b8850ac438e204a66b9d8354bad1a18889a2b8a447eb5b6f686c58e. Esta autorización no incluye Ready for Review, merge, tag, Release, reemplazo de Fuentes, B22, lotes posteriores ni convergencia.",
+          "requestedAt": "2026-08-05T00:19:07.502Z",
+          "postClosureProhibitions": [
+            "Ready for Review",
+            "merge",
+            "tag",
+            "Release",
+            "Sources replacement",
+            "B22",
+            "later batches",
+            "convergence"
+          ],
+          "requestRequiredPaths": [
+            "implementation-control/GITHUB_HANDOFF.json",
+            "implementation-control/CHANGE_LEDGER.md"
+          ],
+          "candidateSha": "36cdc06a98453f97d14b7b7518f5541eb68f0b09",
+          "requestSha": "12555b8ce483e3320a4a3247816c6e3a4a3e88ef",
+          "runId": 30962907039,
+          "completedAt": "2026-08-05T00:19:29.506Z"
+        },
+        "requestAllowedPaths": [
+          "implementation-control/GITHUB_HANDOFF.json",
+          "implementation-control/CHANGE_LEDGER.md"
+        ],
+        "allowedPaths": [
+          "implementation-control/GITHUB_HANDOFF.json",
+          "implementation-control/CHANGE_LEDGER.md",
+          "implementation-control/reports/B21_FINAL_RELEASE_PROMOTION_REMEDIATION_CLOSURE.json",
+          "implementation-control/reports/B21_FINAL_RELEASE_PROMOTION_REMEDIATION_CLOSURE.md"
+        ]
+      },
+      "commands": [
+        {
+          "id": "npm-ci",
+          "category": "dependencies",
+          "command": "npm ci",
+          "required": true
+        },
+        {
+          "id": "typecheck",
+          "category": "static",
+          "command": "npm run typecheck",
+          "required": true
+        },
+        {
+          "id": "control-plane",
+          "category": "control-plane",
+          "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .",
+          "required": true
+        },
+        {
+          "id": "routing-contract",
+          "category": "routing",
+          "command": "npm run test:contract -- tests/contract/github-transition-routing.test.ts",
+          "required": true
+        },
+        {
+          "id": "closure-contract",
+          "category": "closure-contract",
+          "command": "npm run test:contract -- tests/contract/github-remediation-closure.test.ts",
+          "required": true
+        },
+        {
+          "id": "allowlist-integrity-contract",
+          "category": "closure-contract",
+          "command": "npm run test:contract -- tests/contract/github-remediation-allowlist-integrity.test.ts",
+          "required": true
+        },
+        {
+          "id": "completed-package-contract",
+          "category": "package-contract",
+          "command": "npm run test:contract -- tests/contract/github-completed-package-remediation.test.ts",
+          "required": true
+        },
+        {
+          "id": "regression-vitest",
+          "category": "regression",
+          "command": "npm run test",
+          "required": true
+        },
+        {
+          "id": "build",
+          "category": "build",
+          "command": "npm run build",
+          "required": true
+        },
+        {
+          "id": "clean-package-dry-run",
+          "category": "package",
+          "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
+          "required": true
+        },
+        {
+          "id": "verify-clean-package",
+          "category": "package-authentication",
+          "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.27_B21_completed_r2.zip .finscope-release/FS_v0.21.27_B21_completed_r2.zip.sha256 --git-root . --commit \"$(git rev-parse HEAD)\" --tag v0.21.27-B21-completed-r2",
+          "required": true
+        },
+        {
+          "id": "specify-byte-identity",
+          "category": "integrity",
+          "command": "git diff --exit-code 26abffefe1719bdcc5eb10ea6a4a8c32c1233161 -- .specify",
+          "required": true
+        }
+      ]
     }
   ],
   "rejectedEvidence": [
+    {
+      "classification": "REJECTED_MAINTENANCE_SCOPE_MISMATCH",
+      "runId": 30918159636,
+      "artifactId": 8895914797,
+      "artifactName": "finscope-github-validation-61e9fd9e6bca-_FAILED",
+      "artifactDigest": "sha256:6d63d38f83d93cd27757a75197eb304db12f295fd24ea8ecfc480fa16f1cae9d",
+      "commitSha": "61e9fd9e6bca41575c3687852f33ae09ee3c7f28",
+      "reason": "MAINTENANCE_SCOPE_MISMATCH:closure reports were present in the PR diff but absent from the remediation validation allowlist",
+      "secondaryReason": "POST_CLOSURE_MUTATION_REQUIRES_NEW_EXACT_HEAD_CANDIDATE",
+      "disposition": "REJECTED_NOT_PROMOTABLE"
+    },
     {
       "classification": "REJECTED_DISCOVERY_INVALID",
       "runId": 30831435223,
@@ -365,6 +526,17 @@
       "reason": "COMMAND_RESULT_REQUIRED_PROPERTY_NOT_DECLARED",
       "secondaryReason": "DEPENDENCY_FREE_VALIDATOR_DID_NOT_RESOLVE_LOCAL_REF",
       "disposition": "REJECTED_NOT_PROMOTABLE"
+    },
+    {
+      "classification": "REJECTED_POST_CLOSURE_STATE_COUPLED_CONTRACT",
+      "runId": 30933284326,
+      "artifactId": 8902033963,
+      "artifactName": "finscope-github-validation-1741c3bb2cc9-_FAILED",
+      "artifactDigest": "sha256:c80813d0e1277f8cb0157e02405593e60c3d17366b1b5cbe0756bf2820857e8d",
+      "commitSha": "1741c3bb2cc9793b49cc632bd1c3b570a38dca1e",
+      "reason": "COMMAND_FAILED:allowlist-integrity-contract",
+      "secondaryReason": "POST_CLOSURE_STATE_COUPLED_CONTRACT_REMEDIATION",
+      "disposition": "REJECTED_NOT_PROMOTABLE"
     }
   ],
   "candidate": {
@@ -384,15 +556,15 @@
     "artifactDigest": "sha256:adb7b055cc9b69774bde5c98580a91e6e0eb7dc6b55c380588dcff23ea070fa3"
   },
   "release": {
-    "pending": false,
-    "tag": "v0.21.26-B21-completed",
-    "packageRevision": "v0.21.26_B21_completed",
-    "zipName": "FS_v0.21.26_B21_completed.zip",
-    "sidecarName": "FS_v0.21.26_B21_completed.zip.sha256",
-    "evidencePrefix": "FinScope_B21_release_evidence",
+    "pending": true,
+    "tag": "v0.21.27-B21-completed-r2",
+    "packageRevision": "v0.21.27_B21_completed_r2",
+    "zipName": "FS_v0.21.27_B21_completed_r2.zip",
+    "sidecarName": "FS_v0.21.27_B21_completed_r2.zip.sha256",
+    "evidencePrefix": "FinScope_B21_release_evidence_r2",
     "promptName": "PROMPT_IMPLEMENTACION_B22.md",
-    "title": "FinScope B21 completed — Cloudflare Free safeguards",
-    "notes": "B21 establishes deterministic Cloudflare Free budgets, quota degradation, redacted Worker observability, D1 and build guards, and bounded streaming evidence. B22 remains pending and convergenceAuthorized=false."
+    "title": "FinScope B21 completed r2 — authenticated replacement package",
+    "notes": "Immutable replacement for the rejected v0.21.26-B21-completed package. The extraordinary release-promotion recovery gate is active: a new exact-head candidate PASS and a new authorized closure are required before Ready, merge, publication, Sources replacement or B22."
   },
   "productState": {
     "activeBatchId": "B22",

@@ -24,7 +24,7 @@ export function assertPreparedFinalization({ applyContext, localContext, localHe
 
 export function buildConditionalPushCommand({ branch, requestSha, closureSha }) {
   if (!branchPattern.test(branch ?? '') || !shaPattern.test(requestSha ?? '') || !shaPattern.test(closureSha ?? '')) fail('REMEDIATION_CONDITIONAL_PUSH_INPUT_INVALID');
-  return `git push --force-with-lease="refs/heads/${branch}:${requestSha}" origin "${closureSha}:refs/heads/${branch}"`;
+  return `git push --porcelain origin "${closureSha}:refs/heads/${branch}"`;
 }
 
 export function confirmRemotePush(remoteHead, closureSha) {
@@ -57,7 +57,10 @@ export async function finalizeGitHubRemediationClosure() {
     const localHead = (await command('git rev-parse HEAD', 'REMEDIATION_LOCAL_HEAD_LOOKUP_FAILED')).toLowerCase();
     const remoteHead = await readRemoteBranchHead(applyContext.branch);
     assertPreparedFinalization({ applyContext, localContext, localHead, remoteHead });
-    await command(buildConditionalPushCommand(applyContext), 'REMEDIATION_CONDITIONAL_PUSH_FAILED');
+    const requiredPushMode = process.env.FINSCOPE_REQUIRED_PUSH_MODE ?? 'normal-fast-forward';
+    if (requiredPushMode !== 'normal-fast-forward') fail('REMEDIATION_PUSH_MODE_INVALID', requiredPushMode);
+    await command(`git merge-base --is-ancestor "${applyContext.requestSha}" "${applyContext.closureSha}"`, 'REMEDIATION_CLOSURE_NOT_FAST_FORWARD');
+    await command(buildConditionalPushCommand(applyContext), 'REMEDIATION_NORMAL_PUSH_FAILED');
     const confirmedRemoteHead = await readRemoteBranchHead(applyContext.branch);
     const confirmation = confirmRemotePush(confirmedRemoteHead, applyContext.closureSha);
     const pushContext = {

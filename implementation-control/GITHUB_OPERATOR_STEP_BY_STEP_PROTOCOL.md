@@ -71,7 +71,19 @@ Una respuesta general sin rutas, comandos, resultados esperados, condición de d
 4. Despachar `Apply-GitHubBatchClosure.mjs` solo para `BATCH_CLOSURE` y `Apply-GitHubRemediationClosure.mjs` solo para `REMEDIATION_CLOSURE`; el aplicador de remediación crea el commit local y no ejecuta push.
 5. Para una remediación, autenticar ancestry, run, artifact, digest, manifest, ambos validadores de schema, comandos requeridos y baseline B20; comprobar B21 `COMPLETED`, B22 `PENDING` y `convergenceAuthorized=false`.
 6. Ejecutar control plane y verificación local; cualquier outcome distinto de `success`, contexto faltante o cambio en tareas, `IMPLEMENTATION_STATE`, batches, producto o `.specify` bloquea la finalización.
-7. Ejecutar `Finalize-GitHubRemediationClosure.mjs` solo tras PASS local. Debe exigir que HEAD local sea el closure SHA, que la rama remota siga en request SHA, usar `force-with-lease` y volver a confirmar el closure SHA remoto.
+7. Ejecutar `Finalize-GitHubRemediationClosure.mjs` solo tras PASS local. Debe exigir que HEAD local sea el closure SHA, que la rama remota siga exactamente en request SHA, demostrar que closure SHA es descendiente fast-forward de request SHA, usar un push normal sin `--force` ni `--force-with-lease`, y volver a confirmar el closure SHA remoto.
 8. Generar y subir evidencia PASS únicamente después de esa confirmación remota. Permitir únicamente `GITHUB_HANDOFF.json`, `CHANGE_LEDGER.md` y los dos reportes declarados por la `closurePolicy`. No promover tareas o lotes.
 9. Conservar artifacts `_FAILED`, corregir mediante commit nuevo y workflow completo nuevo; no usar `Re-run jobs`.
 5. Conservar cualquier evidencia `_FAILED`; corregir con commit nuevo y ejecución completa nueva, sin `Re-run jobs`.
+
+
+<!-- B21_PUSH_NORMAL_OPERATOR_POLICY_V1 -->
+# Selección normativa de operador
+
+1. ChatGPT conectado a GitHub es el operador predeterminado para autenticación de Fuentes, lectura de autoridades, auditoría de PR/runs/artifacts y verificación posterior.
+2. ChatGPT solo ejecuta una mutación cuando dispone de todas las primitivas necesarias, puede construir un único commit atómico, puede comprobar el HEAD esperado inmediatamente antes de actualizar la referencia y la autorización literal incluye esa mutación.
+3. VS Code es el operador predeterminado para cambios locales multarchivo, ejecución de npm, inspección de diff, commit y push normal.
+4. Codex queda deshabilitado por defecto. Solo puede utilizarse cuando el usuario lo solicite explícitamente en el mensaje vigente. Ningún protocolo, prompt histórico ni recomendación automática puede activar Codex.
+5. En los primeros pasos de toda operación se ejecuta un gate de capacidad. Si ChatGPT no puede garantizar atomicidad, contenido íntegro o control de concurrencia, debe detenerse con `OPERATOR_HANDOFF_REQUIRED_VSCODE`; no debe continuar razonando ni buscar mutaciones secuenciales.
+6. Una ejecución en `candidate/NOT_REQUESTED` nunca intenta cerrar: devuelve `NOT_APPLICABLE`. La transición a `closure/PENDING` requiere autorización humana literal y un único commit que modifique exactamente `GITHUB_HANDOFF.json` y `CHANGE_LEDGER.md`.
+7. La selección de herramienta no modifica autoridades ni gates: solo determina dónde se ejecuta la operación ya autorizada.
