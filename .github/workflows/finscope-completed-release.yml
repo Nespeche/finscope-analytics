@@ -1,21 +1,16 @@
 name: FinScope Completed Release
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - .github/workflows/finscope-closure-validation.yml
-      - .github/workflows/finscope-completed-release.yml
-      - .github/workflows/finscope-pr-validation.yml
-      - .github/workflows/finscope-release-qualification.yml
-      - V0.21_PHASE_STATUS.md
-      - implementation-control/GITHUB_HANDOFF.json
-      - implementation-control/scripts/Apply-GitHubBatchClosure.mjs
-      - implementation-control/scripts/Package-GitHubCompletedRelease.mjs
-      - implementation-control/scripts/Verify-GitHubCompletedPackage.mjs
-      - implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
-      - implementation-control/scripts/Run-GitHubReleaseTransfer.mjs
-      - implementation-control/scripts/Resolve-GitHubContext.mjs
+  workflow_dispatch:
+    inputs:
+      expected_main_sha:
+        description: Exact main commit authorized for Release publication
+        required: true
+        type: string
+      authorization_text:
+        description: Literal independent authorization for tag and Release publication
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -32,9 +27,17 @@ jobs:
           fetch-depth: 0
       - name: Classify completed Release publication
         id: mode
+        env:
+          EXPECTED_MAIN_SHA: ${{ inputs.expected_main_sha }}
+          AUTHORIZATION_TEXT: ${{ inputs.authorization_text }}
         shell: bash
         run: |
           set -euo pipefail
+          test "$GITHUB_EVENT_NAME" = workflow_dispatch
+          test "$GITHUB_REF_NAME" = main
+          test -n "$AUTHORIZATION_TEXT"
+          test "$EXPECTED_MAIN_SHA" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           handoff=implementation-control/GITHUB_HANDOFF.json
           operation_branch=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.branch")
           context_dir="$RUNNER_TEMP/finscope-context"
@@ -72,10 +75,15 @@ jobs:
         if: steps.mode.outputs.enabled == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          EXPECTED_MAIN_SHA: ${{ inputs.expected_main_sha }}
+          AUTHORIZATION_TEXT: ${{ inputs.authorization_text }}
         shell: bash
         run: |
           set -euo pipefail
           handoff=implementation-control/GITHUB_HANDOFF.json
+          test -n "$AUTHORIZATION_TEXT"
+          test "$EXPECTED_MAIN_SHA" = "$GITHUB_SHA"
+          test "$GITHUB_REF_NAME" = main
           closure=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).closure.commitSha")
           candidate=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).candidate.sha")
           test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.kind")" = RELEASE_REMEDIATION
