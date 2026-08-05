@@ -39,3 +39,17 @@ Publicar no completa la autenticación. Después de `draft=false`, el workflow v
 - En sistemas no Windows, la ausencia de Info-ZIP debe producir un fallo cerrado; no se admite generar un TAR con extensión ZIP.
 - Antes de calcular el sidecar y ejecutar el verificador completed, el archivo debe acreditar una firma ZIP `PK` válida.
 - Una identidad de Release rechazada permanece como evidencia histórica y nunca se reutiliza; una revisión limpia requiere tag, ZIP y sidecar nuevos.
+
+## Gate independiente de publicación
+
+El merge, el cierre autenticado y la publicación son tres autorizaciones distintas. Un merge a `main`, un PR Ready, `release.pending=true` o una operación `RELEASE_REMEDIATION/completed` no despachan ni autorizan por sí solos `FinScope Completed Release`.
+
+El workflow de publicación admite exclusivamente `workflow_dispatch`. Se prohíben `push`, `pull_request`, `schedule`, `workflow_run` y cualquier otro evento automático. El dispatch exige los inputs `expected_main_sha` y `authorization_text`; la autorización válida se construye únicamente desde `GITHUB_SHA`, `release.tag`, `release.zipName` y `release.sidecarName` con este formato exacto, sin espacios ni texto adicional:
+
+`AUTHORIZE_FIN_SCOPE_RELEASE_PUBLICATION|main=<SHA>|tag=<TAG>|zip=<ZIP>|sidecar=<SIDECAR>`
+
+Antes de preparar assets, el resolver y el workflow deben comprobar conjuntamente: evento `workflow_dispatch`; rama `main`; checkout igual a `GITHUB_SHA`; `expected_main_sha=GITHUB_SHA`; operación `RELEASE_REMEDIATION/completed`; `release.pending=true`; closure `COMPLETED` ligado al candidate; `convergenceAuthorized=false`; identidad canónica exacta; y ausencia del tag y del Release. Cualquier diferencia falla de forma cerrada.
+
+La concurrencia se serializa por `GITHUB_SHA` y por la autorización canónica, que incorpora tag, ZIP y sidecar, con `cancel-in-progress: false`. Una ejecución posterior con la misma identidad debe encontrar el tag o Release ya existente y fallar antes de preparar una segunda publicación.
+
+Todas las verificaciones previas de baseline, ancestry, allowlist, paquete, assets y reautenticación post-publicación permanecen obligatorias. Cualquier `FAIL` conserva artifact `_FAILED`, limpia únicamente un draft creado por esa ejecución y no publica. La remediación `release-publication-gate-hardening` en `candidate/NOT_REQUESTED` formaliza el contrato técnico, pero no autoriza cierre, dispatch, tag ni Release.

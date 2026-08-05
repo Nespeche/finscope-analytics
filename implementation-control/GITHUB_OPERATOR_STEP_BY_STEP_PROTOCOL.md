@@ -87,3 +87,13 @@ Una respuesta general sin rutas, comandos, resultados esperados, condición de d
 5. En los primeros pasos de toda operación se ejecuta un gate de capacidad. Si ChatGPT no puede garantizar atomicidad, contenido íntegro o control de concurrencia, debe detenerse con `OPERATOR_HANDOFF_REQUIRED_VSCODE`; no debe continuar razonando ni buscar mutaciones secuenciales.
 6. Una ejecución en `candidate/NOT_REQUESTED` nunca intenta cerrar: devuelve `NOT_APPLICABLE`. La transición a `closure/PENDING` requiere autorización humana literal y un único commit que modifique exactamente `GITHUB_HANDOFF.json` y `CHANGE_LEDGER.md`.
 7. La selección de herramienta no modifica autoridades ni gates: solo determina dónde se ejecuta la operación ya autorizada.
+
+# Publicación como gate independiente
+
+1. Ready for Review, merge, cierre `COMPLETED` y `release.pending=true` son condiciones separadas de la autorización de publicación. Ninguna de ellas permite ejecutar automáticamente `FinScope Completed Release`.
+2. El único inicio válido es un `workflow_dispatch` manual sobre `main` con `expected_main_sha` igual al `GITHUB_SHA` exacto y con el texto canónico exacto derivado de tag, ZIP y sidecar. No se admite texto genérico, espacios extra ni una identidad aproximada.
+3. Antes de cada mutación del Release se vuelve a comprobar evento, rama, checkout, SHA, operación `RELEASE_REMEDIATION/completed`, closure `COMPLETED`, `release.pending=true`, `convergenceAuthorized=false` y ausencia del tag/Release.
+4. El grupo de concurrencia serializa el mismo SHA y la misma identidad canónica con `cancel-in-progress: false`. Una segunda ejecución no reutiliza ni reemplaza la publicación: debe fallar al encontrar la identidad ya existente.
+5. El PR Draft #43 y su HEAD `14c7ae8e9ac918e6186b2e11147c149156309bbe` se conservan exclusivamente como evidencia técnica; no se reutilizan como cierre, no se marcan Ready y no se fusionan para formalizar esta remediación.
+6. La remediación `release-publication-gate-hardening` comienza en `candidate/NOT_REQUESTED`. Su candidato técnico validado no autoriza cierre, dispatch, tag, Release, reemplazo de Fuentes, B22 ni convergencia.
+7. Cualquier `FAIL` se preserva, los comandos dependientes quedan `NOT_RUN` y la corrección exige commit nuevo y ejecución completa nueva. Nunca usar `Re-run jobs`.

@@ -1,10 +1,18 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import handoffDocument from '../../implementation-control/GITHUB_HANDOFF.json';
 import stateDocument from '../../implementation-control/IMPLEMENTATION_STATE.json';
 import b20Document from '../../implementation-control/batches/B20.json';
 import b21Document from '../../implementation-control/batches/B21.json';
 import b22Document from '../../implementation-control/batches/B22.json';
-import { resolveGitHubContext, resolveGitHubReleasePublicationContext, validateRemediationScope } from '../../implementation-control/scripts/Resolve-GitHubContext.mjs';
+import {
+  buildReleasePublicationAuthorization,
+  resolveGitHubClosureContext,
+  resolveGitHubContext,
+  resolveGitHubReleasePublicationContext,
+  resolveGitHubReleasePublicationDispatchContext,
+  validateRemediationScope,
+} from '../../implementation-control/scripts/Resolve-GitHubContext.mjs';
 
 const input = () => ({
   branch: 'agent/b21-probe',
@@ -14,6 +22,39 @@ const input = () => ({
 });
 
 const releaseInput = () => structuredClone(handoffDocument) as any;
+const mainSha = '1140f9b1d70d579dd57f449628f1d8fd308d075e';
+const releaseWorkflow = readFileSync('.github/workflows/finscope-completed-release.yml', 'utf8');
+const publicationDispatchInput = () => {
+  const handoff = releaseInput();
+  handoff.operation.stage = 'completed';
+  handoff.release.pending = true;
+  const authorizationText = buildReleasePublicationAuthorization({
+    mainSha,
+    tag: handoff.release.tag,
+    zipName: handoff.release.zipName,
+    sidecarName: handoff.release.sidecarName,
+  });
+  return {
+    handoff,
+    eventName: 'workflow_dispatch',
+    refName: 'main',
+    githubSha: mainSha,
+    checkedOutSha: mainSha,
+    expectedMainSha: mainSha,
+    authorizationText,
+    tagExists: false,
+  };
+};
+
+const publicationRemediationPaths = [
+  '.github/workflows/finscope-completed-release.yml',
+  'implementation-control/GITHUB_HANDOFF.json',
+  'implementation-control/GITHUB_RELEASE_PROTOCOL.md',
+  'implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md',
+  'implementation-control/GITHUB_VALIDATION_PROTOCOL.md',
+  'implementation-control/scripts/Resolve-GitHubContext.mjs',
+  'tests/contract/github-transition-routing.test.ts',
+];
 
 describe('GitHub transition context routing', () => {
   it('routes an ordinary branch to pending B22 only after the completed Release hold is cleared', () => {
@@ -150,6 +191,44 @@ describe('GitHub transition context routing', () => {
     ], result.allowedPaths)).toMatchObject({ valid: true });
   });
 
+  it('routes only the exact formal publication-gate remediation in candidate state', () => {
+    const value = input(); value.branch = 'agent/release-publication-gate-hardening-r2';
+    const result = resolveGitHubContext(value);
+    expect(result).toMatchObject({
+      mode: 'CONTROL_PLANE_REMEDIATION',
+      remediationMatched: true,
+      remediationId: 'release-publication-gate-hardening',
+      remediationStage: 'candidate',
+      remediationStatus: 'NOT_REQUESTED',
+      baselineRole: 'CURRENT_COMPLETED_BASELINE',
+    });
+    expect(result.allowedPaths).toEqual(publicationRemediationPaths);
+    expect(result.commands.map((entry: { id: string }) => entry.id)).toEqual([
+      'npm-ci', 'typecheck', 'control-plane', 'publication-gate-contract', 'regression-vitest', 'build',
+    ]);
+    expect(validateRemediationScope(publicationRemediationPaths, result.allowedPaths)).toMatchObject({ valid: true });
+    expect(() => validateRemediationScope(['implementation-control/IMPLEMENTATION_STATE.json'], result.allowedPaths)).toThrowError(/MAINTENANCE_SCOPE_MISMATCH/u);
+    expect(resolveGitHubClosureContext({ branch: value.branch, handoff: value.handoff })).toMatchObject({
+      closureType: 'NOT_APPLICABLE',
+      remediationId: 'release-publication-gate-hardening',
+      policyStage: 'candidate',
+      policyStatus: 'NOT_REQUESTED',
+      candidate: null,
+    });
+  });
+
+  it('rejects incomplete or evidence-reusing formal remediation state', () => {
+    const incomplete = input();
+    const remediation = incomplete.handoff.remediations.find((entry: any) => entry.id === 'release-publication-gate-hardening');
+    delete remediation.status;
+    expect(() => resolveGitHubContext(incomplete)).toThrowError(/REMEDIATION_STATE_INVALID/u);
+
+    const reused = input();
+    const reusedRemediation = reused.handoff.remediations.find((entry: any) => entry.id === 'release-publication-gate-hardening');
+    reusedRemediation.candidate = { sha: mainSha };
+    expect(() => resolveGitHubContext(reused)).toThrowError(/REMEDIATION_STATE_INVALID/u);
+  });
+
   it('rejects ambiguous or incomplete remediation declarations', () => {
     const duplicate = input(); duplicate.handoff.remediations.push(structuredClone(duplicate.handoff.remediations[0]));
     duplicate.branch = 'agent/maintenance-remediation-routing';
@@ -234,11 +313,11 @@ describe('completed Release publication authority', () => {
     });
   });
 
-  it('classifies the staged replacement as NOT_APPLICABLE until independent publication authorization', () => {
+  it('preserves immutable release identity while intrinsic completed authority is present', () => {
     const handoff = releaseInput();
     const releaseBefore = structuredClone(handoff.release);
     const result = resolveGitHubReleasePublicationContext({ handoff });
-    expect(result).toMatchObject({ enabled: false, reason: 'OPERATION_STAGE_NOT_COMPLETED', releasePending: true, tag: 'v0.21.27-B21-completed-r2' });
+    expect(result).toMatchObject({ enabled: true, reason: 'COMPLETED_RELEASE_AUTHORITY', releasePending: true, tag: 'v0.21.27-B21-completed-r2' });
     expect(handoff.release).toEqual(releaseBefore);
     expect(handoff.release).toMatchObject({
       pending: true,
@@ -246,5 +325,78 @@ describe('completed Release publication authority', () => {
       zipName: 'FS_v0.21.27_B21_completed_r2.zip',
       sidecarName: 'FS_v0.21.27_B21_completed_r2.zip.sha256',
     });
+  });
+});
+
+describe('independent completed Release publication dispatch', () => {
+  it('declares workflow_dispatch as the only trigger and requires both exact inputs', () => {
+    const triggerBlock = releaseWorkflow.slice(releaseWorkflow.indexOf('\non:\n') + 1, releaseWorkflow.indexOf('\npermissions:'));
+    expect(triggerBlock).toContain('workflow_dispatch:');
+    expect(triggerBlock).toContain('expected_main_sha:');
+    expect(triggerBlock).toContain('authorization_text:');
+    for (const event of ['push', 'pull_request', 'schedule', 'workflow_run']) {
+      expect(triggerBlock).not.toMatch(new RegExp(`^\\s+${event}:`, 'mu'));
+    }
+  });
+
+  it('rejects empty and generic authorization text', () => {
+    const empty = publicationDispatchInput(); empty.authorizationText = '';
+    expect(() => resolveGitHubReleasePublicationDispatchContext(empty)).toThrowError(/RELEASE_PUBLICATION_AUTHORIZATION_MISMATCH/u);
+    const generic = publicationDispatchInput(); generic.authorizationText = 'AUTHORIZE RELEASE';
+    expect(() => resolveGitHubReleasePublicationDispatchContext(generic)).toThrowError(/RELEASE_PUBLICATION_AUTHORIZATION_MISMATCH/u);
+  });
+
+  it('rejects an incorrect expected main SHA or checkout identity', () => {
+    const wrongExpected = publicationDispatchInput(); wrongExpected.expectedMainSha = '0'.repeat(40);
+    expect(() => resolveGitHubReleasePublicationDispatchContext(wrongExpected)).toThrowError(/RELEASE_PUBLICATION_EXPECTED_SHA_MISMATCH/u);
+    const wrongCheckout = publicationDispatchInput(); wrongCheckout.checkedOutSha = '0'.repeat(40);
+    expect(() => resolveGitHubReleasePublicationDispatchContext(wrongCheckout)).toThrowError(/RELEASE_PUBLICATION_CHECKOUT_MISMATCH/u);
+  });
+
+  it.each([
+    ['tag', '|tag=v0.21.27-B21-completed-r2|', '|tag=v0.21.27-B21-completed-wrong|'],
+    ['ZIP', '|zip=FS_v0.21.27_B21_completed_r2.zip|', '|zip=wrong.zip|'],
+    ['sidecar', '|sidecar=FS_v0.21.27_B21_completed_r2.zip.sha256', '|sidecar=wrong.zip.sha256'],
+  ])('rejects an incorrect %s in the canonical authorization', (_field, expected, replacement) => {
+    const value = publicationDispatchInput();
+    value.authorizationText = value.authorizationText.replace(expected, replacement);
+    expect(() => resolveGitHubReleasePublicationDispatchContext(value)).toThrowError(/RELEASE_PUBLICATION_AUTHORIZATION_MISMATCH/u);
+  });
+
+  it('rejects any additional whitespace or a branch other than main', () => {
+    const spaced = publicationDispatchInput(); spaced.authorizationText = `${spaced.authorizationText} `;
+    expect(() => resolveGitHubReleasePublicationDispatchContext(spaced)).toThrowError(/RELEASE_PUBLICATION_AUTHORIZATION_MISMATCH/u);
+    const branch = publicationDispatchInput(); branch.refName = 'agent/release-publication-gate-hardening-r2';
+    expect(() => resolveGitHubReleasePublicationDispatchContext(branch)).toThrowError(/RELEASE_PUBLICATION_BRANCH_INVALID/u);
+  });
+
+  it('accepts only the exact canonical authorization for the exact workflow dispatch identity', () => {
+    const value = publicationDispatchInput();
+    const result = resolveGitHubReleasePublicationDispatchContext(value);
+    expect(result).toMatchObject({
+      enabled: true,
+      reason: 'CANONICAL_WORKFLOW_DISPATCH_AUTHORIZED',
+      eventName: 'workflow_dispatch',
+      refName: 'main',
+      githubSha: mainSha,
+      expectedMainSha: mainSha,
+      tagExists: false,
+    });
+    expect(result.canonicalAuthorization).toBe(
+      `AUTHORIZE_FIN_SCOPE_RELEASE_PUBLICATION|main=${mainSha}|tag=v0.21.27-B21-completed-r2|zip=FS_v0.21.27_B21_completed_r2.zip|sidecar=FS_v0.21.27_B21_completed_r2.zip.sha256`,
+    );
+  });
+
+  it('does not let release.pending=true enable publication without dispatch authorization', () => {
+    const value = publicationDispatchInput(); value.eventName = 'push';
+    expect(value.handoff.release.pending).toBe(true);
+    expect(() => resolveGitHubReleasePublicationDispatchContext(value)).toThrowError(/RELEASE_PUBLICATION_EVENT_INVALID/u);
+  });
+
+  it('serializes the exact SHA and canonical identity and rejects a second publication', () => {
+    expect(releaseWorkflow).toContain('group: ${{ inputs.authorization_text }}');
+    expect(releaseWorkflow).toContain('cancel-in-progress: false');
+    const duplicate = publicationDispatchInput(); duplicate.tagExists = true;
+    expect(() => resolveGitHubReleasePublicationDispatchContext(duplicate)).toThrowError(/RELEASE_PUBLICATION_TAG_ALREADY_EXISTS/u);
   });
 });

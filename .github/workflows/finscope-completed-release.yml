@@ -1,69 +1,89 @@
 name: FinScope Completed Release
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - .github/workflows/finscope-closure-validation.yml
-      - .github/workflows/finscope-completed-release.yml
-      - .github/workflows/finscope-pr-validation.yml
-      - .github/workflows/finscope-release-qualification.yml
-      - V0.21_PHASE_STATUS.md
-      - implementation-control/GITHUB_HANDOFF.json
-      - implementation-control/scripts/Apply-GitHubBatchClosure.mjs
-      - implementation-control/scripts/Package-GitHubCompletedRelease.mjs
-      - implementation-control/scripts/Verify-GitHubCompletedPackage.mjs
-      - implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
-      - implementation-control/scripts/Run-GitHubReleaseTransfer.mjs
-      - implementation-control/scripts/Resolve-GitHubContext.mjs
+  workflow_dispatch:
+    inputs:
+      expected_main_sha:
+        description: Exact main commit authorized for Release publication
+        required: true
+        type: string
+      authorization_text:
+        description: Exact canonical independent authorization for Release publication
+        required: true
+        type: string
 
 permissions:
   contents: write
   actions: read
+
+concurrency:
+  group: ${{ inputs.authorization_text }}
+  cancel-in-progress: false
 
 jobs:
   release:
     name: release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout merged main
+      - name: Checkout authorized main SHA
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
+          ref: ${{ github.sha }}
           fetch-depth: 0
-      - name: Classify completed Release publication
-        id: mode
-        shell: bash
-        run: |
-          set -euo pipefail
-          handoff=implementation-control/GITHUB_HANDOFF.json
-          operation_branch=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.branch")
-          context_dir="$RUNNER_TEMP/finscope-context"
-          context_file="$context_dir/github-context.json"
-          mkdir -p "$context_dir"
-          node implementation-control/scripts/Resolve-GitHubContext.mjs \
-            "$operation_branch" \
-            --release-publication > "$context_file"
-          enabled=$(node -p "JSON.parse(require('fs').readFileSync('$context_file')).enabled")
-          reason=$(node -p "JSON.parse(require('fs').readFileSync('$context_file')).reason")
-          echo "enabled=$enabled" >> "$GITHUB_OUTPUT"
-          echo "reason=$reason" >> "$GITHUB_OUTPUT"
-          if test "$enabled" != true; then
-            echo "NOT_APPLICABLE: $reason"
-          else
-            echo "Release publication authority: $reason"
-          fi
       - name: Configure Node from package authority
-        if: steps.mode.outputs.enabled == 'true'
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
           node-version-file: package.json
           cache: npm
+      - name: Initialize publication evidence
+        shell: bash
+        run: mkdir -p .finscope-release "$RUNNER_TEMP/finscope-context"
+      - name: Authenticate independent publication dispatch
+        id: mode
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_MAIN_SHA: ${{ inputs.expected_main_sha }}
+          AUTHORIZATION_TEXT: ${{ inputs.authorization_text }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          handoff=implementation-control/GITHUB_HANDOFF.json
+          checked_out_sha=$(git rev-parse HEAD)
+          release_tag=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.tag")
+          tag_exists=false
+          release_tags=$(gh api --paginate "repos/$GITHUB_REPOSITORY/releases?per_page=100" --jq '.[].tag_name')
+          if git show-ref --verify --quiet "refs/tags/$release_tag" || grep -Fqx "$release_tag" <<<"$release_tags"; then
+            tag_exists=true
+          fi
+          context_file="$RUNNER_TEMP/finscope-context/release-publication-dispatch.json"
+          stdout_file=.finscope-release/publication-gate.stdout.log
+          stderr_file=.finscope-release/publication-gate.stderr.log
+          set +e
+          CHECKED_OUT_SHA="$checked_out_sha" TAG_EXISTS="$tag_exists" \
+            node implementation-control/scripts/Resolve-GitHubContext.mjs main --release-publication-dispatch \
+            >"$context_file" 2>"$stderr_file"
+          code=$?
+          set -e
+          cp "$context_file" "$stdout_file" 2>/dev/null || true
+          printf '%s\n' "$code" > .finscope-release/publication-gate.exit-code.txt
+          if test "$code" -ne 0; then
+            cat "$stderr_file" >&2
+            exit "$code"
+          fi
+          enabled=$(node -p "JSON.parse(require('fs').readFileSync('$context_file')).enabled")
+          reason=$(node -p "JSON.parse(require('fs').readFileSync('$context_file')).reason")
+          if test "$enabled" != true; then
+            echo "NOT_APPLICABLE: $reason"
+            exit 1
+          fi
+          echo "enabled=$enabled" >> "$GITHUB_OUTPUT"
+          echo "reason=$reason" >> "$GITHUB_OUTPUT"
+          cp "$context_file" .finscope-release/PUBLICATION_GATE.json
       - name: Prepare Release workspace
         if: steps.mode.outputs.enabled == 'true'
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p .finscope-release
           root_alias="$RUNNER_TEMP/FinScope_v0.21.4"
           rm -rf "$root_alias"
           ln -s "$GITHUB_WORKSPACE" "$root_alias"
@@ -72,15 +92,29 @@ jobs:
         if: steps.mode.outputs.enabled == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          EXPECTED_MAIN_SHA: ${{ inputs.expected_main_sha }}
+          AUTHORIZATION_TEXT: ${{ inputs.authorization_text }}
         shell: bash
         run: |
           set -euo pipefail
           handoff=implementation-control/GITHUB_HANDOFF.json
+          checked_out_sha=$(git rev-parse HEAD)
+          release_tag=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.tag")
+          tag_exists=false
+          release_tags=$(gh api --paginate "repos/$GITHUB_REPOSITORY/releases?per_page=100" --jq '.[].tag_name')
+          if git show-ref --verify --quiet "refs/tags/$release_tag" || grep -Fqx "$release_tag" <<<"$release_tags"; then
+            tag_exists=true
+          fi
+          CHECKED_OUT_SHA="$checked_out_sha" TAG_EXISTS="$tag_exists" \
+            node implementation-control/scripts/Resolve-GitHubContext.mjs main --release-publication-dispatch \
+            > .finscope-release/PUBLICATION_GATE_RECHECK.json
           closure=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).closure.commitSha")
           candidate=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).candidate.sha")
           test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.kind")" = RELEASE_REMEDIATION
+          test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.stage")" = completed
           test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.pending")" = true
           test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).closure.status")" = COMPLETED
+          test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).productState.convergenceAuthorized")" = false
           test "$candidate" = "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).closure.candidateSha")"
           git cat-file -e "${closure}^{commit}"
           git merge-base --is-ancestor "$closure" "$GITHUB_SHA"
@@ -93,11 +127,16 @@ jobs:
               .github/workflows/finscope-release-qualification.yml|\
               V0.21_PHASE_STATUS.md|\
               implementation-control/GITHUB_HANDOFF.json|\
+              implementation-control/GITHUB_RELEASE_PROTOCOL.md|\
+              implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md|\
+              implementation-control/GITHUB_VALIDATION_PROTOCOL.md|\
               implementation-control/scripts/Apply-GitHubBatchClosure.mjs|\
               implementation-control/scripts/Package-GitHubCompletedRelease.mjs|\
               implementation-control/scripts/Verify-GitHubCompletedPackage.mjs|\
               implementation-control/scripts/Verify-GitHubClosureArtifact.mjs|\
-              implementation-control/scripts/Run-GitHubReleaseTransfer.mjs) ;;
+              implementation-control/scripts/Run-GitHubReleaseTransfer.mjs|\
+              implementation-control/scripts/Resolve-GitHubContext.mjs|\
+              tests/contract/github-transition-routing.test.ts) ;;
               *) echo "Release remediation allowlist violation: $path" >&2; exit 1 ;;
             esac
           done < <(git diff --name-only "$closure" "$GITHUB_SHA")
@@ -121,6 +160,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
+      - name: Confirm tag remains unpublished
+        if: steps.mode.outputs.enabled == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          release_tag=$(node -p "JSON.parse(require('fs').readFileSync('implementation-control/GITHUB_HANDOFF.json')).release.tag")
+          release_tags=$(gh api --paginate "repos/$GITHUB_REPOSITORY/releases?per_page=100" --jq '.[].tag_name')
+          ! git show-ref --verify --quiet "refs/tags/$release_tag"
+          ! grep -Fqx "$release_tag" <<<"$release_tags"
       - name: Prepare authenticated draft Release and custom assets
         if: steps.mode.outputs.enabled == 'true'
         id: draft
@@ -156,14 +206,14 @@ jobs:
           if-no-files-found: error
           retention-days: 30
       - name: Remove failed draft Release
-        if: failure() && steps.mode.outputs.enabled == 'true'
+        if: failure() && steps.draft.outputs.release_id != ''
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_ID: ${{ steps.draft.outputs.release_id }}
           RELEASE_TAG: ${{ steps.draft.outputs.tag }}
         run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs cleanup .finscope-release
       - name: Upload failed Release evidence
-        if: failure() && steps.mode.outputs.enabled == 'true'
+        if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: finscope-completed-release-${{ github.sha }}-_FAILED
