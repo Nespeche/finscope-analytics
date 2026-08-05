@@ -1,4 +1,4 @@
-# DOCUMENTATION INDEX — FinScope Analytics B20 completed
+# DOCUMENTATION INDEX — FinScope Analytics B20 completed / hardening candidate
 
 ## Entrada obligatoria
 
@@ -9,17 +9,22 @@
 5. `implementation-control/IMPLEMENTATION_STATE.json`;
 6. `implementation-control/TASK_SOURCE_LOCK.json`;
 7. `implementation-control/IMPLEMENTATION_BATCH_MAP.json`;
-8. `implementation-control/batches/B21.json`;
-9. `implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md`;
+8. `implementation-control/batches/B20.json`;
+9. `implementation-control/batches/B21.json`;
 10. `implementation-control/GITHUB_HANDOFF.json`;
-11. `implementation-control/reports/B20_EVIDENCE_VERIFICATION_AND_CLOSURE.md`.
+11. `implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md`;
+12. `implementation-control/GITHUB_VALIDATION_PROTOCOL.md`;
+13. `implementation-control/GITHUB_RELEASE_PROTOCOL.md`;
+14. `implementation-control/reports/B20_EVIDENCE_VERIFICATION_AND_CLOSURE.md`.
 
 ## Gate y estado activo
 
 `tasksAuthorized=true`, `analysisAuthorized=true`, `implementationAuthorized=true`, `convergenceAuthorized=false`.
 
-B01–B20 y T001–T088 están `COMPLETED`. B21 está `PENDING` y es el único lote activo/autorizado: `activeBatchId=B21`, `nextAuthorizedBatchId=B21`.
+B01–B20 y T001–T089 están `COMPLETED`. B21 está `PENDING`, con `activeBatchId=B21` y `nextAuthorizedBatchId=B21`, pero permanece no ejecutable mientras `implementation-control/GITHUB_HANDOFF.json` mantenga el hold extraordinario de recuperación de Release.
 
-## Integridad
+## Baseline e integridad
 
-Paquete lógico `FS_v0.21.25_B20_completed.zip`; raíz `FinScope_v0.21.4/`; `.specify` byte-inmutable.
+Baseline normativo en Fuentes: `FS_v0.21.25_B20_completed.zip`, SHA-256 `c18b1390c416b5c538e1b7cf704c610754e4cff2f3eeec8c2c08bc800b120fc6`; raíz `FinScope_v0.21.4/`; `.specify` contiene 19 archivos y permanece byte-inmutable.
+
+El hash `a906ec783e78a235a2b30a09bd40b061cbbd826479893247e1a76759908db55f` es `REJECTED_NOT_PROMOTABLE` y no constituye baseline ni evidencia PASS.
