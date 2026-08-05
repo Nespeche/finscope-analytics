@@ -4,10 +4,10 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - .github/workflows/finscope-remediation-closure-request.yml
       - .github/workflows/finscope-closure-validation.yml
       - .github/workflows/finscope-completed-release.yml
       - .github/workflows/finscope-release-qualification.yml
-      - .github/workflows/finscope-remediation-materialize-derived.yml
       - README.md
       - START_HERE_CHATGPT.md
       - DOCUMENTATION_INDEX.md
@@ -19,6 +19,10 @@ on:
       - implementation-control/GITHUB_HANDOFF.json
       - implementation-control/IMPLEMENTATION_STATE.json
       - implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt
+      - implementation-control/scripts/Apply-B20PostRestoreClosure.mjs
+      - implementation-control/scripts/Verify-GitHubClosure.mjs
+      - implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
+      - implementation-control/scripts/Validate-ControlPlaneState.mjs
       - implementation-control/scripts/Package-GitHubCompletedRelease.mjs
       - implementation-control/scripts/Verify-GitHubCompletedPackage.mjs
 
@@ -43,7 +47,7 @@ jobs:
         with:
           node-version-file: package.json
           package-manager-cache: false
-      - name: Verify remediation identity and exact allowlist
+      - name: Verify remediation and stage allowlists
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
@@ -54,24 +58,32 @@ jobs:
           node --input-type=module <<'NODE'
           import { execFileSync } from 'node:child_process';
           import { readFileSync } from 'node:fs';
-          const handoff = JSON.parse(readFileSync('implementation-control/GITHUB_HANDOFF.json', 'utf8'));
+          const h = JSON.parse(readFileSync('implementation-control/GITHUB_HANDOFF.json', 'utf8'));
+          const event = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8'));
+          const prBody = event.pull_request?.body ?? '';
           const fail = (code, detail = '') => { throw new Error(`${code}${detail ? `:${detail}` : ''}`); };
-          if (handoff.operation?.id !== 'b20-post-restore-control-plane-hardening') fail('UNEXPECTED_OPERATION');
-          if (handoff.operation?.kind !== 'RELEASE_REMEDIATION') fail('UNEXPECTED_OPERATION_KIND');
-          if (handoff.operation?.branch !== process.env.HEAD_BRANCH) fail('UNEXPECTED_OPERATION_BRANCH', process.env.HEAD_BRANCH);
-          if (handoff.operation?.stage !== 'candidate') fail('UNEXPECTED_OPERATION_STAGE', handoff.operation?.stage);
-          if (handoff.release?.pending !== true || handoff.release?.authorizationStatus !== 'NOT_AUTHORIZED') fail('RELEASE_GATE_NOT_CLOSED');
-          if (handoff.remediation?.hold !== true) fail('RELEASE_RECOVERY_HOLD_MISSING');
-          if (handoff.release?.tag === handoff.baseline?.tag) fail('RELEASE_TAG_REUSES_COMPLETED_BASELINE');
-          if (handoff.release?.zipName === handoff.baseline?.zipName) fail('RELEASE_ZIP_REUSES_COMPLETED_BASELINE');
-          if (handoff.release?.sidecarName === handoff.baseline?.sidecarName) fail('RELEASE_SIDECAR_REUSES_COMPLETED_BASELINE');
-          const allowed = new Set(handoff.remediation?.allowedPaths ?? []);
-          const closureAllowed = handoff.remediation?.closurePolicy?.allowedPaths ?? [];
-          for (const path of closureAllowed) if (!allowed.has(path)) fail('CLOSURE_PATH_OUTSIDE_REMEDIATION_ALLOWLIST', path);
-          const changed = execFileSync('git', ['diff', '--name-only', process.env.BASE_SHA, process.env.HEAD_SHA], { encoding: 'utf8' }).trim().split(/\r?\n/u).filter(Boolean);
-          const denied = changed.filter((path) => !allowed.has(path));
-          if (denied.length > 0) fail('REMEDIATION_ALLOWLIST_VIOLATION', JSON.stringify(denied));
-          console.log(JSON.stringify({ operation: handoff.operation.id, changed, allowed: [...allowed], mutation: false }, null, 2));
+          const changed = (a, b) => execFileSync('git', ['diff', '--name-only', a, b], { encoding: 'utf8' }).trim().split(/\r?\n/u).filter(Boolean);
+          if (h.operation?.id !== 'b20-post-restore-control-plane-hardening') fail('UNEXPECTED_OPERATION');
+          if (h.operation?.stage !== 'candidate') fail('UNEXPECTED_OPERATION_STAGE', h.operation?.stage);
+          if (h.operation?.branch !== process.env.HEAD_BRANCH) fail('UNEXPECTED_OPERATION_BRANCH');
+          if (h.release?.pending !== true || h.release?.authorizationStatus !== 'NOT_AUTHORIZED') fail('RELEASE_GATE_NOT_CLOSED');
+          if (h.remediation?.hold !== true || h.productState?.b21Executable !== false || h.productState?.convergenceAuthorized !== false) fail('HOLD_OR_PRODUCT_GATE_INVALID');
+          if (h.release?.releaseRevision !== 'v0.21.25_B20_completed_r3' || h.release?.zipName !== 'FS_v0.21.25_B20_completed_r3.zip') fail('R3_IDENTITY_INVALID');
+          if (prBody.split(/\r?\n/u).some((line) => line.trim() === 'AUTHORIZE_B20_POST_RESTORE_CLOSURE_COMMIT')) fail('CLOSURE_LITERAL_PRESENT_DURING_CANDIDATE');
+          const allAllowed = new Set(h.remediation?.allowedPaths ?? []);
+          const full = changed(process.env.BASE_SHA, process.env.HEAD_SHA);
+          const deniedFull = full.filter((path) => !allAllowed.has(path));
+          if (deniedFull.length) fail('REMEDIATION_ALLOWLIST_VIOLATION', JSON.stringify(deniedFull));
+          const prior = h.priorCandidateR2?.headSha;
+          if (!/^[0-9a-f]{40}$/u.test(prior ?? '')) fail('R2_HEAD_INVALID', String(prior));
+          execFileSync('git', ['merge-base', '--is-ancestor', prior, process.env.HEAD_SHA]);
+          const stage = changed(prior, process.env.HEAD_SHA);
+          const stageAllowed = new Set(h.remediation?.scopeExpansion?.allowedPaths ?? []);
+          const deniedStage = stage.filter((path) => !stageAllowed.has(path));
+          if (deniedStage.length) fail('CANDIDATE_SCOPE_EXPANSION_VIOLATION', JSON.stringify(deniedStage));
+          const closure = h.remediation?.closurePolicy?.allowedPaths ?? [];
+          if (closure.length !== 10 || closure.some((path) => !allAllowed.has(path))) fail('CLOSURE_ALLOWLIST_INVALID');
+          console.log(JSON.stringify({ operation: h.operation.id, fullChangedPaths: full, stageChangedPaths: stage, mutation: false }, null, 2));
           NODE
       - name: Prepare qualification workspace
         shell: bash
@@ -88,10 +100,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-evidence/preflight/qualification-baseline.json
-      - name: Generate exact-tree remediation candidate package
+      - name: Generate exact-tree remediation candidate package r3
         run: node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release > .finscope-release/package.stdout.log 2> .finscope-release/package.stderr.log
-      - name: Verify exact-tree remediation candidate package
-        run: node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed_r2.zip .finscope-release/FS_v0.21.25_B20_completed_r2.zip.sha256 > .finscope-release/verifier.stdout.log 2> .finscope-release/verifier.stderr.log
+      - name: Verify exact-tree remediation candidate package r3
+        run: node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed_r3.zip .finscope-release/FS_v0.21.25_B20_completed_r3.zip.sha256 > .finscope-release/verifier.stdout.log 2> .finscope-release/verifier.stderr.log
       - name: Upload read-only qualification evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

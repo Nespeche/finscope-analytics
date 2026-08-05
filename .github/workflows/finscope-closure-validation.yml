@@ -4,6 +4,8 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - .github/workflows/finscope-remediation-closure-request.yml
+      - .github/workflows/finscope-closure-validation.yml
       - README.md
       - START_HERE_CHATGPT.md
       - DOCUMENTATION_INDEX.md
@@ -14,6 +16,10 @@ on:
       - PROMPT_IMPLEMENTACION_B21.md
       - implementation-control/GITHUB_HANDOFF.json
       - implementation-control/IMPLEMENTATION_STATE.json
+      - implementation-control/scripts/Apply-B20PostRestoreClosure.mjs
+      - implementation-control/scripts/Verify-GitHubClosure.mjs
+      - implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
+
 
 permissions:
   contents: read
@@ -45,7 +51,7 @@ jobs:
           echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
       - name: Validate control plane without mutation
         run: node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
-      - name: Verify candidate identity, artifact and closure allowlist
+      - name: Verify B20 post-restore closure policy and exact-head artifacts
         id: closure
         env:
           GH_TOKEN: ${{ github.token }}

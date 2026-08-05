@@ -4,11 +4,31 @@ on:
   workflow_dispatch:
     inputs:
       authorization:
-        description: Exact literal authorization for the B20 hardening tag/Release gate
+        description: Exact literal authorization for the separately approved B20 r3 tag/Release gate
         required: true
         type: string
       expected_main_sha:
         description: Exact main SHA authorized for publication
+        required: true
+        type: string
+      closure_commit_sha:
+        description: Real closure commit authenticated by Closure Validation
+        required: true
+        type: string
+      closure_run_id:
+        description: Exact-head Closure Validation run ID
+        required: true
+        type: string
+      closure_artifact_id:
+        description: Closure Validation artifact ID
+        required: true
+        type: string
+      closure_artifact_name:
+        description: Closure Validation artifact name
+        required: true
+        type: string
+      closure_artifact_digest:
+        description: Closure Validation artifact sha256 digest
         required: true
         type: string
 
@@ -26,10 +46,15 @@ jobs:
         with:
           fetch-depth: 0
           ref: main
-      - name: Enforce independent tag and Release authorization
+      - name: Enforce independent publication authorization and external closure contract
         env:
           AUTHORIZATION: ${{ inputs.authorization }}
           EXPECTED_MAIN_SHA: ${{ inputs.expected_main_sha }}
+          CLOSURE_COMMIT_SHA: ${{ inputs.closure_commit_sha }}
+          CLOSURE_RUN_ID: ${{ inputs.closure_run_id }}
+          CLOSURE_ARTIFACT_ID: ${{ inputs.closure_artifact_id }}
+          CLOSURE_ARTIFACT_NAME: ${{ inputs.closure_artifact_name }}
+          CLOSURE_ARTIFACT_DIGEST: ${{ inputs.closure_artifact_digest }}
         shell: bash
         run: |
           set -euo pipefail
@@ -38,18 +63,15 @@ jobs:
           test "$(git rev-parse origin/main)" = "$EXPECTED_MAIN_SHA"
           node --input-type=module <<'NODE'
           import { readFileSync } from 'node:fs';
-          const handoff = JSON.parse(readFileSync('implementation-control/GITHUB_HANDOFF.json', 'utf8'));
+          const h = JSON.parse(readFileSync('implementation-control/GITHUB_HANDOFF.json', 'utf8'));
           const assert = (value, code) => { if (!value) throw new Error(code); };
-          assert(handoff.operation?.id === 'b20-post-restore-control-plane-hardening', 'UNEXPECTED_OPERATION');
-          assert(handoff.operation?.kind === 'RELEASE_REMEDIATION', 'UNEXPECTED_OPERATION_KIND');
-          assert(handoff.operation?.stage === 'release_authorized', 'RELEASE_STAGE_NOT_AUTHORIZED');
-          assert(handoff.closure?.status === 'COMPLETED', 'CLOSURE_NOT_COMPLETED');
-          assert(handoff.release?.pending === true, 'RELEASE_NOT_PENDING');
-          assert(handoff.release?.authorizationStatus === 'AUTHORIZED', 'RELEASE_AUTHORIZATION_NOT_RECORDED');
-          assert(handoff.remediation?.hold === true, 'RECOVERY_HOLD_MISSING');
-          assert(handoff.release?.tag !== handoff.baseline?.tag, 'RELEASE_TAG_REUSES_COMPLETED_BASELINE');
-          assert(handoff.release?.zipName !== handoff.baseline?.zipName, 'RELEASE_ZIP_REUSES_COMPLETED_BASELINE');
-          assert(handoff.release?.sidecarName !== handoff.baseline?.sidecarName, 'RELEASE_SIDECAR_REUSES_COMPLETED_BASELINE');
+          assert(h.operation?.id === 'b20-post-restore-control-plane-hardening', 'UNEXPECTED_OPERATION');
+          assert(h.operation?.stage === 'closure', 'CLOSURE_STAGE_REQUIRED');
+          assert(h.closure?.status === 'PENDING', 'CLOSURE_PENDING_REQUIRED');
+          assert(h.release?.pending === true, 'RELEASE_NOT_PENDING');
+          assert(h.remediation?.hold === true, 'RECOVERY_HOLD_MISSING');
+          assert(h.release?.releaseRevision === 'v0.21.25_B20_completed_r3', 'R3_IDENTITY_REQUIRED');
+          assert(h.release?.tag !== h.baseline?.tag && h.release?.zipName !== h.baseline?.zipName, 'BASELINE_IDENTITY_REUSE');
           NODE
       - name: Configure Node from package authority
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
@@ -65,6 +87,16 @@ jobs:
           rm -rf "$root_alias"
           ln -s "$GITHUB_WORKSPACE" "$root_alias"
           echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
+      - name: Authenticate external exact-head closure evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXPECTED_MAIN_SHA: ${{ inputs.expected_main_sha }}
+          CLOSURE_COMMIT_SHA: ${{ inputs.closure_commit_sha }}
+          CLOSURE_RUN_ID: ${{ inputs.closure_run_id }}
+          CLOSURE_ARTIFACT_ID: ${{ inputs.closure_artifact_id }}
+          CLOSURE_ARTIFACT_NAME: ${{ inputs.closure_artifact_name }}
+          CLOSURE_ARTIFACT_DIGEST: ${{ inputs.closure_artifact_digest }}
+        run: node implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
       - name: Validate control plane and current baseline
         env:
           GH_TOKEN: ${{ github.token }}
@@ -73,16 +105,12 @@ jobs:
           set -euo pipefail
           node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
           node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-release/release-baseline.json
-      - name: Generate and verify exact authorized package
+      - name: Generate and verify exact authorized package r3
         shell: bash
         run: |
           set -euo pipefail
           node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release
-          node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed_r2.zip .finscope-release/FS_v0.21.25_B20_completed_r2.zip.sha256
-      - name: Authenticate closure artifact contents
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: node implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
+          node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed_r3.zip .finscope-release/FS_v0.21.25_B20_completed_r3.zip.sha256
       - name: Prepare authenticated draft Release and custom assets
         id: draft
         env:
