@@ -1,32 +1,81 @@
 {
-  "schemaVersion": "1.2.0",
+  "schemaVersion": "1.3.0",
   "repository": "Nespeche/finscope-analytics",
   "baseline": {
-    "tag": "v0.21.24-B19-completed",
-    "commitSha": "fab10492f164d67725aa94efda17c9f83c7b005c",
-    "zipName": "FS_v0.21.24_B19_completed.zip",
-    "sidecarName": "FS_v0.21.24_B19_completed.zip.sha256",
-    "zipSha256": "0f5cf8bd7708fd3f01c065451e99dc604ac8b244a3717c9a27eb7de1ce45b2b0",
+    "tag": "v0.21.25-B20-completed",
+    "commitSha": "f9b7e9e589ced6af5d72722722898850f0cab3dc",
+    "zipName": "FS_v0.21.25_B20_completed.zip",
+    "sidecarName": "FS_v0.21.25_B20_completed.zip.sha256",
+    "zipSha256": "c18b1390c416b5c538e1b7cf704c610754e4cff2f3eeec8c2c08bc800b120fc6",
     "root": "FinScope_v0.21.4/",
-    "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09"
+    "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+    "role": "ACTIVE_COMPLETED_BASELINE_IN_SOURCES"
   },
   "operation": {
-    "id": "B20",
+    "id": "b20-post-restore-control-plane-hardening",
     "kind": "RELEASE_REMEDIATION",
-    "branch": "agent/b20-completed-release",
+    "branch": "maintenance/b20-post-restore-control-plane-hardening",
     "stage": "candidate",
     "activeBatchId": "B20",
     "nextBatchId": "B21",
-    "completedTasksThroughOnClosure": "T088",
+    "completedTasksThroughOnClosure": "T089",
     "qualificationCommands": [
       {
-        "id": "package-completed-release",
+        "id": "npm-ci",
+        "category": "dependencies",
+        "command": "npm ci",
+        "required": true
+      },
+      {
+        "id": "playwright-chromium",
+        "category": "browser",
+        "command": "npm exec playwright install chromium",
+        "required": true
+      },
+      {
+        "id": "typecheck",
+        "category": "static",
+        "command": "npm run typecheck",
+        "required": true
+      },
+      {
+        "id": "test-e2e",
+        "category": "e2e",
+        "command": "npm run test:e2e -- tests/e2e/accessibility/names-errors.spec.ts",
+        "required": true
+      },
+      {
+        "id": "test-accessibility",
+        "category": "accessibility",
+        "command": "npm run test:accessibility -- tests/accessibility/wcag-automated.spec.ts",
+        "required": true
+      },
+      {
+        "id": "regression-vitest",
+        "category": "regression",
+        "command": "npm run test",
+        "required": true
+      },
+      {
+        "id": "regression-browser",
+        "category": "regression",
+        "command": "npm run test:browser",
+        "required": true
+      },
+      {
+        "id": "build",
+        "category": "build",
+        "command": "npm run build",
+        "required": true
+      },
+      {
+        "id": "package-remediation-candidate",
         "category": "package",
         "command": "node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release",
         "required": true
       },
       {
-        "id": "verify-completed-package",
+        "id": "verify-remediation-candidate",
         "category": "package-authentication",
         "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed.zip .finscope-release/FS_v0.21.25_B20_completed.zip.sha256",
         "required": true
@@ -34,36 +83,119 @@
     ]
   },
   "candidate": {
-    "sha": "69ed435b2f05ae2d6498846416d2e3750807ef36",
-    "runId": 30776552229,
-    "artifactId": 8842295323,
-    "artifactName": "finscope-github-validation-69ed435b2f05-PASS",
-    "artifactDigest": "sha256:fb8cbcfaa7ee07ec1c9295bba32d50dca55a88ec0834e1ad8a98af2c0033df91"
+    "status": "NOT_REQUESTED",
+    "sha": null,
+    "runId": null,
+    "artifactId": null,
+    "artifactName": null,
+    "artifactDigest": null
   },
   "closure": {
-    "status": "COMPLETED",
-    "candidateSha": "69ed435b2f05ae2d6498846416d2e3750807ef36",
-    "commitSha": "15a869948c1ae8765cc55355d912b010c548919e",
-    "runId": 30782199177,
-    "artifactId": 8844047566,
-    "artifactName": "finscope-closure-15a869948c1a-PASS",
-    "artifactDigest": "sha256:74d50c89c21a6976ef50ec62c8e567766091aa684d3e801d8b677f6407c118be"
+    "status": "NOT_AUTHORIZED",
+    "candidateSha": null,
+    "commitSha": null,
+    "runId": null,
+    "artifactId": null,
+    "artifactName": null,
+    "artifactDigest": null
   },
   "release": {
     "pending": true,
+    "authorizationStatus": "NOT_AUTHORIZED",
     "tag": "v0.21.25-B20-completed",
     "packageRevision": "v0.21.25_B20_completed",
     "zipName": "FS_v0.21.25_B20_completed.zip",
     "sidecarName": "FS_v0.21.25_B20_completed.zip.sha256",
-    "evidencePrefix": "FinScope_B20_release_evidence",
+    "evidencePrefix": "FinScope_B20_hardening_release_evidence",
     "promptName": "PROMPT_IMPLEMENTACION_B21.md",
-    "title": "FinScope B20 completed — cross-cutting WCAG closure",
-    "notes": "B20 establishes deterministic and auditable WCAG 2.2 A/AA evidence. Exact-head automated, Codex-assisted and operator-declared human confirmations passed with zero FAIL and zero BLOCKED; B21 remains pending and convergenceAuthorized=false."
+    "title": "FinScope B20 completed — post-restore control-plane hardening",
+    "notes": "Publication is a separate, explicit gate. Candidate, closure and qualification workflows are read-only."
   },
+  "remediation": {
+    "hold": true,
+    "reason": "POST_RESTORE_CONTROL_PLANE_AND_RELEASE_REALIGNMENT",
+    "allowedPaths": [
+      ".github/workflows/finscope-closure-validation.yml",
+      ".github/workflows/finscope-completed-release.yml",
+      ".github/workflows/finscope-release-qualification.yml",
+      "README.md",
+      "START_HERE_CHATGPT.md",
+      "DOCUMENTATION_INDEX.md",
+      "V0.21_PHASE_STATUS.md",
+      "PACKAGE_METADATA.json",
+      "PACKAGE_INVENTORY.json",
+      "FILE_MANIFEST.sha256",
+      "PROMPT_IMPLEMENTACION_B21.md",
+      "implementation-control/GITHUB_HANDOFF.json",
+      "implementation-control/IMPLEMENTATION_STATE.json",
+      "implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt",
+      "implementation-control/scripts/Package-GitHubCompletedRelease.mjs",
+      "implementation-control/scripts/Verify-GitHubCompletedPackage.mjs"
+    ],
+    "closurePolicy": {
+      "status": "NOT_AUTHORIZED",
+      "allowedPaths": [
+        "README.md",
+        "START_HERE_CHATGPT.md",
+        "DOCUMENTATION_INDEX.md",
+        "V0.21_PHASE_STATUS.md",
+        "PACKAGE_METADATA.json",
+        "PACKAGE_INVENTORY.json",
+        "FILE_MANIFEST.sha256",
+        "PROMPT_IMPLEMENTACION_B21.md",
+        "implementation-control/GITHUB_HANDOFF.json",
+        "implementation-control/IMPLEMENTATION_STATE.json"
+      ],
+      "atomicCommitRequired": true,
+      "candidateRunAndArtifactBindingRequired": true,
+      "executableChangesAfterClosureForbidden": true
+    },
+    "prohibitions": {
+      "b21": true,
+      "tasksT090ThroughT095": true,
+      "convergence": true,
+      "ready": true,
+      "merge": true,
+      "tagOrRelease": true,
+      "sourcesReplacement": true
+    }
+  },
+  "historicalB20Evidence": {
+    "candidate": {
+      "sha": "69ed435b2f05ae2d6498846416d2e3750807ef36",
+      "runId": 30776552229,
+      "artifactId": 8842295323,
+      "artifactName": "finscope-github-validation-69ed435b2f05-PASS",
+      "artifactDigest": "sha256:fb8cbcfaa7ee07ec1c9295bba32d50dca55a88ec0834e1ad8a98af2c0033df91"
+    },
+    "closure": {
+      "commitSha": "15a869948c1ae8765cc55355d912b010c548919e",
+      "runId": 30782199177,
+      "artifactId": 8844047566,
+      "artifactName": "finscope-closure-15a869948c1a-PASS",
+      "artifactDigest": "sha256:74d50c89c21a6976ef50ec62c8e567766091aa684d3e801d8b677f6407c118be"
+    },
+    "effect": "AUTHENTICATES_T089_BOUNDARY_AND_PRIOR_B20_CLOSURE_ONLY; DOES_NOT_PROMOTE_CURRENT_BYTES"
+  },
+  "rejectedPackages": [
+    {
+      "sha256": "a906ec783e78a235a2b30a09bd40b061cbbd826479893247e1a76759908db55f",
+      "disposition": "REJECTED_NOT_PROMOTABLE",
+      "reason": "COMPLETED_INVENTORY_SIZE_MISMATCH",
+      "reusableAsPassEvidence": false
+    }
+  ],
   "productState": {
+    "completedBatchesThrough": "B20",
     "activeBatchId": "B21",
     "nextAuthorizedBatchId": "B21",
-    "completedTasksThrough": "T088",
-    "convergenceAuthorized": false
+    "completedTasksThrough": "T089",
+    "tasksAuthorized": true,
+    "analysisAuthorized": true,
+    "implementationAuthorized": true,
+    "convergenceAuthorized": false,
+    "b21Status": "PENDING",
+    "b21Executable": false,
+    "blockedByReleaseRecoveryHold": true
   }
 }
