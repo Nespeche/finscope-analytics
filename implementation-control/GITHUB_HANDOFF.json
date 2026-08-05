@@ -59,7 +59,7 @@
       {
         "id": "regression-browser",
         "category": "regression",
-        "command": "npm run test:browser",
+        "command": "npm run test:accessibility && npm run test:e2e",
         "required": true
       },
       {
