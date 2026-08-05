@@ -70,6 +70,9 @@ jobs:
         with:
           node-version-file: package.json
           cache: npm
+      - name: Install exact dependencies
+        if: steps.mode.outputs.enabled == 'true'
+        run: npm ci
       - name: Prepare qualification workspace
         if: steps.mode.outputs.enabled == 'true'
         shell: bash
@@ -86,11 +89,17 @@ jobs:
         run: |
           set -euo pipefail
           handoff=implementation-control/GITHUB_HANDOFF.json
+          head_sha="${{ github.event.pull_request.head.sha }}"
+          base_sha="${{ github.event.pull_request.base.sha }}"
+          checked_out_sha=$(git rev-parse HEAD)
+          test "$checked_out_sha" = "$head_sha"
           test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.kind")" = RELEASE_REMEDIATION
           test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.branch")" = "$GITHUB_HEAD_REF"
           pending=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.pending")
           test "$pending" = true || test "$pending" = false
           test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).closure.status")" = COMPLETED
+          changed_paths="$RUNNER_TEMP/finscope-release-remediation-paths.txt"
+          git diff --name-only --diff-filter=ACMR "$base_sha" "$head_sha" -- > "$changed_paths"
           while IFS= read -r path; do
             case "$path" in
               .github/workflows/finscope-closure-validation.yml|\
@@ -105,7 +114,7 @@ jobs:
               implementation-control/scripts/Run-GitHubReleaseTransfer.mjs) ;;
               *) echo "Release remediation allowlist violation: $path" >&2; exit 1 ;;
             esac
-          done < <(git diff --name-only "${{ github.event.pull_request.base.sha }}" "$GITHUB_SHA")
+          done < "$changed_paths"
           node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
       - name: Authenticate completed baseline
         if: steps.mode.outputs.enabled == 'true'
@@ -134,7 +143,8 @@ jobs:
         if: steps.mode.outputs.enabled == 'true' && steps.mode.outputs.publish == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs qualify .finscope-release
+        shell: bash
+        run: GITHUB_SHA="${{ github.event.pull_request.head.sha }}" node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs qualify .finscope-release
       - name: Upload qualification evidence
         if: always() && steps.mode.outputs.enabled == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

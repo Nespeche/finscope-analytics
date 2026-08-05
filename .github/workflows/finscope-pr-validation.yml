@@ -28,6 +28,8 @@ jobs:
         with:
           node-version-file: package.json
           cache: npm
+      - name: Install exact dependencies
+        run: npm ci
       - name: Prepare normative package-root alias
         shell: bash
         run: |
