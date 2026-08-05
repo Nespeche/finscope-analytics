@@ -1,20 +1,16 @@
 name: FinScope Completed Release
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - .github/workflows/finscope-closure-validation.yml
-      - .github/workflows/finscope-completed-release.yml
-      - .github/workflows/finscope-pr-validation.yml
-      - .github/workflows/finscope-release-qualification.yml
-      - V0.21_PHASE_STATUS.md
-      - implementation-control/GITHUB_HANDOFF.json
-      - implementation-control/scripts/Apply-GitHubBatchClosure.mjs
-      - implementation-control/scripts/Package-GitHubCompletedRelease.mjs
-      - implementation-control/scripts/Verify-GitHubCompletedPackage.mjs
-      - implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
-      - implementation-control/scripts/Run-GitHubReleaseTransfer.mjs
+  workflow_dispatch:
+    inputs:
+      authorization:
+        description: Exact literal authorization for the B20 hardening tag/Release gate
+        required: true
+        type: string
+      expected_main_sha:
+        description: Exact main SHA authorized for publication
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -25,41 +21,39 @@ jobs:
     name: release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout merged main
+      - name: Checkout authorized main
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 0
-      - name: Classify completed Release publication
-        id: mode
+          ref: main
+      - name: Enforce independent tag and Release authorization
+        env:
+          AUTHORIZATION: ${{ inputs.authorization }}
+          EXPECTED_MAIN_SHA: ${{ inputs.expected_main_sha }}
         shell: bash
         run: |
           set -euo pipefail
-          handoff=implementation-control/GITHUB_HANDOFF.json
-          kind=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.kind")
-          stage=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.stage")
-          pending=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.pending")
-          if test "$kind" = RELEASE_REMEDIATION && test "$pending" = true; then
-            enabled=true
-          else
-            enabled=false
-          fi
-          if test "$enabled" = true && test "$stage" != completed; then
-            closure_auth=true
-          else
-            closure_auth=false
-          fi
-          echo "enabled=$enabled" >> "$GITHUB_OUTPUT"
-          echo "closure_auth=$closure_auth" >> "$GITHUB_OUTPUT"
-          test "$enabled" = true || echo "No completed Release publication is pending; publication steps are intentionally skipped."
-          test "$closure_auth" = true || echo "Completed remediation: preserve the authenticated historical batch closure and publish the exact requalified package."
+          test "$AUTHORIZATION" = "AUTHORIZE_B20_POST_RESTORE_TAG_RELEASE"
+          test "$GITHUB_SHA" = "$EXPECTED_MAIN_SHA"
+          test "$(git rev-parse origin/main)" = "$EXPECTED_MAIN_SHA"
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+          const handoff = JSON.parse(readFileSync('implementation-control/GITHUB_HANDOFF.json', 'utf8'));
+          const assert = (value, code) => { if (!value) throw new Error(code); };
+          assert(handoff.operation?.id === 'b20-post-restore-control-plane-hardening', 'UNEXPECTED_OPERATION');
+          assert(handoff.operation?.kind === 'RELEASE_REMEDIATION', 'UNEXPECTED_OPERATION_KIND');
+          assert(handoff.operation?.stage === 'release_authorized', 'RELEASE_STAGE_NOT_AUTHORIZED');
+          assert(handoff.closure?.status === 'COMPLETED', 'CLOSURE_NOT_COMPLETED');
+          assert(handoff.release?.pending === true, 'RELEASE_NOT_PENDING');
+          assert(handoff.release?.authorizationStatus === 'AUTHORIZED', 'RELEASE_AUTHORIZATION_NOT_RECORDED');
+          assert(handoff.remediation?.hold === true, 'RECOVERY_HOLD_MISSING');
+          NODE
       - name: Configure Node from package authority
-        if: steps.mode.outputs.enabled == 'true'
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
           node-version-file: package.json
-          cache: npm
+          package-manager-cache: false
       - name: Prepare Release workspace
-        if: steps.mode.outputs.enabled == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -68,90 +62,52 @@ jobs:
           rm -rf "$root_alias"
           ln -s "$GITHUB_WORKSPACE" "$root_alias"
           echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
-      - name: Verify Release gate, ancestry and remediation allowlist
-        if: steps.mode.outputs.enabled == 'true'
+      - name: Validate control plane and current baseline
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
-          handoff=implementation-control/GITHUB_HANDOFF.json
-          closure=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).closure.commitSha")
-          candidate=$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).candidate.sha")
-          test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).operation.kind")" = RELEASE_REMEDIATION
-          test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).release.pending")" = true
-          test "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).closure.status")" = COMPLETED
-          test "$candidate" = "$(node -p "JSON.parse(require('fs').readFileSync('$handoff')).closure.candidateSha")"
-          git cat-file -e "${closure}^{commit}"
-          git merge-base --is-ancestor "$closure" "$GITHUB_SHA"
-          test "$(git rev-list --parents -n 1 "$GITHUB_SHA" | awk '{print NF}')" -ge 3
-          while IFS= read -r path; do
-            case "$path" in
-              .github/workflows/finscope-closure-validation.yml|\
-              .github/workflows/finscope-completed-release.yml|\
-              .github/workflows/finscope-pr-validation.yml|\
-              .github/workflows/finscope-release-qualification.yml|\
-              V0.21_PHASE_STATUS.md|\
-              implementation-control/GITHUB_HANDOFF.json|\
-              implementation-control/scripts/Apply-GitHubBatchClosure.mjs|\
-              implementation-control/scripts/Package-GitHubCompletedRelease.mjs|\
-              implementation-control/scripts/Verify-GitHubCompletedPackage.mjs|\
-              implementation-control/scripts/Verify-GitHubClosureArtifact.mjs|\
-              implementation-control/scripts/Run-GitHubReleaseTransfer.mjs) ;;
-              *) echo "Release remediation allowlist violation: $path" >&2; exit 1 ;;
-            esac
-          done < <(git diff --name-only "$closure" "$GITHUB_SHA")
           node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
           node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-release/release-baseline.json
-      - name: Execute literal Release qualification commands
-        if: steps.mode.outputs.enabled == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Generate and verify exact authorized package
         shell: bash
         run: |
           set -euo pipefail
-          while IFS= read -r encoded; do
-            command=$(printf '%s' "$encoded" | base64 --decode)
-            printf 'Executing literal qualification command: %s\n' "$command"
-            bash -lc "$command"
-          done < <(node -e "const h=require('./implementation-control/GITHUB_HANDOFF.json'); for (const item of h.operation.qualificationCommands.filter((entry)=>entry.required)) console.log(Buffer.from(item.command).toString('base64'))")
+          node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release
+          node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed.zip .finscope-release/FS_v0.21.25_B20_completed.zip.sha256
       - name: Authenticate closure artifact contents
-        if: steps.mode.outputs.enabled == 'true' && steps.mode.outputs.closure_auth == 'true'
-        id: closure
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
       - name: Prepare authenticated draft Release and custom assets
-        if: steps.mode.outputs.enabled == 'true'
         id: draft
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs prepare .finscope-release
-      - name: Upload Release workflow evidence before publication
-        if: steps.mode.outputs.enabled == 'true'
+      - name: Upload pre-publication evidence
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
-          name: finscope-completed-release-${{ github.sha }}
+          name: finscope-completed-release-${{ github.sha }}-PREPUBLICATION
           path: .finscope-release
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 30
       - name: Publish authenticated completed Release
-        if: steps.mode.outputs.enabled == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_ID: ${{ steps.draft.outputs.release_id }}
           RELEASE_TAG: ${{ steps.draft.outputs.tag }}
         run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs publish .finscope-release
       - name: Remove failed draft Release
-        if: failure() && steps.mode.outputs.enabled == 'true'
+        if: failure()
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_ID: ${{ steps.draft.outputs.release_id }}
           RELEASE_TAG: ${{ steps.draft.outputs.tag }}
         run: node implementation-control/scripts/Run-GitHubReleaseTransfer.mjs cleanup .finscope-release
       - name: Upload failed Release evidence
-        if: failure() && steps.mode.outputs.enabled == 'true'
+        if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: finscope-completed-release-${{ github.sha }}-_FAILED
