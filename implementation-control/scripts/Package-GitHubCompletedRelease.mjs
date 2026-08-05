@@ -1,8 +1,7 @@
-import { copyFile, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
-import { basename, dirname, join, relative, resolve } from 'node:path';
+import { copyFile, mkdir, readFile, rm, stat, utimes, writeFile } from 'node:fs/promises';
+import { dirname, join, relative, resolve } from 'node:path';
 import {
   canonicalTreeHash,
-  listFiles,
   now,
   posix,
   readJson,
@@ -12,364 +11,256 @@ import {
   writeJson,
 } from './GitHub-Common.mjs';
 
-const out = resolve(process.argv[2] ?? '.finscope-release');
-await rm(out, { recursive: true, force: true });
-await mkdir(out, { recursive: true });
+const INVENTORY_PATH = 'PACKAGE_INVENTORY.json';
+const MANIFEST_PATH = 'FILE_MANIFEST.sha256';
+const METADATA_PATH = 'PACKAGE_METADATA.json';
+const FIXED_MTIME = new Date('1980-01-01T00:00:00.000Z');
+const DERIVED_EXCLUSIONS = new Set([INVENTORY_PATH, MANIFEST_PATH]);
+const PROHIBITED_PATH = /(^|\/)(?:node_modules|dist|coverage|playwright-report|test-results|\.wrangler|\.vite|\.finscope-evidence|\.finscope-release)(\/|$)/u;
+const SECRET_PATH = /(?:^|\/)(?:\.env(?:\..*)?|id_rsa|id_ed25519|.*\.(?:pem|p12|pfx|key))$/iu;
+const TEMP_PATH = /(?:~|\.tmp|\.temp|\.bak|\.swp)$/iu;
 
-const headResult = await run('git rev-parse HEAD', { cwd: root });
-const releaseCommitSha = headResult.exitCode === 0 ? headResult.stdout.toString('utf8').trim().toLowerCase() : '';
-if (!/^[0-9a-f]{40}$/u.test(releaseCommitSha)) throw new Error('RELEASE_CHECKED_OUT_SHA_INVALID');
-
-const handoff = await readJson(join(root, 'implementation-control/GITHUB_HANDOFF.json'));
-const config = handoff.release;
-const operation = handoff.operation ?? { id: 'GH0', activeBatchId: 'B12', nextBatchId: 'B12', completedTasksThroughOnClosure: 'T048' };
-const rootName = handoff.baseline.root.replace(/\/$/u, '');
-const staging = join(out, 'staging', rootName);
-const excluded = new Set(['.git', 'node_modules', 'dist', 'coverage', 'playwright-report', 'test-results', '.wrangler', '.vite', '.finscope-evidence', '.finscope-release']);
-
-await mkdir(staging, { recursive: true });
-for (const source of await listFiles(root, [...excluded])) {
-  const rel = posix(relative(root, source));
-  if (rel.startsWith('.finscope-release/')) continue;
-  if (/\.zip(?:\.sha256)?$/iu.test(rel)) continue;
-  const destination = join(staging, rel);
-  await mkdir(dirname(destination), { recursive: true });
-  await copyFile(source, destination);
+function assert(condition, code, detail = '') {
+  if (!condition) throw new Error(`${code}${detail ? `:${detail}` : ''}`);
 }
-
-const statePath = join(staging, 'implementation-control/IMPLEMENTATION_STATE.json');
-const metadataPath = join(staging, 'PACKAGE_METADATA.json');
-const authorityPath = join(staging, 'implementation-control/AUTHORITY_MATRIX.json');
-const stagingHandoffPath = join(staging, 'implementation-control/GITHUB_HANDOFF.json');
-const lockPath = join(staging, 'implementation-control/TASK_SOURCE_LOCK.json');
-const mapPath = join(staging, 'implementation-control/IMPLEMENTATION_BATCH_MAP.json');
-const state = await readJson(statePath);
-const metadata = await readJson(metadataPath);
-const authority = await readJson(authorityPath);
-const stagingHandoff = await readJson(stagingHandoffPath);
-const lock = await readJson(lockPath);
-const batchMap = await readJson(mapPath);
-const completedBatch = operation.activeBatchId ?? operation.id;
-const nextBatch = operation.nextBatchId ?? state.activeBatchId;
-const completedTask = operation.completedTasksThroughOnClosure;
-const batch = await readJson(join(staging, `implementation-control/batches/${completedBatch}.json`));
-
-if (!state.completedBatchIds.includes(completedBatch) || state.lastCompletedBatchId !== completedBatch || state.taskStatus?.[completedTask] !== 'COMPLETED') {
-  throw new Error('COMPLETED_STATE_NOT_CLOSED');
+function shellQuote(value) {
+  return `'${String(value).replaceAll("'", "'\"'\"'")}'`;
 }
-if (state.activeBatchId !== nextBatch || state.nextAuthorizedBatchId !== nextBatch || state.batchStatus?.[nextBatch] !== 'PENDING') {
-  throw new Error('COMPLETED_NEXT_BATCH_STATE_INVALID');
+async function trackedPaths() {
+  const result = await run('git ls-files -z', { cwd: root });
+  assert(result.exitCode === 0, 'GIT_TRACKED_FILES_FAILED', result.stderr.toString('utf8'));
+  const paths = result.stdout.toString('utf8').split('\0').filter(Boolean).map((path) => path.replaceAll('\\', '/')).sort((a, b) => a.localeCompare(b, 'en'));
+  assert(paths.length > 0, 'GIT_TRACKED_FILES_EMPTY');
+  assert(new Set(paths).size === paths.length, 'GIT_TRACKED_FILES_DUPLICATE');
+  for (const path of paths) {
+    assert(!path.includes('\n') && !path.includes('\r') && !path.includes('\0'), 'UNSUPPORTED_TRACKED_PATH', path);
+    assert(!PROHIBITED_PATH.test(path), 'PROHIBITED_TRACKED_PATH', path);
+    assert(!(SECRET_PATH.test(path) && !/\.env\.example$/iu.test(path)), 'SECRET_TRACKED_PATH', path);
+    assert(!TEMP_PATH.test(path), 'TEMPORARY_TRACKED_PATH', path);
+    assert(!/\.zip(?:\.sha256)?$/iu.test(path), 'NESTED_ARCHIVE_TRACKED_PATH', path);
+  }
+  return paths;
 }
-if (state.phaseGate?.convergenceAuthorized !== false) throw new Error('CONVERGENCE_GATE_OPEN');
-
-const date = new Date().toISOString().slice(0, 10);
-state.packageRevision = config.packageRevision;
-state.activePackageLogicalName = config.zipName;
-state.baselineRole = 'ACTIVE_COMPLETED_BASELINE';
-state.updatedBy = 'FinScope GitHub completed release workflow';
-state.updatedOn = date;
-state.validationWorkflow = {
-  ...state.validationWorkflow,
-  candidatePromotionRule: 'GitHub candidate and closure checks must PASS for the exact commit before Release.',
-  localProtocol: 'implementation-control/LOCAL_VALIDATION_PROTOCOL.md',
-  evidenceSchema: 'implementation-control/schemas/github-validation-evidence.schema.json',
-  pendingRuntimeValidationBatches: [],
-};
-
-authority.packageRevision = config.packageRevision;
-lock.packageRevision = config.packageRevision;
-lock.generatedOn = date;
-batchMap.mapId = `FinScope-${config.packageRevision.replaceAll('_', '-')}-batch-map`;
-batchMap.packageRevision = config.packageRevision;
-batchMap.generatedOn = date;
-stagingHandoff.operation.stage = 'completed';
-stagingHandoff.closure.status = 'COMPLETED';
-stagingHandoff.release.pending = false;
-
-await writeJson(statePath, state);
-await writeJson(authorityPath, authority);
-await writeJson(lockPath, lock);
-await writeJson(mapPath, batchMap);
-const mapMarkdown = ['# IMPLEMENTATION BATCH MAP — FinScope Analytics','',`Revisión: \`${config.packageRevision}\`. Fuente: \`tasks.md\` (\`${state.sourceTasksSha256}\`).`,'',`**SHA-256 de tareas:** \`${state.sourceTasksSha256}\``,'','| Lote | Tareas | Estado |','|---|---|---|',...(batchMap.batches ?? []).map((item) => `| ${item.batchId} | ${item.taskIds.join(', ')} | \`${item.status}\` |`),'',`B01–${completedBatch} y T001–${completedTask} están \`COMPLETED\`. ${nextBatch} permanece \`PENDING\` como único lote activo/autorizado; \`activeBatchId=${nextBatch}\`; \`nextAuthorizedBatchId=${nextBatch}\`; \`convergenceAuthorized=false\`.`, ''].join('\n');
-await writeFile(join(staging, 'implementation-control/IMPLEMENTATION_BATCH_MAP.md'), mapMarkdown, 'utf8');
-await writeJson(stagingHandoffPath, stagingHandoff);
-
-const phaseStatus = `# FinScope Analytics v0.21 — Gate activo / ${completedBatch} completado
-
-## Estado
-
-\`IMPLEMENTATION_BATCH_${completedBatch}_COMPLETED_${nextBatch}_PENDING\`
-
-<a id="gate"></a>
-## Gate único
-
-\`\`\`text
-specificationAuthorized=true
-clarificationAuthorized=true
-planAuthorized=true
-checklistAuthorized=true
-tasksAuthorized=true
-analysisAuthorized=true
-implementationAuthorized=true
-convergenceAuthorized=false
-\`\`\`
-
-Este archivo es la única autoridad de esos flags. \`IMPLEMENTATION_STATE.json\` gobierna el estado de tareas y lotes. T109 solo produce entrada para una futura conversación de convergencia.
-
-## Estado de implementación
-
-B01–${completedBatch} y T001–${completedTask} están \`COMPLETED\`. ${nextBatch} está \`PENDING\` y es el único lote activo/autorizado: \`activeBatchId=${nextBatch}\`, \`nextAuthorizedBatchId=${nextBatch}\`. Los lotes posteriores permanecen \`PENDING\`. Convergencia continúa cerrada.
-`;
-await writeFile(join(staging, 'V0.21_PHASE_STATUS.md'), phaseStatus, 'utf8');
-
-const documentationIndex = `# DOCUMENTATION INDEX — FinScope Analytics ${completedBatch} completed
-
-## Entrada obligatoria
-
-1. \`START_HERE_CHATGPT.md\`;
-2. \`.specify/memory/constitution.md\`;
-3. \`V0.21_PHASE_STATUS.md\`;
-4. \`implementation-control/AUTHORITY_MATRIX.json\`;
-5. \`implementation-control/IMPLEMENTATION_STATE.json\`;
-6. \`implementation-control/TASK_SOURCE_LOCK.json\`;
-7. \`implementation-control/IMPLEMENTATION_BATCH_MAP.json\`;
-8. \`implementation-control/batches/${nextBatch}.json\`;
-9. \`implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md\`;
-10. \`implementation-control/GITHUB_HANDOFF.json\`;
-11. \`implementation-control/reports/${completedBatch}_EVIDENCE_VERIFICATION_AND_CLOSURE.md\`.
-
-## Gate y estado activo
-
-\`tasksAuthorized=true\`, \`analysisAuthorized=true\`, \`implementationAuthorized=true\`, \`convergenceAuthorized=false\`.
-
-B01–${completedBatch} y T001–${completedTask} están \`COMPLETED\`. ${nextBatch} está \`PENDING\` y es el único lote activo/autorizado: \`activeBatchId=${nextBatch}\`, \`nextAuthorizedBatchId=${nextBatch}\`.
-
-## Integridad
-
-Paquete lógico \`${config.zipName}\`; raíz \`${handoff.baseline.root}\`; \`.specify\` byte-inmutable.
-`;
-await writeFile(join(staging, 'DOCUMENTATION_INDEX.md'), documentationIndex, 'utf8');
-await writeFile(join(staging, 'START_HERE_CHATGPT.md'), `# START HERE — FinScope Analytics ${completedBatch} completed
-
-Este árbol corresponde a \`${config.packageRevision}\`. Su nombre lógico es \`${config.zipName}\` y reemplaza al baseline anterior únicamente cuando Release, ZIP y sidecar sean publicados y autenticados.
-
-B01–${completedBatch} y T001–${completedTask} están \`COMPLETED\`. ${nextBatch} permanece \`PENDING\` como único lote activo/autorizado: \`activeBatchId=${nextBatch}\`, \`nextAuthorizedBatchId=${nextBatch}\`. \`convergenceAuthorized=false\`.
-
-La próxima conversación puede implementar exclusivamente ${nextBatch} desde una rama nueva basada en \`main\`. No iniciar lotes posteriores ni convergencia.
-`, 'utf8');
-const contextPath = join(staging, 'PROJECT_CONTEXT.md');
-const oldContext = await readFile(contextPath, 'utf8');
-const separatorIndex = oldContext.indexOf('\n---\n');
-const historicalContext = separatorIndex >= 0 ? oldContext.slice(separatorIndex + 5) : oldContext;
-await writeFile(contextPath, `# PROJECT CONTEXT — FinScope Analytics ${completedBatch} completed
-
-- paquete: \`${config.packageRevision}\` / \`${config.zipName}\`;
-- B01–${completedBatch} y T001–${completedTask}: \`COMPLETED\`;
-- ${nextBatch}: \`PENDING\`, único lote activo/autorizado;
-- \`convergenceAuthorized=false\`;
-- candidate autenticado: \`${handoff.candidate.sha}\`, run \`${handoff.candidate.runId}\`;
-- \`.specify\`: 19 archivos, \`${handoff.baseline.specifyTreeSha256}\`.
-
----
-
-${historicalContext}`, 'utf8');
-
-const prompt = `# Implementar ${nextBatch} — GitHub-first
-
-Usa exclusivamente el Release \`${config.tag}\` de \`${handoff.repository}\`, commit final \`${releaseCommitSha}\`. Descarga únicamente los assets personalizados \`${config.zipName}\` y \`${config.sidecarName}\`; no uses Source code (zip/tar.gz). Verifica sidecar, SHA-256, CRC, raíz \`${handoff.baseline.root}\`, manifests, metadata, control plane y 19 archivos .specify.
-
-Crea una rama desde \`main\`, abre PR Draft e implementa exclusivamente ${nextBatch} conforme a \`implementation-control/batches/${nextBatch}.json\`. Los workflows deben ejecutar literalmente \`localValidation.commands\`. No implementes lotes posteriores, no modifiques .specify y conserva \`convergenceAuthorized=false\`. Sigue \`implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md\`.
-`;
-await writeFile(join(staging, config.promptName), prompt, 'utf8');
-
-const reportFiles = await listFiles(join(staging, 'implementation-control/reports'));
-const activeReports = reportFiles
-  .map((absolute) => posix(relative(staging, absolute)))
-  .filter((path) => basename(path).startsWith(`${completedBatch}_`) || basename(path).startsWith('GH0_'))
-  .sort((a, b) => a.localeCompare(b, 'en'));
-
-metadata.packageId = `FinScope-Analytics-${config.packageRevision.replaceAll('_', '-')}`;
-metadata.packageVersion = config.packageRevision;
-metadata.packageRevision = config.packageRevision;
-metadata.generatedOn = date;
-metadata.phase = `implementation_${completedBatch}_completed`;
-metadata.result = 'COMPLETED';
-metadata.implementationReadiness = `${completedBatch}_COMPLETED_${nextBatch}_AUTHORIZED_PENDING`;
-metadata.logicalZipName = config.zipName;
-metadata.finalSha256Sidecar = config.sidecarName;
-metadata.sourceBaseline = {
-  logicalName: handoff.baseline.zipName,
-  sha256: handoff.baseline.zipSha256,
-  sidecarMatch: true,
-  crcValid: true,
-  singleRoot: true,
-  safeExtraction: true,
-  role: `ACTIVE_COMPLETED_BASELINE_USED_FOR_${completedBatch}`,
-};
-metadata.implementationState = {
-  status: state.implementationStatus,
-  completedBatches: [...state.completedBatchIds],
-  activeBatchId: nextBatch,
-  nextAuthorizedBatchId: nextBatch,
-  completedTasksThrough: completedTask,
-  nextBatchStatus: { [nextBatch]: state.batchStatus[nextBatch] },
-};
-metadata.taskModel = { ...metadata.taskModel, tasksSha256: state.sourceTasksSha256 };
-metadata.sourceTasksSha256 = state.sourceTasksSha256;
-metadata.validationModel = {
-  ...metadata.validationModel,
-  candidateStatus: 'COMPLETED',
-  protocol: 'implementation-control/GITHUB_VALIDATION_PROTOCOL.md',
-  instructions: 'implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md',
-  batchScript: 'implementation-control/scripts/Run-GitHubValidation.mjs',
-  externalLauncher: null,
-  externalLauncherSha256: null,
-  externalEvidenceRequired: true,
-  externalEvidenceVerified: true,
-  githubFirst: true,
-  browserRequired: Boolean(batch.localValidation?.browserRequired),
-  requiredCommandCount: (batch.localValidation?.commands ?? []).length,
-  recommendedWindowsInputRoot: `C:\\FS\\${completedBatch}-release\\input`,
-  recommendedWindowsWorkRoot: `C:\\FS\\${completedBatch}-release\\work`,
-};
-metadata.activeReports = activeReports;
-metadata.windowsExtractionPolicy = {
-  mode: 'GITHUB_FIRST_COMPLETED_RELEASE',
-  releaseTag: config.tag,
-  zipName: config.zipName,
-  sidecarName: config.sidecarName,
-  recommendedInputRoot: `C:\\FS\\${completedBatch}-release\\input`,
-  recommendedWorkRoot: `C:\\FS\\${completedBatch}-release\\work`,
-  localFallbackProtocol: 'implementation-control/LOCAL_VALIDATION_PROTOCOL.md',
-  sourceCodeAssetsForbidden: true,
-  explorerExtractionNotRequired: true,
-  transportAliasResolution: 'SIDE_CAR_LOGICAL_NAME_PLUS_REAL_SHA256',
-};
-metadata.nextPhase = `Implement exclusively ${nextBatch} from a new branch and PR; do not start later batches or convergence.`;
-const remediationChange = `Recalculated completed-package metadata, synchronized V0.21 active phase and added fail-closed ZIP metadata verification for the ${completedBatch} completed Release.`;
-metadata.changes = [...new Set([...(metadata.changes ?? []), remediationChange])];
-
-const currentPaths = (await listFiles(staging)).map((absolute) => posix(relative(staging, absolute)));
-const extensionCount = (suffixes) => currentPaths.filter((path) => suffixes.some((suffix) => path.toLocaleLowerCase('en-US').endsWith(suffix))).length;
-const maximumRelativePath = [...currentPaths].sort((a, b) => b.length - a.length || a.localeCompare(b, 'en'))[0];
-metadata.finalFileCount = currentPaths.length;
-metadata.jsonDocumentCount = extensionCount(['.json']);
-metadata.markdownDocumentCount = extensionCount(['.md']);
-metadata.yamlDocumentCount = extensionCount(['.yml', '.yaml']);
-metadata.typescriptFileCount = extensionCount(['.ts']);
-metadata.svelteFileCount = extensionCount(['.svelte']);
-metadata.powershellScriptCount = extensionCount(['.ps1']);
-metadata.shellScriptCount = extensionCount(['.sh']);
-metadata.maximumRelativePathLength = maximumRelativePath.length;
-metadata.maximumRelativePath = maximumRelativePath;
-metadata.singleArchiveRoot = true;
-metadata.zipEntrySeparator = '/';
-metadata.windowsLongPathRiskReduced = maximumRelativePath.length <= 220;
-metadata.absolutePathsPresent = false;
-metadata.pathTraversalEntriesPresent = false;
-metadata.duplicatePathsDetected = false;
-metadata.caseFoldCollisionsDetected = false;
-metadata.secretPatternsDetected = false;
-metadata.temporaryFilesDetected = false;
-metadata.regenerableDependencyDirectoriesDetected = false;
-metadata.embeddedArchiveCount = 0;
-metadata.finalManifestValid = true;
-metadata.finalInventoryValid = true;
-metadata.finalCrcValid = true;
-metadata.extractionValidated = true;
-metadata.finalZipSha256RecordedExternally = true;
-await writeJson(metadataPath, metadata);
-
-const oldInventory = await readJson(join(staging, 'PACKAGE_INVENTORY.json'));
-const oldMap = new Map((oldInventory.files ?? []).map((item) => [item.path, item]));
-const inventorySources = await listFiles(staging, ['PACKAGE_INVENTORY.json', 'FILE_MANIFEST.sha256']);
-const inventoryFiles = [];
-function media(path) {
-  if (path.endsWith('.json')) return 'application/json';
-  if (path.endsWith('.md')) return 'text/markdown';
-  if (/\.ya?ml$/u.test(path)) return 'application/yaml';
-  if (path.endsWith('.ts') || path.endsWith('.mjs')) return 'text/javascript';
-  return 'text/plain';
+function mediaType(path) {
+  const lower = path.toLocaleLowerCase('en-US');
+  if (lower.endsWith('.json')) return 'application/json';
+  if (lower.endsWith('.md')) return 'text/markdown; charset=utf-8';
+  if (lower.endsWith('.yml') || lower.endsWith('.yaml')) return 'application/yaml';
+  if (lower.endsWith('.mjs') || lower.endsWith('.js')) return 'text/javascript; charset=utf-8';
+  if (lower.endsWith('.ts')) return 'text/typescript; charset=utf-8';
+  if (lower.endsWith('.svelte')) return 'text/x-svelte; charset=utf-8';
+  if (lower.endsWith('.css')) return 'text/css; charset=utf-8';
+  if (lower.endsWith('.html')) return 'text/html; charset=utf-8';
+  if (lower.endsWith('.svg')) return 'image/svg+xml';
+  if (lower.endsWith('.png')) return 'image/png';
+  if (lower.endsWith('.ps1')) return 'text/x-powershell; charset=utf-8';
+  if (lower.endsWith('.sh')) return 'text/x-shellscript; charset=utf-8';
+  if (lower.endsWith('.txt') || lower.endsWith('.sha256') || lower.endsWith('.gitignore')) return 'text/plain; charset=utf-8';
+  return 'application/octet-stream';
 }
-for (const absolute of inventorySources) {
-  const rel = posix(relative(staging, absolute));
-  const previous = oldMap.get(rel);
-  inventoryFiles.push({
-    path: rel,
+function category(path) {
+  if (path.startsWith('.specify/')) return 'specification-infrastructure';
+  if (path.startsWith('.github/')) return 'github-operations';
+  if (path.startsWith('implementation-control/')) return 'implementation-control';
+  if (path.startsWith('specs/')) return 'specification';
+  if (path.startsWith('tests/')) return 'tests';
+  if (path.startsWith('src/') || path.startsWith('workers/') || path.startsWith('public/')) return 'product';
+  if (path.startsWith('docs/')) return 'documentation';
+  if (/^(?:package(?:-lock)?\.json|tsconfig.*\.json|vite\.config\.ts|playwright\.config\.ts)$/u.test(path)) return 'project-configuration';
+  return 'documentation';
+}
+function status(path) {
+  return path.startsWith('.specify/') ? 'FROZEN' : 'ACTIVE';
+}
+function extensionCounts(paths) {
+  const counts = { json: 0, markdown: 0, yaml: 0, typescript: 0, svelte: 0, powershell: 0, shell: 0 };
+  for (const path of paths) {
+    const lower = path.toLocaleLowerCase('en-US');
+    if (lower.endsWith('.json')) counts.json += 1;
+    if (lower.endsWith('.md')) counts.markdown += 1;
+    if (lower.endsWith('.yml') || lower.endsWith('.yaml')) counts.yaml += 1;
+    if (lower.endsWith('.ts')) counts.typescript += 1;
+    if (lower.endsWith('.svelte')) counts.svelte += 1;
+    if (lower.endsWith('.ps1')) counts.powershell += 1;
+    if (lower.endsWith('.sh')) counts.shell += 1;
+  }
+  return counts;
+}
+async function createEntry(path) {
+  const absolute = join(root, path);
+  return {
+    path,
     sizeBytes: (await stat(absolute)).size,
     sha256: await shaFile(absolute),
-    mediaType: previous?.mediaType ?? media(rel),
-    category: previous?.category ?? (rel.startsWith('.github/') ? 'github-operations' : rel.startsWith('implementation-control/') ? 'implementation-control' : 'documentation'),
-    status: rel.startsWith('.specify/') ? 'FROZEN' : previous?.status ?? 'ACTIVE',
-  });
+    mediaType: mediaType(path),
+    category: category(path),
+    status: status(path),
+  };
 }
-const inventory = {
-  inventoryId: `FinScope-${config.packageRevision}-package-inventory`,
-  packageVersion: config.packageRevision,
-  generatedOn: date,
-  root: rootName,
-  resolutionBase: 'packageRoot',
-  itemCount: inventoryFiles.length,
-  exclusions: [
-    { path: 'PACKAGE_INVENTORY.json', reason: 'self-reference excluded' },
-    { path: 'FILE_MANIFEST.sha256', reason: 'manifest generated after inventory' },
-  ],
-  files: inventoryFiles,
-};
-await writeJson(join(staging, 'PACKAGE_INVENTORY.json'), inventory);
+async function writeDerived() {
+  const paths = await trackedPaths();
+  assert(paths.includes(INVENTORY_PATH) && paths.includes(MANIFEST_PATH) && paths.includes(METADATA_PATH), 'DERIVED_CONTROL_FILES_NOT_TRACKED');
+  const metadata = await readJson(join(root, METADATA_PATH));
+  const instructionText = await readFile(join(root, 'implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt'), 'utf8');
+  const counts = extensionCounts(paths);
+  const maximumRelativePath = [...paths].sort((a, b) => b.length - a.length || a.localeCompare(b, 'en'))[0];
+  Object.assign(metadata, {
+    projectConfigurationInstructionCharacterCount: instructionText.length,
+    finalFileCount: paths.length,
+    jsonDocumentCount: counts.json,
+    markdownDocumentCount: counts.markdown,
+    yamlDocumentCount: counts.yaml,
+    typescriptFileCount: counts.typescript,
+    svelteFileCount: counts.svelte,
+    powershellScriptCount: counts.powershell,
+    shellScriptCount: counts.shell,
+    maximumRelativePathLength: maximumRelativePath.length,
+    maximumRelativePath,
+    singleArchiveRoot: true,
+    zipEntrySeparator: '/',
+    windowsLongPathRiskReduced: maximumRelativePath.length <= 220,
+    absolutePathsPresent: false,
+    pathTraversalEntriesPresent: false,
+    duplicatePathsDetected: false,
+    caseFoldCollisionsDetected: false,
+    secretPatternsDetected: false,
+    temporaryFilesDetected: false,
+    regenerableDependencyDirectoriesDetected: false,
+    embeddedArchiveCount: 0,
+    finalManifestValid: true,
+    finalInventoryValid: true,
+    finalCrcValid: true,
+    extractionValidated: true,
+    finalZipSha256RecordedExternally: true,
+  });
+  await writeJson(join(root, METADATA_PATH), metadata);
 
-const manifestFiles = await listFiles(staging, ['PACKAGE_INVENTORY.json', 'FILE_MANIFEST.sha256']);
-const lines = [];
-for (const absolute of manifestFiles) lines.push(`${await shaFile(absolute)}  ${posix(relative(staging, absolute))}`);
-await writeFile(join(staging, 'FILE_MANIFEST.sha256'), `${lines.join('\n')}\n`, 'utf8');
+  const sourcePaths = paths.filter((path) => !DERIVED_EXCLUSIONS.has(path));
+  const files = [];
+  for (const path of sourcePaths) files.push(await createEntry(path));
+  const inventory = {
+    inventoryId: `FinScope-${metadata.packageRevision}-package-inventory`,
+    packageVersion: metadata.packageRevision,
+    generatedOn: metadata.generatedOn,
+    root: metadata.rootDirectory,
+    resolutionBase: 'packageRoot',
+    itemCount: files.length,
+    exclusions: [
+      { path: INVENTORY_PATH, reason: 'self-reference excluded' },
+      { path: MANIFEST_PATH, reason: 'manifest generated after inventory' },
+    ],
+    files,
+  };
+  await writeJson(join(root, INVENTORY_PATH), inventory);
+  await writeFile(join(root, MANIFEST_PATH), `${files.map((item) => `${item.sha256}  ${item.path}`).join('\n')}\n`, 'utf8');
+  console.log(JSON.stringify({ result: 'DERIVED_FILES_WRITTEN', itemCount: files.length, fileCount: paths.length, instructionCharacters: instructionText.length }, null, 2));
+}
+async function validateDerived(paths) {
+  const [metadata, inventory, manifestText] = await Promise.all([
+    readJson(join(root, METADATA_PATH)),
+    readJson(join(root, INVENTORY_PATH)),
+    readFile(join(root, MANIFEST_PATH), 'utf8'),
+  ]);
+  const sourcePaths = paths.filter((path) => !DERIVED_EXCLUSIONS.has(path));
+  assert(inventory.itemCount === sourcePaths.length && inventory.files?.length === sourcePaths.length, 'DERIVED_INVENTORY_COUNT_MISMATCH');
+  const manifestLines = manifestText.trim().split(/\r?\n/u).filter(Boolean);
+  assert(manifestLines.length === sourcePaths.length, 'DERIVED_MANIFEST_COUNT_MISMATCH');
+  for (let index = 0; index < sourcePaths.length; index += 1) {
+    const expectedPath = sourcePaths[index];
+    const item = inventory.files[index];
+    assert(item && item.path === expectedPath, 'DERIVED_INVENTORY_ORDER_MISMATCH', expectedPath);
+    assert(JSON.stringify(Object.keys(item)) === JSON.stringify(['path', 'sizeBytes', 'sha256', 'mediaType', 'category', 'status']), 'DERIVED_INVENTORY_FIELDS_MISMATCH', expectedPath);
+    assert(!Object.hasOwn(item, 'size'), 'DERIVED_INVENTORY_LEGACY_SIZE_PRESENT', expectedPath);
+    const current = await createEntry(expectedPath);
+    assert(JSON.stringify(item) === JSON.stringify(current), 'DERIVED_INVENTORY_ENTRY_MISMATCH', expectedPath);
+    assert(manifestLines[index] === `${current.sha256}  ${expectedPath}`, 'DERIVED_MANIFEST_ENTRY_MISMATCH', expectedPath);
+  }
+  assert(metadata.finalFileCount === paths.length, 'DERIVED_METADATA_FILE_COUNT_MISMATCH');
+  const instructionText = await readFile(join(root, 'implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt'), 'utf8');
+  assert(metadata.projectConfigurationInstructionCharacterCount === instructionText.length, 'DERIVED_METADATA_INSTRUCTION_COUNT_MISMATCH');
+  assert(instructionText.length <= 8000, 'PROJECT_CONFIGURATION_INSTRUCTIONS_TOO_LONG', String(instructionText.length));
+}
 
-const specify = await canonicalTreeHash(join(staging, '.specify'));
-if (specify.count !== 19 || specify.sha256 !== state.specifyTreeSha256) throw new Error(`SPECIFY_MISMATCH:${JSON.stringify(specify)}`);
-const control = await run('node implementation-control/scripts/Validate-ControlPlaneState.mjs .', { cwd: staging });
-await writeFile(join(out, 'control-plane.stdout.log'), control.stdout);
-await writeFile(join(out, 'control-plane.stderr.log'), control.stderr);
-if (control.exitCode !== 0) throw new Error(`CONTROL_PLANE_FAILED:${control.exitCode}`);
+if (process.argv[2] === '--write-derived') {
+  await writeDerived();
+  process.exit(0);
+}
 
+const out = resolve(process.argv[2] ?? '.finscope-release');
+const handoff = await readJson(join(root, 'implementation-control/GITHUB_HANDOFF.json'));
+const state = await readJson(join(root, 'implementation-control/IMPLEMENTATION_STATE.json'));
+const metadata = await readJson(join(root, METADATA_PATH));
+const expectedRoot = handoff.baseline.root.replace(/\/$/u, '');
+const config = handoff.release;
+assert(handoff.operation?.id === 'b20-post-restore-control-plane-hardening', 'UNEXPECTED_REMEDIATION_OPERATION');
+assert(handoff.operation?.kind === 'RELEASE_REMEDIATION', 'UNEXPECTED_OPERATION_KIND');
+assert(handoff.operation?.stage === 'candidate', 'REMEDIATION_STAGE_NOT_CANDIDATE', String(handoff.operation?.stage));
+assert(handoff.release?.pending === true, 'REMEDIATION_RELEASE_NOT_PENDING');
+assert(handoff.remediation?.hold === true, 'REMEDIATION_HOLD_NOT_ACTIVE');
+assert(state.batchStatus?.B20 === 'COMPLETED' && state.batchStatus?.B21 === 'PENDING', 'PRODUCT_BATCH_STATE_INVALID');
+assert(state.taskStatus?.T089 === 'COMPLETED', 'T089_NOT_COMPLETED');
+assert(state.activeBatchId === 'B21' && state.nextAuthorizedBatchId === 'B21', 'NEXT_BATCH_STATE_INVALID');
+assert(state.phaseGate?.convergenceAuthorized === false, 'CONVERGENCE_GATE_OPEN');
+assert(metadata.result === 'CANDIDATE' && metadata.implementationReadiness === 'B20_COMPLETED_B21_BLOCKED_RELEASE_RECOVERY', 'PACKAGE_METADATA_NOT_CANDIDATE');
+
+const headResult = await run('git rev-parse HEAD', { cwd: root });
+const commitSha = headResult.stdout.toString('utf8').trim().toLowerCase();
+assert(headResult.exitCode === 0 && /^[0-9a-f]{40}$/u.test(commitSha), 'CHECKED_OUT_SHA_INVALID', headResult.stderr.toString('utf8'));
+const diffWorktree = await run('git diff --quiet', { cwd: root });
+const diffIndex = await run('git diff --cached --quiet', { cwd: root });
+assert(diffWorktree.exitCode === 0 && diffIndex.exitCode === 0, 'PACKAGE_SOURCE_NOT_COMMITTED');
+const untrackedResult = await run('git ls-files --others --exclude-standard -z', { cwd: root });
+assert(untrackedResult.exitCode === 0, 'UNTRACKED_FILE_QUERY_FAILED');
+const disallowedUntracked = untrackedResult.stdout.toString('utf8').split('\0').filter(Boolean).filter((path) => !path.startsWith('.finscope-release/') && !path.startsWith('.finscope-evidence/'));
+assert(disallowedUntracked.length === 0, 'UNTRACKED_FILES_PRESENT', JSON.stringify(disallowedUntracked));
+
+const paths = await trackedPaths();
+await validateDerived(paths);
+const specify = await canonicalTreeHash(join(root, '.specify'));
+assert(specify.count === 19 && specify.sha256 === handoff.baseline.specifyTreeSha256, 'SPECIFY_TREE_MISMATCH', JSON.stringify(specify));
+const controlRoot = process.env.FINSCOPE_PACKAGE_ROOT ? resolve(process.env.FINSCOPE_PACKAGE_ROOT) : root;
+const control = await run(`node implementation-control/scripts/Validate-ControlPlaneState.mjs ${shellQuote(controlRoot)}`, { cwd: root });
+assert(control.exitCode === 0, 'CONTROL_PLANE_INVALID', control.stderr.toString('utf8'));
+
+await rm(out, { recursive: true, force: true });
+const stagingParent = join(out, 'staging');
+const stagingRoot = join(stagingParent, expectedRoot);
+await mkdir(stagingRoot, { recursive: true });
+for (const path of paths) {
+  const destination = join(stagingRoot, path);
+  await mkdir(dirname(destination), { recursive: true });
+  await copyFile(join(root, path), destination);
+  await utimes(destination, FIXED_MTIME, FIXED_MTIME);
+}
 const zipPath = join(out, config.zipName);
-const zip = await run(`cd "${dirname(staging)}" && zip -X -q -r "${zipPath}" "${rootName}"`, { cwd: root });
-if (zip.exitCode !== 0) throw new Error(`ZIP_CREATE_FAILED:${zip.stderr.toString()}`);
-const zipSha = await shaFile(zipPath);
 const sidecarPath = join(out, config.sidecarName);
-await writeFile(sidecarPath, `${zipSha}  ${config.zipName}\n`, 'utf8');
-
-const packageVerification = await run(`node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs "${zipPath}" "${sidecarPath}"`, { cwd: root });
-await writeFile(join(out, 'completed-package-verification.stdout.log'), packageVerification.stdout);
-await writeFile(join(out, 'completed-package-verification.stderr.log'), packageVerification.stderr);
-if (packageVerification.exitCode !== 0) throw new Error(`COMPLETED_PACKAGE_VERIFICATION_FAILED:${packageVerification.stderr.toString('utf8')}`);
-const packageVerificationResult = JSON.parse(packageVerification.stdout.toString('utf8'));
-if (packageVerificationResult.result !== 'PASS') throw new Error('COMPLETED_PACKAGE_VERIFICATION_RESULT_INVALID');
-
-const evidenceName = `${config.evidencePrefix}_${process.env.GITHUB_RUN_ID}.json`;
+const listPath = join(out, 'zip-file-list.txt');
+const archivePaths = paths.map((path) => `${expectedRoot}/${path}`);
+await writeFile(listPath, `${archivePaths.join('\n')}\n`, 'utf8');
+const zipResult = await run(`zip -X -q ${shellQuote(zipPath)} -@ < ${shellQuote(listPath)}`, { cwd: stagingParent, env: { TZ: 'UTC' } });
+assert(zipResult.exitCode === 0, 'ZIP_CREATION_FAILED', zipResult.stderr.toString('utf8'));
+const crc = await run(`unzip -tqq ${shellQuote(zipPath)}`, { cwd: root });
+assert(crc.exitCode === 0, 'ZIP_CRC_FAILED', crc.stderr.toString('utf8'));
+const zipSha256 = await shaFile(zipPath);
+await writeFile(sidecarPath, `${zipSha256}  ${config.zipName}\n`, 'utf8');
+await rm(join(out, 'staging'), { recursive: true, force: true });
+await rm(listPath, { force: true });
 const report = {
-  schemaVersion: '1.1.0',
-  result: 'PASS',
-  repository: handoff.repository,
-  operationId: operation.id,
-  completedBatchId: completedBatch,
-  nextBatchId: nextBatch,
-  tag: config.tag,
-  commitSha: releaseCommitSha,
-  releaseRunId: process.env.GITHUB_RUN_ID,
-  zipName: config.zipName,
-  zipSha256: zipSha,
-  sidecarName: config.sidecarName,
-  root: rootName,
-  specify,
-  metadataValidation: {
-    result: packageVerificationResult.result,
-    fileCount: packageVerificationResult.fileCount,
-    inventoryItemCount: packageVerificationResult.inventoryItemCount,
-    manifestItemCount: packageVerificationResult.manifestItemCount,
-    sourceTasksSha256: state.sourceTasksSha256,
-  },
-  controlPlaneExitCode: control.exitCode,
+  schemaVersion: '1.0.0',
+  result: 'CANDIDATE_PACKAGE_CREATED',
+  operationId: handoff.operation.id,
+  commitSha,
   createdAt: now(),
+  zipName: config.zipName,
+  sidecarName: config.sidecarName,
+  zipSha256,
+  root: expectedRoot,
+  fileCount: paths.length,
+  specify,
+  qualificationMode: 'REMEDIATION_CANDIDATE',
+  promotable: false,
+  replacesSources: false,
+  b21Executable: false,
 };
-await writeJson(join(out, evidenceName), report);
-await writeFile(join(out, config.promptName), prompt, 'utf8');
+await writeJson(join(out, 'package-generation.json'), report);
 console.log(JSON.stringify(report, null, 2));
