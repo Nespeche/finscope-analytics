@@ -118,6 +118,7 @@
       ".github/workflows/finscope-closure-validation.yml",
       ".github/workflows/finscope-completed-release.yml",
       ".github/workflows/finscope-release-qualification.yml",
+      ".github/workflows/finscope-remediation-materialize-derived.yml",
       "README.md",
       "START_HERE_CHATGPT.md",
       "DOCUMENTATION_INDEX.md",
