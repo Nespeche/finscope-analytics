@@ -236,9 +236,14 @@ try {
 
   equal(await shaFile(packageHandoffPath), await shaFile(join(root, 'implementation-control/GITHUB_HANDOFF.json')), 'COMPLETED_HANDOFF_SOURCE_MISMATCH');
   equal(packageHandoff.operation?.id, 'b20-post-restore-control-plane-hardening', 'COMPLETED_HANDOFF_OPERATION_MISMATCH');
-  equal(packageHandoff.operation?.stage, 'candidate', 'COMPLETED_HANDOFF_STAGE_MISMATCH');
-  equal(packageHandoff.candidate?.status, 'NOT_REQUESTED', 'COMPLETED_HANDOFF_CANDIDATE_STATUS_MISMATCH');
-  equal(packageHandoff.closure?.status, 'NOT_AUTHORIZED', 'COMPLETED_HANDOFF_CLOSURE_STATUS_MISMATCH');
+  assert(['candidate', 'closure'].includes(packageHandoff.operation?.stage), 'COMPLETED_HANDOFF_STAGE_MISMATCH', packageHandoff.operation?.stage);
+  if (packageHandoff.operation.stage === 'candidate') {
+    equal(packageHandoff.candidate?.status, 'NOT_REQUESTED', 'COMPLETED_HANDOFF_CANDIDATE_STATUS_MISMATCH');
+    equal(packageHandoff.closure?.status, 'NOT_AUTHORIZED', 'COMPLETED_HANDOFF_CLOSURE_STATUS_MISMATCH');
+  } else {
+    equal(packageHandoff.candidate?.status, 'PASS_AUTHENTICATED_EXTERNAL', 'COMPLETED_HANDOFF_CANDIDATE_STATUS_MISMATCH');
+    equal(packageHandoff.closure?.status, 'PENDING', 'COMPLETED_HANDOFF_CLOSURE_STATUS_MISMATCH');
+  }
   equal(packageHandoff.release?.pending, true, 'COMPLETED_HANDOFF_RELEASE_PENDING_MISMATCH');
   equal(packageHandoff.release?.authorizationStatus, 'NOT_AUTHORIZED', 'COMPLETED_HANDOFF_RELEASE_AUTH_MISMATCH');
   equal(packageHandoff.remediation?.hold, true, 'COMPLETED_HANDOFF_HOLD_MISMATCH');
@@ -285,7 +290,7 @@ try {
   equal(controlResult.failCount, 0, 'COMPLETED_CONTROL_PLANE_FAILURES');
 
   console.log(JSON.stringify({
-    schemaVersion: '1.1.0', result: 'PASS', qualificationMode: 'REMEDIATION_CANDIDATE', promotable: false,
+    schemaVersion: '1.2.0', result: 'PASS', qualificationMode: packageHandoff.operation.stage === 'candidate' ? 'REMEDIATION_CANDIDATE' : 'REMEDIATION_CLOSURE_AUTHENTICATED', promotable: false,
     replacesSources: false, b21Executable: false, tag: expected.tag, packageRevision: expected.packageRevision,
     zipName: expected.zipName, zipSha256, root: expectedRoot, commitSha, fileCount: paths.length,
     inventoryItemCount: inventory.itemCount, manifestItemCount: manifestLines.length, extensionCounts, specify,

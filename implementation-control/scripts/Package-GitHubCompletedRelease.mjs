@@ -194,7 +194,12 @@ const expectedRoot = handoff.baseline.root.replace(/\/$/u, '');
 const config = handoff.release;
 assert(handoff.operation?.id === 'b20-post-restore-control-plane-hardening', 'UNEXPECTED_REMEDIATION_OPERATION');
 assert(handoff.operation?.kind === 'RELEASE_REMEDIATION', 'UNEXPECTED_OPERATION_KIND');
-assert(handoff.operation?.stage === 'candidate', 'REMEDIATION_STAGE_NOT_CANDIDATE', String(handoff.operation?.stage));
+assert(['candidate', 'closure'].includes(handoff.operation?.stage), 'REMEDIATION_STAGE_INVALID', String(handoff.operation?.stage));
+if (handoff.operation.stage === 'candidate') {
+  assert(handoff.closure?.status === 'NOT_AUTHORIZED', 'CANDIDATE_CLOSURE_STATUS_INVALID');
+} else {
+  assert(handoff.closure?.status === 'PENDING', 'CLOSURE_STAGE_STATUS_INVALID');
+}
 assert(handoff.release?.pending === true, 'REMEDIATION_RELEASE_NOT_PENDING');
 assert(handoff.remediation?.hold === true, 'REMEDIATION_HOLD_NOT_ACTIVE');
 assert(state.batchStatus?.B20 === 'COMPLETED' && state.batchStatus?.B21 === 'PENDING', 'PRODUCT_BATCH_STATE_INVALID');
