@@ -793,3 +793,11 @@
 }
 ```
 <!-- /FINSCOPE_REMEDIATION_CLOSURE_REQUEST_V1 -->
+
+
+## 2026-08-05 — Authenticated remediation closure
+
+- remediation: `b21-final-release-promotion-remediation`;
+- candidate: `36cdc06a98453f97d14b7b7518f5541eb68f0b09`, run `30961170712`, artifact `8913000777`;
+- closure request: `12555b8ce483e3320a4a3247816c6e3a4a3e88ef`, run `30962907039`;
+- B21 remains `COMPLETED`; B22 remains `PENDING`; no tasks, batches, product, or `.specify` bytes changed.
