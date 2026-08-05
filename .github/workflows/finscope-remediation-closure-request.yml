@@ -1,4 +1,4 @@
-name: FinScope B20 r3 Candidate Materializer
+name: FinScope B20 r3 Data Materializer
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ on:
       - .github/workflows/finscope-remediation-closure-request.yml
 
 concurrency:
-  group: finscope-b20-r3-candidate-materializer-pr-${{ github.event.pull_request.number }}
+  group: finscope-b20-r3-data-materializer-pr-${{ github.event.pull_request.number }}
   cancel-in-progress: false
 
 permissions:
@@ -16,8 +16,8 @@ permissions:
   pull-requests: read
 
 jobs:
-  materialize-candidate:
-    name: materialize-candidate
+  materialize-candidate-data:
+    name: materialize-candidate-data
     if: >-
       github.repository == 'Nespeche/finscope-analytics' &&
       github.event.pull_request.number == 46 &&
@@ -59,19 +59,15 @@ jobs:
           const assert = (value, code) => { if (!value) throw new Error(code); };
           assert(commit.author?.login === 'Nespeche', 'COMMIT_NOT_OWNER_AUTHORED');
           assert(commit.sha === process.env.EVENT_HEAD, 'COMMIT_SHA_MISMATCH');
-          assert(pr.state === 'open', 'PR_NOT_OPEN');
-          assert(pr.draft === true, 'PR_NOT_DRAFT');
-          assert(pr.number === 46, 'PR_NUMBER_MISMATCH');
-          assert(pr.base?.ref === 'main', 'PR_BASE_MISMATCH');
+          assert(pr.state === 'open' && pr.draft === true, 'PR_NOT_OPEN_DRAFT');
+          assert(pr.number === 46 && pr.base?.ref === 'main', 'PR_IDENTITY_MISMATCH');
           assert(pr.head?.ref === 'maintenance/b20-post-restore-control-plane-hardening', 'PR_BRANCH_MISMATCH');
           assert(pr.head?.repo?.full_name === 'Nespeche/finscope-analytics', 'PR_HEAD_REPOSITORY_MISMATCH');
           assert(pr.head?.sha === process.env.EVENT_HEAD, 'REMOTE_HEAD_CHANGED');
           assert(!(pr.body ?? '').includes('B20_CLOSURE_BINDING_JSON_BEGIN'), 'CLOSURE_BINDING_PRESENT');
           assert(!(pr.body ?? '').split(/\r?\n/u).some((line) => line.trim() === 'AUTHORIZE_B20_POST_RESTORE_CLOSURE_COMMIT'), 'CLOSURE_LITERAL_PRESENT');
           NODE
-      - name: Reconstruct and authenticate final candidate bytes
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Reconstruct and authenticate final non-workflow bytes
         shell: bash
         run: |
           set -euo pipefail
@@ -87,28 +83,13 @@ jobs:
           base64 --decode "$RUNNER_TEMP/b20-candidate-payload.b64" > "$RUNNER_TEMP/b20-candidate-payload.tar.xz"
           echo "c96933b2a1e71d96a29a7d2de5edecea2a32ac42161318b18cdfc56a6d6865aa  $RUNNER_TEMP/b20-candidate-payload.tar.xz" | sha256sum --check --strict
           tar -xJf "$RUNNER_TEMP/b20-candidate-payload.tar.xz" -C .
-          node --input-type=module <<'NODE'
-          import { createHash } from 'node:crypto';
-          import { writeFile } from 'node:fs/promises';
-          const response = await fetch('https://api.github.com/repos/Nespeche/finscope-analytics/git/blobs/c5b35476215906db267253251fee962099688af1', {
-            headers: { Authorization: `Bearer ${process.env.GH_TOKEN}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' },
-          });
-          if (!response.ok) throw new Error(`FINAL_WORKFLOW_BLOB_FETCH_FAILED:${response.status}`);
-          const payload = await response.json();
-          const bytes = Buffer.from(String(payload.content).replace(/\s/gu, ''), 'base64');
-          const digest = createHash('sha256').update(bytes).digest('hex');
-          if (digest !== '61b76dd8e2fcdfc9f54292bfc73e618b74a67e9dff46c8f3df7360dd6966a8ab') throw new Error(`FINAL_WORKFLOW_DIGEST_MISMATCH:${digest}`);
-          await writeFile('.github/workflows/finscope-remediation-closure-request.yml', bytes);
-          NODE
           node implementation-control/scripts/Package-GitHubCompletedRelease.mjs --write-derived
-          node implementation-control/scripts/Validate-ControlPlaneState.mjs .
-      - name: Enforce exact final materialization diff
+      - name: Enforce exact fifteen-path data diff
         shell: bash
         run: |
           set -euo pipefail
           mapfile -t actual < <(git diff --name-only | LC_ALL=C sort)
           expected=(
-            .github/workflows/finscope-remediation-closure-request.yml
             DOCUMENTATION_INDEX.md
             FILE_MANIFEST.sha256
             PACKAGE_INVENTORY.json
@@ -125,10 +106,10 @@ jobs:
             implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
             implementation-control/scripts/Verify-GitHubCompletedPackage.mjs
           )
-          test "${#actual[@]}" -eq 16
+          test "${#actual[@]}" -eq 15
           diff -u <(printf '%s\n' "${expected[@]}") <(printf '%s\n' "${actual[@]}")
           git diff --check
-      - name: Commit final candidate with force-with-lease
+      - name: Commit data candidate with force-with-lease
         env:
           EVENT_HEAD: ${{ github.event.pull_request.head.sha }}
         shell: bash
@@ -138,7 +119,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -- \
-            .github/workflows/finscope-remediation-closure-request.yml \
             README.md START_HERE_CHATGPT.md DOCUMENTATION_INDEX.md V0.21_PHASE_STATUS.md PROMPT_IMPLEMENTACION_B21.md \
             implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt \
             implementation-control/scripts/Apply-B20PostRestoreClosure.mjs \
@@ -148,8 +128,8 @@ jobs:
             implementation-control/scripts/Verify-GitHubClosureArtifact.mjs \
             implementation-control/scripts/Verify-GitHubCompletedPackage.mjs \
             PACKAGE_METADATA.json PACKAGE_INVENTORY.json FILE_MANIFEST.sha256
-          test "$(git diff --cached --name-only | wc -l | tr -d ' ')" = "16"
-          git commit -m "fix(control-plane): materialize B20 closure mechanism candidate r3"
+          test "$(git diff --cached --name-only | wc -l | tr -d ' ')" = "15"
+          git commit -m "fix(control-plane): materialize B20 r3 candidate data"
           test "$(git rev-parse HEAD^)" = "$EVENT_HEAD"
           git push origin \
             "HEAD:refs/heads/maintenance/b20-post-restore-control-plane-hardening" \
