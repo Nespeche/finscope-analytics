@@ -49,3 +49,13 @@ El verificador distingue archivos ordinarios y outputs finales generados. Con ac
 El cierre preparado es un commit hijo del request commit. Por ello la actualización profesional predeterminada es un push normal fast-forward. Antes del push se leen y comparan HEAD local, request SHA, closure SHA y HEAD remoto; se exige `git merge-base --is-ancestor requestSha closureSha`. El comando no incluye ninguna opción de force. Si el remoto cambia o el update deja de ser fast-forward, Git rechaza la operación. Después del push se consulta nuevamente la rama y solo `remoteHeadSha=closureSha` puede producir evidencia PASS.
 
 Las ramas de remediación no pueden recibir force pushes por ningún operador. Un cambio concurrente, reset o actualización inesperada invalida el ciclo y exige reautenticación.
+
+## Contrato ejecutable del gate de publicación
+
+La validación de `release-publication-gate-hardening` debe probar sobre los mismos bytes del candidato que `FinScope Completed Release` carece de triggers `push`, `pull_request`, `schedule` y `workflow_run`, y que conserva únicamente `workflow_dispatch` con `expected_main_sha` y `authorization_text` obligatorios.
+
+El contrato debe rechazar ejecutablemente: autorización vacía; texto genérico; SHA esperado distinto; checkout distinto; tag, ZIP o sidecar distintos; espacios adicionales; rama distinta de `main`; evento distinto de `workflow_dispatch`; operación o closure incompletos; `convergenceAuthorized=true`; y tag o Release ya existente. La única aceptación válida es la autorización canónica exacta derivada de `GITHUB_SHA` y de la identidad de `release` en `GITHUB_HANDOFF.json`.
+
+`release.pending=true` sin dispatch y autorización canónica nunca habilita publicación. La configuración de concurrencia debe incluir el SHA y la identidad canónica —que incorpora tag, ZIP y sidecar— y usar `cancel-in-progress: false`; una segunda ejecución queda serializada y luego falla por identidad publicada existente.
+
+Los comandos literales de la remediación son `npm ci`, `npm run typecheck`, `node implementation-control/scripts/Validate-ControlPlaneState.mjs .`, el contrato `tests/contract/github-transition-routing.test.ts`, `npm run test` y `npm run build`. Un fallo detiene dependientes, preserva artifact `_FAILED` y exige un commit nuevo y una ejecución completa nueva; `Re-run jobs` está prohibido.

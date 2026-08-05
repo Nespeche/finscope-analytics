@@ -1,10 +1,18 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import handoffDocument from '../../implementation-control/GITHUB_HANDOFF.json';
 import stateDocument from '../../implementation-control/IMPLEMENTATION_STATE.json';
 import b20Document from '../../implementation-control/batches/B20.json';
 import b21Document from '../../implementation-control/batches/B21.json';
 import b22Document from '../../implementation-control/batches/B22.json';
-import { resolveGitHubContext, resolveGitHubReleasePublicationContext, validateRemediationScope } from '../../implementation-control/scripts/Resolve-GitHubContext.mjs';
+import {
+  buildReleasePublicationAuthorization,
+  resolveGitHubClosureContext,
+  resolveGitHubContext,
+  resolveGitHubReleasePublicationContext,
+  resolveGitHubReleasePublicationDispatchContext,
+  validateRemediationScope,
+} from '../../implementation-control/scripts/Resolve-GitHubContext.mjs';
 
 const input = () => ({
   branch: 'agent/b21-probe',
@@ -14,6 +22,39 @@ const input = () => ({
 });
 
 const releaseInput = () => structuredClone(handoffDocument) as any;
+const mainSha = '1140f9b1d70d579dd57f449628f1d8fd308d075e';
+const releaseWorkflow = readFileSync('.github/workflows/finscope-completed-release.yml', 'utf8');
+const publicationDispatchInput = () => {
+  const handoff = releaseInput();
+  handoff.operation.stage = 'completed';
+  handoff.release.pending = true;
+  const authorizationText = buildReleasePublicationAuthorization({
+    mainSha,
+    tag: handoff.release.tag,
+    zipName: handoff.release.zipName,
+    sidecarName: handoff.release.sidecarName,
+  });
+  return {
+    handoff,
+    eventName: 'workflow_dispatch',
+    refName: 'main',
+    githubSha: mainSha,
+    checkedOutSha: mainSha,
+    expectedMainSha: mainSha,
+    authorizationText,
+    tagExists: false,
+  };
+};
+
+const publicationRemediationPaths = [
+  '.github/workflows/finscope-completed-release.yml',
+  'implementation-control/GITHUB_HANDOFF.json',
+  'implementation-control/GITHUB_RELEASE_PROTOCOL.md',
+  'implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md',
+  'implementation-control/GITHUB_VALIDATION_PROTOCOL.md',
+  'implementation-control/scripts/Resolve-GitHubContext.mjs',
+  'tests/contract/github-transition-routing.test.ts',
+];
 
 describe('GitHub transition context routing', () => {
   it('routes an ordinary branch to pending B22 only after the completed Release hold is cleared', () => {
@@ -71,17 +112,17 @@ describe('GitHub transition context routing', () => {
       ...structuredClone(value.handoff.completedBaseline),
       role: 'HISTORICAL_OPERATION_BASELINE',
     };
-    expect(() => resolveGitHubContext(value)).toThrowError(/BASELINE_ROLE_MISMATCH/u);
+    expect(() => resolve@ÏtHubContext(value)).toThrowError(/BASELINE_ROLE_MISMATCH/u);
   });
 
   it('rejects a derived command set that no longer equals B21 authority', () => {
     const value = input(); value.handoff.release.pending = false; value.batches.B22.localValidation.commands = [];
-    expect(() => resolveGitHubContext(value)).toThrowError(/DERIVED_COMMAND_SET_MISMATCH/u);
+    expect(() => resolve@ÏtHubContext(value)).toThrowError(/DERIVED_COMMAND_SET_MISMATCH/u);
   });
 
   it('runs only dedicated commands on the exact control-plane remediation branch', () => {
     const value = input(); value.branch = 'agent/maintenance-remediation-routing';
-    const result = resolveGitHubContext(value);
+    const result = resolve@ÏtHubContext(value);
     expect(result.mode).toBe('CONTROL_PLANE_REMEDIATION');
     expect(result.remediationId).toBe('maintenance-routing-hardening');
     expect(result.commands.map((entry: { id: string }) => entry.id)).toEqual(['npm-ci', 'typecheck', 'control-plane', 'transition-contract', 'regression-vitest', 'build']);
@@ -107,14 +148,14 @@ describe('GitHub transition context routing', () => {
 
   it('accepts only changed paths declared by the matched remediation', () => {
     const value = input(); value.branch = 'agent/residual-risk-hardening';
-    const result = resolveGitHubContext(value);
+    const result = resolve@ÏtHubContext(value);
     expect(validateRemediationScope(['package.json', 'vite.config.ts'], result.allowedPaths)).toMatchObject({ valid: true });
     expect(() => validateRemediationScope(['workers/sec-gateway/src/index.ts'], result.allowedPaths)).toThrowError(/MAINTENANCE_SCOPE_MISMATCH/u);
   });
 
   it('routes the B21 clean-package remediation to its closed scope and dedicated commands', () => {
     const value = input(); value.branch = 'agent/b21-clean-completed-package-remediation';
-    const result = resolveGitHubContext(value);
+    const result = resolve@ÏtHubContext(value);
     expect(result).toMatchObject({
       mode: 'MAINTENANCE_REMEDIATION',
       remediationMatched: true,
@@ -131,7 +172,7 @@ describe('GitHub transition context routing', () => {
 
   it('routes the final B21 Release promotion remediation despite the ordinary release hold', () => {
     const value = input(); value.branch = 'agent/b21-final-release-promotion-remediation';
-    const result = resolveGitHubContext(value);
+    const result = resolve@ÏtHubContext(value);
     expect(result).toMatchObject({
       mode: 'MAINTENANCE_REMEDIATION',
       remediationMatched: true,
@@ -150,13 +191,51 @@ describe('GitHub transition context routing', () => {
     ], result.allowedPaths)).toMatchObject({ valid: true });
   });
 
+  it('routes only the exact formal publication-gate remediation in candidate state', () => {
+    const value = input(); value.branch = 'agent/release-publication-gate-hardening';
+    const result = resolve@ÏtHubContext(value);
+    expect(result).toMatchObject({
+      mode: 'CONTROL_PLANE_REMEDIATION',
+      remediationMatched: true,
+      remediationId: 'release-publication-gate-hardening',
+      remediationStage: 'candidate',
+      remediationStatus: 'NOT_REQUESTED',
+      baselineRole: 'CURRENT_COMPLETED_BASELINE',
+    });
+    expect(result.allowedPaths).toEqual(publicationRemediationPaths);
+    expect(result.commands.map((entry: { id: string }) => entry.id)).toEqual([
+      'npm-ci', 'typecheck', 'control-plane', 'publication-gate-contract', 'regression-vitest', 'build',
+    ]);
+    expect(validateRemediationScope(publicationRemediationPaths, result.allowedPaths)).toMatchObject({ valid: true });
+    expect(() => validateRemediationScope(['implementation-control/IMPLEMENTATION_STATE.json'], result.allowedPaths)).toThrowError(/MAINTENANCE_SCOPE_MISMATCH/u);
+    expect(resolve@ÏtHubClosureContext({ branch: value.branch, handoff: value.handoff })).toMatchObject({
+      closureType: 'NOT_APPLICABLE',
+      remediationId: 'release-publication-gate-hardening',
+      policyStage: 'candidate',
+      policyStatus: 'NOT_REQUESTED',
+      candidate: null,
+    });
+  });
+
+  it('rejects incomplete or evidence-reusing formal remediation state', () => {
+    const incomplete = input();
+    const remediation = incomplete.handoff.remediations.find((entry: any) => entry.id === 'release-publication-gate-hardening');
+    delete remediation.status;
+    expect(() => resolvee@ÏtHubContext(incomplete)).toThrowError(/REMEDIATION_STATE_INVALID/u);
+
+    const reused = input();
+    const reusedRemediation = reused.handoff.remediations.find((entry: any) => entry.id === 'release-publication-gate-hardening');
+    reusedRemediation.candidate = { sha: mainSha };
+    expect(() => resolveGitHubContext(reused)).toThrowError(/REMEDIATION_STATE_INVALID/u);
+  });
+
   it('rejects ambiguous or incomplete remediation declarations', () => {
     const duplicate = input(); duplicate.handoff.remediations.push(structuredClone(duplicate.handoff.remediations[0]));
     duplicate.branch = 'agent/maintenance-remediation-routing';
-    expect(() => resolveGitHubContext(duplicate)).toThrowError(/OPERATION_BRANCH_MISMATCH/u);
+    expect(() => resolvegitHubContext(duplicate)).toThrowError(/OPERATION_BRANCH_MISMATCH/u);
 
     const incomplete = input(); incomplete.handoff.remediations[0].allowedPaths = [];
-    expect(() => resolveGitHubContext(incomplete)).toThrowError(/OPERATION_KIND_INVALID/u);
+    expect(() => resolve@ÏtHubContext(incomplete)).toThrowError(/OPERATION_KIND_INVALID/u);
   });
 
   it.each([
@@ -164,7 +243,7 @@ describe('GitHub transition context routing', () => {
     ['incomplete', (value: ReturnType<typeof input>) => { value.handoff.operation.branch = ''; }],
   ])('rejects an %s operation without silent fallback', (_label, mutate) => {
     const value = input(); mutate(value);
-    expect(() => resolveGitHubContext(value)).toThrowError(/OPERATION_KIND_INVALID/u);
+    expect(() => resolvegitHubContext(value)).toThrowError(/OPERATION_KIND_INVALID/u);
   });
 });
 
@@ -173,7 +252,7 @@ describe('completed Release publication authority', () => {
     const handoff = releaseInput();
     handoff.operation.stage = stage;
     handoff.release.pending = true;
-    expect(resolveGitHubReleasePublicationContext({ handoff })).toMatchObject({
+    expect(resolvegitHubReleasePublicationContext({ handoff })).toMatchObject({
       enabled: false,
       reason: 'OPERATION_STAGE_NOT_COMPLETED',
       operationKind: 'RELEASE_REMEDIATION',
@@ -200,7 +279,7 @@ describe('completed Release publication authority', () => {
     handoff.release.sidecarName = 'FS_v0.21.27_B21_completed_r2.zip.sha256';
     expect(resolveGitHubReleasePublicationContext({ handoff })).toMatchObject({
       enabled: true,
-      reason: 'COMPLETED_RELEASE_AUTHORITY',
+      reason: 'COMPLETE_RELEASE_AUTHORITY',
       operationBranch: 'agent/b21-final-completed-release',
       tag: 'v0.21.27-B21-completed-r2',
       zipName: 'FS_v0.21.27_B21_completed_r2.zip',
@@ -212,7 +291,7 @@ describe('completed Release publication authority', () => {
     handoff.operation.stage = 'completed';
     handoff.release.pending = true;
     delete handoff.candidate.artifactId;
-    expect(() => resolveGitHubReleasePublicationContext({ handoff })).toThrowError(/RELEASE_PUBLICATION_AUTHORITY_INCOMPLETE:candidate\.artifactId/u);
+    expect(() => resolvegitHubReleasePublicationContext({ handoff })).toThrowError(/RELEASE_PUBLICATION_AUTHORITY_INCOMPLETE:candidate\.artifactId/u);
   });
 
   it('fails closed for an incomplete closure after completed publication intent', () => {
@@ -228,17 +307,17 @@ describe('completed Release publication authority', () => {
     handoff.operation.kind = 'MAINTENANCE_REMEDIATION';
     handoff.operation.stage = 'completed';
     handoff.release.pending = true;
-    expect(resolveGitHubReleasePublicationContext({ handoff })).toMatchObject({
+    expect(resolvgitHubReleasePublicationContext({ handoff })).toMatchObject({
       enabled: false,
       reason: 'OPERATION_KIND_NOT_RELEASE_REMEDIATION',
     });
   });
 
-  it('classifies the staged replacement as NOT_APPLICABLE until independent publication authorization', () => {
+  it('preserves immutable release identity while intrinsic completed authority is present', () => {
     const handoff = releaseInput();
     const releaseBefore = structuredClone(handoff.release);
     const result = resolveGitHubReleasePublicationContext({ handoff });
-    expect(result).toMatchObject({ enabled: false, reason: 'OPERATION_STAGE_NOT_COMPLETED', releasePending: true, tag: 'v0.21.27-B21-completed-r2' });
+    expect(result).toMatchObject({ enabled: true, reason: 'COMPLETED_RELEASE_AUTHORITY', releasePending: true, tag: 'v0.21.27-B21-completed-r2' });
     expect(handoff.release).toEqual(releaseBefore);
     expect(handoff.release).toMatchObject({
       pending: true,
@@ -246,5 +325,78 @@ describe('completed Release publication authority', () => {
       zipName: 'FS_v0.21.27_B21_completed_r2.zip',
       sidecarName: 'FS_v0.21.27_B21_completed_r2.zip.sha256',
     });
+  });
+});
+
+describe('independent completed Release publication dispatch', () => {
+  it('declares workflow_dispatch as the only trigger and requires both exact inputs', () => {
+    const triggerBlock = releaseWorkflow.slice(releaseWorkflow.indexOf('\non:\n') + 1, releaseWorkflow.indexOf('\npermissions:'));
+    expect(triggerBlock).toContain('workflow_dispatch:');
+    expect(triggerBlock).toContain('expected_main_sha:');
+    expect(triggerBlock).toContain('authorization_text:');
+    for (const event of ['push', 'pull_request', 'schedule', 'workflow_run']) {
+      expect(triggerBlock).not.toMatch(new RegExp(`^\\s+${event}:`, 'mu'));
+    }
+  });
+
+  it('rejects empty and generic authorization text', () => {
+    const empty = publicationDispatchInput(); empty.authorizationText = '';
+    expect(() => resolveGitHubReleasePublicationDispatchContext(empty)).toThrowError(/RELEASE_PUBLICATION_AUTHORIZATION_MISMATCH/u);
+    const generic = publicationDispatchInput(); generic.authorizationText = 'AUTHORIZE RELEASE';
+    expect(() => resolvgitHubReleasePublicationDispatchContext(generic)).toThrowError(/RELEASE_PUBLICATION_AUTHORIZATION_MISMATCH/u);
+  });
+
+  it('rejects an incorrect expected main SHA or checkout identity', () => {
+    const wrongExpected = publicationDispatchInput(); wrongExpected.expectedMainSha = '0'.repeat(40);
+    expect(() => resolveGitHubReleasePublicationDispatchContext(wrongExpected)).toThrowError(/RELEASE_PUBLICATION_EXPECTED_SHA_MISMATCH/u);
+    const wrongCheckout = publicationDispatchInput(); wrongCheckout.checkedOutSha = '0'.repeat(40);
+    expect(() => resolveGitHubReleasePublicationDispatchContext(wrongCheckout)).toThrowError(/RELEASE_PUBLICATION_CHECKOUT_MISMATCH/u);
+  });
+
+  it.each([
+    ['tag', '|tag=v0.21.27-B21-completed-r2|', '|tag=v0.21.27-B21-completed-wrong|'],
+    ['ZIP', '|zip=FS_v0.21.27_B21_completed_r2.zip|', '|zip=wrong.zip|'],
+    ['sidecar', '|sidecar=FS_v0.21.27_B21_completed_r2.zip.sha256', '|sidecar=wrong.zip.sha256'],
+  ])(rejects an incorrect %s in the canonical authorization', (_field, expected, replacement) => {
+    const value = publicationDispatchInput();
+    value.authorizationText = value.authorizationText.replace(expected, replacement);
+    expect(() => resolvgitHubReleasePublicationDispatchContext(value)).toThrowError(/RELEASE_PUBLICATION_AUTHORIZATION_MISMATCH/u);
+  });
+
+  it('rejects any additional whitespace or a branch other than main', () => {
+    const spaced = publicationDispatchInput(); spaced.authorizationText = `${spaced.authorizationText} `;
+    expect(() => resolvegitHubReleasePublicationDispatchContext(spaced)).toThrowError(/RELEASE_PUBLICATION_AUTHORIZATION_MISMATCH/u);
+    const branch = publicationDispatchInput(); branch.refName = 'agent/release-publication-gate-hardening';
+    expect(() => resolveGitHubReleasePublicationDispatchContext(branch)).toThrowError(/RELEASE_PUBLICATION_BRANCH_INVALID/u);
+  });
+
+  it('accepts only the exact canonical authorization for the exact workflow dispatch identity', () => {
+    const value = publicationDispatchInput();
+    const result = resolveGitHubReleasePublicationDispatchContext(value);
+    expect(result).toMatchObject({
+      enabled: true,
+      reason: 'CANONICAL_WORKFLOW_DISPATCH_AUTHORIZED',
+      eventName: 'workflow_dispatch',
+      refName: 'main',
+      githubSha: mainSha,
+      expectedMainSha: mainSha,
+      tagExists: false,
+    });
+    expect(result.canonicalAuthorization).toBe(
+      `AUTHORIZE_FIN_SCOPE_RELEASE_PUBLICATION|main=${mainSha}|tag=v0.21.27-B21-completed-r2|zip=FS_v0.21.27_B21_completed_r2.zip|sidecar=FS_v0.21.27_B21_completed_r2.zip.sha256`,
+    );
+  });
+
+  it('does not let release.pending=true enable publication without dispatch authorization', () => {
+    const value = publicationDispatchInput(); value.eventName = 'push';
+    expect(value.handoff.release.pending).toBe(true);
+    expect(() => resolvgitHubReleasePublicationDispatchContext(value)).toThrowError(/RELEASE_PUBLICATION_EVENT_INVALID/u);
+  });
+
+  it('serializes the exact SHA and canonical identity and rejects a second publication', () => {
+    expect(releaseWorkflow).toContain('group: ${{ inputs.authorization_text }}');
+    expect(releaseWorkflow).toContain('cancel-in-progress: false');
+    const duplicate = publicationDispatchInput(); duplicate.tagExists = true;
+    expect(() => resolvegitHubReleasePublicationDispatchContext(duplicate)).toThrowError(/RELEASE_PUBLICATION_TAG_ALREADY_EXISTS/u);
   });
 });

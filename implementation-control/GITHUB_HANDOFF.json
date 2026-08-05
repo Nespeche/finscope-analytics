@@ -491,6 +491,63 @@
           "required": true
         }
       ]
+    },
+    {
+      "id": "release-publication-gate-hardening",
+      "mode": "CONTROL_PLANE_REMEDIATION",
+      "branch": "agent/release-publication-gate-hardening",
+      "stage": "candidate",
+      "status": "NOT_REQUESTED",
+      "candidate": null,
+      "closure": null,
+      "baselineRole": "CURRENT_COMPLETED_BASELINE",
+      "allowedPaths": [
+        ".github/workflows/finscope-completed-release.yml",
+        "implementation-control/GITHUB_HANDOFF.json",
+        "implementation-control/GITHUB_RELEASE_PROTOCOL.md",
+        "implementation-control/GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md",
+        "implementation-control/GITHUB_VALIDATION_PROTOCOL.md",
+        "implementation-control/scripts/Resolve-GitHubContext.mjs",
+        "tests/contract/github-transition-routing.test.ts"
+      ],
+      "commands": [
+        {
+          "id": "npm-ci",
+          "category": "dependencies",
+          "command": "npm ci",
+          "required": true
+        },
+        {
+          "id": "typecheck",
+          "category": "static",
+          "command": "npm run typecheck",
+          "required": true
+        },
+        {
+          "id": "control-plane",
+          "category": "control-plane",
+          "command": "node implementation-control/scripts/Validate-ControlPlaneState.mjs .",
+          "required": true
+        },
+        {
+          "id": "publication-gate-contract",
+          "category": "contract",
+          "command": "npm run test:contract -- tests/contract/github-transition-routing.test.ts",
+          "required": true
+        },
+        {
+          "id": "regression-vitest",
+          "category": "regression",
+          "command": "npm run test",
+          "required": true
+        },
+        {
+          "id": "build",
+          "category": "build",
+          "command": "npm run build",
+          "required": true
+        }
+      ]
     }
   ],
   "rejectedEvidence": [

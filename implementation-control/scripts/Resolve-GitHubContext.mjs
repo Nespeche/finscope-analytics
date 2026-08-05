@@ -32,6 +32,19 @@ function validateOperation(operation) {
   if (!operationStages[operation.kind].includes(operation.stage)) fail('OPERATION_KIND_INVALID', `${operation.kind}/${operation.stage}`);
 }
 
+function validateRemediationState(remediation) {
+  const fields = ['stage', 'status', 'candidate', 'closure'];
+  const present = fields.filter((field) => Object.hasOwn(remediation, field));
+  if (present.length === 0) return;
+  if (present.length !== fields.length) fail('REMEDIATION_STATE_INVALID', `${remediation.id}:incomplete`);
+  if (!remediationClosureStages.has(remediation.stage) || remediationClosureStages.get(remediation.stage) !== remediation.status) {
+    fail('REMEDIATION_STATE_INVALID', `${remediation.id}:${remediation.stage}/${remediation.status}`);
+  }
+  if (remediation.stage === 'candidate' && (remediation.candidate !== null || remediation.closure !== null)) {
+    fail('REMEDIATION_STATE_INVALID', `${remediation.id}:candidate must not reuse evidence`);
+  }
+}
+
 function validateRemediation(remediation) {
   if (!remediation || typeof remediation !== 'object') fail('OPERATION_KIND_INVALID', 'missing remediation');
   for (const field of ['id', 'mode', 'branch', 'baselineRole']) {
@@ -47,6 +60,7 @@ function validateRemediation(remediation) {
     uniquePaths.add(path);
   }
   if (normalizedCommands(remediation.commands).length === 0) fail('DERIVED_COMMAND_SET_MISMATCH', `remediation ${remediation.id} has no commands`);
+  validateRemediationState(remediation);
   if (remediation.closurePolicy !== undefined) validateRemediationClosurePolicy(remediation);
 }
 
@@ -104,7 +118,10 @@ export function resolveGitHubClosureContext({ branch, handoff }) {
   if (pending.length === 1 && matches[0]?.id !== pending[0].id) fail('REMEDIATION_BRANCH_MISMATCH', `${branch}/${pending[0].branch}`);
   if (matches.length === 1) {
     const remediation = matches[0]; const policy = remediation.closurePolicy;
-    if (!policy) return { closureType: 'NOT_APPLICABLE', branch, remediationId: remediation.id, remediationMode: remediation.mode, policyStage: null, policyStatus: null };
+    if (!policy) return {
+      closureType: 'NOT_APPLICABLE', branch, remediationId: remediation.id, remediationMode: remediation.mode,
+      policyStage: remediation.stage ?? null, policyStatus: remediation.status ?? null, candidate: remediation.candidate ?? null,
+    };
     return {
       closureType: policy.stage === 'closure' ? 'REMEDIATION_CLOSURE' : 'NOT_APPLICABLE',
       branch,
@@ -178,6 +195,53 @@ export function resolveGitHubReleasePublicationContext({ handoff }) {
   return { ...base, enabled: true, reason: 'COMPLETED_RELEASE_AUTHORITY' };
 }
 
+export function buildReleasePublicationAuthorization({ mainSha, tag, zipName, sidecarName }) {
+  const values = { mainSha, tag, zipName, sidecarName };
+  for (const [field, value] of Object.entries(values)) {
+    if (typeof value !== 'string' || value.length === 0 || value !== value.trim() || /[\s|]/u.test(value)) fail('RELEASE_PUBLICATION_AUTHORIZATION_IDENTITY_INVALID', field);
+  }
+  if (!shaPattern.test(mainSha)) fail('RELEASE_PUBLICATION_AUTHORIZATION_IDENTITY_INVALID', 'mainSha');
+  return `AUTHORIZE_FIN_SCOPE_RELEASE_PUBLICATION|main=${mainSha}|tag=${tag}|zip=${zipName}|sidecar=${sidecarName}`;
+}
+
+export function resolveGitHubReleasePublicationDispatchContext({
+  handoff,
+  eventName,
+  refName,
+  githubSha,
+  checkedOutSha,
+  expectedMainSha,
+  authorizationText,
+  tagExists,
+}) {
+  const publication = resolveGitHubReleasePublicationContext({ handoff });
+  if (!publication.enabled) fail('RELEASE_PUBLICATION_NOT_AUTHORIZED', publication.reason);
+  if (eventName !== 'workflow_dispatch') fail('RELEASE_PUBLICATION_EVENT_INVALID', String(eventName));
+  if (refName !== 'main') fail('RELEASE_PUBLICATION_BRANCH_INVALID', String(refName));
+  if (!shaPattern.test(githubSha ?? '')) fail('RELEASE_PUBLICATION_SHA_INVALID', 'GITHUB_SHA');
+  if (checkedOutSha !== githubSha) fail('RELEASE_PUBLICATION_CHECKOUT_MISMATCH', `${checkedOutSha}/${githubSha}`);
+  if (expectedMainSha !== githubSha) fail('RELEASE_PUBLICATION_EXPECTED_SHA_MISMATCH', `${expectedMainSha}/${githubSha}`);
+  if (tagExists !== false) fail('RELEASE_PUBLICATION_TAG_ALREADY_EXISTS', handoff.release.tag);
+  const canonicalAuthorization = buildReleasePublicationAuthorization({
+    mainSha: githubSha,
+    tag: handoff.release.tag,
+    zipName: handoff.release.zipName,
+    sidecarName: handoff.release.sidecarName,
+  });
+  if (authorizationText !== canonicalAuthorization) fail('RELEASE_PUBLICATION_AUTHORIZATION_MISMATCH');
+  return {
+    ...publication,
+    reason: 'CANONICAL_WORKFLOW_DISPATCH_AUTHORIZED',
+    eventName,
+    refName,
+    githubSha,
+    checkedOutSha,
+    expectedMainSha,
+    canonicalAuthorization,
+    tagExists: false,
+  };
+}
+
 function validateGates(state) {
   for (const gate of requiredGates) if (state.phaseGate?.[gate] !== true) fail('GATE_AUTHORITY_MISMATCH', gate);
   if (state.phaseGate?.convergenceAuthorized !== false) fail('CONVERGENCE_UNEXPECTEDLY_AUTHORIZED');
@@ -244,7 +308,9 @@ export function resolveGitHubContext({ branch, handoff, state, batches }) {
   if (JSON.stringify(commands) !== JSON.stringify(canonical)) fail('DERIVED_COMMAND_SET_MISMATCH');
   return {
     mode, branch, operationMatched, operationKind: operationMatched ? handoff.operation.kind : null,
-    remediationMatched: Boolean(remediation), remediationId: remediation?.id ?? null, allowedPaths,
+    remediationMatched: Boolean(remediation), remediationId: remediation?.id ?? null,
+    remediationStage: remediation?.stage ?? null, remediationStatus: remediation?.status ?? null,
+    allowedPaths,
     batchId, batchAuthoritySource, batchStatus: batch.status, baselineRole,
     baselineTag: baseline.tag, baselineCommitSha: baseline.commitSha, baselineZipName: baseline.zipName,
     baselineSidecarName: baseline.sidecarName, baselineZipSha256: baseline.zipSha256,
@@ -270,6 +336,21 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
   if (process.argv.includes('--closure')) {
     const handoff = JSON.parse(await readFile(join(resolve(process.cwd()), 'implementation-control/GITHUB_HANDOFF.json'), 'utf8'));
     const context = resolveGitHubClosureContext({ branch, handoff });
+    console.log(JSON.stringify(context, null, 2));
+    process.exit(0);
+  }
+  if (process.argv.includes('--release-publication-dispatch')) {
+    const handoff = JSON.parse(await readFile(join(resolve(process.cwd()), 'implementation-control/GITHUB_HANDOFF.json'), 'utf8'));
+    const context = resolveGitHubReleasePublicationDispatchContext({
+      handoff,
+      eventName: process.env.GITHUB_EVENT_NAME,
+      refName: process.env.GITHUB_REF_NAME,
+      githubSha: process.env.GITHUB_SHA,
+      checkedOutSha: process.env.CHECKED_OUT_SHA,
+      expectedMainSha: process.env.EXPECTED_MAIN_SHA,
+      authorizationText: process.env.AUTHORIZATION_TEXT,
+      tagExists: process.env.TAG_EXISTS === 'false' ? false : process.env.TAG_EXISTS === 'true' ? true : undefined,
+    });
     console.log(JSON.stringify(context, null, 2));
     process.exit(0);
   }
