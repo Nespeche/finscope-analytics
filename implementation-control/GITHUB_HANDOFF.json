@@ -375,10 +375,33 @@
         "kind": "REMEDIATION_CLOSURE",
         "remediationId": "b21-final-release-promotion-remediation",
         "branch": "agent/b21-final-release-promotion-remediation",
-        "stage": "candidate",
-        "status": "NOT_REQUESTED",
-        "candidate": null,
-        "closure": null,
+        "stage": "closure",
+        "status": "PENDING",
+        "candidate": {
+          "sha": "36cdc06a98453f97d14b7b7518f5541eb68f0b09",
+          "runId": 30961170712,
+          "artifactId": 8913000777,
+          "artifactName": "finscope-github-validation-36cdc06a9845-PASS",
+          "artifactDigest": "sha256:6ff47f3a7b8850ac438e204a66b9d8354bad1a18889a2b8a447eb5b6f686c58e"
+        },
+        "closure": {
+          "authorizationText": "Autorizo exclusivamente la solicitud atómica de cierre autenticado de la remediación b21-final-release-promotion-remediation para el candidato exacto 36cdc06a98453f97d14b7b7518f5541eb68f0b09, PR Validation run 30961170712, artifact 8913000777, nombre finscope-github-validation-36cdc06a9845-PASS y digest sha256:6ff47f3a7b8850ac438e204a66b9d8354bad1a18889a2b8a447eb5b6f686c58e. Esta autorización no incluye Ready for Review, merge, tag, Release, reemplazo de Fuentes, B22, lotes posteriores ni convergencia.",
+          "requestedAt": "2026-08-05T00:19:07.502Z",
+          "postClosureProhibitions": [
+            "Ready for Review",
+            "merge",
+            "tag",
+            "Release",
+            "Sources replacement",
+            "B22",
+            "later batches",
+            "convergence"
+          ],
+          "requestRequiredPaths": [
+            "implementation-control/GITHUB_HANDOFF.json",
+            "implementation-control/CHANGE_LEDGER.md"
+          ]
+        },
         "requestAllowedPaths": [
           "implementation-control/GITHUB_HANDOFF.json",
           "implementation-control/CHANGE_LEDGER.md"

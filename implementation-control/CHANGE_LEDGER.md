@@ -768,3 +768,28 @@
 - push: se elimina `force-with-lease` y se exige push normal fast-forward con comprobación remota previa, ancestry y confirmación remota posterior;
 - impacto: este cambio modifica bytes ejecutables y exige un nuevo candidate SHA, una PR Validation completa y artifact PASS nuevos antes de cualquier solicitud de cierre;
 - prohibiciones conservadas: no Ready for Review, merge, tag, Release, reemplazo de Fuentes, B22 ni convergencia.
+
+<!-- FINSCOPE_REMEDIATION_CLOSURE_REQUEST_V1 -->
+```json
+{
+  "authorizationText": "Autorizo exclusivamente la solicitud atómica de cierre autenticado de la remediación b21-final-release-promotion-remediation para el candidato exacto 36cdc06a98453f97d14b7b7518f5541eb68f0b09, PR Validation run 30961170712, artifact 8913000777, nombre finscope-github-validation-36cdc06a9845-PASS y digest sha256:6ff47f3a7b8850ac438e204a66b9d8354bad1a18889a2b8a447eb5b6f686c58e. Esta autorización no incluye Ready for Review, merge, tag, Release, reemplazo de Fuentes, B22, lotes posteriores ni convergencia.",
+  "remediationId": "b21-final-release-promotion-remediation",
+  "candidateSha": "36cdc06a98453f97d14b7b7518f5541eb68f0b09",
+  "workflowRunId": 30961170712,
+  "artifactId": 8913000777,
+  "artifactName": "finscope-github-validation-36cdc06a9845-PASS",
+  "artifactDigest": "sha256:6ff47f3a7b8850ac438e204a66b9d8354bad1a18889a2b8a447eb5b6f686c58e",
+  "timestamp": "2026-08-05T00:19:07.502Z",
+  "postClosureProhibitions": [
+    "Ready for Review",
+    "merge",
+    "tag",
+    "Release",
+    "Sources replacement",
+    "B22",
+    "later batches",
+    "convergence"
+  ]
+}
+```
+<!-- /FINSCOPE_REMEDIATION_CLOSURE_REQUEST_V1 -->
