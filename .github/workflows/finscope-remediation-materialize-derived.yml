@@ -1,44 +1,39 @@
 name: FinScope Remediation Materialize Derived Files
 
 on:
-  issue_comment:
-    types: [created]
+  pull_request:
+    branches: [main]
+    types: [edited]
 
 permissions:
   contents: write
   pull-requests: read
-  issues: read
 
 jobs:
   materialize-derived:
     name: materialize-derived
     if: >-
-      github.event.issue.pull_request &&
-      github.event.comment.body == 'AUTHORIZE_B20_HARDENING_DERIVED_COMMIT' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.draft == true &&
+      github.event.pull_request.head.ref == 'maintenance/b20-post-restore-control-plane-hardening' &&
+      contains(github.event.pull_request.body, 'AUTHORIZE_B20_HARDENING_DERIVED_COMMIT') &&
       github.actor == github.repository_owner
     runs-on: ubuntu-latest
     steps:
-      - name: Resolve and authenticate draft PR context
+      - name: Resolve exact authorized draft PR context
         id: context
         env:
-          GH_TOKEN: ${{ github.token }}
-          PR_NUMBER: ${{ github.event.issue.number }}
+          HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
         shell: bash
         run: |
           set -euo pipefail
-          pr="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}")"
-          head_repo="$(jq -r '.head.repo.full_name' <<<"$pr")"
-          head_branch="$(jq -r '.head.ref' <<<"$pr")"
-          head_sha="$(jq -r '.head.sha' <<<"$pr")"
-          base_branch="$(jq -r '.base.ref' <<<"$pr")"
-          draft="$(jq -r '.draft' <<<"$pr")"
-          test "$head_repo" = "$GITHUB_REPOSITORY"
-          test "$head_branch" = "maintenance/b20-post-restore-control-plane-hardening"
-          test "$base_branch" = "main"
-          test "$draft" = "true"
-          test "$head_sha" != "null"
-          echo "head_branch=$head_branch" >> "$GITHUB_OUTPUT"
-          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+          test "$HEAD_BRANCH" = "maintenance/b20-post-restore-control-plane-hardening"
+          test "$BASE_BRANCH" = "main"
+          test "$HEAD_SHA" != "null"
+          echo "head_branch=$HEAD_BRANCH" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
       - name: Checkout exact authenticated branch HEAD
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
