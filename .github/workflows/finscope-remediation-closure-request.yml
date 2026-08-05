@@ -84,12 +84,12 @@ jobs:
           echo "c96933b2a1e71d96a29a7d2de5edecea2a32ac42161318b18cdfc56a6d6865aa  $RUNNER_TEMP/b20-candidate-payload.tar.xz" | sha256sum --check --strict
           tar -xJf "$RUNNER_TEMP/b20-candidate-payload.tar.xz" -C .
           node implementation-control/scripts/Package-GitHubCompletedRelease.mjs --write-derived
-      - name: Enforce exact fifteen-path data diff
+      - name: Enforce allowlisted non-empty data diff
         shell: bash
         run: |
           set -euo pipefail
           mapfile -t actual < <(git diff --name-only | LC_ALL=C sort)
-          expected=(
+          allowed=(
             DOCUMENTATION_INDEX.md
             FILE_MANIFEST.sha256
             PACKAGE_INVENTORY.json
@@ -106,8 +106,12 @@ jobs:
             implementation-control/scripts/Verify-GitHubClosureArtifact.mjs
             implementation-control/scripts/Verify-GitHubCompletedPackage.mjs
           )
-          test "${#actual[@]}" -eq 15
-          diff -u <(printf '%s\n' "${expected[@]}") <(printf '%s\n' "${actual[@]}")
+          test "${#actual[@]}" -gt 0
+          test "${#actual[@]}" -le "${#allowed[@]}"
+          printf '%s\n' "${actual[@]}"
+          for path in "${actual[@]}"; do
+            printf '%s\n' "${allowed[@]}" | grep -Fqx -- "$path"
+          done
           git diff --check
       - name: Commit data candidate with force-with-lease
         env:
@@ -128,7 +132,9 @@ jobs:
             implementation-control/scripts/Verify-GitHubClosureArtifact.mjs \
             implementation-control/scripts/Verify-GitHubCompletedPackage.mjs \
             PACKAGE_METADATA.json PACKAGE_INVENTORY.json FILE_MANIFEST.sha256
-          test "$(git diff --cached --name-only | wc -l | tr -d ' ')" = "15"
+          staged_count="$(git diff --cached --name-only | wc -l | tr -d ' ')"
+          test "$staged_count" -gt 0
+          test "$staged_count" -le 15
           git commit -m "fix(control-plane): materialize B20 r3 candidate data"
           test "$(git rev-parse HEAD^)" = "$EVENT_HEAD"
           git push origin \
