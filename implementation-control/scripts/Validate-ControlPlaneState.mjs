@@ -145,6 +145,94 @@ try {
     readText('V0.21_PHASE_STATUS.md'),
   ]);
 
+  const [handoff, closureRequestWorkflow, closureValidationWorkflow, applyClosureScript, closureVerifierScript, closureArtifactVerifierScript, readmeText, startHereText, promptB21Text, projectInstructionsText] = await Promise.all([
+    readJson('implementation-control/GITHUB_HANDOFF.json'),
+    readText('.github/workflows/finscope-remediation-closure-request.yml'),
+    readText('.github/workflows/finscope-closure-validation.yml'),
+    readText('implementation-control/scripts/Apply-B20PostRestoreClosure.mjs'),
+    readText('implementation-control/scripts/Verify-GitHubClosure.mjs'),
+    readText('implementation-control/scripts/Verify-GitHubClosureArtifact.mjs'),
+    readText('README.md'),
+    readText('START_HERE_CHATGPT.md'),
+    readText('PROMPT_IMPLEMENTACION_B21.md'),
+    readText('implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt'),
+  ]);
+  const closureLiteral = 'AUTHORIZE_B20_POST_RESTORE_CLOSURE_COMMIT';
+  const closureStagePaths = [
+    '.github/workflows/finscope-remediation-closure-request.yml',
+    '.github/workflows/finscope-closure-validation.yml',
+    '.github/workflows/finscope-release-qualification.yml',
+    '.github/workflows/finscope-completed-release.yml',
+    'implementation-control/scripts/Apply-B20PostRestoreClosure.mjs',
+    'implementation-control/scripts/Verify-GitHubClosure.mjs',
+    'implementation-control/scripts/Verify-GitHubClosureArtifact.mjs',
+    'implementation-control/scripts/Validate-ControlPlaneState.mjs',
+    'implementation-control/scripts/Package-GitHubCompletedRelease.mjs',
+    'implementation-control/scripts/Verify-GitHubCompletedPackage.mjs',
+    'implementation-control/GITHUB_HANDOFF.json',
+    'implementation-control/IMPLEMENTATION_STATE.json',
+    'implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt',
+    'README.md',
+    'START_HERE_CHATGPT.md',
+    'DOCUMENTATION_INDEX.md',
+    'V0.21_PHASE_STATUS.md',
+    'PROMPT_IMPLEMENTACION_B21.md',
+    'PACKAGE_METADATA.json',
+    'PACKAGE_INVENTORY.json',
+    'FILE_MANIFEST.sha256',
+  ];
+  const closurePaths = [
+    'README.md', 'START_HERE_CHATGPT.md', 'DOCUMENTATION_INDEX.md', 'V0.21_PHASE_STATUS.md',
+    'PACKAGE_METADATA.json', 'PACKAGE_INVENTORY.json', 'FILE_MANIFEST.sha256', 'PROMPT_IMPLEMENTACION_B21.md',
+    'implementation-control/GITHUB_HANDOFF.json', 'implementation-control/IMPLEMENTATION_STATE.json',
+  ];
+  const countLiteral = (text, literal) => text.split(literal).length - 1;
+  check('B20_CLOSURE_OPERATION_ID', handoff.operation?.id === 'b20-post-restore-control-plane-hardening', String(handoff.operation?.id));
+  check('B20_CLOSURE_OPERATION_STAGE', ['candidate', 'closure'].includes(handoff.operation?.stage), String(handoff.operation?.stage));
+  check('B20_CLOSURE_WORKFLOW_EXISTS', closureRequestWorkflow.includes('name: FinScope Remediation Closure Request'), '.github/workflows/finscope-remediation-closure-request.yml');
+  check('B20_CLOSURE_SCRIPT_EXISTS', applyClosureScript.includes("export const OPERATION_ID = 'b20-post-restore-control-plane-hardening'"), 'Apply-B20PostRestoreClosure.mjs');
+  check('B20_CLOSURE_LITERAL_HANDOFF', handoff.closureMechanism?.authorizationLiteral === closureLiteral, String(handoff.closureMechanism?.authorizationLiteral));
+  check('B20_CLOSURE_LITERAL_WORKFLOW_UNIQUE', countLiteral(closureRequestWorkflow, closureLiteral) === 1, `count=${countLiteral(closureRequestWorkflow, closureLiteral)}`);
+  check('B20_CLOSURE_LITERAL_SCRIPT_UNIQUE', countLiteral(applyClosureScript, closureLiteral) === 1, `count=${countLiteral(applyClosureScript, closureLiteral)}`);
+  check('B20_CLOSURE_LITERAL_DOCUMENTED', [readmeText, startHereText, projectInstructionsText].every((text) => text.includes(closureLiteral)), 'README/START_HERE/project instructions');
+  check('B20_CLOSURE_BINDING_MARKERS', handoff.closureMechanism?.bindingBegin === 'B20_CLOSURE_BINDING_JSON_BEGIN' && handoff.closureMechanism?.bindingEnd === 'B20_CLOSURE_BINDING_JSON_END', JSON.stringify(handoff.closureMechanism));
+  check('B20_CLOSURE_ACTIVATION_EDIT_ONLY', closureRequestWorkflow.includes('pull_request:\n    types: [edited]'), 'pull_request edited');
+  check('B20_CLOSURE_OWNER_GATE', closureRequestWorkflow.includes("github.actor == github.repository_owner"), 'repository owner condition');
+  const postApplyValidationIndex = closureRequestWorkflow.indexOf('- name: Validate post-apply control plane before commit');
+  const atomicCommitIndex = closureRequestWorkflow.indexOf('- name: Recheck remote HEAD and create one atomic commit');
+  check('B20_CLOSURE_FORCE_WITH_LEASE', closureRequestWorkflow.includes('--force-with-lease=refs/heads/maintenance/b20-post-restore-control-plane-hardening:$EVENT_HEAD') && postApplyValidationIndex >= 0 && atomicCommitIndex > postApplyValidationIndex, 'post-apply validation before exact-head lease');
+  check('B20_CLOSURE_MINIMAL_PERMISSIONS', closureRequestWorkflow.includes('contents: write') && closureRequestWorkflow.includes('actions: read') && closureRequestWorkflow.includes('pull-requests: read'), 'closure request permissions');
+  check('B20_CLOSURE_VALIDATION_READ_ONLY', closureValidationWorkflow.includes('contents: read') && !closureValidationWorkflow.includes('contents: write') && closureValidationWorkflow.includes("steps.closure.outputs.evidence_dir != ''") && closureValidationWorkflow.includes("steps.control_plane.outcome == 'failure'") && closureValidationWorkflow.includes("steps.control_plane.outcome == 'success'"), 'read-only with explicit success/failure artifact guards');
+  check('B20_CLOSURE_STAGE_ALLOWLIST_EXACT', sameArray(handoff.remediation?.scopeExpansion?.allowedPaths, closureStagePaths), JSON.stringify(handoff.remediation?.scopeExpansion?.allowedPaths));
+  check('B20_CLOSURE_ALLOWLIST_EXACT', sameArray(handoff.remediation?.closurePolicy?.allowedPaths, closurePaths), JSON.stringify(handoff.remediation?.closurePolicy?.allowedPaths));
+  const remediationAllowed = new Set(handoff.remediation?.allowedPaths ?? []);
+  check('B20_CLOSURE_STAGE_SUBSET_REMEDIATION', closureStagePaths.every((path) => remediationAllowed.has(path)), `remediation=${remediationAllowed.size}`);
+  check('B20_CLOSURE_PATHS_SUBSET_REMEDIATION', closurePaths.every((path) => remediationAllowed.has(path)), `remediation=${remediationAllowed.size}`);
+  check('B20_CLOSURE_PROHIBITIONS_ACTIVE', ['b21', 'tasksT090ThroughT095', 'convergence', 'ready', 'merge', 'tagOrRelease', 'sourcesReplacement'].every((key) => handoff.remediation?.prohibitions?.[key] === true), JSON.stringify(handoff.remediation?.prohibitions));
+  check('B20_CLOSURE_R5_HANDOFF_IDENTITY', handoff.release?.releaseRevision === 'v0.21.25_B20_completed_r5' && handoff.release?.tag === 'v0.21.25-B20-completed-r5' && handoff.release?.zipName === 'FS_v0.21.25_B20_completed_r5.zip' && handoff.release?.sidecarName === 'FS_v0.21.25_B20_completed_r5.zip.sha256', JSON.stringify(handoff.release));
+  check('B20_CLOSURE_R5_STATE_IDENTITY', state.activePackageLogicalName === 'FS_v0.21.25_B20_completed_r5.zip', state.activePackageLogicalName);
+  check('B20_CLOSURE_R5_METADATA_IDENTITY', metadata.releaseRevision === 'v0.21.25_B20_completed_r5' && metadata.logicalZipName === 'FS_v0.21.25_B20_completed_r5.zip' && metadata.finalSha256Sidecar === 'FS_v0.21.25_B20_completed_r5.zip.sha256', JSON.stringify({ releaseRevision: metadata.releaseRevision, logicalZipName: metadata.logicalZipName }));
+  check('B20_CLOSURE_R2_STALE_DISPOSITION', sameArray(handoff.priorCandidateR2?.dispositions, ['STALE_FOR_NEW_HEAD_NOT_REUSABLE_AS_PASS', 'SUPERSEDED_CANDIDATE_NOT_PROMOTABLE']) && handoff.priorCandidateR2?.reusableAsPassEvidence === false, JSON.stringify(handoff.priorCandidateR2));
+  check('B20_CLOSURE_NO_ACTIVE_R2_CANDIDATE', handoff.release?.releaseRevision !== 'v0.21.25_B20_completed_r2' && state.activePackageLogicalName !== 'FS_v0.21.25_B20_completed_r2.zip', 'r2 not active');
+  check('B20_CLOSURE_CANDIDATE_AUTH_CLOSED', handoff.operation?.stage !== 'candidate' || (handoff.closure?.status === 'NOT_AUTHORIZED' && handoff.remediation?.closurePolicy?.status === 'NOT_AUTHORIZED' && handoff.closureMechanism?.authorizationDisposition === 'NOT_INSERTED'), JSON.stringify({ closure: handoff.closure, policy: handoff.remediation?.closurePolicy?.status, disposition: handoff.closureMechanism?.authorizationDisposition }));
+  let githubEvent = null;
+  let githubEventError = null;
+  if (process.env.GITHUB_EVENT_PATH) {
+    try { githubEvent = JSON.parse(await readFile(process.env.GITHUB_EVENT_PATH, 'utf8')); }
+    catch (error) { githubEventError = String(error); }
+  }
+  const candidatePrBody = githubEvent?.pull_request?.body ?? '';
+  const candidateLiteralLines = candidatePrBody.split(/\r?\n/u).filter((line) => line.trim() === closureLiteral);
+  check('B20_CLOSURE_GITHUB_EVENT_READABLE', !process.env.GITHUB_EVENT_PATH || (githubEvent !== null && githubEventError === null), githubEventError ?? process.env.GITHUB_EVENT_PATH ?? 'local');
+  check('B20_CLOSURE_LITERAL_ABSENT_FROM_CANDIDATE_PR_BODY', handoff.operation?.stage !== 'candidate' || !process.env.GITHUB_EVENT_PATH || candidateLiteralLines.length === 0, `count=${candidateLiteralLines.length}`);
+  check('B20_CLOSURE_OBSOLETE_LITERALS_ABSENT_FROM_CANDIDATE_PR_BODY', handoff.operation?.stage !== 'candidate' || !process.env.GITHUB_EVENT_PATH || !['AUTHORIZE_B20_HARDENING_DERIVED_COMMIT', 'AUTHORIZE_B20_POST_RESTORE_TAG_RELEASE'].some((literal) => candidatePrBody.includes(literal)), 'candidate PR body');
+  check('B20_CLOSURE_HOLD_AND_B21_BLOCK', handoff.remediation?.hold === true && handoff.release?.pending === true && handoff.productState?.b21Executable === false && state.batchStatus?.B21 === 'PENDING' && state.phaseGate?.convergenceAuthorized === false, 'hold/release/B21/convergence');
+  check('B20_CLOSURE_VERIFIER_SPECIALIZED', closureVerifierScript.includes('B20_POST_RESTORE_CLOSURE') && closureVerifierScript.includes('CLOSURE_EXACT_ALLOWLIST_MISMATCH'), 'specialized verifier');
+  check('B20_CLOSURE_ARTIFACT_EXTERNAL_INPUTS', ['CLOSURE_COMMIT_SHA', 'CLOSURE_RUN_ID', 'CLOSURE_ARTIFACT_ID', 'CLOSURE_ARTIFACT_DIGEST'].every((token) => closureArtifactVerifierScript.includes(token)), 'external exact-head inputs');
+  for (const [path, text] of [['README.md', readmeText], ['START_HERE_CHATGPT.md', startHereText], ['PROMPT_IMPLEMENTACION_B21.md', promptB21Text]]) {
+    check(`B20_CLOSURE_DOC_MARKER_${path}`, countLiteral(text, '<!-- B20_CLOSURE_MECHANISM_STATE_BEGIN -->') === 1 && countLiteral(text, '<!-- B20_CLOSURE_MECHANISM_STATE_END -->') === 1, path);
+  }
+
   const schemaSelfTest = {
     type: 'object',
     required: ['name'],

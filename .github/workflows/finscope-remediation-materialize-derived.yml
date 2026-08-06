@@ -1,0 +1,139 @@
+name: FinScope Remediation Materialize Derived Files
+
+on:
+  pull_request:
+    branches: [main]
+    types: [edited]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  materialize-derived:
+    name: materialize-derived
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.draft == true &&
+      github.event.pull_request.head.ref == 'maintenance/b20-post-restore-control-plane-hardening' &&
+      contains(github.event.pull_request.body, 'AUTHORIZE_B20_HARDENING_DERIVED_COMMIT') &&
+      github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve exact authorized draft PR context
+        id: context
+        env:
+          HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$HEAD_BRANCH" = "maintenance/b20-post-restore-control-plane-hardening"
+          test "$BASE_BRANCH" = "main"
+          test "$HEAD_SHA" != "null"
+          echo "head_branch=$HEAD_BRANCH" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+      - name: Checkout exact authenticated branch HEAD
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 0
+          ref: ${{ steps.context.outputs.head_sha }}
+          persist-credentials: true
+      - name: Configure Node from package authority
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+        with:
+          node-version-file: package.json
+          package-manager-cache: false
+      - name: Reauthenticate remote HEAD before mutation
+        env:
+          HEAD_BRANCH: ${{ steps.context.outputs.head_branch }}
+          EXPECTED_HEAD_SHA: ${{ steps.context.outputs.head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin "$HEAD_BRANCH"
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD_SHA"
+          test "$(git rev-parse FETCH_HEAD)" = "$EXPECTED_HEAD_SHA"
+      - name: Materialize immutable Release identity and deterministic derivatives
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from 'node:fs';
+          const handoffPath = 'implementation-control/GITHUB_HANDOFF.json';
+          const statePath = 'implementation-control/IMPLEMENTATION_STATE.json';
+          const metadataPath = 'PACKAGE_METADATA.json';
+          const handoff = JSON.parse(readFileSync(handoffPath, 'utf8'));
+          const state = JSON.parse(readFileSync(statePath, 'utf8'));
+          const metadata = JSON.parse(readFileSync(metadataPath, 'utf8'));
+          const release = handoff.release;
+          const assert = (condition, code) => { if (!condition) throw new Error(code); };
+          assert(handoff.operation?.id === 'b20-post-restore-control-plane-hardening', 'UNEXPECTED_OPERATION');
+          assert(handoff.operation?.stage === 'candidate', 'UNEXPECTED_OPERATION_STAGE');
+          assert(release?.tag !== handoff.baseline?.tag, 'RELEASE_TAG_REUSES_COMPLETED_BASELINE');
+          assert(release?.zipName !== handoff.baseline?.zipName, 'RELEASE_ZIP_REUSES_COMPLETED_BASELINE');
+          assert(release?.sidecarName !== handoff.baseline?.sidecarName, 'RELEASE_SIDECAR_REUSES_COMPLETED_BASELINE');
+          assert(release?.packageRevision === state.packageRevision, 'AUTHORITY_REVISION_MISMATCH');
+          assert(typeof release?.releaseRevision === 'string' && release.releaseRevision.length > 0, 'RELEASE_REVISION_MISSING');
+          Object.assign(metadata, {
+            packageId: `FinScope-Analytics-${release.tag.replace(/^v/u, '')}`,
+            packageVersion: release.packageRevision,
+            packageRevision: state.packageRevision,
+            releaseRevision: release.releaseRevision,
+            logicalZipName: release.zipName,
+            finalSha256Sidecar: release.sidecarName,
+            identityModel: {
+              authorityRevision: state.packageRevision,
+              releaseRevision: release.releaseRevision,
+              activeSourceBaselineTag: handoff.baseline.tag,
+              activeSourceBaselineLogicalName: handoff.baseline.zipName,
+              immutableReleaseIdentityRequired: true,
+              completedReleaseIdentityReuseForbidden: true
+            }
+          });
+          Object.assign(metadata.windowsExtractionPolicy, {
+            mode: 'GITHUB_FIRST_RELEASE_RECOVERY_CANDIDATE',
+            releaseTag: release.tag,
+            zipName: release.zipName,
+            sidecarName: release.sidecarName
+          });
+          state.activePackageLogicalName = release.zipName;
+          writeFileSync(metadataPath, `${JSON.stringify(metadata)}\n`, 'utf8');
+          writeFileSync(statePath, `${JSON.stringify(state, null, 2)}\n`, 'utf8');
+          NODE
+          node implementation-control/scripts/Package-GitHubCompletedRelease.mjs --write-derived
+          changed="$(git diff --name-only)"
+          test -n "$changed"
+          while IFS= read -r path; do
+            case "$path" in
+              implementation-control/IMPLEMENTATION_STATE.json|PACKAGE_METADATA.json|PACKAGE_INVENTORY.json|FILE_MANIFEST.sha256) ;;
+              *) echo "UNAUTHORIZED_DERIVED_PATH:$path" >&2; exit 1 ;;
+            esac
+          done <<< "$changed"
+          for path in implementation-control/IMPLEMENTATION_STATE.json PACKAGE_METADATA.json PACKAGE_INVENTORY.json FILE_MANIFEST.sha256; do
+            grep -Fxq "$path" <<< "$changed" || { echo "REQUIRED_DERIVED_PATH_NOT_CHANGED:$path" >&2; exit 1; }
+          done
+      - name: Validate materialized control plane
+        shell: bash
+        run: |
+          set -euo pipefail
+          root_alias="$RUNNER_TEMP/FinScope_v0.21.4"
+          rm -rf "$root_alias"
+          ln -s "$GITHUB_WORKSPACE" "$root_alias"
+          node implementation-control/scripts/Validate-ControlPlaneState.mjs "$root_alias"
+      - name: Commit and push one atomic derived update
+        env:
+          HEAD_BRANCH: ${{ steps.context.outputs.head_branch }}
+          EXPECTED_HEAD_SHA: ${{ steps.context.outputs.head_sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add implementation-control/IMPLEMENTATION_STATE.json PACKAGE_METADATA.json PACKAGE_INVENTORY.json FILE_MANIFEST.sha256
+          git diff --cached --quiet && { echo DERIVED_COMMIT_EMPTY >&2; exit 1; }
+          git commit -m "chore: materialize immutable B20 hardening identity"
+          git fetch origin "$HEAD_BRANCH"
+          test "$(git rev-parse FETCH_HEAD)" = "$EXPECTED_HEAD_SHA"
+          git push --force-with-lease="refs/heads/${HEAD_BRANCH}:${EXPECTED_HEAD_SHA}" origin "HEAD:refs/heads/${HEAD_BRANCH}"
