@@ -1,49 +1,28 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://finscope.local/schemas/authority-matrix.schema.json",
-  "title": "FinScope field-scoped authority matrix",
   "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "schemaVersion",
-    "packageRevision",
-    "fieldAuthorities",
-    "conflictProcedure",
-    "historicalPolicy"
-  ],
+  "required": ["schemaVersion", "fieldAuthorities", "conflictProcedure", "historicalPolicy"],
   "properties": {
     "$schema": { "type": "string" },
-    "schemaVersion": { "type": "string" },
-    "packageRevision": { "type": "string" },
+    "schemaVersion": { "const": "2.0.0" },
     "fieldAuthorities": {
-      "type": "array",
-      "minItems": 1,
+      "type": "array", "minItems": 10,
       "items": {
         "type": "object",
-        "additionalProperties": false,
         "required": ["fieldId", "scope", "authority", "mirrors", "forbiddenOverrides"],
         "properties": {
-          "fieldId": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+          "fieldId": { "type": "string" },
           "scope": { "type": "string" },
           "authority": { "type": "string" },
-          "mirrors": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
-          "forbiddenOverrides": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
-        }
+          "mirrors": { "type": "array", "items": { "type": "string" } },
+          "forbiddenOverrides": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
       }
     },
-    "conflictProcedure": {
-      "type": "array",
-      "minItems": 1,
-      "items": { "type": "string" }
-    },
-    "historicalPolicy": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["historicalPatterns", "candidateRule"],
-      "properties": {
-        "historicalPatterns": { "type": "array", "items": { "type": "string" } },
-        "candidateRule": { "type": "string" }
-      }
-    }
-  }
+    "conflictProcedure": { "type": "object" },
+    "historicalPolicy": { "type": "object" }
+  },
+  "additionalProperties": false
 }

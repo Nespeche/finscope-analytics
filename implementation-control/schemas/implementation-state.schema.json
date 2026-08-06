@@ -3,37 +3,44 @@
   "$id": "https://finscope.local/schemas/implementation-state.schema.json",
   "type": "object",
   "required": [
-    "schemaVersion", "normativeBaseline", "packageRevision", "baselineRole",
-    "phaseGate", "implementationStatus", "taskStatus", "batchStatus",
-    "specifyTreeSha256", "sourceTasksSha256", "validationWorkflow"
+    "schemaVersion",
+    "project",
+    "normativeBaseline",
+    "implementationStatus",
+    "activeBatchId",
+    "completedBatchIds",
+    "blockedBatchIds",
+    "completedTaskIds",
+    "blockedTaskIds",
+    "taskStatus",
+    "batchStatus",
+    "lastCompletedBatchId",
+    "nextAuthorizedBatchId",
+    "specifyTreeSha256",
+    "sourceTasksSha256",
+    "openFindings"
   ],
   "properties": {
     "$schema": { "type": "string" },
-    "schemaVersion": { "const": "1.1.0" },
+    "schemaVersion": { "const": "2.0.0" },
     "project": { "const": "FinScope Analytics" },
     "normativeBaseline": { "const": "v0.21" },
-    "packageRevision": { "type": "string" },
-    "activePackageLogicalName": { "type": "string" },
-    "baselineRole": { "enum": ["ACTIVE_COMPLETED_BASELINE", "CANDIDATE_AWAITING_LOCAL_VALIDATION"] },
-    "sourceBaseline": { "type": "object" },
-    "normativeSourceBaseline": { "type": "object" },
-    "phaseGate": {
-      "type": "object",
-      "required": ["tasksAuthorized", "analysisAuthorized", "implementationAuthorized", "convergenceAuthorized"],
-      "properties": {
-        "tasksAuthorized": { "const": true },
-        "analysisAuthorized": { "const": true },
-        "implementationAuthorized": { "const": true },
-        "convergenceAuthorized": { "const": false }
-      },
-      "additionalProperties": false
+    "implementationStatus": {
+      "enum": ["READY", "IN_PROGRESS", "LOCAL_VALIDATION_REQUIRED", "PARTIAL", "BLOCKED", "COMPLETED"]
     },
-    "implementationStatus": { "enum": ["READY", "IN_PROGRESS", "LOCAL_VALIDATION_REQUIRED", "PARTIAL", "BLOCKED", "COMPLETED"] },
-    "activeBatchId": { "type": ["string", "null"] },
-    "completedBatchIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
-    "blockedBatchIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
-    "completedTaskIds": { "type": "array", "items": { "pattern": "^T\\d{3}$" }, "uniqueItems": true },
-    "blockedTaskIds": { "type": "array", "items": { "pattern": "^T\\d{3}$" }, "uniqueItems": true },
+    "activeBatchId": { "type": ["string", "null"], "pattern": "^B\\d{2}$" },
+    "completedBatchIds": {
+      "type": "array", "uniqueItems": true, "items": { "pattern": "^B\\d{2}$" }
+    },
+    "blockedBatchIds": {
+      "type": "array", "uniqueItems": true, "items": { "pattern": "^B\\d{2}$" }
+    },
+    "completedTaskIds": {
+      "type": "array", "uniqueItems": true, "items": { "pattern": "^T\\d{3}$" }
+    },
+    "blockedTaskIds": {
+      "type": "array", "uniqueItems": true, "items": { "pattern": "^T\\d{3}$" }
+    },
     "taskStatus": {
       "type": "object", "minProperties": 109, "maxProperties": 109,
       "additionalProperties": { "enum": ["PENDING", "IN_PROGRESS", "IMPLEMENTED_PENDING_VALIDATION", "COMPLETED", "BLOCKED"] }
@@ -42,28 +49,27 @@
       "type": "object", "minProperties": 25, "maxProperties": 25,
       "additionalProperties": { "enum": ["PENDING", "IN_PROGRESS", "LOCAL_VALIDATION_REQUIRED", "COMPLETED", "PARTIAL", "BLOCKED"] }
     },
-    "lastCompletedBatchId": { "type": ["string", "null"] },
-    "lastBatchReport": { "type": ["string", "null"] },
-    "nextAuthorizedBatchId": { "type": ["string", "null"] },
+    "lastCompletedBatchId": { "type": ["string", "null"], "pattern": "^B\\d{2}$" },
+    "nextAuthorizedBatchId": { "type": ["string", "null"], "pattern": "^B\\d{2}$" },
     "specifyTreeSha256": { "pattern": "^[0-9a-f]{64}$" },
     "sourceTasksSha256": { "pattern": "^[0-9a-f]{64}$" },
-    "validationWorkflow": {
-      "type": "object",
-      "required": ["candidatePromotionRule", "localProtocol", "evidenceSchema"],
-      "properties": {
-        "candidatePromotionRule": { "type": "string" },
-        "localProtocol": { "type": "string" },
-        "evidenceSchema": { "type": "string" },
-        "pendingRuntimeValidationBatches": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
-      },
-      "additionalProperties": false
-    },
-    "openFindings": { "type": "array" },
-    "productCodePresent": { "type": "boolean" },
-    "dependenciesInstalled": { "type": "boolean" },
-    "buildArtifactsPresent": { "type": "boolean" },
-    "updatedBy": { "type": "string" },
-    "updatedOn": { "type": "string" }
+    "openFindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity", "scope", "status", "description", "owner", "closureCondition"],
+        "properties": {
+          "id": { "type": "string" },
+          "severity": { "type": "string" },
+          "scope": { "type": "string" },
+          "status": { "enum": ["OPEN", "CLOSED", "DEFERRED"] },
+          "description": { "type": "string" },
+          "owner": { "type": "string" },
+          "closureCondition": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
   },
   "additionalProperties": false
 }

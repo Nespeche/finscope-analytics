@@ -1,0 +1,33 @@
+{
+  "$schema": "schemas/baseline-lock.schema.json",
+  "schemaVersion": "2.0.0",
+  "repository": "Nespeche/finscope-analytics",
+  "operationInput": {
+    "tag": "v0.21.25-B20-completed",
+    "commitSha": "f9b7e9e589ced6af5d72722722898850f0cab3dc",
+    "zipLogicalName": "FS_v0.21.25_B20_completed.zip",
+    "sidecarLogicalName": "FS_v0.21.25_B20_completed.zip.sha256",
+    "zipSha256": "c18b1390c416b5c538e1b7cf704c610754e4cff2f3eeec8c2c08bc800b120fc6",
+    "root": "FinScope_v0.21.4/",
+    "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+    "tasksSha256": "bd89291f6aca4817dda8d9cd3700e5f4682415574b72ad815d8de7e44a824d08",
+    "status": "AUTHENTICATED_COMPLETED"
+  },
+  "expectedGitHubBase": {
+    "branch": "main",
+    "mainSha": "db9588c7256529b6f119f23abb1b17dbd14fa6dc",
+    "pullRequest": 46,
+    "pullRequestMerged": true,
+    "mergeObservedAt": "2026-08-06T15:02:16Z",
+    "relationToOperationInput": "CONTROL_PLANE_ONLY_AHEAD_BY_44_COMMITS",
+    "status": "DIVERGENT_OPERATIONAL_STATE"
+  },
+  "transportIdentity": {
+    "physicalSuffixesIgnored": true,
+    "binding": "SIDECAR_LOGICAL_NAME_PLUS_ACTUAL_SHA256",
+    "physicalFilenameEqualityRequired": false
+  },
+  "semantics": "Locks the authenticated completed Sources pair used as input to the current operation. It does not self-identify the package that contains this file.",
+  "promotionRule": "A candidate becomes the active completed baseline only after exact-head validation, explicit merge, manual Release publication, asset re-download, full package verification, and explicit Sources replacement.",
+  "observedOn": "2026-08-06"
+}

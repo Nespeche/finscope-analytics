@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://finscope.local/schemas/operation-evidence.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "operationId", "headSha", "status", "startedAt", "finishedAt", "commands"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": "2.0.0" },
+    "operationId": { "type": "string" },
+    "headSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "status": { "enum": ["PASS", "FAIL", "ENVIRONMENT_BLOCKED", "HUMAN_REQUIRED"] },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "finishedAt": { "type": "string", "format": "date-time" },
+    "primaryFailure": { "type": ["string", "null"] },
+    "primaryBlocker": { "type": ["string", "null"] },
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "command", "status", "exitCode"],
+        "properties": {
+          "id": { "type": "string" },
+          "command": { "type": "string" },
+          "status": { "enum": ["PASS", "FAIL", "ENVIRONMENT_BLOCKED", "NOT_RUN"] },
+          "exitCode": { "type": ["integer", "null"] },
+          "stdoutSha256": { "type": ["string", "null"] },
+          "stderrSha256": { "type": ["string", "null"] },
+          "reason": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

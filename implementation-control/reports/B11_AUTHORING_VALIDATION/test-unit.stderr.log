@@ -1,1 +1,0 @@
-NOT_RUN: fail-fast after npm ci exit 1; command=npm run test:unit -- tests/unit/fundamental/bundle-vectors.test.ts

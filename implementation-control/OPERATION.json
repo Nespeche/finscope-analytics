@@ -1,0 +1,138 @@
+{
+  "$schema": "schemas/operation.schema.json",
+  "schemaVersion": "2.0.0",
+  "operationId": "sdd2-governance-migration",
+  "type": "GOVERNANCE_MIGRATION",
+  "repository": "Nespeche/finscope-analytics",
+  "base": {
+    "branch": "main",
+    "expectedSha": "db9588c7256529b6f119f23abb1b17dbd14fa6dc"
+  },
+  "branch": "governance/sdd2-professionalization",
+  "purpose": "Replace the distributed legacy control plane without modifying product behavior, normative specification, tasks, batch definitions, fixtures or .specify.",
+  "scope": {
+    "mode": "CLOSED_ALLOWLIST",
+    "allowedPaths": [
+      ".github/workflows/sdd-pr-validation.yml",
+      ".github/workflows/sdd-release.yml",
+      "README.md",
+      "PROJECT_CONTEXT.md",
+      "START_HERE_CHATGPT.md",
+      "DOCUMENTATION_INDEX.md",
+      "V0.21_PHASE_STATUS.md",
+      "AUDIT_REPORT_SDD2.md",
+      "MIGRATION_GUIDE_SDD2.md",
+      "SOURCE_REPLACEMENT_INSTRUCTIONS_SDD2.md",
+      "PROMPT_01_GITHUB_MIGRATION.md",
+      "PROMPT_02_IMPLEMENT_B21.md",
+      "implementation-control/**",
+      "tests/contract/control-plane-integrity.test.ts",
+      "tests/contract/schema-registry.test.ts",
+      "tests/contract/test-discovery.test.ts",
+      "package.json",
+      ".github/workflows/finscope-*.yml",
+      "AUDIT_REORIENTATION_REPORT.md",
+      "FILE_MANIFEST.sha256",
+      "PACKAGE_INVENTORY.json",
+      "PACKAGE_METADATA.json",
+      "PROMPT_IMPLEMENTACION_B21.md",
+      "V0.*_PHASE_STATUS.md",
+      ".gitignore"
+    ],
+    "forbiddenPaths": [
+      ".specify/**",
+      "specs/**",
+      "src/**",
+      "workers/**",
+      "public/**",
+      "package-lock.json"
+    ]
+  },
+  "deletions": [
+    "implementation-control",
+    ".github/workflows/finscope-closure-validation.yml",
+    ".github/workflows/finscope-completed-release.yml",
+    ".github/workflows/finscope-pr-validation.yml",
+    ".github/workflows/finscope-release-qualification.yml",
+    ".github/workflows/finscope-remediation-closure-request.yml",
+    ".github/workflows/finscope-remediation-materialize-derived.yml",
+    "AUDIT_REORIENTATION_REPORT.md",
+    "FILE_MANIFEST.sha256",
+    "PACKAGE_INVENTORY.json",
+    "PACKAGE_METADATA.json",
+    "PROMPT_IMPLEMENTACION_B21.md",
+    "V0.9_PHASE_STATUS.md",
+    "V0.10_PHASE_STATUS.md",
+    "V0.11_PHASE_STATUS.md",
+    "V0.12_PHASE_STATUS.md",
+    "V0.13_PHASE_STATUS.md",
+    "V0.14_PHASE_STATUS.md",
+    "V0.15_PHASE_STATUS.md",
+    "V0.16_PHASE_STATUS.md",
+    "V0.18_PHASE_STATUS.md",
+    "V0.19_PHASE_STATUS.md",
+    "V0.19.1_PHASE_STATUS.md",
+    "V0.19.2_PHASE_STATUS.md",
+    "V0.19.3_PHASE_STATUS.md",
+    "V0.20_PHASE_STATUS.md"
+  ],
+  "commands": [
+    {
+      "id": "control-plane",
+      "command": "npm run validate:control-plane",
+      "required": true
+    },
+    {
+      "id": "npm-ci",
+      "command": "npm ci",
+      "required": true
+    },
+    {
+      "id": "typecheck",
+      "command": "npm run typecheck",
+      "required": true
+    },
+    {
+      "id": "contract",
+      "command": "npm run test:contract",
+      "required": true
+    },
+    {
+      "id": "regression",
+      "command": "npm run test",
+      "required": true
+    },
+    {
+      "id": "build",
+      "command": "npm run build",
+      "required": true
+    },
+    {
+      "id": "package-dry-run",
+      "command": "npm run package:sdd2 -- --output .finscope-release --dry-run",
+      "required": true
+    }
+  ],
+  "evidencePolicy": {
+    "repositoryStoresRunIds": false,
+    "repositoryStoresArtifactIds": false,
+    "statuses": [
+      "PASS",
+      "FAIL",
+      "ENVIRONMENT_BLOCKED",
+      "HUMAN_REQUIRED"
+    ],
+    "rerunSameShaAllowedOnlyFor": "ENVIRONMENT_BLOCKED",
+    "deterministicFailureRequiresNewCommit": true,
+    "humanChecksNeverAutoPromote": true
+  },
+  "promotion": {
+    "prValidation": "EXACT_HEAD_REQUIRED",
+    "merge": "EXPLICIT_OWNER_ACTION",
+    "release": "MANUAL_WORKFLOW_DISPATCH_BOUND_TO_MERGE_SHA",
+    "postPublicationReauthentication": true,
+    "sourcesReplacement": "EXPLICIT_AFTER_REAUTHENTICATION",
+    "nextOperation": "B21_SEPARATE_CHAT_AND_OPERATION"
+  },
+  "lifecycleAuthority": "GITHUB_COMMITS_CHECKS_ARTIFACTS_MERGE_RELEASE"
+}

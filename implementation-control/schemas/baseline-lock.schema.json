@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://finscope.local/schemas/baseline-lock.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "repository", "operationInput", "expectedGitHubBase", "transportIdentity", "semantics", "promotionRule", "observedOn"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": "2.0.0" },
+    "repository": { "const": "Nespeche/finscope-analytics" },
+    "operationInput": {
+      "type": "object",
+      "required": ["tag", "commitSha", "zipLogicalName", "sidecarLogicalName", "zipSha256", "root", "specifyTreeSha256", "tasksSha256", "status"],
+      "properties": {
+        "tag": { "type": "string" },
+        "commitSha": { "pattern": "^[0-9a-f]{40}$" },
+        "zipLogicalName": { "pattern": "\\.zip$" },
+        "sidecarLogicalName": { "pattern": "\\.zip\\.sha256$" },
+        "zipSha256": { "pattern": "^[0-9a-f]{64}$" },
+        "root": { "type": "string" },
+        "specifyTreeSha256": { "pattern": "^[0-9a-f]{64}$" },
+        "tasksSha256": { "pattern": "^[0-9a-f]{64}$" },
+        "status": { "const": "AUTHENTICATED_COMPLETED" }
+      },
+      "additionalProperties": false
+    },
+    "expectedGitHubBase": {
+      "type": "object",
+      "required": ["branch", "mainSha", "relationToOperationInput", "status"],
+      "properties": {
+        "branch": { "const": "main" },
+        "mainSha": { "pattern": "^[0-9a-f]{40}$" },
+        "pullRequest": { "type": ["integer", "null"] },
+        "pullRequestMerged": { "type": "boolean" },
+        "mergeObservedAt": { "type": ["string", "null"] },
+        "relationToOperationInput": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "transportIdentity": { "type": "object" },
+    "semantics": { "type": "string", "minLength": 40 },
+    "promotionRule": { "type": "string", "minLength": 40 },
+    "observedOn": { "type": "string" }
+  },
+  "additionalProperties": false
+}
