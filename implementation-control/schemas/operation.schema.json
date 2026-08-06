@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://finscope.local/schemas/operation.schema.json",
+  "type": "object",
+  "required": [
+    "schemaVersion", "operationId", "type", "repository", "base", "branch", "purpose",
+    "scope", "commands", "evidencePolicy", "promotion", "lifecycleAuthority"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": "2.0.0" },
+    "operationId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]+$" },
+    "type": { "enum": ["GOVERNANCE_MIGRATION", "BATCH_IMPLEMENTATION", "MAINTENANCE", "RELEASE_RECOVERY", "CONVERGENCE"] },
+    "repository": { "const": "Nespeche/finscope-analytics" },
+    "base": {
+      "type": "object",
+      "required": ["branch", "expectedSha"],
+      "properties": {
+        "branch": { "const": "main" },
+        "expectedSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" }
+      },
+      "additionalProperties": false
+    },
+    "branch": { "type": "string", "minLength": 3 },
+    "purpose": { "type": "string", "minLength": 20 },
+    "batch": {
+      "type": "object",
+      "required": ["batchId", "taskIds", "batchFileSha256"],
+      "properties": {
+        "batchId": { "pattern": "^B\\d{2}$" },
+        "taskIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "pattern": "^T\\d{3}$" } },
+        "batchFileSha256": { "pattern": "^[0-9a-f]{64}$" }
+      },
+      "additionalProperties": false
+    },
+    "scope": {
+      "type": "object",
+      "required": ["mode", "allowedPaths", "forbiddenPaths"],
+      "properties": {
+        "mode": { "const": "CLOSED_ALLOWLIST" },
+        "allowedPaths": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "forbiddenPaths": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+      },
+      "additionalProperties": false
+    },
+    "deletions": { "type": "array", "uniqueItems": true, "items": { "type": "string" } },
+    "commands": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "command", "required"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "command": { "type": "string", "minLength": 1 },
+          "required": { "const": true }
+        },
+        "additionalProperties": false
+      }
+    },
+    "evidencePolicy": { "type": "object", "additionalProperties": true },
+    "promotion": { "type": "object", "additionalProperties": true },
+    "lifecycleAuthority": { "const": "GITHUB_COMMITS_CHECKS_ARTIFACTS_MERGE_RELEASE" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "type": { "const": "BATCH_IMPLEMENTATION" } }, "required": ["type"] },
+      "then": { "required": ["batch"] },
+      "else": { "not": { "required": ["batch"] } }
+    }
+  ],
+  "additionalProperties": false
+}

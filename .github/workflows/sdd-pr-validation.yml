@@ -1,0 +1,67 @@
+name: FinScope SDD2 PR Validation
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+env:
+  FINSCOPE_PACKAGE_ROOT: ${{ github.workspace }}
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    concurrency:
+      group: finscope-sdd2-pr-${{ github.event.pull_request.number }}-${{ github.event.pull_request.head.sha }}
+      cancel-in-progress: false
+    steps:
+      - name: Checkout exact PR HEAD
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Verify exact checkout and immutable operation binding
+        shell: bash
+        run: |
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const operation = JSON.parse(fs.readFileSync('implementation-control/OPERATION.json', 'utf8'));
+          if (operation.repository !== process.env.GITHUB_REPOSITORY) process.exit(1);
+          if (operation.branch !== process.env.GITHUB_HEAD_REF) process.exit(1);
+          if (operation.base.branch !== process.env.GITHUB_BASE_REF) process.exit(1);
+          NODE
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+          cache: npm
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Verify operation ancestry and scope
+        run: node implementation-control/scripts/Check-OperationScope.mjs . --mode pr | tee sdd2-scope.json
+
+      - name: Execute exact operation
+        run: node implementation-control/scripts/Run-Operation.mjs . .finscope-evidence
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: finscope-sdd2-${{ github.event.pull_request.head.sha }}
+          path: |
+            .finscope-evidence/
+            sdd2-scope.json
+            .finscope-release/
+          if-no-files-found: warn
+          retention-days: 30

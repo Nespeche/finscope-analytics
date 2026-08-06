@@ -1,419 +1,233 @@
 import { createHash } from 'node:crypto';
-import { writeFileSync } from 'node:fs';
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { join, relative, resolve, sep } from 'node:path';
 
-const projectRoot = resolve(process.argv[2] ?? '.');
-const issues = [];
+const root = resolve(process.argv[2] ?? '.');
 const checks = [];
-
+const issues = [];
 const posix = (value) => value.split(sep).join('/');
-const shaBytes = (bytes) => createHash('sha256').update(bytes).digest('hex');
-const readBytes = (path) => readFile(join(projectRoot, path));
+const sha = (bytes) => createHash('sha256').update(bytes).digest('hex');
+const readBytes = (path) => readFile(join(root, path));
 const readText = async (path) => (await readBytes(path)).toString('utf8');
 const readJson = async (path) => JSON.parse(await readText(path));
+const isSha256 = (value) => typeof value === 'string' && /^[0-9a-f]{64}$/u.test(value);
+const isCommit = (value) => typeof value === 'string' && /^[0-9a-f]{40}$/u.test(value);
+const sameSet = (a, b) => Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every((v) => b.includes(v));
 
 function check(id, condition, detail) {
-  const status = Boolean(condition) ? 'PASS' : 'FAIL';
+  const status = condition ? 'PASS' : 'FAIL';
   checks.push({ id, status, detail });
   if (!condition) issues.push({ id, detail });
 }
-
-function sameArray(left, right) {
-  return Array.isArray(left)
-    && Array.isArray(right)
-    && left.length === right.length
-    && left.every((value, index) => value === right[index]);
-}
-
-
-function jsonType(value) {
-  if (value === null) return 'null';
-  if (Array.isArray(value)) return 'array';
-  if (Number.isInteger(value)) return 'integer';
-  if (typeof value === 'number') return 'number';
-  return typeof value;
-}
-
-function stableValueKey(value) {
-  if (value === null || typeof value !== 'object') return JSON.stringify(value);
-  if (Array.isArray(value)) return `[${value.map(stableValueKey).join(',')}]`;
-  return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableValueKey(value[key])}`).join(',')}}`;
-}
-
-function validateSchemaSubset(schema, value, instancePath = '$') {
-  const errors = [];
-  const expectedTypes = Array.isArray(schema.type) ? schema.type : schema.type ? [schema.type] : [];
-  const actualType = jsonType(value);
-  if (expectedTypes.length > 0 && !expectedTypes.includes(actualType) && !(actualType === 'integer' && expectedTypes.includes('number'))) {
-    return [`${instancePath}: type=${actualType}; expected=${expectedTypes.join('|')}`];
-  }
-  if (Object.hasOwn(schema, 'const') && stableValueKey(value) !== stableValueKey(schema.const)) {
-    errors.push(`${instancePath}: const mismatch`);
-  }
-  if (Array.isArray(schema.enum) && !schema.enum.some((item) => stableValueKey(item) === stableValueKey(value))) {
-    errors.push(`${instancePath}: value not in enum`);
-  }
-  if (typeof value === 'string') {
-    if (Number.isInteger(schema.minLength) && value.length < schema.minLength) errors.push(`${instancePath}: minLength=${schema.minLength}`);
-    if (typeof schema.pattern === 'string' && !(new RegExp(schema.pattern, 'u')).test(value)) errors.push(`${instancePath}: pattern=${schema.pattern}`);
-  }
-  if (typeof value === 'number') {
-    if (typeof schema.minimum === 'number' && value < schema.minimum) errors.push(`${instancePath}: minimum=${schema.minimum}`);
-    if (typeof schema.maximum === 'number' && value > schema.maximum) errors.push(`${instancePath}: maximum=${schema.maximum}`);
-  }
-  if (Array.isArray(value)) {
-    if (Number.isInteger(schema.minItems) && value.length < schema.minItems) errors.push(`${instancePath}: minItems=${schema.minItems}`);
-    if (Number.isInteger(schema.maxItems) && value.length > schema.maxItems) errors.push(`${instancePath}: maxItems=${schema.maxItems}`);
-    if (schema.uniqueItems === true) {
-      const keys = value.map(stableValueKey);
-      if (new Set(keys).size !== keys.length) errors.push(`${instancePath}: uniqueItems violated`);
-    }
-    if (schema.items && typeof schema.items === 'object') {
-      value.forEach((item, index) => errors.push(...validateSchemaSubset(schema.items, item, `${instancePath}/${index}`)));
-    }
-  }
-  if (value && typeof value === 'object' && !Array.isArray(value)) {
-    const keys = Object.keys(value);
-    if (Number.isInteger(schema.minProperties) && keys.length < schema.minProperties) errors.push(`${instancePath}: minProperties=${schema.minProperties}`);
-    if (Number.isInteger(schema.maxProperties) && keys.length > schema.maxProperties) errors.push(`${instancePath}: maxProperties=${schema.maxProperties}`);
-    for (const required of schema.required ?? []) {
-      if (!Object.hasOwn(value, required)) errors.push(`${instancePath}: missing required ${required}`);
-    }
-    const properties = schema.properties ?? {};
-    for (const [key, child] of Object.entries(properties)) {
-      if (Object.hasOwn(value, key)) errors.push(...validateSchemaSubset(child, value[key], `${instancePath}/${key}`));
-    }
-    const unknown = keys.filter((key) => !Object.hasOwn(properties, key));
-    if (schema.additionalProperties === false) {
-      for (const key of unknown) errors.push(`${instancePath}: additionalProperty=${key}`);
-    } else if (schema.additionalProperties && typeof schema.additionalProperties === 'object') {
-      for (const key of unknown) errors.push(...validateSchemaSubset(schema.additionalProperties, value[key], `${instancePath}/${key}`));
-    }
-  }
-  return errors;
-}
-
-function splitLinesKeepEndings(buffer) {
-  const lines = [];
-  let start = 0;
-  for (let index = 0; index < buffer.length; index += 1) {
-    if (buffer[index] === 0x0a) {
-      lines.push(buffer.subarray(start, index + 1));
-      start = index + 1;
-    }
-  }
-  if (start < buffer.length) lines.push(buffer.subarray(start));
-  return lines;
-}
-
+async function exists(path) { try { await stat(join(root, path)); return true; } catch { return false; } }
 async function listFiles(directory) {
-  const root = join(projectRoot, directory);
-  const output = [];
+  const absoluteRoot = join(root, directory);
+  const out = [];
   async function visit(current) {
     for (const entry of await readdir(current, { withFileTypes: true })) {
       const absolute = join(current, entry.name);
       if (entry.isDirectory()) await visit(absolute);
-      else if (entry.isFile()) output.push(absolute);
+      else if (entry.isFile()) out.push(absolute);
     }
   }
-  await visit(root);
-  return output.sort((a, b) => posix(relative(root, a)).localeCompare(posix(relative(root, b)), 'en'));
+  await visit(absoluteRoot);
+  return out.sort((a, b) => posix(relative(absoluteRoot, a)).localeCompare(posix(relative(absoluteRoot, b)), 'en'));
 }
-
 async function canonicalTreeHash(directory) {
-  const root = join(projectRoot, directory);
+  const absoluteRoot = join(root, directory);
+  const chunks = [];
   const files = await listFiles(directory);
-  const stream = [];
-  for (const absolute of files) {
-    const rel = posix(relative(root, absolute));
-    const hash = createHash('sha256').update(await readFile(absolute)).digest();
-    stream.push(Buffer.from(rel, 'utf8'), Buffer.from([0]), hash, Buffer.from([10]));
+  for (const file of files) {
+    const rel = posix(relative(absoluteRoot, file));
+    const digest = createHash('sha256').update(await readFile(file)).digest();
+    chunks.push(Buffer.from(rel, 'utf8'), Buffer.from([0]), digest, Buffer.from([10]));
   }
-  return { count: files.length, sha256: shaBytes(Buffer.concat(stream)) };
+  return { count: files.length, sha256: sha(Buffer.concat(chunks)) };
+}
+function parseGates(text) {
+  const names = ['specificationAuthorized','clarificationAuthorized','planAuthorized','checklistAuthorized','tasksAuthorized','analysisAuthorized','implementationAuthorized','convergenceAuthorized'];
+  return Object.fromEntries(names.map((name) => {
+    const match = text.match(new RegExp(`^${name}=(true|false)$`, 'mu'));
+    return [name, match?.[1] === 'true'];
+  }));
 }
 
 try {
-  const [lock, batchMap, state, metadata, authorityMatrix, documentationIndex, batchMapMarkdown, phaseStatus] = await Promise.all([
+  const [lock, state, operation, baseline, matrix, phase, instructions, batchMap, releaseWorkflow, prWorkflow, packageScript] = await Promise.all([
     readJson('implementation-control/TASK_SOURCE_LOCK.json'),
-    readJson('implementation-control/IMPLEMENTATION_BATCH_MAP.json'),
     readJson('implementation-control/IMPLEMENTATION_STATE.json'),
-    readJson('PACKAGE_METADATA.json'),
+    readJson('implementation-control/OPERATION.json'),
+    readJson('implementation-control/BASELINE_LOCK.json'),
     readJson('implementation-control/AUTHORITY_MATRIX.json'),
-    readText('DOCUMENTATION_INDEX.md'),
-    readText('implementation-control/IMPLEMENTATION_BATCH_MAP.md'),
     readText('V0.21_PHASE_STATUS.md'),
-  ]);
-
-  const [handoff, closureRequestWorkflow, closureValidationWorkflow, applyClosureScript, closureVerifierScript, closureArtifactVerifierScript, readmeText, startHereText, promptB21Text, projectInstructionsText] = await Promise.all([
-    readJson('implementation-control/GITHUB_HANDOFF.json'),
-    readText('.github/workflows/finscope-remediation-closure-request.yml'),
-    readText('.github/workflows/finscope-closure-validation.yml'),
-    readText('implementation-control/scripts/Apply-B20PostRestoreClosure.mjs'),
-    readText('implementation-control/scripts/Verify-GitHubClosure.mjs'),
-    readText('implementation-control/scripts/Verify-GitHubClosureArtifact.mjs'),
-    readText('README.md'),
-    readText('START_HERE_CHATGPT.md'),
-    readText('PROMPT_IMPLEMENTACION_B21.md'),
     readText('implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt'),
+    readJson('implementation-control/IMPLEMENTATION_BATCH_MAP.json'),
+    readText('.github/workflows/sdd-release.yml'),
+    readText('.github/workflows/sdd-pr-validation.yml'),
+    readText('implementation-control/scripts/package_release.py'),
   ]);
-  const closureLiteral = 'AUTHORIZE_B20_POST_RESTORE_CLOSURE_COMMIT';
-  const closureStagePaths = [
-    '.github/workflows/finscope-remediation-closure-request.yml',
-    '.github/workflows/finscope-closure-validation.yml',
-    '.github/workflows/finscope-release-qualification.yml',
-    '.github/workflows/finscope-completed-release.yml',
-    'implementation-control/scripts/Apply-B20PostRestoreClosure.mjs',
-    'implementation-control/scripts/Verify-GitHubClosure.mjs',
-    'implementation-control/scripts/Verify-GitHubClosureArtifact.mjs',
-    'implementation-control/scripts/Validate-ControlPlaneState.mjs',
-    'implementation-control/scripts/Package-GitHubCompletedRelease.mjs',
-    'implementation-control/scripts/Verify-GitHubCompletedPackage.mjs',
-    'implementation-control/GITHUB_HANDOFF.json',
+
+  for (const path of [
+    '.specify/memory/constitution.md',
+    'specs/001-fundamental-analysis-platform/spec.md',
+    'specs/001-fundamental-analysis-platform/tasks.md',
+    'specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json',
+    'implementation-control/TASK_SOURCE_LOCK.json',
     'implementation-control/IMPLEMENTATION_STATE.json',
-    'implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt',
-    'README.md',
-    'START_HERE_CHATGPT.md',
-    'DOCUMENTATION_INDEX.md',
+    'implementation-control/OPERATION.json',
+    'implementation-control/BASELINE_LOCK.json',
+    'implementation-control/AUTHORITY_MATRIX.json',
     'V0.21_PHASE_STATUS.md',
-    'PROMPT_IMPLEMENTACION_B21.md',
-    'PACKAGE_METADATA.json',
-    'PACKAGE_INVENTORY.json',
-    'FILE_MANIFEST.sha256',
-  ];
-  const closurePaths = [
-    'README.md', 'START_HERE_CHATGPT.md', 'DOCUMENTATION_INDEX.md', 'V0.21_PHASE_STATUS.md',
-    'PACKAGE_METADATA.json', 'PACKAGE_INVENTORY.json', 'FILE_MANIFEST.sha256', 'PROMPT_IMPLEMENTACION_B21.md',
-    'implementation-control/GITHUB_HANDOFF.json', 'implementation-control/IMPLEMENTATION_STATE.json',
-  ];
-  const countLiteral = (text, literal) => text.split(literal).length - 1;
-  check('B20_CLOSURE_OPERATION_ID', handoff.operation?.id === 'b20-post-restore-control-plane-hardening', String(handoff.operation?.id));
-  check('B20_CLOSURE_OPERATION_STAGE', ['candidate', 'closure'].includes(handoff.operation?.stage), String(handoff.operation?.stage));
-  check('B20_CLOSURE_WORKFLOW_EXISTS', closureRequestWorkflow.includes('name: FinScope Remediation Closure Request'), '.github/workflows/finscope-remediation-closure-request.yml');
-  check('B20_CLOSURE_SCRIPT_EXISTS', applyClosureScript.includes("export const OPERATION_ID = 'b20-post-restore-control-plane-hardening'"), 'Apply-B20PostRestoreClosure.mjs');
-  check('B20_CLOSURE_LITERAL_HANDOFF', handoff.closureMechanism?.authorizationLiteral === closureLiteral, String(handoff.closureMechanism?.authorizationLiteral));
-  check('B20_CLOSURE_LITERAL_WORKFLOW_UNIQUE', countLiteral(closureRequestWorkflow, closureLiteral) === 1, `count=${countLiteral(closureRequestWorkflow, closureLiteral)}`);
-  check('B20_CLOSURE_LITERAL_SCRIPT_UNIQUE', countLiteral(applyClosureScript, closureLiteral) === 1, `count=${countLiteral(applyClosureScript, closureLiteral)}`);
-  check('B20_CLOSURE_LITERAL_DOCUMENTED', [readmeText, startHereText, projectInstructionsText].every((text) => text.includes(closureLiteral)), 'README/START_HERE/project instructions');
-  check('B20_CLOSURE_BINDING_MARKERS', handoff.closureMechanism?.bindingBegin === 'B20_CLOSURE_BINDING_JSON_BEGIN' && handoff.closureMechanism?.bindingEnd === 'B20_CLOSURE_BINDING_JSON_END', JSON.stringify(handoff.closureMechanism));
-  check('B20_CLOSURE_ACTIVATION_EDIT_ONLY', closureRequestWorkflow.includes('pull_request:\n    types: [edited]'), 'pull_request edited');
-  check('B20_CLOSURE_OWNER_GATE', closureRequestWorkflow.includes("github.actor == github.repository_owner"), 'repository owner condition');
-  const postApplyValidationIndex = closureRequestWorkflow.indexOf('- name: Validate post-apply control plane before commit');
-  const atomicCommitIndex = closureRequestWorkflow.indexOf('- name: Recheck remote HEAD and create one atomic commit');
-  check('B20_CLOSURE_FORCE_WITH_LEASE', closureRequestWorkflow.includes('--force-with-lease=refs/heads/maintenance/b20-post-restore-control-plane-hardening:$EVENT_HEAD') && postApplyValidationIndex >= 0 && atomicCommitIndex > postApplyValidationIndex, 'post-apply validation before exact-head lease');
-  check('B20_CLOSURE_MINIMAL_PERMISSIONS', closureRequestWorkflow.includes('contents: write') && closureRequestWorkflow.includes('actions: read') && closureRequestWorkflow.includes('pull-requests: read'), 'closure request permissions');
-  check('B20_CLOSURE_VALIDATION_READ_ONLY', closureValidationWorkflow.includes('contents: read') && !closureValidationWorkflow.includes('contents: write') && closureValidationWorkflow.includes("steps.closure.outputs.evidence_dir != ''") && closureValidationWorkflow.includes("steps.control_plane.outcome == 'failure'") && closureValidationWorkflow.includes("steps.control_plane.outcome == 'success'"), 'read-only with explicit success/failure artifact guards');
-  check('B20_CLOSURE_STAGE_ALLOWLIST_EXACT', sameArray(handoff.remediation?.scopeExpansion?.allowedPaths, closureStagePaths), JSON.stringify(handoff.remediation?.scopeExpansion?.allowedPaths));
-  check('B20_CLOSURE_ALLOWLIST_EXACT', sameArray(handoff.remediation?.closurePolicy?.allowedPaths, closurePaths), JSON.stringify(handoff.remediation?.closurePolicy?.allowedPaths));
-  const remediationAllowed = new Set(handoff.remediation?.allowedPaths ?? []);
-  check('B20_CLOSURE_STAGE_SUBSET_REMEDIATION', closureStagePaths.every((path) => remediationAllowed.has(path)), `remediation=${remediationAllowed.size}`);
-  check('B20_CLOSURE_PATHS_SUBSET_REMEDIATION', closurePaths.every((path) => remediationAllowed.has(path)), `remediation=${remediationAllowed.size}`);
-  check('B20_CLOSURE_PROHIBITIONS_ACTIVE', ['b21', 'tasksT090ThroughT095', 'convergence', 'ready', 'merge', 'tagOrRelease', 'sourcesReplacement'].every((key) => handoff.remediation?.prohibitions?.[key] === true), JSON.stringify(handoff.remediation?.prohibitions));
-  check('B20_CLOSURE_R5_HANDOFF_IDENTITY', handoff.release?.releaseRevision === 'v0.21.25_B20_completed_r5' && handoff.release?.tag === 'v0.21.25-B20-completed-r5' && handoff.release?.zipName === 'FS_v0.21.25_B20_completed_r5.zip' && handoff.release?.sidecarName === 'FS_v0.21.25_B20_completed_r5.zip.sha256', JSON.stringify(handoff.release));
-  check('B20_CLOSURE_R5_STATE_IDENTITY', state.activePackageLogicalName === 'FS_v0.21.25_B20_completed_r5.zip', state.activePackageLogicalName);
-  check('B20_CLOSURE_R5_METADATA_IDENTITY', metadata.releaseRevision === 'v0.21.25_B20_completed_r5' && metadata.logicalZipName === 'FS_v0.21.25_B20_completed_r5.zip' && metadata.finalSha256Sidecar === 'FS_v0.21.25_B20_completed_r5.zip.sha256', JSON.stringify({ releaseRevision: metadata.releaseRevision, logicalZipName: metadata.logicalZipName }));
-  check('B20_CLOSURE_R2_STALE_DISPOSITION', sameArray(handoff.priorCandidateR2?.dispositions, ['STALE_FOR_NEW_HEAD_NOT_REUSABLE_AS_PASS', 'SUPERSEDED_CANDIDATE_NOT_PROMOTABLE']) && handoff.priorCandidateR2?.reusableAsPassEvidence === false, JSON.stringify(handoff.priorCandidateR2));
-  check('B20_CLOSURE_NO_ACTIVE_R2_CANDIDATE', handoff.release?.releaseRevision !== 'v0.21.25_B20_completed_r2' && state.activePackageLogicalName !== 'FS_v0.21.25_B20_completed_r2.zip', 'r2 not active');
-  check('B20_CLOSURE_CANDIDATE_AUTH_CLOSED', handoff.operation?.stage !== 'candidate' || (handoff.closure?.status === 'NOT_AUTHORIZED' && handoff.remediation?.closurePolicy?.status === 'NOT_AUTHORIZED' && handoff.closureMechanism?.authorizationDisposition === 'NOT_INSERTED'), JSON.stringify({ closure: handoff.closure, policy: handoff.remediation?.closurePolicy?.status, disposition: handoff.closureMechanism?.authorizationDisposition }));
-  let githubEvent = null;
-  let githubEventError = null;
-  if (process.env.GITHUB_EVENT_PATH) {
-    try { githubEvent = JSON.parse(await readFile(process.env.GITHUB_EVENT_PATH, 'utf8')); }
-    catch (error) { githubEventError = String(error); }
-  }
-  const candidatePrBody = githubEvent?.pull_request?.body ?? '';
-  const candidateLiteralLines = candidatePrBody.split(/\r?\n/u).filter((line) => line.trim() === closureLiteral);
-  check('B20_CLOSURE_GITHUB_EVENT_READABLE', !process.env.GITHUB_EVENT_PATH || (githubEvent !== null && githubEventError === null), githubEventError ?? process.env.GITHUB_EVENT_PATH ?? 'local');
-  check('B20_CLOSURE_LITERAL_ABSENT_FROM_CANDIDATE_PR_BODY', handoff.operation?.stage !== 'candidate' || !process.env.GITHUB_EVENT_PATH || candidateLiteralLines.length === 0, `count=${candidateLiteralLines.length}`);
-  check('B20_CLOSURE_OBSOLETE_LITERALS_ABSENT_FROM_CANDIDATE_PR_BODY', handoff.operation?.stage !== 'candidate' || !process.env.GITHUB_EVENT_PATH || !['AUTHORIZE_B20_HARDENING_DERIVED_COMMIT', 'AUTHORIZE_B20_POST_RESTORE_TAG_RELEASE'].some((literal) => candidatePrBody.includes(literal)), 'candidate PR body');
-  check('B20_CLOSURE_HOLD_AND_B21_BLOCK', handoff.remediation?.hold === true && handoff.release?.pending === true && handoff.productState?.b21Executable === false && state.batchStatus?.B21 === 'PENDING' && state.phaseGate?.convergenceAuthorized === false, 'hold/release/B21/convergence');
-  check('B20_CLOSURE_VERIFIER_SPECIALIZED', closureVerifierScript.includes('B20_POST_RESTORE_CLOSURE') && closureVerifierScript.includes('CLOSURE_EXACT_ALLOWLIST_MISMATCH'), 'specialized verifier');
-  check('B20_CLOSURE_ARTIFACT_EXTERNAL_INPUTS', ['CLOSURE_COMMIT_SHA', 'CLOSURE_RUN_ID', 'CLOSURE_ARTIFACT_ID', 'CLOSURE_ARTIFACT_DIGEST'].every((token) => closureArtifactVerifierScript.includes(token)), 'external exact-head inputs');
-  for (const [path, text] of [['README.md', readmeText], ['START_HERE_CHATGPT.md', startHereText], ['PROMPT_IMPLEMENTACION_B21.md', promptB21Text]]) {
-    check(`B20_CLOSURE_DOC_MARKER_${path}`, countLiteral(text, '<!-- B20_CLOSURE_MECHANISM_STATE_BEGIN -->') === 1 && countLiteral(text, '<!-- B20_CLOSURE_MECHANISM_STATE_END -->') === 1, path);
+  ]) check(`REQUIRED_${path.replace(/[^A-Za-z0-9]+/gu, '_').toUpperCase()}`, await exists(path), path);
+
+  check('LEGACY_HANDOFF_REMOVED', !(await exists('implementation-control/GITHUB_HANDOFF.json')), 'GITHUB_HANDOFF.json');
+  for (const name of [
+    'finscope-closure-validation.yml','finscope-completed-release.yml','finscope-pr-validation.yml',
+    'finscope-release-qualification.yml','finscope-remediation-closure-request.yml','finscope-remediation-materialize-derived.yml',
+  ]) check(`LEGACY_WORKFLOW_${name.replace(/[^A-Za-z0-9]+/gu, '_').toUpperCase()}`, !(await exists(`.github/workflows/${name}`)), name);
+  check('SDD_PR_WORKFLOW_PRESENT', await exists('.github/workflows/sdd-pr-validation.yml'), 'sdd-pr-validation.yml');
+  check('SDD_RELEASE_WORKFLOW_PRESENT', await exists('.github/workflows/sdd-release.yml'), 'sdd-release.yml');
+  for (const name of ['PACKAGE_METADATA.json','PACKAGE_INVENTORY.json','FILE_MANIFEST.sha256']) {
+    check(`DERIVED_NOT_VERSIONED_${name.replace(/[^A-Za-z0-9]+/gu, '_')}`, !(await exists(name)), name);
   }
 
-  const schemaSelfTest = {
-    type: 'object',
-    required: ['name'],
-    properties: { name: { type: 'string' } },
-    additionalProperties: false,
-  };
-  check('SCHEMA_SUBSET_SELF_TEST_VALID', validateSchemaSubset(schemaSelfTest, { name: 'FinScope' }).length === 0, 'valid fixture accepted');
-  const schemaUnknownErrors = validateSchemaSubset(schemaSelfTest, { name: 'FinScope', unexpected: true });
-  check('SCHEMA_SUBSET_SELF_TEST_UNKNOWN_PROPERTY', schemaUnknownErrors.some((entry) => entry.includes('additionalProperty=unexpected')), schemaUnknownErrors.join(' | '));
-
-  const schemaBindings = [
-    ['AUTHORITY_MATRIX', 'implementation-control/schemas/authority-matrix.schema.json', authorityMatrix],
-    ['IMPLEMENTATION_BATCH_MAP', 'implementation-control/schemas/implementation-batch-map.schema.json', batchMap],
-    ['IMPLEMENTATION_STATE', 'implementation-control/schemas/implementation-state.schema.json', state],
-    ['TASK_SOURCE_LOCK', 'implementation-control/schemas/task-source-lock.schema.json', lock],
-  ];
-  for (const [id, schemaPath, document] of schemaBindings) {
-    const schema = await readJson(schemaPath);
-    const schemaErrors = validateSchemaSubset(schema, document);
-    check(`SCHEMA_CONFORMANCE_${id}`, schemaErrors.length === 0, schemaErrors.length === 0 ? schemaPath : schemaErrors.slice(0, 20).join(' | '));
+  const gates = parseGates(phase);
+  for (const name of ['specificationAuthorized','clarificationAuthorized','planAuthorized','checklistAuthorized','tasksAuthorized','analysisAuthorized','implementationAuthorized']) {
+    check(`GATE_${name}`, gates[name] === true, `${name}=${gates[name]}`);
   }
-  const implementationBatchSchema = await readJson('implementation-control/schemas/implementation-batch.schema.json');
-  for (const name of (await readdir(join(projectRoot, 'implementation-control/batches'))).filter((value) => /^B\d{2}\.json$/u.test(value)).sort()) {
-    const batchSchemaErrors = validateSchemaSubset(implementationBatchSchema, await readJson(`implementation-control/batches/${name}`));
-    check(`SCHEMA_CONFORMANCE_${name.replace('.json', '')}`, batchSchemaErrors.length === 0, batchSchemaErrors.length === 0 ? name : batchSchemaErrors.slice(0, 20).join(' | '));
-  }
+  check('GATE_convergenceAuthorized', gates.convergenceAuthorized === false, `convergenceAuthorized=${gates.convergenceAuthorized}`);
+  check('GATE_ANCHOR', phase.includes('<a id="gate"></a>'), 'explicit #gate anchor');
+  check('STATE_HAS_NO_GATE_MIRROR', !Object.hasOwn(state, 'phaseGate'), 'phaseGate must not be mirrored in state');
 
-  const tasksPath = String(lock.taskAuthority);
-  const tasksBytes = await readBytes(tasksPath);
-  const tasksSha256 = shaBytes(tasksBytes);
-  check('TASKS_FILE_HASH', tasksSha256 === lock.tasksFileSha256, `${tasksPath}: ${tasksSha256}`);
-  check('STATE_TASKS_HASH', state.sourceTasksSha256 === tasksSha256, `state=${state.sourceTasksSha256}`);
-  check('MAP_TASKS_HASH', batchMap.sourceTasksSha256 === tasksSha256, `map=${batchMap.sourceTasksSha256}`);
-  const markdownTasksHash = batchMapMarkdown.match(/\*\*SHA-256 de tareas:\*\* `([0-9a-f]{64})`/u)?.[1];
-  check('MAP_MARKDOWN_TASKS_HASH', markdownTasksHash === tasksSha256, `markdown=${markdownTasksHash ?? 'missing'}`);
+  const instructionChars = [...instructions].length;
+  check('INSTRUCTIONS_LIMIT', instructionChars <= 8000, `characters=${instructionChars}`);
+  check('INSTRUCTIONS_SAFETY_MARGIN', instructionChars <= 7600, `characters=${instructionChars}; margin=${8000 - instructionChars}`);
+  check('INSTRUCTIONS_UTF8', !instructions.includes('\uFFFD'), `bytes=${Buffer.byteLength(instructions, 'utf8')}`);
+  check('NO_PR_BODY_AUTHORITY', /PR bodies.*no son autoridad|PR body.*no es autoridad/iu.test(instructions), 'PR body excluded');
+  check('NO_CLOSURE_COMMIT_POLICY', /No crear un commit separado de cierre/iu.test(instructions), 'closure commit prohibited');
+  check('OPERATION_DECLARATION_POLICY', /declaración inmutable|declaración de operación/iu.test(instructions), 'operation is declaration');
 
-  const taskLines = splitLinesKeepEndings(tasksBytes);
-  const lockedTasks = new Map();
-  for (const task of lock.tasks ?? []) {
-    const taskId = String(task.taskId);
-    check(`TASK_UNIQUE_${taskId}`, !lockedTasks.has(taskId), taskId);
-    lockedTasks.set(taskId, task);
-    const lineNumber = Number(task.lineNumber);
-    const line = taskLines[lineNumber - 1];
-    check(`TASK_LINE_EXISTS_${taskId}`, Boolean(line), `line=${lineNumber}`);
-    if (line) {
-      check(`TASK_LINE_ID_${taskId}`, new RegExp(`^- \\[\\s?[Xx]?\\] ${taskId}\\b`, 'u').test(line.toString('utf8')), line.toString('utf8').trim());
-      check(`TASK_LINE_HASH_${taskId}`, shaBytes(line) === task.sourceTaskSha256, `line=${lineNumber}`);
-    }
-  }
-  check('TASK_COUNT', lockedTasks.size === 109, `count=${lockedTasks.size}`);
+  const tasksPath = 'specs/001-fundamental-analysis-platform/tasks.md';
+  const tasksHash = sha(await readBytes(tasksPath));
+  check('TASKS_HASH_LOCK', tasksHash === lock.tasksFileSha256, `${tasksHash}/${lock.tasksFileSha256}`);
+  check('TASKS_HASH_STATE', tasksHash === state.sourceTasksSha256, `${tasksHash}/${state.sourceTasksSha256}`);
+  check('TASKS_HASH_INPUT', tasksHash === baseline.operationInput.tasksSha256, `${tasksHash}/${baseline.operationInput.tasksSha256}`);
+  check('TASK_COUNT_LOCK', lock.taskCount === 109 && lock.tasks.length === 109, `${lock.taskCount}/${lock.tasks.length}`);
+  check('BATCH_COUNT_LOCK', lock.batchCount === 25 && lock.batches.length === 25, `${lock.batchCount}/${lock.batches.length}`);
+  check('BATCH_MAP_COUNT', batchMap.taskCount === 109 && batchMap.batchCount === 25, `${batchMap.taskCount}/${batchMap.batchCount}`);
 
-  const mapEntries = new Map((batchMap.batches ?? []).map((entry) => [String(entry.batchId), entry]));
-  const lockedBatches = new Map();
-  const allBatchTaskIds = [];
-  for (const item of lock.batches ?? []) {
-    const batchId = String(item.batchId);
-    check(`BATCH_UNIQUE_${batchId}`, !lockedBatches.has(batchId), batchId);
-    lockedBatches.set(batchId, item);
-    const batchBytes = await readBytes(String(item.path));
-    const actualBatchSha256 = shaBytes(batchBytes);
-    check(`BATCH_FILE_HASH_${batchId}`, actualBatchSha256 === item.sha256, `${item.path}: ${actualBatchSha256}`);
-
-    const batch = JSON.parse(batchBytes.toString('utf8'));
-    check(`BATCH_ID_${batchId}`, batch.batchId === batchId, `document=${batch.batchId}`);
-    check(`BATCH_SOURCE_TASKS_HASH_${batchId}`, batch.sourceTasksSha256 === tasksSha256, `batch=${batch.sourceTasksSha256}`);
-    const taskIds = (batch.tasks ?? []).map((task) => String(task.id));
-    allBatchTaskIds.push(...taskIds);
-    check(`BATCH_TASK_COUNT_${batchId}`, batch.taskCount === taskIds.length, `declared=${batch.taskCount}; actual=${taskIds.length}`);
-    check(`BATCH_EXECUTION_ORDER_${batchId}`, sameArray(batch.executionOrder, taskIds), JSON.stringify(batch.executionOrder));
-
-    for (const task of batch.tasks ?? []) {
-      const locked = lockedTasks.get(String(task.id));
-      check(`BATCH_TASK_LOCKED_${batchId}_${task.id}`, Boolean(locked), String(task.id));
-      if (locked) {
-        check(`BATCH_TASK_HASH_${batchId}_${task.id}`, task.sourceTaskSha256 === locked.sourceTaskSha256, String(task.id));
-      }
-    }
-
-    const mapEntry = mapEntries.get(batchId);
-    check(`MAP_ENTRY_${batchId}`, Boolean(mapEntry), batchId);
-    if (mapEntry) {
-      check(`MAP_PATH_${batchId}`, mapEntry.batchFile === item.path, String(mapEntry.batchFile));
-      check(`MAP_TASK_IDS_${batchId}`, sameArray(mapEntry.taskIds, taskIds), JSON.stringify(mapEntry.taskIds));
-      check(`MAP_TASK_COUNT_${batchId}`, mapEntry.taskCount === taskIds.length, String(mapEntry.taskCount));
-      check(`MAP_STATE_STATUS_${batchId}`, mapEntry.status === state.batchStatus?.[batchId], `${mapEntry.status}/${state.batchStatus?.[batchId]}`);
-      check(`BATCH_STATE_STATUS_${batchId}`, batch.status === state.batchStatus?.[batchId], `${batch.status}/${state.batchStatus?.[batchId]}`);
-    }
-  }
-  check('BATCH_COUNT', lockedBatches.size === 25, `count=${lockedBatches.size}`);
-  check('MAP_BATCH_COUNT', batchMap.batchCount === lockedBatches.size && mapEntries.size === lockedBatches.size, `declared=${batchMap.batchCount}; actual=${mapEntries.size}`);
-  check('MAP_TASK_COUNT', batchMap.taskCount === lockedTasks.size, `declared=${batchMap.taskCount}; actual=${lockedTasks.size}`);
-
-  const batchTaskCounts = new Map();
-  for (const taskId of allBatchTaskIds) batchTaskCounts.set(taskId, (batchTaskCounts.get(taskId) ?? 0) + 1);
-  check('BATCH_TASK_COVERAGE', batchTaskCounts.size === lockedTasks.size && [...lockedTasks.keys()].every((id) => batchTaskCounts.get(id) === 1), `covered=${batchTaskCounts.size}`);
-
-  const stateTaskIds = Object.keys(state.taskStatus ?? {}).sort();
-  const lockTaskIds = [...lockedTasks.keys()].sort();
-  const stateBatchIds = Object.keys(state.batchStatus ?? {}).sort();
-  const lockBatchIds = [...lockedBatches.keys()].sort();
-  check('STATE_TASK_KEYS', sameArray(stateTaskIds, lockTaskIds), `state=${stateTaskIds.length}; lock=${lockTaskIds.length}`);
-  check('STATE_BATCH_KEYS', sameArray(stateBatchIds, lockBatchIds), `state=${stateBatchIds.length}; lock=${lockBatchIds.length}`);
-
-  const completedTasks = Object.entries(state.taskStatus ?? {}).filter(([, status]) => status === 'COMPLETED').map(([id]) => id).sort();
-  const completedBatches = Object.entries(state.batchStatus ?? {}).filter(([, status]) => status === 'COMPLETED').map(([id]) => id).sort();
-  check('STATE_COMPLETED_TASKS', sameArray([...(state.completedTaskIds ?? [])].sort(), completedTasks), JSON.stringify(completedTasks));
-  check('STATE_COMPLETED_BATCHES', sameArray([...(state.completedBatchIds ?? [])].sort(), completedBatches), JSON.stringify(completedBatches));
-  check('ACTIVE_NEXT_BATCH', state.activeBatchId === state.nextAuthorizedBatchId, `${state.activeBatchId}/${state.nextAuthorizedBatchId}`);
-
-  if (state.activeBatchId) {
-    const activeLock = lockedBatches.get(String(state.activeBatchId));
-    check('ACTIVE_BATCH_LOCKED', Boolean(activeLock), String(state.activeBatchId));
-    if (activeLock) {
-      const activeBatch = await readJson(String(activeLock.path));
-      for (const dependency of activeBatch.externalDependencies ?? []) {
-        check(`ACTIVE_DEPENDENCY_${dependency}`, state.taskStatus?.[dependency] === 'COMPLETED', `${dependency}=${state.taskStatus?.[dependency]}`);
-      }
+  const seenTasks = [];
+  const batchIds = [];
+  const batchDocuments = new Map();
+  for (const file of (await readdir(join(root, 'implementation-control/batches'))).filter((name) => /^B\d{2}\.json$/u.test(name)).sort()) {
+    const path = `implementation-control/batches/${file}`;
+    const batch = await readJson(path);
+    const expectedId = file.slice(0, -5);
+    batchDocuments.set(expectedId, { batch, path, sha256: sha(await readBytes(path)) });
+    batchIds.push(batch.batchId);
+    check(`BATCH_ID_${expectedId}`, batch.batchId === expectedId, `${batch.batchId}/${expectedId}`);
+    check(`BATCH_TASK_COUNT_${expectedId}`, batch.taskCount === batch.tasks.length && batch.taskCount === batch.executionOrder.length, `${batch.taskCount}/${batch.tasks.length}/${batch.executionOrder.length}`);
+    check(`BATCH_ORDER_${expectedId}`, JSON.stringify(batch.executionOrder) === JSON.stringify(batch.tasks.map(({ id }) => id)), batch.executionOrder.join(','));
+    check(`BATCH_SOURCE_HASH_${expectedId}`, batch.sourceTasksSha256 === tasksHash, batch.sourceTasksSha256);
+    check(`BATCH_STATUS_${expectedId}`, state.batchStatus[expectedId] === batch.status, `${state.batchStatus[expectedId]}/${batch.status}`);
+    for (const task of batch.tasks) {
+      seenTasks.push(task.id);
+      const lockTask = lock.tasks.find(({ taskId }) => taskId === task.id);
+      check(`TASK_LOCK_${task.id}`, Boolean(lockTask) && lockTask.sourceTaskSha256 === task.sourceTaskSha256, `${task.sourceTaskSha256}/${lockTask?.sourceTaskSha256}`);
+      check(`TASK_STATE_${task.id}`, typeof state.taskStatus[task.id] === 'string', `${task.id}=${state.taskStatus[task.id]}`);
+      for (const dependency of task.dependencies ?? []) check(`TASK_DEPENDENCY_${task.id}_${dependency}`, lock.tasks.some(({ taskId }) => taskId === dependency), `${task.id}->${dependency}`);
     }
   }
 
-  check('DOCUMENTATION_ACTIVE_PHASE', documentationIndex.includes('V0.21_PHASE_STATUS.md'), 'DOCUMENTATION_INDEX.md');
-  for (const [name, expected] of Object.entries(state.phaseGate ?? {})) {
-    const match = phaseStatus.match(new RegExp(`${name}=(true|false)`, 'u'));
-    check(`GATE_${name}`, Boolean(match) && (match[1] === 'true') === expected, match?.[0] ?? 'missing');
+  const stateTaskIds = Object.keys(state.taskStatus).sort();
+  const stateBatchIds = Object.keys(state.batchStatus).sort();
+  const completedTasksFromMap = stateTaskIds.filter((id) => state.taskStatus[id] === 'COMPLETED');
+  const completedBatchesFromMap = stateBatchIds.filter((id) => state.batchStatus[id] === 'COMPLETED');
+  check('BATCH_FILE_COUNT', batchIds.length === 25 && new Set(batchIds).size === 25, `count=${batchIds.length}`);
+  check('TASK_MIRROR_MISMATCH', seenTasks.length === 109 && new Set(seenTasks).size === 109 && sameSet(seenTasks, lock.tasks.map(({ taskId }) => taskId)), `count=${seenTasks.length}`);
+  check('STATE_TASK_KEYS', sameSet(stateTaskIds, lock.tasks.map(({ taskId }) => taskId)), `count=${stateTaskIds.length}`);
+  check('STATE_BATCH_KEYS', sameSet(stateBatchIds, batchIds), `count=${stateBatchIds.length}`);
+  check('COMPLETED_TASK_SET', sameSet(state.completedTaskIds, completedTasksFromMap), `${state.completedTaskIds.length}/${completedTasksFromMap.length}`);
+  check('COMPLETED_BATCH_SET', sameSet(state.completedBatchIds, completedBatchesFromMap), `${state.completedBatchIds.length}/${completedBatchesFromMap.length}`);
+  check('BLOCKED_TASK_SET', state.blockedTaskIds.every((id) => ['PENDING','BLOCKED'].includes(state.taskStatus[id])), state.blockedTaskIds.join(','));
+  check('BLOCKED_BATCH_SET', state.blockedBatchIds.every((id) => ['PENDING','BLOCKED'].includes(state.batchStatus[id])), state.blockedBatchIds.join(','));
+  check('LAST_COMPLETED_BATCH', state.lastCompletedBatchId === null || state.completedBatchIds.includes(state.lastCompletedBatchId), String(state.lastCompletedBatchId));
+  check('ACTIVE_BATCH_EXISTS', state.activeBatchId === null || stateBatchIds.includes(state.activeBatchId), String(state.activeBatchId));
+  check('NEXT_AUTHORIZED_MATCHES_ACTIVE', state.nextAuthorizedBatchId === state.activeBatchId, `${state.nextAuthorizedBatchId}/${state.activeBatchId}`);
+
+  check('OPERATION_NO_REPO_LIFECYCLE_STATE', !Object.hasOwn(operation, 'status'), 'status must live in GitHub');
+  check('OPERATION_LIFECYCLE_AUTHORITY', operation.lifecycleAuthority === 'GITHUB_COMMITS_CHECKS_ARTIFACTS_MERGE_RELEASE', operation.lifecycleAuthority);
+  check('OPERATION_REPOSITORY', operation.repository === baseline.repository, `${operation.repository}/${baseline.repository}`);
+  check('OPERATION_BASE_SHA', isCommit(operation.base.expectedSha) && operation.base.expectedSha === baseline.expectedGitHubBase.mainSha, `${operation.base.expectedSha}/${baseline.expectedGitHubBase.mainSha}`);
+  check('OPERATION_BASE_BRANCH', operation.base.branch === baseline.expectedGitHubBase.branch, `${operation.base.branch}/${baseline.expectedGitHubBase.branch}`);
+  check('OPERATION_SCOPE', operation.scope.mode === 'CLOSED_ALLOWLIST' && operation.scope.allowedPaths.length > 0, `${operation.scope.allowedPaths.length}`);
+  check('OPERATION_FORBIDS_SPECIFY', operation.scope.forbiddenPaths.includes('.specify/**'), operation.scope.forbiddenPaths.join(','));
+  check('OPERATION_COMMANDS_REQUIRED', operation.commands.length >= 1 && operation.commands.every(({ required }) => required === true), `${operation.commands.length}`);
+  check('OPERATION_COMMAND_IDS_UNIQUE', new Set(operation.commands.map(({ id }) => id)).size === operation.commands.length, operation.commands.map(({ id }) => id).join(','));
+  check('EVIDENCE_EXTERNAL', operation.evidencePolicy.repositoryStoresRunIds === false && operation.evidencePolicy.repositoryStoresArtifactIds === false, JSON.stringify(operation.evidencePolicy));
+  check('SAME_SHA_RERUN_POLICY', operation.evidencePolicy.rerunSameShaAllowedOnlyFor === 'ENVIRONMENT_BLOCKED' && operation.evidencePolicy.deterministicFailureRequiresNewCommit === true, JSON.stringify(operation.evidencePolicy));
+
+  if (operation.type === 'GOVERNANCE_MIGRATION') {
+    check('MIGRATION_OPERATION_ID', operation.operationId === 'sdd2-governance-migration', operation.operationId);
+    check('MIGRATION_BRANCH', operation.branch === 'governance/sdd2-professionalization', operation.branch);
+    check('MIGRATION_HOLD', state.implementationStatus === 'BLOCKED' && state.blockedBatchIds.includes(state.activeBatchId), `${state.implementationStatus}/${state.blockedBatchIds.join(',')}`);
+    check('MIGRATION_FINDING', state.openFindings.some(({ id, status }) => id === 'SDD2-MIGRATION-REQUIRED' && status === 'OPEN'), JSON.stringify(state.openFindings));
+    check('MIGRATION_NO_BATCH_BINDING', !Object.hasOwn(operation, 'batch'), 'governance operation has no batch binding');
+  } else if (operation.type === 'BATCH_IMPLEMENTATION') {
+    const binding = operation.batch;
+    const batchRecord = binding ? batchDocuments.get(binding.batchId) : null;
+    check('BATCH_OPERATION_BINDING_PRESENT', Boolean(binding), JSON.stringify(binding));
+    check('BATCH_OPERATION_ACTIVE', Boolean(binding) && binding.batchId === state.activeBatchId && binding.batchId === state.nextAuthorizedBatchId, `${binding?.batchId}/${state.activeBatchId}/${state.nextAuthorizedBatchId}`);
+    check('BATCH_OPERATION_NOT_BLOCKED', Boolean(binding) && !state.blockedBatchIds.includes(binding.batchId), state.blockedBatchIds.join(','));
+    check('BATCH_OPERATION_STATE', ['READY','IN_PROGRESS','LOCAL_VALIDATION_REQUIRED'].includes(state.implementationStatus), state.implementationStatus);
+    check('BATCH_OPERATION_DOCUMENT', Boolean(batchRecord), binding?.batchId ?? 'missing');
+    check('BATCH_OPERATION_TASKS', Boolean(batchRecord) && JSON.stringify(binding.taskIds) === JSON.stringify(batchRecord.batch.executionOrder), JSON.stringify(binding?.taskIds));
+    check('BATCH_OPERATION_HASH', Boolean(batchRecord) && binding.batchFileSha256 === batchRecord.sha256, `${binding?.batchFileSha256}/${batchRecord?.sha256}`);
   }
 
-  check('METADATA_REVISION', metadata.packageRevision === state.packageRevision, `${metadata.packageRevision}/${state.packageRevision}`);
-  check('AUTHORITY_REVISION', authorityMatrix.packageRevision === state.packageRevision, `${authorityMatrix.packageRevision}/${state.packageRevision}`);
-  check('METADATA_LOGICAL_NAME', metadata.logicalZipName === state.activePackageLogicalName, `${metadata.logicalZipName}/${state.activePackageLogicalName}`);
-  check('METADATA_ROOT_DIRECTORY', metadata.rootDirectory === projectRoot.split(sep).at(-1), `${metadata.rootDirectory}/${projectRoot.split(sep).at(-1)}`);
-
-  const instructionText = await readText('implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt');
-  check('INSTRUCTION_CHARACTER_COUNT', metadata.projectConfigurationInstructionCharacterCount === instructionText.length, `metadata=${metadata.projectConfigurationInstructionCharacterCount}; actual=${instructionText.length}`);
-  check('INSTRUCTION_CHARACTER_LIMIT', instructionText.length <= 8000, `actual=${instructionText.length}`);
+  check('INPUT_BASELINE_HASH', isSha256(baseline.operationInput.zipSha256), baseline.operationInput.zipSha256);
+  check('INPUT_BASELINE_COMMIT', isCommit(baseline.operationInput.commitSha), baseline.operationInput.commitSha);
+  check('EXPECTED_MAIN_COMMIT', isCommit(baseline.expectedGitHubBase.mainSha), baseline.expectedGitHubBase.mainSha);
+  check('TRANSPORT_ALIAS_POLICY', baseline.transportIdentity.physicalSuffixesIgnored === true && baseline.transportIdentity.physicalFilenameEqualityRequired === false, JSON.stringify(baseline.transportIdentity));
+  check('BASELINE_SEMANTICS', /input to the current operation|entrada de la operación/iu.test(baseline.semantics), baseline.semantics);
 
   const specify = await canonicalTreeHash('.specify');
   check('SPECIFY_FILE_COUNT', specify.count === 19, `count=${specify.count}`);
   check('SPECIFY_STATE_HASH', specify.sha256 === state.specifyTreeSha256, `${specify.sha256}/${state.specifyTreeSha256}`);
-  check('SPECIFY_METADATA_HASH', specify.sha256 === metadata.specifyTreeSha256, `${specify.sha256}/${metadata.specifyTreeSha256}`);
+  check('SPECIFY_INPUT_HASH', specify.sha256 === baseline.operationInput.specifyTreeSha256, `${specify.sha256}/${baseline.operationInput.specifyTreeSha256}`);
 
-  const controlFiles = [
-    'implementation-control/TASK_SOURCE_LOCK.json',
-    'implementation-control/IMPLEMENTATION_BATCH_MAP.json',
-    'implementation-control/IMPLEMENTATION_STATE.json',
-    'implementation-control/AUTHORITY_MATRIX.json',
-  ];
-  const controlFileHashes = {};
-  for (const path of controlFiles) {
-    const fileStat = await stat(join(projectRoot, path));
-    check(`CONTROL_FILE_${path}`, fileStat.isFile(), path);
-    controlFileHashes[path] = shaBytes(await readBytes(path));
+  const authorityIds = matrix.fieldAuthorities.map(({ fieldId }) => fieldId);
+  check('AUTHORITY_UNIQUE', new Set(authorityIds).size === authorityIds.length, authorityIds.join(','));
+  for (const required of ['constitutional_rules','phase_gate_flags','product_requirements','product_behavior','task_definition','implementation_state','active_operation','operation_input_baseline','package_identity','github_evidence']) {
+    check(`AUTHORITY_${required.toUpperCase()}`, authorityIds.includes(required), required);
   }
+  check('AUTHORITY_FIELD_SCOPED', matrix.conflictProcedure.mode === 'FIELD_SCOPED_FAIL_CLOSED', matrix.conflictProcedure.mode);
+
+  check('PR_WORKFLOW_SCOPE_BINDING', prWorkflow.includes('Check-OperationScope.mjs . --mode pr'), 'PR scope mode');
+  check('RELEASE_WORKFLOW_SCOPE_BINDING', releaseWorkflow.includes('Check-OperationScope.mjs . --mode release'), 'Release scope mode');
+  check('RELEASE_MANUAL_ONLY', /workflow_dispatch:/u.test(releaseWorkflow) && !/^\s+push:/mu.test(releaseWorkflow), 'manual dispatch only');
+  check('RELEASE_CLEAN_TREE', releaseWorkflow.includes('git diff --exit-code') && releaseWorkflow.includes('git diff --cached --exit-code'), 'tracked tree clean before package');
+  check('PACKAGE_SCRIPT_DYNAMIC_STATE', !/completedBoundary[^\n]*B20|FS_v0\.21\.25_B20_completed/u.test(packageScript), 'no hardcoded B20 package state');
 
   const result = {
-    schemaVersion: '1.0.0',
-    projectRoot,
-    status: issues.length === 0 ? 'PASS' : 'FAIL',
-    checkCount: checks.length,
-    passCount: checks.filter((entry) => entry.status === 'PASS').length,
-    failCount: issues.length,
-    taskCount: lockedTasks.size,
-    batchCount: lockedBatches.size,
-    tasksSha256,
-    specifyTreeSha256: specify.sha256,
-    controlFileHashes,
-    checks,
-    issues,
+    schemaVersion: '2.0.0', generatedAt: new Date().toISOString(),
+    status: issues.length === 0 ? 'PASS' : 'FAIL', checkCount: checks.length,
+    passCount: checks.filter(({ status }) => status === 'PASS').length,
+    failCount: issues.length, taskCount: seenTasks.length, batchCount: batchIds.length,
+    specifyTreeSha256: specify.sha256, sourceTasksSha256: tasksHash,
+    activeOperationId: operation.operationId, checks, issues,
   };
-  writeFileSync(1, `${JSON.stringify(result, null, 2)}\n`, { encoding: 'utf8' });
-  writeFileSync(
-    2,
-    `${issues.length === 0 ? 'CONTROL_PLANE_STATE_VALID' : 'CONTROL_PLANE_STATE_INVALID'}\n`,
-    { encoding: 'utf8' },
-  );
-  process.exitCode = issues.length === 0 ? 0 : 1;
+  process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+  if (issues.length === 0) process.stderr.write(`CONTROL_PLANE_STATE_VALID ${checks.length}/${checks.length}\n`);
+  else { process.stderr.write(`CONTROL_PLANE_STATE_INVALID ${issues.length}/${checks.length}\n`); process.exitCode = 1; }
 } catch (error) {
-  writeFileSync(
-    2,
-    `${error instanceof Error ? error.stack ?? error.message : String(error)}\n`,
-    { encoding: 'utf8' },
-  );
-  process.exitCode = 2;
+  const result = {
+    schemaVersion: '2.0.0', generatedAt: new Date().toISOString(), status: 'FAIL',
+    checkCount: checks.length, passCount: checks.filter(({ status }) => status === 'PASS').length,
+    failCount: issues.length + 1, taskCount: 0, batchCount: 0, checks,
+    issues: [...issues, { id: 'UNHANDLED', detail: error instanceof Error ? error.stack ?? error.message : String(error) }],
+  };
+  process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+  process.stderr.write('CONTROL_PLANE_STATE_INVALID UNHANDLED\n');
+  process.exitCode = 1;
 }

@@ -223,6 +223,7 @@ describe('active Draft 2020-12 product schema registry', () => {
 const operationalSchemaDirectory = 'implementation-control/schemas';
 const operationalSchemaNames = [
   'authority-matrix.schema.json',
+  'baseline-lock.schema.json',
   'control-plane-validation-evidence.schema.json',
   'github-release-handoff.schema.json',
   'github-validation-evidence.schema.json',
@@ -231,6 +232,8 @@ const operationalSchemaNames = [
   'implementation-batch.schema.json',
   'implementation-state.schema.json',
   'local-validation-evidence.schema.json',
+  'operation-evidence.schema.json',
+  'operation.schema.json',
   'task-source-lock.schema.json',
 ] as const;
 
@@ -393,7 +396,7 @@ const controlPlaneEvidenceFixture = {
 } as const;
 
 describe('operational Draft 2020-12 schema registry', () => {
-  it('compiles all ten operational schemas and validates every active JSON control document', async () => {
+  it('compiles all operational schemas and validates every active JSON control document', async () => {
     const names = (await readdir(operationalSchemaDirectory))
       .filter((name) => name.endsWith('.schema.json'))
       .sort();
@@ -407,8 +410,10 @@ describe('operational Draft 2020-12 schema registry', () => {
 
     const documents: readonly (readonly [string, string])[] = [
       ['https://finscope.local/schemas/authority-matrix.schema.json', 'implementation-control/AUTHORITY_MATRIX.json'],
+      ['https://finscope.local/schemas/baseline-lock.schema.json', 'implementation-control/BASELINE_LOCK.json'],
       ['https://finscope.local/schemas/implementation-batch-map.schema.json', 'implementation-control/IMPLEMENTATION_BATCH_MAP.json'],
       ['https://finscope.local/schemas/implementation-state.schema.json', 'implementation-control/IMPLEMENTATION_STATE.json'],
+      ['https://finscope.local/schemas/operation.schema.json', 'implementation-control/OPERATION.json'],
       ['https://finscope.local/schemas/task-source-lock.schema.json', 'implementation-control/TASK_SOURCE_LOCK.json'],
     ];
     for (const [schemaReference, documentPath] of documents) {
@@ -433,25 +438,43 @@ describe('operational Draft 2020-12 schema registry', () => {
     expect(validateControlPlaneEvidence?.(controlPlaneEvidenceFixture), JSON.stringify(validateControlPlaneEvidence?.errors)).toBe(true);
   });
 
-  it('keeps runner transport metadata outside the normative implementation state', async () => {
-    const state = await readJsonDocument('implementation-control/IMPLEMENTATION_STATE.json') as {
-      readonly validationWorkflow: Readonly<Record<string, unknown>>;
-    };
-    expect(Object.keys(state.validationWorkflow).sort()).toEqual([
-      'candidatePromotionRule',
-      'evidenceSchema',
-      'localProtocol',
-      'pendingRuntimeValidationBatches',
-    ]);
+  it('keeps gates, package identity and GitHub lifecycle outside implementation state', async () => {
+    const state = await readJsonDocument('implementation-control/IMPLEMENTATION_STATE.json') as Record<string, unknown>;
     for (const forbidden of [
-      'singleRunnerRequired',
-      'activeRunner',
-      'activeRunnerSha256',
-      'independentPreflightScriptRequired',
-      'integratedPreflightSwitch',
+      'phaseGate',
+      'packageRevision',
+      'activePackageLogicalName',
+      'baselineRole',
+      'sourceBaseline',
+      'validationWorkflow',
+      'candidate',
+      'closure',
+      'release',
+      'runId',
+      'artifactId',
     ]) {
-      expect(state.validationWorkflow).not.toHaveProperty(forbidden);
+      expect(state).not.toHaveProperty(forbidden);
     }
+  });
+
+  it('treats OPERATION as an immutable declaration and requires batch binding only for batch work', async () => {
+    const ajv = await createOperationalSchemaRegistry();
+    const validate = ajv.getSchema('https://finscope.local/schemas/operation.schema.json');
+    expect(validate).toBeTypeOf('function');
+    const operation = await readJsonDocument('implementation-control/OPERATION.json') as Record<string, unknown>;
+    expect(validate?.(operation), JSON.stringify(validate?.errors)).toBe(true);
+
+    const withRepositoryLifecycleState = { ...operation, status: 'VALIDATED' };
+    expect(validate?.(withRepositoryLifecycleState)).toBe(false);
+
+    const batchWithoutBinding = { ...operation, type: 'BATCH_IMPLEMENTATION' };
+    expect(validate?.(batchWithoutBinding)).toBe(false);
+
+    const batchWithBinding = {
+      ...batchWithoutBinding,
+      batch: { batchId: 'B21', taskIds: ['T090'], batchFileSha256: 'a'.repeat(64) },
+    };
+    expect(validate?.(batchWithBinding), JSON.stringify(validate?.errors)).toBe(true);
   });
 
   it('rejects missing environment data, false PASS exit codes and unrecorded NOT_RUN reasons', async () => {

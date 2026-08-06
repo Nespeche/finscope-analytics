@@ -32,4 +32,4 @@ Revisión: `v0.21.25_B20_completed`. Fuente: `tasks.md` (`bd89291f6aca4817dda8d9
 | B24 | T104, T105, T106, T107 | `PENDING` |
 | B25 | T108, T109 | `PENDING` |
 
-B01–B20 y T001–T088 están `COMPLETED`. B21 permanece `PENDING` como único lote activo/autorizado; `activeBatchId=B21`; `nextAuthorizedBatchId=B21`; `convergenceAuthorized=false`.
+B01–B20 y T001–T089 están `COMPLETED`. B21 permanece `PENDING` como único lote activo/autorizado; `activeBatchId=B21`; `nextAuthorizedBatchId=B21`; `convergenceAuthorized=false`.

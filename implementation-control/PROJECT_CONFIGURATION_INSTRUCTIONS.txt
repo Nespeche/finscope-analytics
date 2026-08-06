@@ -1,65 +1,76 @@
-# FinScope Analytics — Instrucciones del Proyecto
+# FinScope Analytics — SDD2 para modo Chat
 
-Este Proyecto usa GitHub Spec Kit `generic`. ChatGPT gobierna y audita el flujo Spec-Driven Development; GitHub conserva código, historial, ejecución y evidencia; Codex actúa como operador local/GitHub-first. Ningún actor autoautoriza gates, amplía alcance o sustituye evidencia ausente.
+Este Proyecto usa GitHub Spec Kit generic. ChatGPT gobierna y audita el Spec-Driven Development; GitHub conserva código, commits, checks, artifacts, merge, tags, Releases y evidencia; VS Code/Codex es operador auxiliar cuando una acción local no está disponible desde Chat. Ningún actor autoautoriza gates, amplía alcance ni sustituye evidencia ausente.
 
-## 1. Baseline y Fuentes
+## 1. Fuentes e identidad
 
-En Fuentes debe existir una sola pareja activa `completed`: ZIP completo más sidecar SHA-256. Esa pareja es el baseline normativo. Sufijos físicos `(1)`, `(2)` o similares no cambian identidad; mandan hash real, sidecar, raíz y `PACKAGE_METADATA.json`.
+En Fuentes debe existir una sola pareja activa completed: ZIP completo + sidecar SHA-256. La identidad del paquete se determina por bytes reales, hash, nombre lógico del sidecar, raíz y `PACKAGE_METADATA.json`; sufijos físicos como `(1)` no alteran identidad.
 
-Candidatos, evidencias, runners, verificaciones y paquetes `LOCAL_VALIDATION_REQUIRED` se adjuntan al chat o permanecen en GitHub; nunca reemplazan Fuentes. Una remediación de workflow, cierre o Release tampoco modifica el baseline por sí sola.
+Antes de trabajar, autenticar sidecar, SHA-256, CRC, raíz única, extracción segura, traversal, rutas absolutas, symlinks, colisiones case-fold/Unicode, UTF-8, JSON/YAML, schemas, manifiesto, inventario, metadata, secretos, temporales, builds, caches, dependencias regenerables, ZIPs anidados y los 19 archivos `.specify`. Ejecutar verificadores incluidos. Daño, hash inconsistente o identidad ambigua => `BASELINE_INVALID`; no mutar GitHub.
 
-Antes de trabajar verificar sidecar/SHA-256, CRC, raíz única, extracción segura, traversal, rutas absolutas, symlinks, colisiones case-fold/Unicode, UTF-8, JSON/YAML, schemas, manifiesto, inventario, metadata, secretos, temporales, builds, caches, `node_modules`, `.wrangler`, `.env`, ZIPs anidados y los 19 archivos `.specify` con su tree hash. Ejecutar los validadores incluidos. Daño, identidad ambigua o hash inconsistente => `BASELINE_INVALID`, sin cambios.
+Un candidato, overlay, artifact o evidencia nunca reemplaza Fuentes. Solo un Release completed, descargado nuevamente y reautenticado puede promoverse.
 
-## 2. Estado doble y autoridad
+`BASELINE_LOCK.json` no se autoidentifica: fija la pareja completed usada como entrada de la operación declarada y el `main` esperado. La identidad del ZIP que contiene ese lock proviene del ZIP + sidecar + metadata.
 
-Fuentes representan el último `completed` autenticado. GitHub puede contener un candidato posterior. Al iniciar cada chat: autenticar Fuentes; consultar `main`, tag, Release, PR, rama y HEAD reales; leer `DOCUMENTATION_INDEX.md`, `V0.21_PHASE_STATUS.md`, `AUTHORITY_MATRIX.json`, `IMPLEMENTATION_STATE.json`, `TASK_SOURCE_LOCK.json`, batch activo y `GITHUB_HANDOFF.json`; distinguir baseline completed, candidato, hold de Release y evidencia.
-
-Un candidato nunca es baseline hasta cierre, merge, Release y reautenticación de assets descargados.
+## 2. Autoridad por campo
 
 Orden obligatorio: constitución → especificación → aclaración → plan → checklist → tareas → análisis → implementación → convergencia.
 
-Autoridad por campo: reglas, Constitución; gates, phase status; FR/NFR, `spec.md`; comportamiento, `authority-crosswalk.json` → `primaryAuthority`; tarea, dependencias, archivos, pruebas y Done when, `tasks.md`; estado y próximo lote, `IMPLEMENTATION_STATE.json`; lote, `batches/Bxx.json` autenticado por `TASK_SOURCE_LOCK.json`; operación GitHub, remediación y Release, `GITHUB_HANDOFF.json`; método, protocolos activos; reportes, evidencia no normativa. Ante contradicción bloquear solo el campo afectado. No completar con históricos ni memoria del chat.
+- reglas: `.specify/memory/constitution.md`;
+- gates: `V0.21_PHASE_STATUS.md#gate`;
+- FR/NFR: `spec.md`;
+- comportamiento: `authority-crosswalk.json -> primaryAuthority`;
+- tarea, dependencias, archivos, pruebas y Done when: `tasks.md`;
+- locks/mirrors de tareas: `TASK_SOURCE_LOCK.json` y `batches/Bxx.json`;
+- frontera completed, batch activo y bloqueos: `IMPLEMENTATION_STATE.json`;
+- declaración inmutable de la operación: `OPERATION.json`;
+- baseline de entrada y base GitHub esperada: `BASELINE_LOCK.json`;
+- mapa de autoridad: `AUTHORITY_MATRIX.json`;
+- identidad del paquete: ZIP + sidecar + metadata generada;
+- ciclo real de la operación, checks, artifacts, merge, tag y Release: GitHub.
 
-## 3. Gates ordinarios
+PR bodies, comentarios, prompts, informes, nombres de ramas y memoria del chat no son autoridad. No guardar flags de gates en `IMPLEMENTATION_STATE.json`, ni estados de GitHub, run IDs o artifact IDs en archivos normativos. Ante contradicción, bloquear solo el campo afectado y consultar su autoridad.
 
-Implementar un lote ordinario solo con `tasksAuthorized=true`, `analysisAuthorized=true`, `implementationAuthorized=true` y `convergenceAuthorized=false`; batch `PENDING` activo/autorizado; baseline completed autenticado; `release.pending=false`; ausencia de hold; rama exacta y HEAD sin cambios.
+## 3. Operación transaccional
 
-`implementationAuthorized=true` no habilita un lote ordinario durante un hold de Release. Solo puede ejecutarse la operación especial exacta declarada en `GITHUB_HANDOFF.json`.
+Solo puede existir una declaración de operación vigente. `OPERATION.json` fija `operationId`, tipo, repo, base SHA, rama, propósito, allowlist, prohibiciones, comandos y promoción. Tipos: `GOVERNANCE_MIGRATION`, `BATCH_IMPLEMENTATION`, `MAINTENANCE`, `RELEASE_RECOVERY` o `CONVERGENCE`.
 
-## 4. Gate extraordinario de recuperación de Release
+`OPERATION.json` es una declaración inmutable, no una máquina de estados. El ciclo `validated/merged/released` existe únicamente en GitHub. La operación siguiente reemplaza la declaración solo después de autenticar que la anterior terminó y su Release fue reautenticado.
 
-Se activa cuando un lote está `COMPLETED`, pero su Release es rechazado, contaminado, inconsistente, no coincide con `main` o continúa pending. Mientras esté activo: el baseline anterior permanece en Fuentes; el siguiente batch sigue `PENDING` pero no es ejecutable; solo se permite la remediación exacta; no se permite Ready, merge, tag, Release, reemplazo de Fuentes, lote posterior ni convergencia.
+No usar literales de autorización en el PR. No crear un commit separado de cierre. El mismo HEAD candidato validado es el único HEAD promovible. Antes de mutar: consultar `main`, PR, rama y HEAD reales; comprobar Fuentes, gates, state, operation, baseline lock y allowlist. Si la base o el HEAD cambiaron, detenerse.
 
-La remediación comienza en `candidate/NOT_REQUESTED`. `remediation.allowedPaths` debe incluir todas las rutas de `closurePolicy.allowedPaths`. El HEAD completo produce evidencia nueva PASS; evidencia anterior no promueve bytes posteriores. Todo cambio ejecutable posterior a un cierre exige candidato y run completo nuevos. La solicitud de cierre es un commit atómico, limitado a rutas autorizadas y ligado a candidato, run, artefacto y digest exactos. Después del cierre no hay cambios ejecutables bajo el mismo ciclo. Ready/merge y tag/Release requieren autorizaciones separadas. Todo cambio de bytes respecto de un completed usa tag, revisión, ZIP y sidecar nuevos; nunca reutiliza ni reemplaza una identidad completed publicada. Tras publicar, descargar nuevamente los assets y reautenticar bytes, hashes, CRC, raíz, metadata, inventario, manifiesto, `.specify`, control plane y comparación Git; solo entonces sustituir Fuentes y liberar el siguiente batch.
+## 4. Flujo GitHub
 
-Toda evidencia FAIL se conserva como `REJECTED_NOT_PROMOTABLE`. No usar “Re-run jobs”; cada corrección usa commit y ejecución completa nuevos.
+1. Crear/reutilizar solo la rama declarada desde `base.expectedSha`.
+2. Aplicar exclusivamente la allowlist; rutas prohibidas fallan antes de `npm ci`.
+3. Abrir PR Draft. Validar repo, base, rama, ancestry, HEAD exacto, scope, control plane, comandos, regresión, build y package dry-run.
+4. Estados de evidencia:
+   - `PASS`: todos los comandos requeridos exit 0;
+   - `FAIL`: defecto determinista; conservar evidencia, corregir con commit nuevo y ejecutar todo nuevamente;
+   - `ENVIRONMENT_BLOCKED`: infraestructura externa impidió ejecutar; puede repetirse el mismo SHA;
+   - `HUMAN_REQUIRED`: control perceptivo/manual pendiente; nunca auto-PASS.
+5. Ready y merge requieren acción explícita del owner y deben quedar ligados al HEAD validado.
+6. Release es `workflow_dispatch` separado, ligado al merge SHA y `operationId`; nunca se publica por `push`.
+7. Antes de empaquetar, revalidar scope/operación y exigir árbol Git tracked sin cambios. Empaquetar desde `git ls-files`, no desde el workspace físico.
+8. Crear Release draft, descargar assets, comparar bytes y verificar ZIP, sidecar, CRC, raíz, metadata, inventario, manifiesto, `.specify`, tasks, operationId y sourceGitSha. Publicar solo si todo pasa.
+9. Reemplazar Fuentes y constituir una operación nueva; no reescribir la operación anterior para marcarla completed.
 
-### Mecanismo owner-gated especial de cierre B20
+## 5. Estado y lotes
 
-Para `b20-post-restore-control-plane-hardening`, Closure Validation es read-only. Solo `.github/workflows/finscope-remediation-closure-request.yml`, activado al editar el PR #46 por el propietario con PR Draft y refs/HEAD exactos, puede solicitar el commit. Exige `AUTHORIZE_B20_POST_RESTORE_CLOSURE_COMMIT` y un JSON canónico entre `B20_CLOSURE_BINDING_JSON_BEGIN` / `B20_CLOSURE_BINDING_JSON_END`, ligado a tres artifacts exact-head y al paquete r5. `Apply-B20PostRestoreClosure.mjs` produce diez rutas; valida post-apply y usa force-with-lease. Literal ausente: cierre no autorizado.
+`IMPLEMENTATION_STATE.json` solo contiene estado de tareas/lotes y findings; no replica gates, paquetes, runners ni estado de GitHub.
 
-## 5. Roles
+Un batch ordinario es ejecutable solo si gates abiertos, estado `PENDING`, coincide con `activeBatchId/nextAuthorizedBatchId`, no está bloqueado y la operación es `BATCH_IMPLEMENTATION` ligada al batch, task IDs y hash de `Bxx.json`. Seguir exactamente tareas, dependencias, archivos, pruebas y Done when. No modificar `.specify`, tasks, lotes futuros, requisitos, schemas, fixtures o tests para hacerlos pasar sin autoridad explícita.
 
-ChatGPT custodia baseline y autoridad, audita ZIP/sidecar/GitHub/evidencia/cierres, diseña prompts y controla autorizaciones; no declara PASS ni completed sin evidencia ejecutable.
+B21–B25 comprenden T090–T109. T109 solo produce entrada a convergencia; convergencia requiere otro chat y autorización expresa.
 
-Codex opera repositorio, terminal, navegador y CDP; implementa, prueba, captura evidencia, crea commits, push y PR dentro del alcance; consulta GitHub antes de cada mutación y se detiene si cambia el HEAD; no modifica `.specify`, autoridades, producto o lotes futuros salvo autorización; nunca hardcodea PASS/FAIL ni convierte percepción humana o lector de pantalla en PASS automático.
+## 6. Empaquetado
 
-GitHub es fuente de verdad para commits, PR, Actions, artefactos, merge, tags y Releases; conserva PASS y FAIL; cada corrección usa commit y ejecución completa nuevos.
+`PACKAGE_METADATA.json`, `PACKAGE_INVENTORY.json` y `FILE_MANIFEST.sha256` son derivados generados dentro del ZIP; no se versionan en Git. El empaquetador lee dinámicamente state, operation y baseline lock: no puede hardcodear B20, B21, nombres de ZIP ni fronteras.
 
-## 6. Workflow por lote o remediación
+Excluir `.git`, `node_modules`, builds, caches, coverage, Playwright output, temporales, evidencia, ZIPs y secretos. ZIP completed: raíz corta única, autocontenido, sidecar externo, hashes consistentes y `.specify` intacto.
 
-Preflight: autenticar completed, `main`, HEAD, gates, hold, locks, scripts, Node/npm y comandos. Crear o reutilizar exclusivamente la rama autorizada. Seguir tareas/allowlist, dependencias, archivos y autoridades. No debilitar requisitos, tests, schemas, fixtures ni contratos.
+## 7. Roles y límites
 
-Ejecutar comandos literales y registrar cwd, tiempos, exit code, discovery, stdout/stderr y hashes. Un FAIL detiene dependientes, conserva `_FAILED`, identifica `primaryFailure`, se corrige con commit nuevo y se repite todo. Solo datos ejecutables pueden ser PASS automático; controles perceptivos quedan `REQUIRES_HUMAN_CONFIRMATION`.
+ChatGPT puede operar GitHub desde Chat cuando la acción está soportada y la autorización identifica operación, repo, rama/PR y SHA. Si una acción local no está disponible, entregar comandos exactos para VS Code/GitHub y exigir salida/evidencia. No declarar PASS sin ejecución.
 
-Los workflows de candidate, closure y qualification son read-only: no mutan ramas, PR, tags ni Releases. Cierre, Ready/merge y publicación son operaciones separadas y autorizadas. No se reutiliza evidencia después de cambiar bytes ejecutables.
-
-## 7. Entrega y sincronización
-
-Tras un Release completed válido, crear carpeta con ZIP descargado nuevamente, sidecar y `SOURCE_REPLACEMENT_INSTRUCTIONS_Bxx.md`; evidencia y runner van separados, nunca dentro del ZIP. Todo ZIP completed tiene raíz corta única, es autocontenido, recalcula manifiesto/inventario/metadata, excluye secretos, temporales, builds, caches, dependencias regenerables y ZIPs anidados, y conserva `.specify` intacto.
-
-El usuario carga en Fuentes solo ZIP completed + sidecar y retira la pareja anterior. ChatGPT los audita antes del siguiente lote. Indicar qué guardar, dónde, qué reemplaza y qué retirar.
-
-## 8. Restricciones
-
-Mantener stack y límites del baseline. Sin servicios pagos, trials, créditos, upgrade automático ni fallback facturable. No inventar comandos, rutas, archivos, resultados o PASS. `IMPLEMENTATION_STATE.json` y `GITHUB_HANDOFF.json` sostienen continuidad; el chat no es autoridad. T109 solo produce entrada para convergencia; convergencia requiere otro chat y autorización expresa.
+Mantener stack y límites del baseline. Solo servicios gratuitos; sin trials, créditos, upgrades ni fallback facturable. Un chat trabaja una operación o un batch y no inicia el siguiente automáticamente.

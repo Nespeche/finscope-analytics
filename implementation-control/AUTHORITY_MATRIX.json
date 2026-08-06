@@ -1,174 +1,141 @@
 {
   "$schema": "schemas/authority-matrix.schema.json",
-  "schemaVersion": "1.0.0",
-  "packageRevision": "v0.21.25_B20_completed",
+  "schemaVersion": "2.0.0",
   "fieldAuthorities": [
     {
       "fieldId": "constitutional_rules",
-      "scope": "Principios, límites y orden Spec-Driven",
+      "scope": "Principles, limits and SDD order",
       "authority": ".specify/memory/constitution.md",
       "mirrors": [
         "START_HERE_CHATGPT.md",
-        "PROJECT_CONTEXT.md",
         "implementation-control/PROJECT_CONFIGURATION_INSTRUCTIONS.txt"
       ],
       "forbiddenOverrides": [
-        "spec.md",
-        "plan.md",
-        "tasks.md",
         "reports",
-        "metadata"
+        "prompts",
+        "evidence"
       ]
     },
     {
       "fieldId": "phase_gate_flags",
-      "scope": "Todos los flags *Authorized",
+      "scope": "All *Authorized flags",
       "authority": "V0.21_PHASE_STATUS.md#gate",
-      "mirrors": [
-        "PACKAGE_METADATA.json",
-        "implementation-control/IMPLEMENTATION_STATE.json"
-      ],
+      "mirrors": [],
       "forbiddenOverrides": [
-        "tasks.md",
-        "batch files",
-        "reports",
-        "prompts",
-        "historical phase files"
+        "PR body",
+        "workflow inputs",
+        "reports"
       ]
     },
     {
       "fieldId": "product_requirements",
-      "scope": "Alcance, FR y NFR",
+      "scope": "FR/NFR and scope",
       "authority": "specs/001-fundamental-analysis-platform/spec.md",
       "mirrors": [
         "plan.md",
-        "tasks.md",
-        "traceability reports"
+        "tasks.md"
       ],
       "forbiddenOverrides": [
-        "batch files",
-        "implementation reports",
-        "code comments"
+        "operation",
+        "reports"
       ]
     },
     {
       "fieldId": "product_behavior",
-      "scope": "Contratos, schemas, catálogos, decisiones y fixtures",
+      "scope": "Contracts, schemas, catalogues and fixtures",
       "authority": "specs/001-fundamental-analysis-platform/governance/authority-crosswalk.json -> primaryAuthority",
       "mirrors": [
-        "acceptance criteria",
-        "task authority IDs",
         "batch primaryAuthorityRefs"
       ],
       "forbiddenOverrides": [
         "summaries",
-        "historical reports",
         "implementation shortcuts"
       ]
     },
     {
       "fieldId": "task_definition",
-      "scope": "ID, dependencia, paralelismo, archivos, pruebas y Done when",
+      "scope": "Task IDs, dependencies, files, tests and Done when",
       "authority": "specs/001-fundamental-analysis-platform/tasks.md",
       "mirrors": [
-        "implementation-control/batches/Bxx.json",
-        "IMPLEMENTATION_BATCH_MAP.json",
-        "TASK_SOURCE_LOCK.json"
+        "implementation-control/TASK_SOURCE_LOCK.json",
+        "implementation-control/batches/Bxx.json"
       ],
       "forbiddenOverrides": [
-        "batch report",
-        "chat prompt",
-        "implementation state"
+        "prompts",
+        "reports"
       ]
     },
     {
-      "fieldId": "execution_status",
-      "scope": "Estado corriente de tareas/lotes, lote activo y continuidad",
+      "fieldId": "implementation_state",
+      "scope": "Completed boundary, active batch and next action",
       "authority": "implementation-control/IMPLEMENTATION_STATE.json",
       "mirrors": [
-        "batch status fields",
-        "IMPLEMENTATION_BATCH_MAP.json",
-        "PACKAGE_METADATA.json"
+        "README.md",
+        "START_HERE_CHATGPT.md"
       ],
       "forbiddenOverrides": [
-        "root summaries",
-        "historical reports",
-        "candidate packages not closed"
+        "PR body",
+        "chat memory"
       ]
     },
     {
-      "fieldId": "execution_method",
-      "scope": "Carga de contexto, orden operativo, roles, validación, cambio progresivo y handoff",
-      "authority": "implementation-control/IMPLEMENTATION_EXECUTION_PROTOCOL.md",
-      "mirrors": [
-        "CONTEXT_LOADING_POLICY.md",
-        "LOCAL_VALIDATION_PROTOCOL.md",
-        "specdev-prompts/speckit.implement-batch.md",
-        "SDD_OPERATING_MODEL.md",
-        "CONTEXT_MAINTENANCE_MODEL.md"
-      ],
+      "fieldId": "active_operation",
+      "scope": "Immutable operation declaration: repository, base SHA, branch, allowlist, commands and promotion contract. Lifecycle state is GitHub-only.",
+      "authority": "implementation-control/OPERATION.json",
+      "mirrors": [],
       "forbiddenOverrides": [
-        "historical prompts",
-        "conversation memory"
+        "PR body literals",
+        "comments",
+        "run IDs committed to Git"
+      ]
+    },
+    {
+      "fieldId": "operation_input_baseline",
+      "scope": "Authenticated completed Sources pair used as input to the current operation and its expected GitHub base relation",
+      "authority": "implementation-control/BASELINE_LOCK.json",
+      "mirrors": [],
+      "forbiddenOverrides": [
+        "physical transport suffix",
+        "candidate ZIP",
+        "package containing the lock",
+        "local extraction name"
+      ]
+    },
+    {
+      "fieldId": "github_evidence",
+      "scope": "Checks, logs, artifacts, merge and Release facts",
+      "authority": "GitHub commits, checks, artifacts, tags and Releases",
+      "mirrors": [],
+      "forbiddenOverrides": [
+        "repository state files",
+        "chat claims without executable evidence"
       ]
     },
     {
       "fieldId": "package_identity",
-      "scope": "Nombre lógico, revisión, baseline inmediato y raíz",
-      "authority": "PACKAGE_METADATA.json",
-      "mirrors": [
-        "IMPLEMENTATION_STATE.json",
-        "START_HERE_CHATGPT.md",
-        "V0.21_PHASE_STATUS.md"
-      ],
+      "scope": "Identity of a candidate or completed ZIP",
+      "authority": "Actual ZIP bytes + external sidecar + generated PACKAGE_METADATA.json",
+      "mirrors": [],
       "forbiddenOverrides": [
-        "embedded historical validation reports"
-      ]
-    },
-    {
-      "fieldId": "package_integrity",
-      "scope": "SHA-256, CRC, manifiesto, inventario y árbol .specify",
-      "authority": "external sidecar + FILE_MANIFEST.sha256 + PACKAGE_INVENTORY.json",
-      "mirrors": [
-        "PACKAGE_METADATA.json",
-        "batch reports"
-      ],
-      "forbiddenOverrides": [
-        "unverified chat claims",
-        "file names alone"
-      ]
-    },
-    {
-      "fieldId": "github_operational_method",
-      "scope": "Rama, PR, workflows, evidencia, cierre, Release y comunicación paso a paso",
-      "authority": "implementation-control/GITHUB_REPOSITORY_POLICY.md + GITHUB_VALIDATION_PROTOCOL.md + GITHUB_RELEASE_PROTOCOL.md + GITHUB_OPERATOR_STEP_BY_STEP_PROTOCOL.md",
-      "mirrors": [
-        "implementation-control/GITHUB_HANDOFF.json",
-        ".github/workflows/finscope-pr-validation.yml",
-        ".github/workflows/finscope-closure-validation.yml",
-        ".github/workflows/finscope-completed-release.yml"
-      ],
-      "forbiddenOverrides": [
-        "conversation memory",
-        "GitHub artifacts as product authority",
-        "Source code zip/tar.gz"
+        "repository state files",
+        "physical transport suffix",
+        "chat claims"
       ]
     }
   ],
-  "conflictProcedure": [
-    "Identify the exact field in conflict.",
-    "Read the authority assigned to that field and its primary references.",
-    "Treat every lower mirror as stale until reconciled.",
-    "Block only the affected scope; do not infer or broaden requirements.",
-    "Record the conflict and correction in CHANGE_LEDGER and the active report.",
-    "Recalculate task locks, batch mirrors, metadata, inventory and manifest after correction."
-  ],
+  "conflictProcedure": {
+    "mode": "FIELD_SCOPED_FAIL_CLOSED",
+    "steps": [
+      "Identify the conflicting field.",
+      "Read only its declared authority.",
+      "Block only the affected transition.",
+      "Create a typed governance operation when authority itself must change.",
+      "Never infer PASS or broaden scope from history or chat memory."
+    ]
+  },
   "historicalPolicy": {
-    "historicalPatterns": [
-      "V0.9_PHASE_STATUS.md through V0.20_PHASE_STATUS.md",
-      "specs/**/reports/v0.20 and earlier",
-      "superseded/candidate/partial package reports"
-    ],
-    "candidateRule": "A candidate or LOCAL_VALIDATION_REQUIRED package is never the active Project Source and cannot change completed task or batch status until evidence closure."
+    "reportsAreEvidenceNotAuthority": true,
+    "failedEvidenceRetainedInGitHub": true,
+    "historicalFilesMayBeExcludedFromReleasePackages": true
   }
 }

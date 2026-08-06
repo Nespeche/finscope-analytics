@@ -1,0 +1,158 @@
+name: FinScope SDD2 Completed Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: Exact main merge SHA to publish
+        required: true
+        type: string
+      operation_id:
+        description: Exact OPERATION.json operationId
+        required: true
+        type: string
+      release_tag:
+        description: Immutable completed Release tag
+        required: true
+        type: string
+      zip_name:
+        description: Logical completed ZIP name
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+env:
+  FINSCOPE_PACKAGE_ROOT: ${{ github.workspace }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    concurrency:
+      group: finscope-sdd2-release-${{ inputs.expected_sha }}
+      cancel-in-progress: false
+    steps:
+      - name: Validate inputs
+        shell: bash
+        run: |
+          [[ "${{ inputs.expected_sha }}" =~ ^[0-9a-f]{40}$ ]]
+          [[ "${{ inputs.operation_id }}" =~ ^[a-z0-9][a-z0-9-]+$ ]]
+          [[ "${{ inputs.release_tag }}" =~ ^v[0-9A-Za-z._-]+$ ]]
+          [[ "${{ inputs.zip_name }}" =~ ^[A-Za-z0-9._-]+\.zip$ ]]
+
+      - name: Checkout exact merge SHA
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.expected_sha }}
+          fetch-depth: 0
+
+      - name: Verify main and operation identity
+        shell: bash
+        run: |
+          test "$(git rev-parse HEAD)" = "${{ inputs.expected_sha }}"
+          test "$(git rev-parse origin/main)" = "${{ inputs.expected_sha }}"
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const operation = JSON.parse(fs.readFileSync('implementation-control/OPERATION.json', 'utf8'));
+          if (operation.operationId !== '${{ inputs.operation_id }}') process.exit(1);
+          if (operation.repository !== process.env.GITHUB_REPOSITORY) process.exit(1);
+          NODE
+          if git rev-parse "refs/tags/${{ inputs.release_tag }}" >/dev/null 2>&1; then exit 1; fi
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+          cache: npm
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Recheck merged scope
+        run: node implementation-control/scripts/Check-OperationScope.mjs . --mode release | tee sdd2-release-scope.json
+
+      - name: Revalidate exact merge tree
+        run: node implementation-control/scripts/Run-Operation.mjs . .finscope-evidence-release
+
+      - name: Require unchanged tracked tree
+        shell: bash
+        run: |
+          git diff --exit-code
+          git diff --cached --exit-code
+
+      - name: Build and verify completed package
+        shell: bash
+        run: |
+          rm -rf .finscope-release
+          python implementation-control/scripts/package_release.py \
+            --root . \
+            --output .finscope-release \
+            --name "${{ inputs.zip_name }}" \
+            --status COMPLETED
+          python implementation-control/scripts/verify_package.py \
+            --zip ".finscope-release/${{ inputs.zip_name }}" \
+            --sidecar ".finscope-release/${{ inputs.zip_name }}.sha256" \
+            --expected-status COMPLETED \
+            --expected-git-sha "${{ inputs.expected_sha }}" \
+            --expected-operation-id "${{ inputs.operation_id }}" \
+            | tee .finscope-release/pre-publication-verification.json
+
+      - name: Create draft Release and upload assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh release create "${{ inputs.release_tag }}" \
+            ".finscope-release/${{ inputs.zip_name }}" \
+            ".finscope-release/${{ inputs.zip_name }}.sha256" \
+            ".finscope-release/pre-publication-verification.json" \
+            --target "${{ inputs.expected_sha }}" \
+            --title "FinScope SDD2 completed — ${{ inputs.operation_id }}" \
+            --notes "Manual exact-SHA completed Release for ${{ inputs.operation_id }}." \
+            --draft
+
+      - name: Download and reauthenticate draft Release bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          mkdir -p .finscope-redownload
+          gh release download "${{ inputs.release_tag }}" --dir .finscope-redownload
+          cmp ".finscope-release/${{ inputs.zip_name }}" ".finscope-redownload/${{ inputs.zip_name }}"
+          cmp ".finscope-release/${{ inputs.zip_name }}.sha256" ".finscope-redownload/${{ inputs.zip_name }}.sha256"
+          python implementation-control/scripts/verify_package.py \
+            --zip ".finscope-redownload/${{ inputs.zip_name }}" \
+            --sidecar ".finscope-redownload/${{ inputs.zip_name }}.sha256" \
+            --expected-status COMPLETED \
+            --expected-git-sha "${{ inputs.expected_sha }}" \
+            --expected-operation-id "${{ inputs.operation_id }}" \
+            | tee .finscope-redownload/post-publication-verification.json
+
+      - name: Publish completed Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release edit "${{ inputs.release_tag }}" --draft=false
+
+      - name: Clean failed draft Release
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: gh release delete "${{ inputs.release_tag }}" --yes --cleanup-tag || true
+
+      - name: Preserve Release evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: finscope-sdd2-release-${{ inputs.expected_sha }}
+          path: |
+            sdd2-release-scope.json
+            .finscope-evidence-release/
+            .finscope-release/
+            .finscope-redownload/
+          if-no-files-found: warn
+          retention-days: 90
