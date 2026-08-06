@@ -6,7 +6,7 @@ import { get } from 'node:https';
 import {
   root, exists, listFiles, now, readJson, run, setOutput, shaFile, verifyManifest, writeJson, writeManifest,
 } from './GitHub-Common.mjs';
-import { canonicalJson, CLOSURE_PATHS, OPERATION_ID } from './Apply-B20PostRestoreClosure.mjs';
+import { canonicalJson, canonicalPathOrder, CLOSURE_PATHS, OPERATION_ID } from './Apply-B20PostRestoreClosure.mjs';
 
 const out = join(root, '.finscope-evidence', 'closure');
 await rm(out, { recursive: true, force: true });
@@ -136,8 +136,8 @@ for (const path of CLOSURE_PATHS) if (!remediation.has(path)) fail('CLOSURE_PATH
 const parents = (await command('git show -s --format=%P HEAD', 'CLOSURE_PARENT_LOOKUP_FAILED')).split(/\s+/u).filter(Boolean);
 equal(parents.length, 1, 'CLOSURE_PARENT_COUNT_MISMATCH');
 equal(parents[0], binding?.candidateHead, 'CLOSURE_PARENT_CANDIDATE_MISMATCH');
-const changed = (await command(`git diff --name-only ${shellQuote(binding?.candidateHead ?? '')} HEAD`, 'CLOSURE_DIFF_FAILED')).split(/\r?\n/u).filter(Boolean).sort((a, b) => a.localeCompare(b, 'en'));
-const expectedChanged = [...CLOSURE_PATHS].sort((a, b) => a.localeCompare(b, 'en'));
+const changed = canonicalPathOrder((await command(`git diff --name-only ${shellQuote(binding?.candidateHead ?? '')} HEAD`, 'CLOSURE_DIFF_FAILED')).split(/\r?\n/u).filter(Boolean));
+const expectedChanged = canonicalPathOrder(CLOSURE_PATHS);
 equal(JSON.stringify(changed), JSON.stringify(expectedChanged), 'CLOSURE_EXACT_ALLOWLIST_MISMATCH');
 if (changed.some((path) => /^(?:src|tests|workers|public|specs|\.specify|package(?:-lock)?\.json)(?:\/|$)/u.test(path))) fail('CLOSURE_EXECUTABLE_CHANGE_PRESENT', JSON.stringify(changed));
 

@@ -68,7 +68,7 @@ jobs:
           if (h.operation?.branch !== process.env.HEAD_BRANCH) fail('UNEXPECTED_OPERATION_BRANCH');
           if (h.release?.pending !== true || h.release?.authorizationStatus !== 'NOT_AUTHORIZED') fail('RELEASE_GATE_NOT_CLOSED');
           if (h.remediation?.hold !== true || h.productState?.b21Executable !== false || h.productState?.convergenceAuthorized !== false) fail('HOLD_OR_PRODUCT_GATE_INVALID');
-          if (h.release?.releaseRevision !== 'v0.21.25_B20_completed_r3' || h.release?.zipName !== 'FS_v0.21.25_B20_completed_r3.zip') fail('R3_IDENTITY_INVALID');
+          if (h.release?.releaseRevision !== 'v0.21.25_B20_completed_r4' || h.release?.zipName !== 'FS_v0.21.25_B20_completed_r4.zip') fail('R4_IDENTITY_INVALID');
           if (prBody.split(/\r?\n/u).some((line) => line.trim() === 'AUTHORIZE_B20_POST_RESTORE_CLOSURE_COMMIT')) fail('CLOSURE_LITERAL_PRESENT_DURING_CANDIDATE');
           const allAllowed = new Set(h.remediation?.allowedPaths ?? []);
           const full = changed(process.env.BASE_SHA, process.env.HEAD_SHA);
@@ -100,10 +100,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-evidence/preflight/qualification-baseline.json
-      - name: Generate exact-tree remediation candidate package r3
+      - name: Generate exact-tree remediation candidate package r4
         run: node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release > .finscope-release/package.stdout.log 2> .finscope-release/package.stderr.log
-      - name: Verify exact-tree remediation candidate package r3
-        run: node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed_r3.zip .finscope-release/FS_v0.21.25_B20_completed_r3.zip.sha256 > .finscope-release/verifier.stdout.log 2> .finscope-release/verifier.stderr.log
+      - name: Verify exact-tree remediation candidate package r4
+        run: node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed_r4.zip .finscope-release/FS_v0.21.25_B20_completed_r4.zip.sha256 > .finscope-release/verifier.stdout.log 2> .finscope-release/verifier.stderr.log
       - name: Upload read-only qualification evidence
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a

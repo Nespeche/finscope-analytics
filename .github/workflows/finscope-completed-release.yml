@@ -70,7 +70,7 @@ jobs:
           assert(h.closure?.status === 'PENDING', 'CLOSURE_PENDING_REQUIRED');
           assert(h.release?.pending === true, 'RELEASE_NOT_PENDING');
           assert(h.remediation?.hold === true, 'RECOVERY_HOLD_MISSING');
-          assert(h.release?.releaseRevision === 'v0.21.25_B20_completed_r3', 'R3_IDENTITY_REQUIRED');
+          assert(h.release?.releaseRevision === 'v0.21.25_B20_completed_r4', 'R4_IDENTITY_REQUIRED');
           assert(h.release?.tag !== h.baseline?.tag && h.release?.zipName !== h.baseline?.zipName, 'BASELINE_IDENTITY_REUSE');
           NODE
       - name: Configure Node from package authority
@@ -105,12 +105,12 @@ jobs:
           set -euo pipefail
           node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
           node implementation-control/scripts/Verify-GitHubBaseline.mjs .finscope-release/release-baseline.json
-      - name: Generate and verify exact authorized package r3
+      - name: Generate and verify exact authorized package r4
         shell: bash
         run: |
           set -euo pipefail
           node implementation-control/scripts/Package-GitHubCompletedRelease.mjs .finscope-release
-          node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed_r3.zip .finscope-release/FS_v0.21.25_B20_completed_r3.zip.sha256
+          node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed_r4.zip .finscope-release/FS_v0.21.25_B20_completed_r4.zip.sha256
       - name: Prepare authenticated draft Release and custom assets
         id: draft
         env:

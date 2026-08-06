@@ -36,7 +36,7 @@ Toda evidencia FAIL se conserva como `REJECTED_NOT_PROMOTABLE`. No usar “Re-ru
 
 ### Mecanismo owner-gated especial de cierre B20
 
-Para `b20-post-restore-control-plane-hardening`, Closure Validation es read-only. Solo `.github/workflows/finscope-remediation-closure-request.yml`, activado al editar el PR #46 por el propietario con PR Draft y refs/HEAD exactos, puede solicitar el commit. Exige `AUTHORIZE_B20_POST_RESTORE_CLOSURE_COMMIT` y un JSON canónico entre `B20_CLOSURE_BINDING_JSON_BEGIN` / `B20_CLOSURE_BINDING_JSON_END`, ligado a tres artifacts exact-head y al paquete r3. `Apply-B20PostRestoreClosure.mjs` produce exactamente diez rutas, dry-run y push con force-with-lease. Literal ausente: cierre no autorizado.
+Para `b20-post-restore-control-plane-hardening`, Closure Validation es read-only. Solo `.github/workflows/finscope-remediation-closure-request.yml`, activado al editar el PR #46 por el propietario con PR Draft y refs/HEAD exactos, puede solicitar el commit. Exige `AUTHORIZE_B20_POST_RESTORE_CLOSURE_COMMIT` y un JSON canónico entre `B20_CLOSURE_BINDING_JSON_BEGIN` / `B20_CLOSURE_BINDING_JSON_END`, ligado a tres artifacts exact-head y al paquete r4. `Apply-B20PostRestoreClosure.mjs` produce exactamente diez rutas, dry-run y push con force-with-lease. Literal ausente: cierre no autorizado.
 
 ## 5. Roles
 

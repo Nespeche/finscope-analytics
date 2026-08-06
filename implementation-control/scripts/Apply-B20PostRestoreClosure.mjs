@@ -35,6 +35,10 @@ export const CLOSURE_PATHS = [
   'implementation-control/GITHUB_HANDOFF.json',
   'implementation-control/IMPLEMENTATION_STATE.json',
 ];
+export function canonicalPathOrder(paths) {
+  return [...paths].sort((left, right) => Buffer.from(left, 'utf8').compare(Buffer.from(right, 'utf8')));
+}
+
 export const CANDIDATE_ALLOWED_PATHS = [
   '.github/workflows/finscope-remediation-closure-request.yml',
   '.github/workflows/finscope-closure-validation.yml',
@@ -269,10 +273,10 @@ export async function validateLocalAuthorities(binding) {
   equal(state.nextAuthorizedBatchId, 'B21', 'STATE_NEXT_BATCH');
   equal(state.implementationStatus, 'BLOCKED', 'STATE_IMPLEMENTATION_STATUS');
   equal(state.phaseGate?.convergenceAuthorized, false, 'STATE_CONVERGENCE');
-  equal(state.activePackageLogicalName, 'FS_v0.21.25_B20_completed_r3.zip', 'STATE_PACKAGE_IDENTITY');
-  equal(metadata.releaseRevision, 'v0.21.25_B20_completed_r3', 'METADATA_RELEASE_REVISION');
-  equal(metadata.logicalZipName, 'FS_v0.21.25_B20_completed_r3.zip', 'METADATA_ZIP');
-  equal(metadata.finalSha256Sidecar, 'FS_v0.21.25_B20_completed_r3.zip.sha256', 'METADATA_SIDECAR');
+  equal(state.activePackageLogicalName, 'FS_v0.21.25_B20_completed_r4.zip', 'STATE_PACKAGE_IDENTITY');
+  equal(metadata.releaseRevision, 'v0.21.25_B20_completed_r4', 'METADATA_RELEASE_REVISION');
+  equal(metadata.logicalZipName, 'FS_v0.21.25_B20_completed_r4.zip', 'METADATA_ZIP');
+  equal(metadata.finalSha256Sidecar, 'FS_v0.21.25_B20_completed_r4.zip.sha256', 'METADATA_SIDECAR');
 
   const head = await gitHead();
   equal(head, binding.candidateHead, 'BINDING_HEAD_NOT_CHECKED_OUT');
@@ -633,8 +637,9 @@ async function main() {
   if (process.argv.includes('--self-test')) {
     const duplicateRejected = (() => { try { parseCanonicalBinding('{"a":1,"a":2}'); return false; } catch (error) { return String(error).includes('BINDING_DUPLICATE_KEY'); } })();
     const nonCanonicalRejected = (() => { try { parseCanonicalBinding('{"b":2,"a":1}'); return false; } catch (error) { return String(error).includes('BINDING_NOT_CANONICAL'); } })();
-    assert(duplicateRejected && nonCanonicalRejected, 'SELF_TEST_FAILED');
-    console.log(JSON.stringify({ result: 'PASS', duplicateKeyRejected: true, nonCanonicalRejected: true }, null, 2));
+    const pathOrderStable = JSON.stringify(canonicalPathOrder([...CLOSURE_PATHS].reverse())) === JSON.stringify(canonicalPathOrder(CLOSURE_PATHS));
+    assert(duplicateRejected && nonCanonicalRejected && pathOrderStable, 'SELF_TEST_FAILED');
+    console.log(JSON.stringify({ result: 'PASS', duplicateKeyRejected: true, nonCanonicalRejected: true, pathOrderStable: true }, null, 2));
     return;
   }
   const apply = process.argv.includes('--apply');
@@ -663,7 +668,9 @@ async function main() {
   const diff = await run('git diff --name-only', { cwd: root });
   assert(diff.exitCode === 0, 'POST_APPLY_DIFF_FAILED', diff.stderr.toString('utf8'));
   const changed = diff.stdout.toString('utf8').trim().split(/\r?\n/u).filter(Boolean);
-  assert(JSON.stringify(changed) === JSON.stringify([...CLOSURE_PATHS].sort((a, b) => a.localeCompare(b, 'en'))), 'POST_APPLY_SCOPE_MISMATCH', JSON.stringify(changed));
+  const actualPaths = canonicalPathOrder(changed);
+  const expectedPaths = canonicalPathOrder(CLOSURE_PATHS);
+  assert(JSON.stringify(actualPaths) === JSON.stringify(expectedPaths), 'POST_APPLY_SCOPE_MISMATCH', JSON.stringify({ actualPaths, expectedPaths }));
   console.log(JSON.stringify({
     result: 'APPLIED_LOCALLY_PENDING_ATOMIC_COMMIT',
     operationId: OPERATION_ID,
