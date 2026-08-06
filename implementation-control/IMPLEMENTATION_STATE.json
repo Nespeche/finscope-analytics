@@ -289,7 +289,7 @@
   "productCodePresent": true,
   "dependenciesInstalled": false,
   "buildArtifactsPresent": false,
-  "updatedBy": "b20-post-restore-control-plane-hardening closure literal preservation corrective candidate r5",
+  "updatedBy": "Apply-B20PostRestoreClosure.mjs",
   "updatedOn": "2026-08-06",
   "baselineRole": "ACTIVE_COMPLETED_BASELINE",
   "normativeSourceBaseline": {
