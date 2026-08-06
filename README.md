@@ -1,9 +1,11 @@
 # FinScope Analytics
 
 <!-- B20_CLOSURE_MECHANISM_STATE_BEGIN -->
-**Estado:** `REMEDIATION_CLOSURE_MECHANISM_CANDIDATE — CLOSURE_NOT_AUTHORIZED`
-
-El mecanismo dedicado usa el literal contractual `AUTHORIZE_B20_POST_RESTORE_CLOSURE_COMMIT` junto con un único bloque JSON canónico entre `B20_CLOSURE_BINDING_JSON_BEGIN` y `B20_CLOSURE_BINDING_JSON_END`. El literal está declarado, pero no insertado en el cuerpo del PR. `operation.stage=candidate`; cierre, Ready, merge, tag/Release, sustitución de Fuentes, B21 y convergencia continúan no autorizados.
+**Estado:** `REMEDIATION_CLOSURE_PENDING — EXACT_HEAD_VALIDATION_REQUIRED`
+- Candidate HEAD: `f72ef3d2d3a95422a28717604f4af2c1457cf042`
+- Binding SHA-256: `d30b8f8c61841fa6515f534d7dc738224c0490eaa355a195f64d919a9793dc13`
+- Policy SHA-256: `af360b19c6262c2641ee2a4a72523c7fb3a55800bd2332eec1eafa5b3e6998a5`
+- B21 continúa bloqueado; Ready, merge, tag/Release, Fuentes y convergencia continúan no autorizados.
 <!-- B20_CLOSURE_MECHANISM_STATE_END -->
 
 FinScope Analytics es una SPA Svelte 5 determinista y local-first para análisis fundamental. El baseline normativo activo continúa siendo `FS_v0.21.25_B20_completed.zip`, SHA-256 `c18b1390c416b5c538e1b7cf704c610754e4cff2f3eeec8c2c08bc800b120fc6`, hasta que exista un nuevo Release completed reautenticado y el usuario sustituya expresamente la pareja de Fuentes. La remediación apunta a la identidad nueva `v0.21.25-B20-completed-r4` / `FS_v0.21.25_B20_completed_r4.zip`; no reemplaza ni muta el Release completed vigente.

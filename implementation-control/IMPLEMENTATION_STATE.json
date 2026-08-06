@@ -289,7 +289,7 @@
   "productCodePresent": true,
   "dependenciesInstalled": false,
   "buildArtifactsPresent": false,
-  "updatedBy": "b20-post-restore-control-plane-hardening POST_APPLY_SCOPE_MISMATCH correction candidate r4",
+  "updatedBy": "Apply-B20PostRestoreClosure.mjs",
   "updatedOn": "2026-08-06",
   "baselineRole": "ACTIVE_COMPLETED_BASELINE",
   "normativeSourceBaseline": {

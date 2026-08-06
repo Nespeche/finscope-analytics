@@ -15,7 +15,7 @@
     "id": "b20-post-restore-control-plane-hardening",
     "kind": "RELEASE_REMEDIATION",
     "branch": "maintenance/b20-post-restore-control-plane-hardening",
-    "stage": "candidate",
+    "stage": "closure",
     "activeBatchId": "B20",
     "nextBatchId": "B21",
     "completedTasksThroughOnClosure": "T089",
@@ -83,21 +83,63 @@
     ]
   },
   "candidate": {
-    "status": "NOT_REQUESTED",
-    "sha": null,
-    "runId": null,
-    "artifactId": null,
-    "artifactName": null,
-    "artifactDigest": null
+    "status": "PASS_AUTHENTICATED_EXTERNAL",
+    "sha": "f72ef3d2d3a95422a28717604f4af2c1457cf042",
+    "runId": 31101705447,
+    "artifactId": 8967919731,
+    "artifactName": "finscope-github-validation-f72ef3d2d3a9-PASS",
+    "artifactDigest": "sha256:6ce0c2f9bce6f44b682915a5d7a74a098b50bf4e730199577aa62685aea38fbf"
   },
   "closure": {
-    "status": "NOT_AUTHORIZED",
-    "candidateSha": null,
+    "status": "PENDING",
+    "candidateSha": "f72ef3d2d3a95422a28717604f4af2c1457cf042",
     "commitSha": null,
     "runId": null,
     "artifactId": null,
     "artifactName": null,
-    "artifactDigest": null
+    "artifactDigest": null,
+    "authorizationBinding": {
+      "authorityHashes": {
+        "b20Sha256": "328413833437ff823f17ef9a957f689486a0ee6a396854501e981be47d403394",
+        "b21Sha256": "c0101248b353eddcc47dc0c6730de4d75dd4a98bf35c48577ceccbda19c55388",
+        "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
+        "tasksSha256": "bd89291f6aca4817dda8d9cd3700e5f4682415574b72ad815d8de7e44a824d08"
+      },
+      "base": "main",
+      "branch": "maintenance/b20-post-restore-control-plane-hardening",
+      "candidateHead": "f72ef3d2d3a95422a28717604f4af2c1457cf042",
+      "candidatePackage": {
+        "releaseRevision": "v0.21.25_B20_completed_r4",
+        "sidecarName": "FS_v0.21.25_B20_completed_r4.zip.sha256",
+        "zipName": "FS_v0.21.25_B20_completed_r4.zip",
+        "zipSha256": "4b4f5a387e5799a8aee269b9f828eb3d33ec74ed2552ab6c6fc81b43fd6b91dc"
+      },
+      "closurePrecheck": {
+        "artifactDigest": "sha256:01dc3fc51746fcc590c8d0b6f18cabaf187321667dd12327bbedb85bf7e4ed44",
+        "artifactId": 8967738014,
+        "artifactName": "finscope-closure-f72ef3d2d3a9-NOT_APPLICABLE",
+        "reason": "CLOSURE_NOT_REQUESTED",
+        "result": "NOT_APPLICABLE",
+        "runId": 31101707578
+      },
+      "prValidation": {
+        "artifactDigest": "sha256:6ce0c2f9bce6f44b682915a5d7a74a098b50bf4e730199577aa62685aea38fbf",
+        "artifactId": 8967919731,
+        "artifactName": "finscope-github-validation-f72ef3d2d3a9-PASS",
+        "runId": 31101705447
+      },
+      "pullRequest": 46,
+      "releaseQualification": {
+        "artifactDigest": "sha256:4ea3189103522a5c5502a20a8eca58da0b9c6b2b6516f8b813154cf4db55c06f",
+        "artifactId": 8967743509,
+        "artifactName": "finscope-release-qualification-f72ef3d2d3a95422a28717604f4af2c1457cf042",
+        "runId": 31101706198
+      },
+      "repository": "Nespeche/finscope-analytics",
+      "schemaVersion": "1.0.0"
+    },
+    "authorizationBindingSha256": "d30b8f8c61841fa6515f534d7dc738224c0490eaa355a195f64d919a9793dc13",
+    "closurePolicySha256": "af360b19c6262c2641ee2a4a72523c7fb3a55800bd2332eec1eafa5b3e6998a5"
   },
   "release": {
     "pending": true,
@@ -140,7 +182,7 @@
       "implementation-control/scripts/Validate-ControlPlaneState.mjs"
     ],
     "closurePolicy": {
-      "status": "NOT_AUTHORIZED",
+      "status": "PENDING",
       "allowedPaths": [
         "README.md",
         "START_HERE_CHATGPT.md",
@@ -239,7 +281,7 @@
   "closureMechanism": {
     "status": "CANDIDATE",
     "authorizationStatus": "NOT_AUTHORIZED",
-    "authorizationDisposition": "NOT_INSERTED",
+    "authorizationDisposition": "CONSUMED_PENDING_EXACT_HEAD_CLOSURE_VALIDATION",
     "activation": "PULL_REQUEST_BODY_EDIT_ONLY",
     "workflow": ".github/workflows/finscope-remediation-closure-request.yml",
     "script": "implementation-control/scripts/Apply-B20PostRestoreClosure.mjs",
