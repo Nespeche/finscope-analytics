@@ -50,14 +50,32 @@ jobs:
           ln -s "$GITHUB_WORKSPACE" "$root_alias"
           echo "FINSCOPE_PACKAGE_ROOT=$root_alias" >> "$GITHUB_ENV"
       - name: Validate control plane without mutation
-        run: node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT"
+        id: control_plane
+        shell: bash
+        run: |
+          set +e
+          evidence_dir=".finscope-evidence/closure-preflight"
+          mkdir -p "$evidence_dir"
+          node implementation-control/scripts/Validate-ControlPlaneState.mjs "$FINSCOPE_PACKAGE_ROOT" \
+            >"$evidence_dir/control-plane.stdout.log" \
+            2>"$evidence_dir/control-plane.stderr.log"
+          exit_code=$?
+          printf '%s\n' "$exit_code" >"$evidence_dir/exit-code.txt"
+          cat "$evidence_dir/control-plane.stdout.log"
+          cat "$evidence_dir/control-plane.stderr.log" >&2
+          (
+            cd "$evidence_dir"
+            sha256sum control-plane.stdout.log control-plane.stderr.log exit-code.txt > EVIDENCE_MANIFEST.sha256
+          )
+          exit "$exit_code"
       - name: Verify B20 post-restore closure policy and exact-head artifacts
         id: closure
+        if: steps.control_plane.outcome == 'success'
         env:
           GH_TOKEN: ${{ github.token }}
         run: node implementation-control/scripts/Verify-GitHubClosure.mjs
       - name: Upload closure evidence
-        if: always()
+        if: always() && steps.closure.outputs.evidence_dir != ''
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: ${{ steps.closure.outputs.artifact_name }}
@@ -65,8 +83,17 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 30
+      - name: Upload control-plane preflight failure evidence
+        if: always() && steps.control_plane.outcome == 'failure'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: finscope-closure-${{ github.event.pull_request.head.sha }}-PREFLIGHT_FAILED
+          path: .finscope-evidence/closure-preflight
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 30
       - name: Enforce closure result
-        if: always()
+        if: always() && steps.control_plane.outcome == 'success'
         env:
           RESULT: ${{ steps.closure.outputs.result }}
         run: test "$RESULT" = PASS || test "$RESULT" = NOT_APPLICABLE

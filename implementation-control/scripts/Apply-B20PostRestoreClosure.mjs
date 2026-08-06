@@ -273,10 +273,10 @@ export async function validateLocalAuthorities(binding) {
   equal(state.nextAuthorizedBatchId, 'B21', 'STATE_NEXT_BATCH');
   equal(state.implementationStatus, 'BLOCKED', 'STATE_IMPLEMENTATION_STATUS');
   equal(state.phaseGate?.convergenceAuthorized, false, 'STATE_CONVERGENCE');
-  equal(state.activePackageLogicalName, 'FS_v0.21.25_B20_completed_r4.zip', 'STATE_PACKAGE_IDENTITY');
-  equal(metadata.releaseRevision, 'v0.21.25_B20_completed_r4', 'METADATA_RELEASE_REVISION');
-  equal(metadata.logicalZipName, 'FS_v0.21.25_B20_completed_r4.zip', 'METADATA_ZIP');
-  equal(metadata.finalSha256Sidecar, 'FS_v0.21.25_B20_completed_r4.zip.sha256', 'METADATA_SIDECAR');
+  equal(state.activePackageLogicalName, 'FS_v0.21.25_B20_completed_r5.zip', 'STATE_PACKAGE_IDENTITY');
+  equal(metadata.releaseRevision, 'v0.21.25_B20_completed_r5', 'METADATA_RELEASE_REVISION');
+  equal(metadata.logicalZipName, 'FS_v0.21.25_B20_completed_r5.zip', 'METADATA_ZIP');
+  equal(metadata.finalSha256Sidecar, 'FS_v0.21.25_B20_completed_r5.zip.sha256', 'METADATA_SIDECAR');
 
   const head = await gitHead();
   equal(head, binding.candidateHead, 'BINDING_HEAD_NOT_CHECKED_OUT');
@@ -459,6 +459,16 @@ function category(path) {
   return 'documentation';
 }
 function status(path) { return path.startsWith('.specify/') ? 'FROZEN' : 'ACTIVE'; }
+function closureStateText(binding, bindingHash, policyHash) {
+  return [
+    '**Estado:** `REMEDIATION_CLOSURE_PENDING — EXACT_HEAD_VALIDATION_REQUIRED`',
+    `- Candidate HEAD: \`${binding.candidateHead}\``,
+    `- Binding SHA-256: \`${bindingHash}\``,
+    `- Policy SHA-256: \`${policyHash}\``,
+    '- B21 continúa bloqueado; Ready, merge, tag/Release, Fuentes y convergencia continúan no autorizados.',
+    `- El literal contractual \`${AUTHORIZATION_LITERAL}\` fue consumido y retirado del cuerpo del PR; conservarlo aquí como documentación no autoriza otra ejecución.`,
+  ].join('\n');
+}
 async function trackedPaths() {
   const result = await run('git ls-files -z', { cwd: root });
   assert(result.exitCode === 0, 'TRACKED_PATHS_FAILED', result.stderr.toString('utf8'));
@@ -483,13 +493,7 @@ export async function proposedClosureFiles(binding, authorities) {
   const bindingHash = shaBytes(Buffer.from(canonicalJson(binding), 'utf8'));
   const policyHash = shaBytes(Buffer.from(canonicalJson(CLOSURE_PATHS), 'utf8'));
   const proposed = new Map();
-  const closureState = [
-    '**Estado:** `REMEDIATION_CLOSURE_PENDING — EXACT_HEAD_VALIDATION_REQUIRED`',
-    `- Candidate HEAD: \`${binding.candidateHead}\``,
-    `- Binding SHA-256: \`${bindingHash}\``,
-    `- Policy SHA-256: \`${policyHash}\``,
-    '- B21 continúa bloqueado; Ready, merge, tag/Release, Fuentes y convergencia continúan no autorizados.',
-  ].join('\n');
+  const closureState = closureStateText(binding, bindingHash, policyHash);
   for (const path of ['README.md', 'START_HERE_CHATGPT.md', 'DOCUMENTATION_INDEX.md', 'V0.21_PHASE_STATUS.md', 'PROMPT_IMPLEMENTACION_B21.md']) {
     const current = await readFile(join(root, path), 'utf8');
     proposed.set(path, Buffer.from(replaceMarker(current, closureState, path), 'utf8'));
@@ -638,8 +642,9 @@ async function main() {
     const duplicateRejected = (() => { try { parseCanonicalBinding('{"a":1,"a":2}'); return false; } catch (error) { return String(error).includes('BINDING_DUPLICATE_KEY'); } })();
     const nonCanonicalRejected = (() => { try { parseCanonicalBinding('{"b":2,"a":1}'); return false; } catch (error) { return String(error).includes('BINDING_NOT_CANONICAL'); } })();
     const pathOrderStable = JSON.stringify(canonicalPathOrder([...CLOSURE_PATHS].reverse())) === JSON.stringify(canonicalPathOrder(CLOSURE_PATHS));
-    assert(duplicateRejected && nonCanonicalRejected && pathOrderStable, 'SELF_TEST_FAILED');
-    console.log(JSON.stringify({ result: 'PASS', duplicateKeyRejected: true, nonCanonicalRejected: true, pathOrderStable: true }, null, 2));
+    const documentationLiteralPreserved = closureStateText({ candidateHead: '0'.repeat(40) }, '0'.repeat(64), '0'.repeat(64)).includes(AUTHORIZATION_LITERAL);
+    assert(duplicateRejected && nonCanonicalRejected && pathOrderStable && documentationLiteralPreserved, 'SELF_TEST_FAILED');
+    console.log(JSON.stringify({ result: 'PASS', duplicateKeyRejected: true, nonCanonicalRejected: true, pathOrderStable: true, documentationLiteralPreserved: true }, null, 2));
     return;
   }
   const apply = process.argv.includes('--apply');

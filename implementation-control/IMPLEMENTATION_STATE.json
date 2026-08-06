@@ -4,7 +4,7 @@
   "project": "FinScope Analytics",
   "normativeBaseline": "v0.21",
   "packageRevision": "v0.21.25_B20_completed",
-  "activePackageLogicalName": "FS_v0.21.25_B20_completed_r4.zip",
+  "activePackageLogicalName": "FS_v0.21.25_B20_completed_r5.zip",
   "sourceBaseline": {
     "logicalName": "FS_v0.21.25_B20_completed.zip",
     "sha256": "c18b1390c416b5c538e1b7cf704c610754e4cff2f3eeec8c2c08bc800b120fc6",
@@ -281,7 +281,7 @@
       "severity": "BLOCKING_HOLD",
       "scope": "B20 completed Release/control-plane realignment",
       "status": "OPEN",
-      "description": "B21 remains PENDING but is not executable until the r4 deterministic closure-scope correction is validated, then the special remediation is closed, merged, published under separate authorization, re-downloaded, reauthenticated and substituted in Sources.",
+      "description": "B21 remains PENDING but is not executable until the r5 corrective closure-mechanism candidate has fresh exact-head evidence, then the special remediation is closed, merged, published under separate authorization, re-downloaded, reauthenticated and substituted in Sources. The r4 closure commit and run are rejected and non-promotable.",
       "owner": "ChatGPT governance + GitHub evidence + Codex operator",
       "closureCondition": "Complete b20-post-restore-control-plane-hardening with exact-head PASS evidence, independent closure/merge/Release authorizations and post-publication asset reauthentication."
     }
@@ -289,7 +289,7 @@
   "productCodePresent": true,
   "dependenciesInstalled": false,
   "buildArtifactsPresent": false,
-  "updatedBy": "Apply-B20PostRestoreClosure.mjs",
+  "updatedBy": "b20-post-restore-control-plane-hardening closure literal preservation corrective candidate r5",
   "updatedOn": "2026-08-06",
   "baselineRole": "ACTIVE_COMPLETED_BASELINE",
   "normativeSourceBaseline": {
@@ -299,7 +299,7 @@
   },
   "sourceTasksSha256": "bd89291f6aca4817dda8d9cd3700e5f4682415574b72ad815d8de7e44a824d08",
   "validationWorkflow": {
-    "candidatePromotionRule": "Fresh exact-head PR Validation PASS, Release Qualification PASS and Closure Validation NOT_APPLICABLE are required for r4; closure remains separately owner-gated and unauthorized.",
+    "candidatePromotionRule": "Fresh exact-head PR Validation PASS, Release Qualification PASS and Closure Validation NOT_APPLICABLE are required for r5; closure remains separately owner-gated and unauthorized.",
     "localProtocol": "implementation-control/LOCAL_VALIDATION_PROTOCOL.md",
     "evidenceSchema": "implementation-control/schemas/github-validation-evidence.schema.json",
     "pendingRuntimeValidationBatches": []

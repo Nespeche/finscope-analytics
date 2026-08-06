@@ -1,11 +1,9 @@
 # DOCUMENTATION INDEX — FinScope Analytics B20 completed / hardening candidate
 
 <!-- B20_CLOSURE_MECHANISM_STATE_BEGIN -->
-**Estado:** `REMEDIATION_CLOSURE_PENDING — EXACT_HEAD_VALIDATION_REQUIRED`
-- Candidate HEAD: `f72ef3d2d3a95422a28717604f4af2c1457cf042`
-- Binding SHA-256: `d30b8f8c61841fa6515f534d7dc738224c0490eaa355a195f64d919a9793dc13`
-- Policy SHA-256: `af360b19c6262c2641ee2a4a72523c7fb3a55800bd2332eec1eafa5b3e6998a5`
-- B21 continúa bloqueado; Ready, merge, tag/Release, Fuentes y convergencia continúan no autorizados.
+**Estado:** `REMEDIATION_CORRECTIVE_CANDIDATE_R5 — CLOSURE_NOT_AUTHORIZED`
+
+El cierre r4 `8e6d2bcbf086dbbef598c5f069753ecb25fd1e88` y el run `31103860816` son `REJECTED_NOT_PROMOTABLE`: el generador retiró documentación que el validador exigía y el workflow produjo errores secundarios sin artifact válido. El mecanismo corregido conserva el literal contractual `AUTHORIZE_B20_POST_RESTORE_CLOSURE_COMMIT` como documentación, pero no está insertado en el cuerpo del PR. `operation.stage=candidate`; cierre, Ready, merge, tag/Release, sustitución de Fuentes, B21 y convergencia continúan no autorizados.
 <!-- B20_CLOSURE_MECHANISM_STATE_END -->
 
 ## Entrada obligatoria
@@ -35,6 +33,6 @@ B01–B20 y T001–T089 están `COMPLETED`. B21 está `PENDING`, con `activeBatc
 
 Baseline normativo en Fuentes: `FS_v0.21.25_B20_completed.zip`, SHA-256 `c18b1390c416b5c538e1b7cf704c610754e4cff2f3eeec8c2c08bc800b120fc6`; raíz `FinScope_v0.21.4/`; `.specify` contiene 19 archivos y permanece byte-inmutable.
 
-Objetivo inmutable de la remediación: tag `v0.21.25-B20-completed-r4`, ZIP `FS_v0.21.25_B20_completed_r4.zip` y sidecar `FS_v0.21.25_B20_completed_r4.zip.sha256`. Es candidato no promovible hasta completar todos los gates y no altera la pareja activa de Fuentes.
+Objetivo inmutable de la remediación: tag `v0.21.25-B20-completed-r5`, ZIP `FS_v0.21.25_B20_completed_r5.zip` y sidecar `FS_v0.21.25_B20_completed_r5.zip.sha256`. Es candidato no promovible hasta completar todos los gates y no altera la pareja activa de Fuentes. La identidad r4 y su evidencia quedan preservadas solo como historial rechazado.
 
 El hash `a906ec783e78a235a2b30a09bd40b061cbbd826479893247e1a76759908db55f` es `REJECTED_NOT_PROMOTABLE` y no constituye baseline ni evidencia PASS.

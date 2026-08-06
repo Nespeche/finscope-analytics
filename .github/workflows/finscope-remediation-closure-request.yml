@@ -129,6 +129,14 @@ jobs:
           diff -u <(printf '%s\n' "${expected[@]}") <(printf '%s\n' "${actual[@]}")
           test -n "$(git diff --stat)"
           git diff --check
+      - name: Validate post-apply control plane before commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          root_alias="$RUNNER_TEMP/FinScope_v0.21.4"
+          rm -rf "$root_alias"
+          ln -s "$GITHUB_WORKSPACE" "$root_alias"
+          node implementation-control/scripts/Validate-ControlPlaneState.mjs "$root_alias"
       - name: Recheck remote HEAD and create one atomic commit
         env:
           GH_TOKEN: ${{ github.token }}

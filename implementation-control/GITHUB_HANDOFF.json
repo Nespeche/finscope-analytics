@@ -15,7 +15,7 @@
     "id": "b20-post-restore-control-plane-hardening",
     "kind": "RELEASE_REMEDIATION",
     "branch": "maintenance/b20-post-restore-control-plane-hardening",
-    "stage": "closure",
+    "stage": "candidate",
     "activeBatchId": "B20",
     "nextBatchId": "B21",
     "completedTasksThroughOnClosure": "T089",
@@ -77,82 +77,40 @@
       {
         "id": "verify-remediation-candidate",
         "category": "package-authentication",
-        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed_r4.zip .finscope-release/FS_v0.21.25_B20_completed_r4.zip.sha256",
+        "command": "node implementation-control/scripts/Verify-GitHubCompletedPackage.mjs .finscope-release/FS_v0.21.25_B20_completed_r5.zip .finscope-release/FS_v0.21.25_B20_completed_r5.zip.sha256",
         "required": true
       }
     ]
   },
   "candidate": {
-    "status": "PASS_AUTHENTICATED_EXTERNAL",
-    "sha": "f72ef3d2d3a95422a28717604f4af2c1457cf042",
-    "runId": 31101705447,
-    "artifactId": 8967919731,
-    "artifactName": "finscope-github-validation-f72ef3d2d3a9-PASS",
-    "artifactDigest": "sha256:6ce0c2f9bce6f44b682915a5d7a74a098b50bf4e730199577aa62685aea38fbf"
+    "status": "NOT_REQUESTED",
+    "sha": null,
+    "runId": null,
+    "artifactId": null,
+    "artifactName": null,
+    "artifactDigest": null
   },
   "closure": {
-    "status": "PENDING",
-    "candidateSha": "f72ef3d2d3a95422a28717604f4af2c1457cf042",
+    "status": "NOT_AUTHORIZED",
+    "candidateSha": null,
     "commitSha": null,
     "runId": null,
     "artifactId": null,
     "artifactName": null,
-    "artifactDigest": null,
-    "authorizationBinding": {
-      "authorityHashes": {
-        "b20Sha256": "328413833437ff823f17ef9a957f689486a0ee6a396854501e981be47d403394",
-        "b21Sha256": "c0101248b353eddcc47dc0c6730de4d75dd4a98bf35c48577ceccbda19c55388",
-        "specifyTreeSha256": "e06c8fbab523b824c144bb22b616001a3a4e810bb9daaa793e84d5cbb77c2c09",
-        "tasksSha256": "bd89291f6aca4817dda8d9cd3700e5f4682415574b72ad815d8de7e44a824d08"
-      },
-      "base": "main",
-      "branch": "maintenance/b20-post-restore-control-plane-hardening",
-      "candidateHead": "f72ef3d2d3a95422a28717604f4af2c1457cf042",
-      "candidatePackage": {
-        "releaseRevision": "v0.21.25_B20_completed_r4",
-        "sidecarName": "FS_v0.21.25_B20_completed_r4.zip.sha256",
-        "zipName": "FS_v0.21.25_B20_completed_r4.zip",
-        "zipSha256": "4b4f5a387e5799a8aee269b9f828eb3d33ec74ed2552ab6c6fc81b43fd6b91dc"
-      },
-      "closurePrecheck": {
-        "artifactDigest": "sha256:01dc3fc51746fcc590c8d0b6f18cabaf187321667dd12327bbedb85bf7e4ed44",
-        "artifactId": 8967738014,
-        "artifactName": "finscope-closure-f72ef3d2d3a9-NOT_APPLICABLE",
-        "reason": "CLOSURE_NOT_REQUESTED",
-        "result": "NOT_APPLICABLE",
-        "runId": 31101707578
-      },
-      "prValidation": {
-        "artifactDigest": "sha256:6ce0c2f9bce6f44b682915a5d7a74a098b50bf4e730199577aa62685aea38fbf",
-        "artifactId": 8967919731,
-        "artifactName": "finscope-github-validation-f72ef3d2d3a9-PASS",
-        "runId": 31101705447
-      },
-      "pullRequest": 46,
-      "releaseQualification": {
-        "artifactDigest": "sha256:4ea3189103522a5c5502a20a8eca58da0b9c6b2b6516f8b813154cf4db55c06f",
-        "artifactId": 8967743509,
-        "artifactName": "finscope-release-qualification-f72ef3d2d3a95422a28717604f4af2c1457cf042",
-        "runId": 31101706198
-      },
-      "repository": "Nespeche/finscope-analytics",
-      "schemaVersion": "1.0.0"
-    },
-    "authorizationBindingSha256": "d30b8f8c61841fa6515f534d7dc738224c0490eaa355a195f64d919a9793dc13",
-    "closurePolicySha256": "af360b19c6262c2641ee2a4a72523c7fb3a55800bd2332eec1eafa5b3e6998a5"
+    "artifactDigest": null
   },
   "release": {
     "pending": true,
     "authorizationStatus": "NOT_AUTHORIZED",
-    "tag": "v0.21.25-B20-completed-r4",
+    "tag": "v0.21.25-B20-completed-r5",
     "packageRevision": "v0.21.25_B20_completed",
-    "zipName": "FS_v0.21.25_B20_completed_r4.zip",
-    "sidecarName": "FS_v0.21.25_B20_completed_r4.zip.sha256",
+    "zipName": "FS_v0.21.25_B20_completed_r5.zip",
+    "sidecarName": "FS_v0.21.25_B20_completed_r5.zip.sha256",
     "evidencePrefix": "FinScope_B20_hardening_release_evidence",
     "promptName": "PROMPT_IMPLEMENTACION_B21.md",
-    "title": "FinScope B20 completed r4 — deterministic closure scope comparison candidate",
-    "notes": "Reserved immutable r4 identity for the POST_APPLY_SCOPE_MISMATCH correction. Publication is not authorized; the active completed Sources pair remains unchanged.",
-    "releaseRevision": "v0.21.25_B20_completed_r4"
+    "title": "FinScope B20 completed r5 — closure literal preservation and fail-closed evidence candidate",
+    "notes": "Reserved immutable r5 identity after the rejected r4 closure. Publication is not authorized; the active completed Sources pair remains unchanged.",
+    "releaseRevision": "v0.21.25_B20_completed_r5"
   },
   "remediation": {
     "hold": true,
@@ -182,7 +140,7 @@
       "implementation-control/scripts/Validate-ControlPlaneState.mjs"
     ],
     "closurePolicy": {
-      "status": "PENDING",
+      "status": "NOT_AUTHORIZED",
       "allowedPaths": [
         "README.md",
         "START_HERE_CHATGPT.md",
@@ -263,6 +221,12 @@
       "disposition": "REJECTED_NOT_PROMOTABLE",
       "reason": "COMPLETED_INVENTORY_SIZE_MISMATCH",
       "reusableAsPassEvidence": false
+    },
+    {
+      "sha256": "4b4f5a387e5799a8aee269b9f828eb3d33ec74ed2552ab6c6fc81b43fd6b91dc",
+      "disposition": "REJECTED_NOT_PROMOTABLE",
+      "reason": "CLOSURE_VALIDATION_FAILED_B20_CLOSURE_LITERAL_DOCUMENTED",
+      "reusableAsPassEvidence": false
     }
   ],
   "productState": {
@@ -281,7 +245,7 @@
   "closureMechanism": {
     "status": "CANDIDATE",
     "authorizationStatus": "NOT_AUTHORIZED",
-    "authorizationDisposition": "CONSUMED_PENDING_EXACT_HEAD_CLOSURE_VALIDATION",
+    "authorizationDisposition": "NOT_INSERTED",
     "activation": "PULL_REQUEST_BODY_EDIT_ONLY",
     "workflow": ".github/workflows/finscope-remediation-closure-request.yml",
     "script": "implementation-control/scripts/Apply-B20PostRestoreClosure.mjs",
@@ -402,6 +366,57 @@
       "SUPERSEDED_CANDIDATE_NOT_PROMOTABLE",
       "FAILED_CLOSURE_GATE_EVIDENCE_PRESERVED",
       "NOT_REUSABLE_AS_PASS_FOR_R4"
+    ],
+    "preserved": true,
+    "reusableAsPassEvidence": false
+  },
+  "priorCandidateR4": {
+    "headSha": "f72ef3d2d3a95422a28717604f4af2c1457cf042",
+    "treeSha1": "2bf464af159afd8b0891b32315dc85c4a5f320e1",
+    "releaseRevision": "v0.21.25_B20_completed_r4",
+    "zipName": "FS_v0.21.25_B20_completed_r4.zip",
+    "zipSha256": "4b4f5a387e5799a8aee269b9f828eb3d33ec74ed2552ab6c6fc81b43fd6b91dc",
+    "prValidation": {
+      "runId": 31101705447,
+      "artifactId": 8967919731,
+      "artifactName": "finscope-github-validation-f72ef3d2d3a9-PASS",
+      "artifactDigest": "sha256:6ce0c2f9bce6f44b682915a5d7a74a098b50bf4e730199577aa62685aea38fbf",
+      "result": "PASS"
+    },
+    "releaseQualification": {
+      "runId": 31101706198,
+      "artifactId": 8967743509,
+      "artifactName": "finscope-release-qualification-f72ef3d2d3a95422a28717604f4af2c1457cf042",
+      "artifactDigest": "sha256:4ea3189103522a5c5502a20a8eca58da0b9c6b2b6516f8b813154cf4db55c06f",
+      "result": "PASS"
+    },
+    "closurePrecheck": {
+      "runId": 31101707578,
+      "artifactId": 8967738014,
+      "artifactName": "finscope-closure-f72ef3d2d3a9-NOT_APPLICABLE",
+      "artifactDigest": "sha256:01dc3fc51746fcc590c8d0b6f18cabaf187321667dd12327bbedb85bf7e4ed44",
+      "result": "NOT_APPLICABLE",
+      "reason": "CLOSURE_NOT_REQUESTED"
+    },
+    "closureAttempt": {
+      "commitSha": "8e6d2bcbf086dbbef598c5f069753ecb25fd1e88",
+      "parentSha": "f72ef3d2d3a95422a28717604f4af2c1457cf042",
+      "runId": 31103860816,
+      "jobId": 92625379172,
+      "result": "FAIL",
+      "primaryFailure": "B20_CLOSURE_LITERAL_DOCUMENTED",
+      "controlPlanePass": 1064,
+      "controlPlaneChecks": 1065,
+      "artifactCreated": false,
+      "secondaryFailures": [
+        "EMPTY_ARTIFACT_PATH",
+        "EMPTY_RESULT_ENFORCEMENT"
+      ]
+    },
+    "dispositions": [
+      "FAILED_CLOSURE_COMMIT_REJECTED_NOT_PROMOTABLE",
+      "SUPERSEDED_BY_CORRECTIVE_CANDIDATE_R5",
+      "NOT_REUSABLE_AS_PASS_FOR_R5"
     ],
     "preserved": true,
     "reusableAsPassEvidence": false
